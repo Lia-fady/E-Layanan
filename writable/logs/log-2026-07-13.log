@@ -55,3 +55,543 @@ AND `status` = :status:
 11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-13 06:12:19 --> Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:19 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:19 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:19 --> [Caused by] mysqli_sql_exception: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-13 06:12:20 --> Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:20 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:20 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:20 --> [Caused by] mysqli_sql_exception: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 06:12:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-13 06:12:37 --> Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:37 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:37 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:12:37 --> [Caused by] mysqli_sql_exception: Unknown column 'u.id_bidang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`id_bidang` = `u`.`id_bidang`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 06:15:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-13 06:16:13 --> Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:13 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:13 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:13 --> [Caused by] mysqli_sql_exception: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-13 06:16:16 --> Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:16 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:16 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:16 --> [Caused by] mysqli_sql_exception: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 06:16:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-13 06:16:28 --> Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:28 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+[Method: GET, Route: sekretariat/profile]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 2 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:28 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 4 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 06:16:28 --> [Caused by] mysqli_sql_exception: Unknown column 'b.group_id' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = \'2\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `u`.*, `b`.`bidang`
+FROM `c_user_pegawai` as `u`
+LEFT JOIN `m_bidang` as `b` ON `b`.`group_id` = `u`.`group_id`
+WHERE `u`.`id_user_pegawai` = :u.id_user_pegawai:', [...], false)
+ 5 APPPATH\Controllers\Sekretariat\C_Profile.php(28): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Profile->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Profile))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 06:17:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-13 06:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-13 06:18:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

@@ -23,7 +23,7 @@ class C_Profile extends BaseController
 
         $user = $db->table('c_user_pegawai as u')
             ->select('u.*, b.bidang')
-            ->join('m_bidang as b', 'b.id_bidang = u.id_bidang', 'left')
+            ->join('m_bidang as b', 'b.id_bidang = u.group_id', 'left')
             ->where('u.id_user_pegawai', session('id_user_pegawai'))
             ->get()
             ->getRow();
