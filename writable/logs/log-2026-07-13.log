@@ -1,0 +1,57 @@
+ERROR - 2026-07-13 00:43:24 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_elayanan_aka...', 3306, '', 0)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#7 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#15 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#6 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#7 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#14 {main}
+CRITICAL - 2026-07-13 00:43:24 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+[Method: POST, Route: auth/login]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `c_user_pegawai`
+WHERE `username` = :username:
+AND `status` = :status:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+ 6 APPPATH\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')

@@ -1,0 +1,739 @@
+ERROR - 2026-07-06 01:08:18 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: YES) in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_elayanan_aka...', 3306, '', 0)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#7 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#15 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'localhost' (using password: YES) in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#6 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#7 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#14 {main}
+CRITICAL - 2026-07-06 01:08:18 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user '****'@'localhost' (using password: YES)
+[Method: POST, Route: auth/login]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `c_user_pegawai`
+WHERE `username` = :username:
+AND `status` = :status:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+ 6 APPPATH\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 01:08:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 01:08:43 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: YES) in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'db_elayanan_aka...', 3306, '', 0)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#6 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#7 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#12 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#15 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'localhost' (using password: YES) in D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:231
+Stack trace:
+#0 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(555): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\BaseModel.php(714): CodeIgniter\Model->doFirst()
+#5 D:\Data\sistem_magang\app\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+#6 D:\Data\sistem_magang\app\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+#7 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+#8 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+#9 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(417): CodeIgniter\CodeIgniter->run()
+#11 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 D:\Data\sistem_magang\public\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 D:\Data\sistem_magang\vendor\codeigniter4\framework\system\rewrite.php(44): require_once('D:\\Data\\sistem_...')
+#14 {main}
+CRITICAL - 2026-07-06 01:08:43 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user '****'@'localhost' (using password: YES)
+[Method: POST, Route: auth/login]
+in SYSTEMPATH\Database\BaseConnection.php on line 606.
+ 1 SYSTEMPATH\Database\BaseConnection.php(795): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `c_user_pegawai`
+WHERE `username` = :username:
+AND `status` = :status:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Model.php(297): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(714): CodeIgniter\Model->doFirst()
+ 5 APPPATH\Models\Sekretariat\M_Auth.php(41): CodeIgniter\BaseModel->first()
+ 6 APPPATH\Controllers\Sekretariat\C_Auth.php(68): App\Models\Sekretariat\M_Auth->login('sekretariat', '123456')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Auth->login()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Auth))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 01:09:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-06 01:10:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-06 01:10:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-06 01:10:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 01:10:54 --> Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:10:54 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'ps.created_at' in 'order clause'
+[Method: GET, Route: sekretariat/disposisi]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:10:54 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:10:54 --> [Caused by] mysqli_sql_exception: Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 01:11:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 01:11:04 --> Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:11:04 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'ps.created_at' in 'order clause'
+[Method: GET, Route: sekretariat/disposisi]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:11:04 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 01:11:04 --> [Caused by] mysqli_sql_exception: Unknown column 'ps.created_at' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = \'DISETUJUI\'
+AND   (
+`ps`.`disposisi` = \'0\'
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `ps`.`id_persetujuan_magang`, `ps`.`id_permohonan_magang`, `ps`.`status_persetujuan`, `ps`.`disposisi`, `ps`.`id_bidang`, `ps`.`tgl_persetujuan`, `pm`.`deskripsi_keahlian`, `pm`.`deskripsi_magang`, `pm`.`tgl_mulai`, `pm`.`tgl_selesai`, `pm`.`created_at` as `tgl_pengajuan`, `mhs`.`nim`, `mhs`.`nama_mahasiswa`, `jp`.`jenis_permohonan`
+FROM `t_persetujuan_magang` as `ps`
+LEFT JOIN `t_permohonan_magang` as `pm` ON `pm`.`id_permohonan_magang` = `ps`.`id_permohonan_magang`
+LEFT JOIN `m_mahasiswa` as `mhs` ON `mhs`.`id_mahasiswa` = `pm`.`id_mahasiswa`
+LEFT JOIN `m_jenis_permohonan` as `jp` ON `jp`.`id_jenis_permohonan` = `pm`.`id_jenis_permohonan`
+WHERE `ps`.`status_persetujuan` = :ps.status_persetujuan:
+AND   (
+`ps`.`disposisi` = :ps.disposisi:
+OR `ps`.`disposisi` IS NULL
+ )
+ORDER BY `ps`.`created_at` DESC', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(62): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(37): App\Models\Sekretariat\M_Disposisi->getPermohonanDisetujui()
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->index()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 01:14:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 02:24:38 --> Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:24:38 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'created_at' in 'field list'
+[Method: POST, Route: sekretariat/verifikasi/proses]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:24:38 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:24:38 --> [Caused by] mysqli_sql_exception: Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:24:38\', \'2\', \'2026-07-06 02:24:38\', \'0\', \'2026-07-06 02:24:38\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 02:25:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 02:25:04 --> Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:25:04 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'created_at' in 'field list'
+[Method: POST, Route: sekretariat/verifikasi/proses]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:25:04 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:25:04 --> [Caused by] mysqli_sql_exception: Unknown column 'created_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (\'0\', \'\', \'DISETUJUI\', \'2\', \'2026-07-06 02:25:04\', \'2\', \'2026-07-06 02:25:04\', \'0\', \'2026-07-06 02:25:04\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2343): CodeIgniter\Database\BaseConnection->query('INSERT INTO `t_persetujuan_magang` (`id_permohonan_magang`, `catatan`, `status_persetujuan`, `created_by`, `created_at`, `updated_by`, `updated_at`, `disposisi`, `tgl_persetujuan`) VALUES (:id_permohonan_magang:, :catatan:, :status_persetujuan:, :created_by:, :created_at:, :updated_by:, :updated_at:, :disposisi:, :tgl_persetujuan:)', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(165): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(76): App\Models\Sekretariat\M_Verifikasi->simpanVerifikasi([...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-06 02:48:31 --> Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:48:31 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'updated_at' in 'field list'
+[Method: POST, Route: sekretariat/disposisi/proses]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:48:31 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:48:31 --> [Caused by] mysqli_sql_exception: Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:48:31\', `tgl_persetujuan` = \'2026-07-06 02:48:31\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 02:49:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-06 02:49:05 --> Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:49:05 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'updated_at' in 'field list'
+[Method: POST, Route: sekretariat/disposisi/proses]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:49:05 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-06 02:49:05 --> [Caused by] mysqli_sql_exception: Unknown column 'updated_at' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_persetujuan_magang` SET `disposisi` = \'1\', `id_bidang` = \'2\', `updated_by` = \'2\', `updated_at` = \'2026-07-06 02:49:05\', `tgl_persetujuan` = \'2026-07-06 02:49:05\'
+WHERE `id_persetujuan_magang` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_persetujuan_magang` SET `disposisi` = :disposisi:, `id_bidang` = :id_bidang:, `updated_by` = :updated_by:, `updated_at` = :updated_at:, `tgl_persetujuan` = :tgl_persetujuan:
+WHERE `id_persetujuan_magang` = :id_persetujuan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Disposisi.php(155): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 APPPATH\Controllers\Sekretariat\C_Disposisi.php(75): App\Models\Sekretariat\M_Disposisi->simpanDisposisi('1', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Disposisi->proses()
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Disposisi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-06 02:53:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-06 02:53:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-06 08:08:32 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: GET, Route: sekretariat/disposisi]
+in APPPATH\Controllers\Sekretariat\C_Disposisi.php on line 13.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2026-07-06 08:08:34 --> ErrorException: Namespace declaration statement has to be the very first statement or after any declare call in the script
+[Method: GET, Route: sekretariat/disposisi]
+in APPPATH\Controllers\Sekretariat\C_Disposisi.php on line 13.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
