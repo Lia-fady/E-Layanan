@@ -1,0 +1,859 @@
+/**
+ * sekretariat-custom.css
+ * Custom styles untuk dashboard Sekretariat E-Layanan Akademik
+ * Override SB Admin 2 untuk menyesuaikan desain Figma
+ */
+
+/* ===================================================================
+   FONT
+   =================================================================== */
+body {
+    font-family: 'Inter', 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===================================================================
+   SIDEBAR - Dark Teal Theme
+   =================================================================== */
+.sidebar-dark-teal {
+    background: linear-gradient(180deg, #1a3c34 0%, #1e4a3f 100%) !important;
+}
+
+.sidebar-dark-teal .sidebar-brand {
+    padding: 1.2rem 1rem;
+    height: auto;
+    min-height: auto;
+}
+
+.sidebar-dark-teal .sidebar-brand-icon img {
+    width: 36px !important;
+    height: 36px !important;
+    margin-bottom: 0 !important;
+}
+
+.sidebar-dark-teal .sidebar-brand-text {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: left;
+}
+
+.sidebar-brand-subtitle {
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Sidebar User Profile */
+.sidebar-user-profile {
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-user-avatar i {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+.sidebar-user-info {
+    overflow: hidden;
+}
+
+.sidebar-user-name {
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.7rem;
+    white-space: nowrap;
+}
+
+/* Sidebar Heading */
+.sidebar-dark-teal .sidebar-heading {
+    color: #6cc4a1 !important;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 0.75rem 1rem 0.4rem;
+}
+
+.sidebar-heading-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background-color: #6cc4a1;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* Sidebar Nav Items */
+.sidebar-dark-teal .nav-item .nav-link {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-dark-teal .nav-item .nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-dark-teal .nav-item.active .nav-link {
+    color: #fff;
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.12);
+    border-right: 3px solid #6cc4a1;
+}
+
+.sidebar-dark-teal .nav-item .nav-link i {
+    font-size: 0.9rem;
+    width: 1.5rem;
+    text-align: center;
+    margin-right: 0.4rem;
+    opacity: 0.8;
+}
+
+.sidebar-dark-teal .nav-item.active .nav-link i {
+    opacity: 1;
+}
+
+/* Sidebar Divider */
+.sidebar-dark-teal hr.sidebar-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0.3rem 1rem;
+}
+
+/* Sidebar Logout */
+.sidebar-logout {
+    padding: 0.8rem 1rem;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logout .nav-link {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.82rem;
+}
+
+.sidebar-logout .nav-link:hover {
+    color: #ff7979 !important;
+}
+
+/* ===================================================================
+   NAVBAR
+   =================================================================== */
+.topbar .page-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #344054;
+    margin: 0;
+}
+
+.topbar .navbar-nav .nav-item .nav-link {
+    color: #667085;
+}
+
+.topbar .navbar-nav .nav-item .nav-link:hover {
+    color: #344054;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #f04438;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+/* ===================================================================
+   WELCOME CARD
+   =================================================================== */
+.welcome-card {
+    background: linear-gradient(135deg, #1a3c34 0%, #2d6b55 60%, #3a8f70 100%);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.welcome-card::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -5%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.welcome-card .welcome-label {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-bottom: 0.2rem;
+}
+
+.welcome-card .welcome-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.welcome-card .welcome-role {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-bottom: 1rem;
+}
+
+.welcome-badge {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.welcome-badge-date {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.welcome-badge-alert {
+    background-color: rgba(255, 193, 7, 0.25);
+    color: #ffd54f;
+}
+
+.welcome-badge-alert i {
+    margin-right: 4px;
+}
+
+/* ===================================================================
+   STAT CARDS
+   =================================================================== */
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.2rem 1.3rem;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    height: 100%;
+    text-decoration: none !important;
+    display: block;
+}
+
+.stat-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.6rem;
+}
+
+.stat-card-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.stat-card-icon.blue {
+    background-color: #e8f4fd;
+    color: #1a73e8;
+}
+
+.stat-card-icon.yellow {
+    background-color: #fef3cd;
+    color: #f5a623;
+}
+
+.stat-card-icon.green {
+    background-color: #d4edda;
+    color: #28a745;
+}
+
+.stat-card-icon.teal {
+    background-color: #d1f0e8;
+    color: #1a8a6a;
+}
+
+.stat-card-title {
+    color: #667085;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.stat-card-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1d2939;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+}
+
+.stat-card-desc {
+    font-size: 0.75rem;
+    color: #98a2b3;
+}
+
+/* ===================================================================
+   PENDING LIST
+   =================================================================== */
+.section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 1rem;
+}
+
+.pending-badge {
+    display: inline-block;
+    background-color: #fef3cd;
+    color: #92400e;
+    padding: 0.2rem 0.65rem;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.pending-item {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #f2f4f7;
+}
+
+.pending-item:last-child {
+    border-bottom: none;
+}
+
+.pending-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.pending-avatar.teal {
+    background-color: #d1f0e8;
+    color: #1a8a6a;
+}
+
+.pending-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pending-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1d2939;
+}
+
+.pending-detail {
+    font-size: 0.75rem;
+    color: #98a2b3;
+}
+
+.pending-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.status-badge.menunggu {
+    background-color: #fef3cd;
+    color: #92400e;
+}
+
+.status-badge.verifikasi {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.disetujui {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-badge.ditolak {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.disposisi {
+    background-color: #e0cffc;
+    color: #4a1d96;
+}
+
+.action-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
+    text-decoration: none !important;
+}
+
+.action-icon.check {
+    background-color: #d4edda;
+    color: #28a745;
+}
+
+.action-icon.view {
+    background-color: #e8f4fd;
+    color: #1a73e8;
+}
+
+.action-icon:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+/* ===================================================================
+   CHART & SUMMARY SECTION
+   =================================================================== */
+.chart-container {
+    position: relative;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.chart-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 1.3rem;
+    height: 100%;
+}
+
+.chart-card .card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 1rem;
+}
+
+.chart-legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chart-legend li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    font-size: 0.82rem;
+}
+
+.chart-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.chart-legend-label {
+    color: #667085;
+    flex: 1;
+}
+
+.chart-legend-value {
+    font-weight: 700;
+    color: #1d2939;
+}
+
+/* Summary Card */
+.summary-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 1.3rem;
+}
+
+.summary-card .card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.8rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f9fafb;
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-label {
+    color: #667085;
+    font-size: 0.82rem;
+}
+
+.summary-value {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.summary-value.blue { color: #1a73e8; }
+.summary-value.green { color: #28a745; }
+.summary-value.teal { color: #1a8a6a; }
+.summary-value.red { color: #f04438; }
+
+/* Tren Chart Container */
+.tren-chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+/* ===================================================================
+   DISPOSISI CARD-BASED LAYOUT
+   =================================================================== */
+.disposisi-info-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;
+    background-color: #f0fdf9;
+    border: 1px solid #d1f0e8;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.disposisi-info-banner i {
+    color: #1a8a6a;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.disposisi-info-banner p {
+    margin: 0;
+    color: #1a8a6a;
+    font-size: 0.88rem;
+}
+
+.disposisi-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.disposisi-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.disposisi-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+}
+
+.disposisi-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #98a2b3;
+}
+
+.disposisi-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.disposisi-status i {
+    font-size: 0.65rem;
+}
+
+.disposisi-card-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.15rem;
+}
+
+.disposisi-card-detail {
+    font-size: 0.8rem;
+    color: #98a2b3;
+    margin-bottom: 1rem;
+}
+
+.disposisi-form-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #344054;
+    margin-bottom: 0.4rem;
+}
+
+.disposisi-select {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.88rem;
+    color: #667085;
+    width: 100%;
+    background-color: #fff;
+    transition: border-color 0.15s ease;
+}
+
+.disposisi-select:focus {
+    border-color: #1a8a6a;
+    box-shadow: 0 0 0 3px rgba(26, 138, 106, 0.1);
+    outline: none;
+}
+
+.disposisi-textarea {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.88rem;
+    color: #344054;
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s ease;
+}
+
+.disposisi-textarea:focus {
+    border-color: #1a8a6a;
+    box-shadow: 0 0 0 3px rgba(26, 138, 106, 0.1);
+    outline: none;
+}
+
+.btn-disposisi {
+    background: linear-gradient(135deg, #1a8a6a 0%, #2d6b55 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-disposisi:hover {
+    background: linear-gradient(135deg, #157a5e 0%, #255a48 100%);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 138, 106, 0.3);
+}
+
+.btn-disposisi i {
+    margin-right: 5px;
+}
+
+/* ===================================================================
+   MONITORING STATUS TABLE
+   =================================================================== */
+.monitoring-search {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.monitoring-search input {
+    flex: 1;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem 0.5rem 2.2rem;
+    font-size: 0.88rem;
+}
+
+.monitoring-search select {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.88rem;
+    min-width: 160px;
+}
+
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-modern thead th {
+    background-color: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+    color: #667085;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.8rem 1rem;
+}
+
+.table-modern tbody td {
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    color: #344054;
+    border-bottom: 1px solid #f2f4f7;
+    vertical-align: middle;
+}
+
+.table-modern tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.berkas-badge {
+    text-align: center;
+}
+
+.berkas-badge .count {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.berkas-badge.complete .count { color: #28a745; }
+.berkas-badge.incomplete .count { color: #f04438; }
+
+/* ===================================================================
+   PLACEHOLDER PAGE
+   =================================================================== */
+.placeholder-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #98a2b3;
+}
+
+.placeholder-page-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #f2f4f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.placeholder-page-icon i {
+    font-size: 1.5rem;
+    color: #98a2b3;
+}
+
+.placeholder-page h5 {
+    font-weight: 600;
+    color: #667085;
+    margin-bottom: 0.3rem;
+}
+
+.placeholder-page p {
+    font-size: 0.88rem;
+    color: #98a2b3;
+}
+
+/* ===================================================================
+   GENERAL OVERRIDES
+   =================================================================== */
+.container-fluid {
+    padding: 0 1.5rem 1.5rem;
+}
+
+#content {
+    background-color: #f8fafb;
+}
+
+.topbar {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 1.2rem;
+    }
+    .welcome-card .welcome-name {
+        font-size: 1.2rem;
+    }
+    .stat-card {
+        margin-bottom: 0.75rem;
+    }
+}
