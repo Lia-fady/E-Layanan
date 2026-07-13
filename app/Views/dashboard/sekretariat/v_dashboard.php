@@ -1,14 +1,11 @@
 <?php
-
 /**
  * Kode: v_dashboard.php
  * Path: app/Views/dashboard/sekretariat/v_dashboard.php
- * Deskripsi: View halaman Dashboard Sekretariat sesuai desain Figma.
- *            Menampilkan welcome card, 4 kartu statistik, daftar permohonan
- *            pending, donut chart distribusi jenis, ringkasan hari ini,
- *            dan line chart tren permohonan bulanan.
+ * Deskripsi: View halaman Dashboard Sekretariat sesuai desain mockup.
+ *            Menampilkan welcome card, 5 kartu statistik, daftar permohonan
+ *            pending, donut chart status verifikasi, dan ringkasan hari ini.
  */
-
 ?>
 
 <?= $this->extend('layout/L_master') ?>
@@ -34,62 +31,91 @@
     </div>
 </div>
 
-<!-- Stat Cards Row -->
+<!-- Stat Cards Row (5 cards) -->
 <div class="row mb-4">
-    <!-- Permohonan Masuk -->
-    <div class="col-xl-3 col-md-6 mb-3">
-        <a href="<?= site_url('sekretariat/permohonan-masuk') ?>" class="stat-card">
+    <!-- Total Pemohon -->
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon blue">
-                    <i class="fas fa-inbox"></i>
+                    <i class="fas fa-file-alt"></i>
                 </div>
-                <div class="stat-card-title">Permohonan Masuk</div>
+                <div class="stat-card-title">Total Pemohon</div>
             </div>
             <div class="stat-card-value"><?= esc($total_permohonan) ?></div>
-            <div class="stat-card-desc">Bulan <?= esc($nama_bulan) ?></div>
-        </a>
+            <div class="stat-card-desc">Semua pemohon masuk</div>
+            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link blue">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
     </div>
 
     <!-- Menunggu Verifikasi -->
-    <div class="col-xl-3 col-md-6 mb-3">
-        <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card">
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon yellow">
-                    <i class="fas fa-exclamation-circle"></i>
+                    <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-card-title">Menunggu Verifikasi</div>
             </div>
             <div class="stat-card-value"><?= esc($total_verifikasi) ?></div>
-            <div class="stat-card-desc">Perlu ditindak</div>
-        </a>
+            <div class="stat-card-desc">Pemohon perlu diverifikasi</div>
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link yellow">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
     </div>
 
-    <!-- Berkas Terverifikasi -->
-    <div class="col-xl-3 col-md-6 mb-3">
-        <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card">
+    <!-- Sedang Diproses -->
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon green">
-                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-spinner"></i>
                 </div>
-                <div class="stat-card-title">Berkas Terverifikasi</div>
+                <div class="stat-card-title">Sedang Diproses</div>
             </div>
-            <div class="stat-card-value"><?= esc($total_terverifikasi) ?></div>
-            <div class="stat-card-desc">Bulan ini</div>
-        </a>
+            <div class="stat-card-value"><?= esc($total_sedang_diproses) ?></div>
+            <div class="stat-card-desc">Dalam proses</div>
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link green">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
     </div>
 
-    <!-- Sudah Didisposisi -->
-    <div class="col-xl-3 col-md-6 mb-3">
-        <a href="<?= site_url('sekretariat/disposisi') ?>" class="stat-card">
+    <!-- Disetujui -->
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon teal">
-                    <i class="fas fa-paper-plane"></i>
+                    <i class="fas fa-check-circle"></i>
                 </div>
-                <div class="stat-card-title">Sudah Didisposisi</div>
+                <div class="stat-card-title">Disetujui</div>
             </div>
-            <div class="stat-card-value"><?= esc($total_disposisi) ?></div>
-            <div class="stat-card-desc">Ke kepala bidang</div>
-        </a>
+            <div class="stat-card-value"><?= esc($total_disetujui) ?></div>
+            <div class="stat-card-desc">Pemohon disetujui</div>
+            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link teal">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mahaswa Aktif -->
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <div class="stat-card-icon purple">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-card-title">Mahaswa Aktif</div>
+            </div>
+            <div class="stat-card-value"><?= esc($total_mahasiswa_aktif) ?></div>
+            <div class="stat-card-desc">Sedang Magang</div>
+            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link purple">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -99,27 +125,24 @@
     <!-- Permohonan Menunggu Verifikasi Berkas -->
     <div class="col-lg-7 mb-4">
         <div class="chart-card">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="card-title mb-0">Permohonan Menunggu Verifikasi Berkas</div>
-                <span class="pending-badge"><?= $total_verifikasi ?> pending</span>
-            </div>
+            <div class="card-title mb-3">Permohonan Menunggu Verifikasi berkas</div>
 
             <?php if (!empty($permohonan_pending)) : ?>
                 <?php foreach ($permohonan_pending as $p) : ?>
                     <div class="pending-item">
-                        <div class="pending-avatar teal">
+                        <div class="pending-avatar navy">
                             <i class="fas fa-file-alt"></i>
                         </div>
                         <div class="pending-info">
                             <div class="pending-name"><?= esc($p->nama_mahasiswa ?? '-') ?></div>
                             <div class="pending-detail">
                                 <?= esc($p->nim ?? '-') ?> · <?= esc($p->jenis_permohonan ?? '-') ?> · <?= !empty($p->tgl_pengajuan) ? date('d M Y', strtotime($p->tgl_pengajuan)) : '-' ?>
+                                <?= isset($p->total_berkas) ? $p->total_berkas . '/' . ($p->required_berkas ?? 3) . ' berkas diunggah' : '' ?>
                             </div>
                         </div>
                         <div class="pending-actions">
-                            <span class="status-badge menunggu">Menunggu</span>
-                            <a href="<?= base_url('sekretariat/verifikasi/detail/' . $p->id_persetujuan_magang) ?>" class="action-icon view" title="Lihat Detail">
-                                <i class="fas fa-eye"></i>
+                            <a href="<?= base_url('sekretariat/verifikasi/detail/' . ($p->id_permohonan_magang ?? $p->id_persetujuan_magang)) ?>" class="status-badge menunggu-verifikasi" style="text-decoration:none;">
+                                Menunggu Verifikasi
                             </a>
                         </div>
                     </div>
@@ -133,27 +156,27 @@
         </div>
     </div>
 
-    <!-- Right Column: Distribusi + Ringkasan -->
+    <!-- Right Column: Chart + Ringkasan -->
     <div class="col-lg-5 mb-4">
-        <!-- Distribusi Jenis Permohonan -->
+        <!-- Status Verifikasi Administrasi -->
         <div class="chart-card mb-4">
-            <div class="card-title">Distribusi Jenis Permohonan</div>
+            <div class="card-title">Status Verifikasi Administrasi</div>
             <div class="chart-container" style="height: 180px;">
                 <canvas id="donutChart"></canvas>
             </div>
             <ul class="chart-legend mt-3">
                 <?php
-                $colors = ['#1a73e8', '#28a745', '#f5a623', '#f04438', '#6f42c1', '#17a2b8'];
+                $chartColors = ['#4285F4', '#FFC107', '#EA4335'];
                 $i = 0;
-                foreach ($distribusi_jenis as $dj) :
-                    $color = $colors[$i % count($colors)];
+                foreach ($status_verifikasi as $sv) :
+                    $color = $chartColors[$i % count($chartColors)];
                 ?>
                     <li>
                         <span>
                             <span class="chart-legend-dot" style="background-color: <?= $color ?>;"></span>
-                            <span class="chart-legend-label"><?= esc($dj['label']) ?></span>
+                            <span class="chart-legend-label"><?= esc($sv['label']) ?></span>
                         </span>
-                        <span class="chart-legend-value"><?= $dj['persen'] ?>%</span>
+                        <span class="chart-legend-value"><?= $sv['total'] ?> (<?= $sv['persen'] ?>%)</span>
                     </li>
                 <?php $i++; endforeach; ?>
             </ul>
@@ -182,39 +205,26 @@
     </div>
 </div>
 
-<!-- Tren Permohonan Bulanan -->
-<div class="row">
-    <div class="col-12 mb-4">
-        <div class="chart-card">
-            <div class="card-title">Tren Permohonan Bulanan</div>
-            <div class="tren-chart-container">
-                <canvas id="trenChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script>
-// ============================================================
-// DONUT CHART - Distribusi Jenis Permohonan
-// ============================================================
+// Donut Chart - Status Verifikasi Administrasi
 (function() {
     const donutCtx = document.getElementById('donutChart');
     if (!donutCtx) return;
 
-    const distribusiData = <?= json_encode($distribusi_jenis) ?>;
-    const colors = ['#1a73e8', '#28a745', '#f5a623', '#f04438', '#6f42c1', '#17a2b8'];
+    const statusData = <?= json_encode($status_verifikasi) ?>;
+    const colors = ['#4285F4', '#FFC107', '#EA4335'];
+    const totalAll = statusData.reduce((sum, d) => sum + d.total, 0);
 
     new Chart(donutCtx, {
         type: 'doughnut',
         data: {
-            labels: distribusiData.map(d => d.label),
+            labels: statusData.map(d => d.label),
             datasets: [{
-                data: distribusiData.map(d => d.total),
-                backgroundColor: colors.slice(0, distribusiData.length),
+                data: statusData.map(d => d.total),
+                backgroundColor: colors.slice(0, statusData.length),
                 borderWidth: 2,
                 borderColor: '#fff',
                 hoverOffset: 6,
@@ -232,110 +242,26 @@
                     bodyFont: { family: 'Inter', size: 12 },
                     padding: 10,
                     cornerRadius: 8,
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.parsed + ' permohonan';
-                        }
-                    }
                 }
             }
-        }
-    });
-})();
-
-// ============================================================
-// LINE CHART - Tren Permohonan Bulanan
-// ============================================================
-(function() {
-    const trenCtx = document.getElementById('trenChart');
-    if (!trenCtx) return;
-
-    const labels = <?= json_encode($tren_labels) ?>;
-    const trenData = <?= json_encode($tren_bulanan) ?>;
-
-    new Chart(trenCtx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Masuk',
-                    data: trenData.map(t => t.masuk),
-                    borderColor: '#1a8a6a',
-                    backgroundColor: 'rgba(26, 138, 106, 0.08)',
-                    borderWidth: 2.5,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#1a8a6a',
-                    pointHoverRadius: 6,
-                },
-                {
-                    label: 'Disetujui',
-                    data: trenData.map(t => t.disetujui),
-                    borderColor: '#28a745',
-                    borderWidth: 2,
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 3,
-                    pointBackgroundColor: '#28a745',
-                    pointHoverRadius: 5,
-                },
-                {
-                    label: 'Ditolak',
-                    data: trenData.map(t => t.ditolak),
-                    borderColor: '#f04438',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 3,
-                    pointBackgroundColor: '#f04438',
-                    pointHoverRadius: 5,
-                }
-            ]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        font: { family: 'Inter', size: 12 },
-                        padding: 20,
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                    }
-                },
-                tooltip: {
-                    backgroundColor: '#1d2939',
-                    titleFont: { family: 'Inter', size: 13 },
-                    bodyFont: { family: 'Inter', size: 12 },
-                    padding: 10,
-                    cornerRadius: 8,
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { font: { family: 'Inter', size: 12 }, color: '#98a2b3' }
-                },
-                y: {
-                    beginAtZero: true,
-                    grid: { color: '#f2f4f7' },
-                    ticks: {
-                        font: { family: 'Inter', size: 12 },
-                        color: '#98a2b3',
-                        stepSize: 9,
-                    }
-                }
+        plugins: [{
+            id: 'centerText',
+            beforeDraw: function(chart) {
+                const {width, height, ctx} = chart;
+                ctx.restore();
+                const fontSize = (height / 6).toFixed(2);
+                ctx.font = 'bold ' + fontSize + 'px Inter';
+                ctx.textBaseline = 'middle';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#1d2939';
+                ctx.fillText(totalAll, width / 2, height / 2 - 8);
+                ctx.font = '12px Inter';
+                ctx.fillStyle = '#98a2b3';
+                ctx.fillText('Total', width / 2, height / 2 + 14);
+                ctx.save();
             }
-        }
+        }]
     });
 })();
 </script>

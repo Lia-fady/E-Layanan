@@ -38,9 +38,13 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('verifikasi', '\App\Controllers\Sekretariat\C_Verifikasi::index');
     $routes->get('verifikasi/detail/(:num)', '\App\Controllers\Sekretariat\C_Verifikasi::detail/$1');
     $routes->post('verifikasi/proses', '\App\Controllers\Sekretariat\C_Verifikasi::proses');
+    $routes->post('verifikasi/kembalikan', '\App\Controllers\Sekretariat\C_Verifikasi::kembalikan');
     $routes->get('verifikasi/proses', static function () {
         return redirect()->to(base_url('sekretariat/verifikasi'));
     });
+
+    // Riwayat
+    $routes->get('riwayat', '\App\Controllers\Sekretariat\C_Riwayat::index');
 
     // Disposisi
     $routes->get('disposisi', '\App\Controllers\Sekretariat\C_Disposisi::index');
@@ -49,6 +53,10 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('disposisi/proses', static function () {
         return redirect()->to(base_url('sekretariat/disposisi'));
     });
+
+    // Profile
+    $routes->get('profile', '\App\Controllers\Sekretariat\C_Profile::index');
+    $routes->post('profile/update', '\App\Controllers\Sekretariat\C_Profile::update');
 
     // Status Permohonan
     $routes->get('status-permohonan', '\App\Controllers\Sekretariat\C_StatusPermohonan::index');

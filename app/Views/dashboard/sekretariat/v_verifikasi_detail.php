@@ -3,10 +3,9 @@
  * ============================================================
  * Kode      : v_verifikasi_detail.php
  * Path      : Views/dashboard/sekretariat/v_verifikasi_detail.php
- * Deskripsi : View halaman detail permohonan untuk verifikasi.
- *             Menampilkan data mahasiswa, data permohonan,
- *             dokumen yang diupload, dan form verifikasi
- *             (setujui / tolak).
+ * Deskripsi : View halaman detail verifikasi berkas per dokumen.
+ *             Menampilkan info mahasiswa, tabel dokumen dengan
+ *             tombol Valid/Tidak Valid per file.
  * ============================================================
  */
 ?>
@@ -19,231 +18,124 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-    <a href="<?= base_url('sekretariat/verifikasi') ?>" class="btn btn-secondary btn-sm">
-        <i class="fas fa-arrow-left mr-1"></i> Kembali
-    </a>
-</div>
-
 <?php if (!empty($permohonan)) : ?>
 
-<!-- Row: Data Mahasiswa & Data Permohonan -->
-<div class="row">
-
-    <!-- Card: Data Mahasiswa -->
-    <div class="col-lg-6">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    <i class="fas fa-user-graduate mr-2"></i>Data Mahasiswa
-                </h6>
-            </div>
-            <div class="card-body">
-                <table class="table table-sm table-borderless">
-                    <tr>
-                        <td width="40%"><strong>NIM</strong></td>
-                        <td width="5%">:</td>
-                        <td><?= esc($permohonan->nim) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Nama</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->nama_mahasiswa) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Jenis Kelamin</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->jenis_kelamin) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Email</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->email) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>No. Telp</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->no_telp) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Instansi Pendidikan</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->instansi_pendidikan ?? '-') ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Fakultas</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->fakultas ?? '-') ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Program Studi</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->prodi ?? '-') ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Jenjang</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->jenjang_pendidikan ?? '-') ?></td>
-                    </tr>
-                </table>
-            </div>
+<!-- Detail Header -->
+<div class="detail-header">
+    <div class="detail-header-avatar">
+        <i class="fas fa-user"></i>
+    </div>
+    <div class="detail-header-info">
+        <div class="detail-header-name"><?= esc($permohonan->nama_mahasiswa ?? '-') ?></div>
+        <div class="detail-header-meta">
+            <?= esc($permohonan->prodi ?? '-') ?> - <?= esc($permohonan->instansi_pendidikan ?? '-') ?>
+        </div>
+        <div class="detail-header-meta">
+            Tanggal Pengajuan: <?= !empty($permohonan->created_at) ? date('d F Y', strtotime($permohonan->created_at)) : '-' ?>
         </div>
     </div>
-
-    <!-- Card: Data Permohonan -->
-    <div class="col-lg-6">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    <i class="fas fa-file-alt mr-2"></i>Data Permohonan
-                </h6>
-            </div>
-            <div class="card-body">
-                <table class="table table-sm table-borderless">
-                    <tr>
-                        <td width="40%"><strong>Jenis Permohonan</strong></td>
-                        <td width="5%">:</td>
-                        <td><?= esc($permohonan->jenis_permohonan) ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deskripsi Keahlian</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->deskripsi_keahlian ?? '-') ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Deskripsi Magang</strong></td>
-                        <td>:</td>
-                        <td><?= esc($permohonan->deskripsi_magang ?? '-') ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tanggal Mulai</strong></td>
-                        <td>:</td>
-                        <td><?= !empty($permohonan->tgl_mulai) ? date('d-m-Y', strtotime($permohonan->tgl_mulai)) : '-' ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tanggal Selesai</strong></td>
-                        <td>:</td>
-                        <td><?= !empty($permohonan->tgl_selesai) ? date('d-m-Y', strtotime($permohonan->tgl_selesai)) : '-' ?></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Status</strong></td>
-                        <td>:</td>
-                        <td>
-                            <?php
-                                $status = $permohonan->status_persetujuan ?? 'MENUNGGU';
-                                $badge  = 'warning';
-                                if ($status == 'DISETUJUI') $badge = 'success';
-                                elseif ($status == 'DITOLAK') $badge = 'danger';
-                            ?>
-                            <span class="badge badge-<?= $badge ?>"><?= $status ?></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+    <div class="detail-header-box">
+        <div class="detail-header-box-label">Periode Magang</div>
+        <div class="detail-header-box-value">
+            <?php
+                $mulai = !empty($permohonan->tgl_mulai) ? date('d F Y', strtotime($permohonan->tgl_mulai)) : '-';
+                $selesai = !empty($permohonan->tgl_selesai) ? date('d F Y', strtotime($permohonan->tgl_selesai)) : '-';
+            ?>
+            <?= $mulai ?> s/d <?= $selesai ?>
+        </div>
+    </div>
+    <div class="detail-header-box">
+        <div class="detail-header-box-label">Status Verifikasi</div>
+        <div class="detail-header-box-value">
+            <?php
+                $status = $permohonan->status_persetujuan ?? 'MENUNGGU';
+                $badgeClass = 'menunggu-verifikasi';
+                if ($status == 'DISETUJUI') $badgeClass = 'disetujui';
+                elseif ($status == 'DITOLAK') $badgeClass = 'ditolak';
+            ?>
+            <span class="status-badge <?= $badgeClass ?>">
+                <?= $status == 'MENUNGGU' ? 'Menunggu Verifikasi' : $status ?>
+            </span>
         </div>
     </div>
 </div>
 
-<!-- Card: Dokumen yang Diupload -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-paperclip mr-2"></i>Dokumen yang Diupload
-        </h6>
-    </div>
-    <div class="card-body">
-        <?php if (!empty($files)) : ?>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" width="100%">
-                <thead class="thead-light">
-                    <tr>
-                        <th width="5%" class="text-center">No</th>
-                        <th>Jenis Dokumen</th>
-                        <th>Nama File</th>
-                        <th width="15%" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
+<!-- Back Link -->
+<a href="<?= base_url('sekretariat/verifikasi') ?>" class="detail-back-link">
+    <i class="fas fa-arrow-left"></i> Kembali ke Daftar Permohonan
+</a>
+
+<!-- Dokumen Table -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1d2939; margin-bottom:1rem;">Dokumen yang Diajukan</h5>
+    
+    <form action="<?= base_url('sekretariat/verifikasi/proses') ?>" method="POST" id="formVerifikasi">
+        <?= csrf_field() ?>
+        <input type="hidden" name="id_permohonan_magang" value="<?= $permohonan->id_permohonan_magang ?>">
+        
+        <table class="dokumen-table">
+            <thead>
+                <tr>
+                    <th width="5%" class="text-center">NO</th>
+                    <th width="25%">Nama Dokumen</th>
+                    <th width="25%">File</th>
+                    <th width="15%" class="text-center">Status</th>
+                    <th width="30%" class="text-center">Verifikasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($files)) : ?>
                     <?php $no = 1; foreach ($files as $file) : ?>
                     <tr>
                         <td class="text-center"><?= $no++ ?></td>
-                        <td><?= esc($file->nama_file_master ?? '-') ?></td>
-                        <td><?= esc($file->nama_file_upload ?? '-') ?></td>
-                        <td class="text-center">
+                        <td><?= esc($file->nama_file_master ?? 'Dokumen') ?></td>
+                        <td>
                             <?php if (!empty($file->path_file)) : ?>
-                                <a href="<?= base_url($file->path_file) ?>" target="_blank"
-                                   class="btn btn-success btn-sm" title="Download / Lihat">
-                                    <i class="fas fa-download"></i> Unduh
+                                <a href="<?= base_url($file->path_file) ?>" target="_blank" class="file-link">
+                                    <i class="fas fa-file-pdf"></i> <?= esc($file->nama_file_upload ?? 'File') ?>
                                 </a>
                             <?php else : ?>
                                 <span class="text-muted">Tidak tersedia</span>
                             <?php endif; ?>
                         </td>
+                        <td class="text-center">
+                            <span class="status-badge-display status-badge <?= ($file->status_verifikasi ?? '') == 'VALID' ? 'disetujui' : (($file->status_verifikasi ?? '') == 'TIDAK_VALID' ? 'ditolak' : 'menunggu') ?>" 
+                                  id="statusBadge_<?= $file->id_file_permohonan_magang ?>">
+                                <?= ($file->status_verifikasi ?? '') == 'VALID' ? 'Valid' : (($file->status_verifikasi ?? '') == 'TIDAK_VALID' ? 'Tidak Valid' : 'Menunggu') ?>
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <input type="hidden" name="file_status[<?= $file->id_file_permohonan_magang ?>]" 
+                                   id="fileStatus_<?= $file->id_file_permohonan_magang ?>" 
+                                   value="<?= esc($file->status_verifikasi ?? '') ?>">
+                            <button type="button" class="btn-valid <?= ($file->status_verifikasi ?? '') == 'VALID' ? 'active' : '' ?>" 
+                                    onclick="setFileStatus(<?= $file->id_file_permohonan_magang ?>, 'VALID')">
+                                <i class="fas fa-check"></i> Valid
+                            </button>
+                            <button type="button" class="btn-tidak-valid <?= ($file->status_verifikasi ?? '') == 'TIDAK_VALID' ? 'active' : '' ?>" 
+                                    onclick="setFileStatus(<?= $file->id_file_permohonan_magang ?>, 'TIDAK_VALID')">
+                                <i class="fas fa-times"></i> Tidak Valid
+                            </button>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
-                </tbody>
-            </table>
+                <?php else : ?>
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
+                            Tidak ada dokumen yang diupload.
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-3 mt-4" style="gap:1rem;">
+            <a href="<?= base_url('sekretariat/verifikasi') ?>" class="btn-batal">Batal</a>
+            <button type="submit" class="btn-simpan-keputusan">Simpan Keputusan</button>
         </div>
-        <?php else : ?>
-            <div class="text-center text-muted py-3">
-                <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
-                Tidak ada dokumen yang diupload.
-            </div>
-        <?php endif; ?>
-    </div>
-</div>
-
-<!-- Card: Form Verifikasi -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-check-double mr-2"></i>Form Verifikasi
-        </h6>
-    </div>
-    <div class="card-body">
-        <form action="<?= base_url('sekretariat/verifikasi/proses') ?>" method="POST" id="formVerifikasi">
-            <?= csrf_field() ?>
-            <input type="hidden" name="id_permohonan_magang" value="<?= $permohonan->id_permohonan_magang ?>">
-
-            <div class="form-group">
-                <label for="catatan"><strong>Catatan</strong></label>
-                <textarea class="form-control" id="catatan" name="catatan" rows="4"
-                          placeholder="Tuliskan catatan verifikasi..."><?= esc($permohonan->catatan ?? '') ?></textarea>
-            </div>
-
-            <div class="form-group">
-                <label><strong>Keputusan Verifikasi</strong> <span class="text-danger">*</span></label>
-                <div class="mt-2">
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="statusSetuju" name="status_persetujuan"
-                               value="DISETUJUI" class="custom-control-input" required>
-                        <label class="custom-control-label text-success font-weight-bold" for="statusSetuju">
-                            <i class="fas fa-check-circle mr-1"></i> DISETUJUI
-                        </label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="statusTolak" name="status_persetujuan"
-                               value="DITOLAK" class="custom-control-input" required>
-                        <label class="custom-control-label text-danger font-weight-bold" for="statusTolak">
-                            <i class="fas fa-times-circle mr-1"></i> DITOLAK
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <hr>
-            <div class="text-right">
-                <a href="<?= base_url('sekretariat/verifikasi') ?>" class="btn btn-secondary mr-2">
-                    <i class="fas fa-arrow-left mr-1"></i> Batal
-                </a>
-                <button type="submit" class="btn btn-primary" id="btnSubmitVerifikasi">
-                    <i class="fas fa-save mr-1"></i> Simpan Verifikasi
-                </button>
-            </div>
-        </form>
-    </div>
+    </form>
 </div>
 
 <?php else : ?>
@@ -257,38 +149,57 @@
 
 <?= $this->section('scripts') ?>
 <script>
-$(document).ready(function() {
-    // Konfirmasi sebelum submit
-    $('#formVerifikasi').on('submit', function(e) {
-        var status = $('input[name="status_persetujuan"]:checked').val();
-        if (!status) {
-            e.preventDefault();
-            Swal.fire({
-                icon: 'warning',
-                title: 'Perhatian',
-                text: 'Silakan pilih keputusan verifikasi terlebih dahulu.'
-            });
-            return false;
+function setFileStatus(fileId, status) {
+    var input = document.getElementById('fileStatus_' + fileId);
+    var badge = document.getElementById('statusBadge_' + fileId);
+    var row = input.closest('td').parentElement;
+    var btnValid = row.querySelector('.btn-valid');
+    var btnTidakValid = row.querySelector('.btn-tidak-valid');
+
+    // Toggle: if same status clicked again, reset
+    if (input.value === status) {
+        input.value = '';
+        btnValid.classList.remove('active');
+        btnTidakValid.classList.remove('active');
+        badge.className = 'status-badge-display status-badge menunggu';
+        badge.textContent = 'Menunggu';
+        return;
+    }
+
+    input.value = status;
+
+    // Update button states
+    btnValid.classList.toggle('active', status === 'VALID');
+    btnTidakValid.classList.toggle('active', status === 'TIDAK_VALID');
+
+    // Update badge
+    if (status === 'VALID') {
+        badge.className = 'status-badge-display status-badge disetujui';
+        badge.textContent = 'Valid';
+    } else {
+        badge.className = 'status-badge-display status-badge ditolak';
+        badge.textContent = 'Tidak Valid';
+    }
+}
+
+// Form submit confirmation
+$('#formVerifikasi').on('submit', function(e) {
+    e.preventDefault();
+    var form = this;
+    
+    Swal.fire({
+        title: 'Simpan Keputusan?',
+        text: 'Pastikan Anda sudah memverifikasi semua dokumen.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2563EB',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Simpan!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
         }
-
-        e.preventDefault();
-        var statusText = (status === 'DISETUJUI') ? 'menyetujui' : 'menolak';
-        var statusIcon = (status === 'DISETUJUI') ? 'success' : 'warning';
-
-        Swal.fire({
-            title: 'Konfirmasi Verifikasi',
-            text: 'Apakah Anda yakin ingin ' + statusText + ' permohonan ini?',
-            icon: statusIcon,
-            showCancelButton: true,
-            confirmButtonColor: '#4e73df',
-            cancelButtonColor: '#858796',
-            confirmButtonText: 'Ya, Simpan!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit();
-            }
-        });
     });
 });
 </script>

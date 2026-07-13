@@ -1,7 +1,7 @@
 /**
  * sekretariat-custom.css
  * Custom styles untuk dashboard Sekretariat E-Layanan Akademik
- * Override SB Admin 2 untuk menyesuaikan desain Figma
+ * Theme: Dark Navy Blue
  */
 
 /* ===================================================================
@@ -12,37 +12,30 @@ body {
 }
 
 /* ===================================================================
-   SIDEBAR - Dark Teal Theme
+   SIDEBAR - Dark Navy Blue Theme
    =================================================================== */
-.sidebar-dark-teal {
-    background: linear-gradient(180deg, #1a3c34 0%, #1e4a3f 100%) !important;
+.sidebar-dark-navy {
+    background: linear-gradient(180deg, #0D1B3E 0%, #1B2A4A 100%) !important;
 }
 
-.sidebar-dark-teal .sidebar-brand {
+.sidebar-dark-navy .sidebar-brand {
     padding: 1.2rem 1rem;
     height: auto;
     min-height: auto;
 }
 
-.sidebar-dark-teal .sidebar-brand-icon img {
-    width: 36px !important;
-    height: 36px !important;
+.sidebar-dark-navy .sidebar-brand-icon img {
+    width: 40px !important;
+    height: 40px !important;
     margin-bottom: 0 !important;
 }
 
-.sidebar-dark-teal .sidebar-brand-text {
-    font-size: 1rem;
+.sidebar-dark-navy .sidebar-brand-text {
+    font-size: 0.95rem;
     font-weight: 700;
     line-height: 1.3;
     text-align: left;
-}
-
-.sidebar-brand-subtitle {
-    font-size: 0.7rem;
-    font-weight: 400;
-    opacity: 0.7;
-    display: block;
-    margin-top: 2px;
+    color: #fff;
 }
 
 /* Sidebar User Profile */
@@ -52,6 +45,7 @@ body {
     align-items: center;
     gap: 0.7rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
 }
 
 .sidebar-user-avatar {
@@ -90,45 +84,39 @@ body {
 }
 
 /* Sidebar Heading */
-.sidebar-dark-teal .sidebar-heading {
-    color: #6cc4a1 !important;
+.sidebar-dark-navy .sidebar-heading {
+    color: rgba(255, 255, 255, 0.45) !important;
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     padding: 0.75rem 1rem 0.4rem;
-}
-
-.sidebar-heading-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background-color: #6cc4a1;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
+    text-transform: uppercase;
 }
 
 /* Sidebar Nav Items */
-.sidebar-dark-teal .nav-item .nav-link {
+.sidebar-dark-navy .nav-item .nav-link {
     color: rgba(255, 255, 255, 0.75);
     font-size: 0.85rem;
     padding: 0.6rem 1rem;
     transition: all 0.2s ease;
+    border-radius: 0;
+    margin: 0;
 }
 
-.sidebar-dark-teal .nav-item .nav-link:hover {
+.sidebar-dark-navy .nav-item .nav-link:hover {
     color: #fff;
     background-color: rgba(255, 255, 255, 0.08);
 }
 
-.sidebar-dark-teal .nav-item.active .nav-link {
+.sidebar-dark-navy .nav-item.active .nav-link {
     color: #fff;
     font-weight: 600;
-    background-color: rgba(255, 255, 255, 0.12);
-    border-right: 3px solid #6cc4a1;
+    background-color: #2563EB;
+    border-radius: 8px;
+    margin: 2px 0.6rem;
 }
 
-.sidebar-dark-teal .nav-item .nav-link i {
+.sidebar-dark-navy .nav-item .nav-link i {
     font-size: 0.9rem;
     width: 1.5rem;
     text-align: center;
@@ -136,40 +124,45 @@ body {
     opacity: 0.8;
 }
 
-.sidebar-dark-teal .nav-item.active .nav-link i {
+.sidebar-dark-navy .nav-item.active .nav-link i {
     opacity: 1;
 }
 
 /* Sidebar Divider */
-.sidebar-dark-teal hr.sidebar-divider {
+.sidebar-dark-navy hr.sidebar-divider {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 0.3rem 1rem;
-}
-
-/* Sidebar Logout */
-.sidebar-logout {
-    padding: 0.8rem 1rem;
-    margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.sidebar-logout .nav-link {
-    color: rgba(255, 255, 255, 0.6) !important;
-    font-size: 0.82rem;
-}
-
-.sidebar-logout .nav-link:hover {
-    color: #ff7979 !important;
 }
 
 /* ===================================================================
    NAVBAR
    =================================================================== */
-.topbar .page-title {
-    font-size: 1.05rem;
+.navbar-brand-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.navbar-brand-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1B2A4A;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+}
+
+.navbar-brand-subtitle {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #667085;
+    line-height: 1.2;
+}
+
+.nav-profile-name {
+    font-size: 0.88rem;
     font-weight: 600;
-    color: #344054;
-    margin: 0;
+    color: #1D2939;
 }
 
 .topbar .navbar-nav .nav-item .nav-link {
@@ -180,22 +173,11 @@ body {
     color: #344054;
 }
 
-.notification-badge {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 8px;
-    height: 8px;
-    background-color: #f04438;
-    border-radius: 50%;
-    border: 2px solid #fff;
-}
-
 /* ===================================================================
    WELCOME CARD
    =================================================================== */
 .welcome-card {
-    background: linear-gradient(135deg, #1a3c34 0%, #2d6b55 60%, #3a8f70 100%);
+    background: linear-gradient(135deg, #0D1B3E 0%, #1B2A4A 60%, #2563EB 100%);
     border-radius: 12px;
     padding: 1.8rem 2rem;
     color: #fff;
@@ -212,7 +194,7 @@ body {
     right: -5%;
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -244,7 +226,7 @@ body {
 }
 
 .welcome-badge-date {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #2563EB;
     color: #fff;
 }
 
@@ -294,29 +276,15 @@ body {
     flex-shrink: 0;
 }
 
-.stat-card-icon.blue {
-    background-color: #e8f4fd;
-    color: #1a73e8;
-}
-
-.stat-card-icon.yellow {
-    background-color: #fef3cd;
-    color: #f5a623;
-}
-
-.stat-card-icon.green {
-    background-color: #d4edda;
-    color: #28a745;
-}
-
-.stat-card-icon.teal {
-    background-color: #d1f0e8;
-    color: #1a8a6a;
-}
+.stat-card-icon.blue { background-color: #e8f4fd; color: #1a73e8; }
+.stat-card-icon.yellow { background-color: #fef3cd; color: #f5a623; }
+.stat-card-icon.green { background-color: #d4edda; color: #28a745; }
+.stat-card-icon.teal { background-color: #d1f0e8; color: #1a8a6a; }
+.stat-card-icon.purple { background-color: #e8def8; color: #7c3aed; }
 
 .stat-card-title {
     color: #667085;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 500;
 }
 
@@ -331,7 +299,27 @@ body {
 .stat-card-desc {
     font-size: 0.75rem;
     color: #98a2b3;
+    margin-bottom: 0.6rem;
 }
+
+.stat-card-link {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-top: 1px solid #f2f4f7;
+    padding-top: 0.6rem;
+    margin-top: 0.3rem;
+    width: 100%;
+}
+
+.stat-card-link.blue { color: #1a73e8; }
+.stat-card-link.yellow { color: #f5a623; }
+.stat-card-link.green { color: #28a745; }
+.stat-card-link.teal { color: #1a8a6a; }
+.stat-card-link.purple { color: #7c3aed; }
 
 /* ===================================================================
    PENDING LIST
@@ -376,9 +364,9 @@ body {
     font-size: 0.9rem;
 }
 
-.pending-avatar.teal {
-    background-color: #d1f0e8;
-    color: #1a8a6a;
+.pending-avatar.navy {
+    background-color: #e8edf5;
+    color: #1B2A4A;
 }
 
 .pending-info {
@@ -403,66 +391,47 @@ body {
     gap: 0.5rem;
 }
 
+/* ===================================================================
+   STATUS BADGES (used everywhere)
+   =================================================================== */
 .status-badge {
     display: inline-block;
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.7rem;
     border-radius: 4px;
     font-size: 0.72rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
-.status-badge.menunggu {
-    background-color: #fef3cd;
-    color: #92400e;
+.status-badge.menunggu,
+.status-badge.menunggu-verifikasi {
+    background-color: #FFF3CD;
+    color: #856404;
 }
 
 .status-badge.verifikasi {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #CCE5FF;
+    color: #004085;
 }
 
 .status-badge.disetujui {
-    background-color: #d1ecf1;
-    color: #0c5460;
+    background-color: #D4EDDA;
+    color: #155724;
 }
 
 .status-badge.ditolak {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+.status-badge.sedang-diproses {
+    background-color: #CCE5FF;
+    color: #004085;
 }
 
 .status-badge.disposisi {
     background-color: #e0cffc;
     color: #4a1d96;
-}
-
-.action-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.15s ease;
-    text-decoration: none !important;
-}
-
-.action-icon.check {
-    background-color: #d4edda;
-    color: #28a745;
-}
-
-.action-icon.view {
-    background-color: #e8f4fd;
-    color: #1a73e8;
-}
-
-.action-icon:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
 }
 
 /* ===================================================================
@@ -564,39 +533,521 @@ body {
 .summary-value.teal { color: #1a8a6a; }
 .summary-value.red { color: #f04438; }
 
-/* Tren Chart Container */
-.tren-chart-container {
+/* ===================================================================
+   VERIFIKASI CARD-BASED LAYOUT
+   =================================================================== */
+.verifikasi-search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.verifikasi-search-bar input {
+    flex: 1;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem 0.55rem 2.2rem;
+    font-size: 0.88rem;
+    background: #fff;
+}
+
+.verifikasi-search-bar input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.verifikasi-search-bar select {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.88rem;
+    min-width: 160px;
+    background: #fff;
+}
+
+.verifikasi-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
     position: relative;
-    height: 250px;
-    width: 100%;
+    transition: box-shadow 0.2s ease;
+}
+
+.verifikasi-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.verifikasi-card-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.verifikasi-card-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.15rem;
+}
+
+.verifikasi-card-detail {
+    font-size: 0.82rem;
+    color: #98a2b3;
+    margin-bottom: 0.3rem;
+}
+
+.verifikasi-card-berkas-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #344054;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.berkas-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    margin-right: 0.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.berkas-badge.uploaded {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.berkas-badge.missing {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+.verifikasi-card-actions {
+    margin-top: 0.8rem;
+    display: flex;
+    gap: 0.6rem;
+}
+
+.btn-verifikasi {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+
+.btn-verifikasi:hover {
+    background-color: #218838;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-kembalikan {
+    background-color: #F8D7DA;
+    color: #DC3545;
+    border: 1px solid #F5C6CB;
+    border-radius: 6px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+
+.btn-kembalikan:hover {
+    background-color: #DC3545;
+    color: #fff;
+    transform: translateY(-1px);
 }
 
 /* ===================================================================
-   DISPOSISI CARD-BASED LAYOUT
+   VERIFIKASI DETAIL
    =================================================================== */
-.disposisi-info-banner {
+.detail-header {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 1rem 1.2rem;
-    background-color: #f0fdf9;
-    border: 1px solid #d1f0e8;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
+    gap: 1.5rem;
 }
 
-.disposisi-info-banner i {
-    color: #1a8a6a;
-    font-size: 1.2rem;
+.detail-header-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #e8edf5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
 }
 
-.disposisi-info-banner p {
-    margin: 0;
-    color: #1a8a6a;
-    font-size: 0.88rem;
+.detail-header-avatar i {
+    font-size: 2rem;
+    color: #98a2b3;
 }
 
+.detail-header-info {
+    flex: 1;
+}
+
+.detail-header-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.15rem;
+}
+
+.detail-header-meta {
+    font-size: 0.85rem;
+    color: #667085;
+}
+
+.detail-header-box {
+    border-left: 1px solid #e5e7eb;
+    padding-left: 1.5rem;
+    min-width: 180px;
+}
+
+.detail-header-box-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #667085;
+    margin-bottom: 0.3rem;
+}
+
+.detail-header-box-value {
+    font-size: 0.85rem;
+    color: #1d2939;
+}
+
+.detail-back-link {
+    color: #2563EB;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.detail-back-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline !important;
+}
+
+.dokumen-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 1.5rem;
+}
+
+.dokumen-table thead th {
+    background-color: #f1f3f5;
+    color: #667085;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.8rem 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.dokumen-table tbody td {
+    padding: 0.9rem 1rem;
+    font-size: 0.88rem;
+    color: #344054;
+    border-bottom: 1px solid #f2f4f7;
+    vertical-align: middle;
+}
+
+.dokumen-table tbody tr:nth-child(even) {
+    background-color: #fafbfc;
+}
+
+.dokumen-table tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+.btn-valid {
+    background-color: #D4EDDA;
+    color: #155724;
+    border: 1px solid #C3E6CB;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-valid:hover,
+.btn-valid.active {
+    background-color: #28a745;
+    color: #fff;
+    border-color: #28a745;
+}
+
+.btn-tidak-valid {
+    background-color: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #F5C6CB;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-tidak-valid:hover,
+.btn-tidak-valid.active {
+    background-color: #DC3545;
+    color: #fff;
+    border-color: #DC3545;
+}
+
+.btn-simpan-keputusan {
+    background-color: #2563EB;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-simpan-keputusan:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-batal {
+    background-color: #fff;
+    color: #667085;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none !important;
+}
+
+.btn-batal:hover {
+    background-color: #f9fafb;
+    color: #344054;
+}
+
+.file-link {
+    color: #2563EB;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+    color: #1d4ed8;
+}
+
+.file-link i {
+    color: #DC3545;
+}
+
+/* ===================================================================
+   RIWAYAT TABLE
+   =================================================================== */
+.riwayat-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.riwayat-table thead th {
+    background-color: #1B2A4A;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.85rem 1rem;
+    border: none;
+}
+
+.riwayat-table tbody td {
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    color: #344054;
+    border-bottom: 1px solid #f2f4f7;
+    vertical-align: middle;
+}
+
+.riwayat-table tbody tr:hover {
+    background-color: #f0f4ff;
+}
+
+.riwayat-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e8f4fd;
+    color: #2563EB;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+}
+
+.riwayat-action-btn:hover {
+    background-color: #2563EB;
+    color: #fff;
+}
+
+/* ===================================================================
+   DISPOSISI / PILIH BIDANG TUJUAN
+   =================================================================== */
+.disposisi-back-link {
+    color: #2563EB;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.disposisi-back-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline !important;
+}
+
+.disposisi-form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.disposisi-form-card .section-heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.3rem;
+}
+
+.disposisi-form-card .section-subtext {
+    font-size: 0.85rem;
+    color: #667085;
+    margin-bottom: 1.5rem;
+}
+
+.disposisi-info-row {
+    display: flex;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.disposisi-info-label {
+    font-weight: 600;
+    color: #344054;
+    min-width: 200px;
+}
+
+.disposisi-info-value {
+    color: #1d2939;
+}
+
+.disposisi-select {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.88rem;
+    color: #667085;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    transition: border-color 0.15s ease;
+}
+
+.disposisi-select:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.disposisi-textarea {
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 0.88rem;
+    color: #344054;
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.15s ease;
+}
+
+.disposisi-textarea:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.btn-kirim-bidang {
+    background-color: #2563EB;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-kirim-bidang:hover {
+    background-color: #1d4ed8;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Disposisi Card (list page) */
 .disposisi-card {
     background: #fff;
     border: 1px solid #e5e7eb;
@@ -635,10 +1086,6 @@ body {
     color: #155724;
 }
 
-.disposisi-status i {
-    font-size: 0.65rem;
-}
-
 .disposisi-card-name {
     font-size: 1.1rem;
     font-weight: 700;
@@ -652,134 +1099,124 @@ body {
     margin-bottom: 1rem;
 }
 
-.disposisi-form-label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #344054;
-    margin-bottom: 0.4rem;
-}
-
-.disposisi-select {
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    padding: 0.55rem 0.8rem;
-    font-size: 0.88rem;
-    color: #667085;
-    width: 100%;
-    background-color: #fff;
-    transition: border-color 0.15s ease;
-}
-
-.disposisi-select:focus {
-    border-color: #1a8a6a;
-    box-shadow: 0 0 0 3px rgba(26, 138, 106, 0.1);
-    outline: none;
-}
-
-.disposisi-textarea {
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    padding: 0.55rem 0.8rem;
-    font-size: 0.88rem;
-    color: #344054;
-    width: 100%;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.15s ease;
-}
-
-.disposisi-textarea:focus {
-    border-color: #1a8a6a;
-    box-shadow: 0 0 0 3px rgba(26, 138, 106, 0.1);
-    outline: none;
-}
-
-.btn-disposisi {
-    background: linear-gradient(135deg, #1a8a6a 0%, #2d6b55 100%);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1.2rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-disposisi:hover {
-    background: linear-gradient(135deg, #157a5e 0%, #255a48 100%);
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(26, 138, 106, 0.3);
-}
-
-.btn-disposisi i {
-    margin-right: 5px;
-}
-
 /* ===================================================================
-   MONITORING STATUS TABLE
+   PROFILE PAGE
    =================================================================== */
-.monitoring-search {
+.profile-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+}
+
+.profile-avatar-section {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 2rem;
+}
+
+.profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #e8edf5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 1rem;
 }
 
-.monitoring-search input {
-    flex: 1;
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    padding: 0.5rem 0.8rem 0.5rem 2.2rem;
-    font-size: 0.88rem;
+.profile-avatar i {
+    font-size: 4rem;
+    color: #98a2b3;
 }
 
-.monitoring-search select {
-    border: 1px solid #d0d5dd;
-    border-radius: 8px;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.88rem;
-    min-width: 160px;
-}
-
-.table-modern {
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.table-modern thead th {
-    background-color: #f9fafb;
-    border-bottom: 2px solid #e5e7eb;
-    color: #667085;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.8rem 1rem;
-}
-
-.table-modern tbody td {
-    padding: 0.8rem 1rem;
-    font-size: 0.85rem;
+.btn-ubah-foto {
+    background: #fff;
     color: #344054;
-    border-bottom: 1px solid #f2f4f7;
-    vertical-align: middle;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
 }
 
-.table-modern tbody tr:hover {
+.btn-ubah-foto:hover {
     background-color: #f9fafb;
+    border-color: #98a2b3;
 }
 
-.berkas-badge {
-    text-align: center;
+.profile-info-table {
+    width: 100%;
 }
 
-.berkas-badge .count {
-    font-weight: 700;
-    font-size: 1rem;
+.profile-info-table tr td {
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+    vertical-align: top;
 }
 
-.berkas-badge.complete .count { color: #28a745; }
-.berkas-badge.incomplete .count { color: #f04438; }
+.profile-info-table tr td:first-child {
+    font-weight: 600;
+    color: #344054;
+    width: 180px;
+}
+
+.profile-info-table tr td:nth-child(2) {
+    width: 20px;
+    color: #667085;
+}
+
+.profile-info-table tr td:last-child {
+    color: #1d2939;
+}
+
+.btn-edit-profil {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: #fff;
+    color: #344054;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none !important;
+    transition: all 0.15s ease;
+}
+
+.btn-edit-profil:hover {
+    background-color: #f0f4ff;
+    border-color: #2563EB;
+    color: #2563EB;
+}
+
+.profile-edit-input {
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.88rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+.profile-edit-input:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
 
 /* ===================================================================
    PLACEHOLDER PAGE
@@ -855,5 +1292,21 @@ body {
     }
     .stat-card {
         margin-bottom: 0.75rem;
+    }
+    .detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .detail-header-box {
+        border-left: none;
+        border-top: 1px solid #e5e7eb;
+        padding-left: 0;
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+    .navbar-brand-center {
+        position: relative;
+        left: auto;
+        transform: none;
     }
 }

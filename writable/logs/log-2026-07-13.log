@@ -55,3 +55,286 @@ AND `status` = :status:
 11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
 13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-13 05:46:29 --> Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:29 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+[Method: GET, Route: sekretariat/verifikasi/detail/0]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:29 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:29 --> [Caused by] mysqli_sql_exception: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+ERROR - 2026-07-13 05:46:30 --> Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:30 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+[Method: GET, Route: sekretariat/verifikasi/detail/0]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:30 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:30 --> [Caused by] mysqli_sql_exception: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 05:46:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-13 05:46:49 --> Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:49 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+[Method: GET, Route: sekretariat/verifikasi/detail/0]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 2 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 4 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 5 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 6 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:49 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 4 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+CRITICAL - 2026-07-13 05:46:49 --> [Caused by] mysqli_sql_exception: Unknown column 'fpm.status_verifikasi' in 'field list'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = \'0\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `fpm`.`id_file_permohonan_magang`, `fpm`.`id_permohonan_magang`, `fpm`.`nama_file` as `nama_file_upload`, `fpm`.`path_file`, `fpm`.`status_verifikasi`, `fpm`.`created_at`, `mf`.`nama_file` as `nama_file_master`
+FROM `t_file_permohonan_magang` as `fpm`
+LEFT JOIN `m_file` as `mf` ON `mf`.`id_file` = `fpm`.`id_file`
+WHERE `fpm`.`id_permohonan_magang` = :fpm.id_permohonan_magang:', [...], false)
+ 5 APPPATH\Models\Sekretariat\M_Verifikasi.php(121): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH\Controllers\Sekretariat\C_Verifikasi.php(62): App\Models\Sekretariat\M_Verifikasi->getFilePermohonan('0')
+ 7 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\Sekretariat\C_Verifikasi->detail('0')
+ 8 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Sekretariat\C_Verifikasi))
+ 9 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+13 SYSTEMPATH\rewrite.php(44): require_once('D:\\Data\\sistem_magang\\public\\index.php')
+DEBUG - 2026-07-13 05:50:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-13 05:51:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-13 05:51:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
