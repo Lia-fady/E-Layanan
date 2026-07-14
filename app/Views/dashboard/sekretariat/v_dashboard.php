@@ -120,7 +120,7 @@
 </div>
 
 <!-- Content Row: Pending List + Chart + Summary -->
-<div class="row">
+<div class="row mb-4" style="padding-bottom: 1rem;">
 
     <!-- Permohonan Menunggu Verifikasi Berkas -->
     <div class="col-lg-7 mb-4">
@@ -183,7 +183,7 @@
         </div>
 
         <!-- Ringkasan Hari Ini -->
-        <div class="summary-card">
+        <div class="summary-card mb-4">
             <div class="card-title">Ringkasan Hari Ini</div>
             <div class="summary-item">
                 <span class="summary-label">Permohonan masuk baru</span>

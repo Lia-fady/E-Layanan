@@ -16,6 +16,7 @@ body {
    =================================================================== */
 .sidebar-dark-navy {
     background: linear-gradient(180deg, #0D1B3E 0%, #1B2A4A 100%) !important;
+    overflow-x: hidden;
 }
 
 .sidebar-dark-navy .sidebar-brand {
@@ -101,6 +102,11 @@ body {
     transition: all 0.2s ease;
     border-radius: 0;
     margin: 0;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sidebar-dark-navy .nav-item .nav-link:hover {
@@ -113,7 +119,10 @@ body {
     font-weight: 600;
     background-color: #2563EB;
     border-radius: 8px;
-    margin: 2px 0.6rem;
+    margin: 2px 0.5rem;
+    padding: 0.6rem 0.8rem;
+    max-width: calc(100% - 1rem);
+    box-sizing: border-box;
 }
 
 .sidebar-dark-navy .nav-item .nav-link i {
@@ -1257,9 +1266,6 @@ body {
     color: #98a2b3;
 }
 
-/* ===================================================================
-   GENERAL OVERRIDES
-   =================================================================== */
 .container-fluid {
     padding: 0 1.5rem 1.5rem;
 }
@@ -1280,6 +1286,23 @@ body {
 .sidebar::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 2px;
+}
+
+/* ===================================================================
+   FOOTER / COPYRIGHT
+   =================================================================== */
+.site-footer {
+    background: transparent;
+    padding: 2rem 1rem;
+    margin-top: 1.5rem;
+    width: 100%;
+    clear: both;
+}
+
+.site-footer .copyright {
+    font-size: 0.82rem;
+    color: #98a2b3;
+    text-align: center;
 }
 
 /* Responsive */
@@ -1308,5 +1331,27 @@ body {
         position: relative;
         left: auto;
         transform: none;
+    }
+
+    /* Sidebar mobile: pastikan active indicator tidak overflow */
+    .sidebar-dark-navy .nav-item.active .nav-link {
+        margin: 2px 0.4rem;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.82rem;
+        max-width: calc(100% - 0.8rem);
+    }
+
+    .sidebar-dark-navy .nav-item .nav-link {
+        font-size: 0.82rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .sidebar-dark-navy .sidebar-heading {
+        font-size: 0.6rem;
+        padding: 0.6rem 0.8rem 0.3rem;
+    }
+
+    .container-fluid {
+        padding: 0 1rem 1rem;
     }
 }
