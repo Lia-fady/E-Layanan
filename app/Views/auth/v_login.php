@@ -45,11 +45,10 @@
 
                             <!-- Branding / Logo -->
                             <div class="text-center mb-4">
-                                <img src="<?= base_url('favicon.ico'); ?>" alt="Icon" class="mb-3" style="width: 98px; height: 98px;">
+                                <img src="<?= base_url('icon/logo-kota.png') ?>" alt="Icon" class="mb-3" style="width: 98px; height: 98px;">
                                 <h1 class="h4 text-gray-900 font-weight-bold">E-Layanan Kominfo</h1>
                                 <p class="text-muted small">Permohonan &amp; Kegiatan Akademik<br>Dinas Kominfo Kota Tangerang</p>
                             </div>
-
                             <hr>
 
                             <!-- Flash Error Message -->
