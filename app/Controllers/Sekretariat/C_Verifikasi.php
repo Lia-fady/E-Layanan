@@ -80,7 +80,7 @@ class C_Verifikasi extends BaseController
             }
         }
 
-        // Determine overall status
+        // Determine file status metrics for notes
         $allValid = true;
         $anyInvalid = false;
         foreach ($fileStatuses as $status) {
@@ -88,13 +88,8 @@ class C_Verifikasi extends BaseController
             if ($status === 'TIDAK_VALID') $anyInvalid = true;
         }
 
-        if ($anyInvalid) {
-            $overallStatus = 'DITOLAK';
-        } elseif ($allValid && !empty($fileStatuses)) {
-            $overallStatus = 'DISETUJUI';
-        } else {
-            $overallStatus = 'MENUNGGU';
-        }
+        // Determine overall status (selalu DISETUJUI sesuai request)
+        $overallStatus = 'DISETUJUI';
 
         // Save overall verification
         $data = [
