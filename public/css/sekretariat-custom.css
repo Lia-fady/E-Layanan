@@ -443,6 +443,16 @@ body {
     color: #4a1d96;
 }
 
+.status-badge.menunggu-penempatan {
+    background-color: #FFF0E0;
+    color: #B45309;
+}
+
+.status-badge.sudah-ditempatkan {
+    background-color: #D1FAE5;
+    color: #065F46;
+}
+
 /* ===================================================================
    CHART & SUMMARY SECTION
    =================================================================== */
@@ -987,6 +997,7 @@ body {
 
 .disposisi-info-row {
     display: flex;
+    align-items: center;
     padding: 0.5rem 0;
     font-size: 0.9rem;
 }
@@ -999,6 +1010,9 @@ body {
 
 .disposisi-info-value {
     color: #1d2939;
+    display: flex;
+    align-items: center;
+    flex: 1;
 }
 
 .disposisi-select {

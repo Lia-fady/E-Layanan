@@ -45,6 +45,8 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
 
     // Riwayat
     $routes->get('riwayat', '\App\Controllers\Sekretariat\C_Riwayat::index');
+    $routes->post('riwayat/setujui', '\App\Controllers\Sekretariat\C_Riwayat::setujui');
+    $routes->post('riwayat/tolak', '\App\Controllers\Sekretariat\C_Riwayat::tolak');
 
     // Disposisi
     $routes->get('disposisi', '\App\Controllers\Sekretariat\C_Disposisi::index');

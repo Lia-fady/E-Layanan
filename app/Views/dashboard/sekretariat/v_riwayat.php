@@ -26,8 +26,9 @@
     </div>
     <select id="filterRiwayat">
         <option value="">Filter</option>
-        <option value="MENUNGGU">Menunggu</option>
-        <option value="DISETUJUI">Disetujui</option>
+        <option value="MENUNGGU">Menunggu Verifikasi</option>
+        <option value="MENUNGGU_PENEMPATAN">Menunggu Penempatan</option>
+        <option value="SUDAH_DITEMPATKAN">Sudah Ditempatkan</option>
         <option value="DITOLAK">Ditolak</option>
     </select>
 </div>
@@ -49,26 +50,42 @@
         <tbody>
             <?php if (!empty($permohonan)) : ?>
                 <?php $no = 1; foreach ($permohonan as $row) : ?>
-                <tr>
+                <?php
+                    // Tentukan status berdasarkan persetujuan & disposisi
+                    $status = $row->status_persetujuan ?? 'MENUNGGU';
+                    $disposisi = $row->disposisi ?? '0';
+
+                    if ($status == 'DISETUJUI' && $disposisi == '1') {
+                        $badgeClass = 'sudah-ditempatkan';
+                        $statusText = 'Sudah Ditempatkan';
+                        $filterValue = 'SUDAH_DITEMPATKAN';
+                    } elseif ($status == 'DISETUJUI' && $disposisi != '1') {
+                        $badgeClass = 'menunggu-penempatan';
+                        $statusText = 'Menunggu Penempatan';
+                        $filterValue = 'MENUNGGU_PENEMPATAN';
+                    } elseif ($status == 'DITOLAK') {
+                        $badgeClass = 'ditolak';
+                        $statusText = 'Ditolak';
+                        $filterValue = 'DITOLAK';
+                    } else {
+                        $badgeClass = 'menunggu-verifikasi';
+                        $statusText = 'Menunggu Verifikasi';
+                        $filterValue = 'MENUNGGU';
+                    }
+                ?>
+                <tr data-filter-status="<?= $filterValue ?>">
                     <td class="text-center"><?= $no++ ?></td>
                     <td><strong><?= esc($row->nama_mahasiswa ?? '-') ?></strong></td>
                     <td><?= esc($row->instansi_pendidikan ?? '-') ?></td>
                     <td><?= esc($row->jenis_permohonan ?? '-') ?></td>
                     <td><?= !empty($row->tgl_pengajuan) ? date('d M Y', strtotime($row->tgl_pengajuan)) : '-' ?></td>
                     <td class="text-center">
-                        <?php
-                            $status = $row->status_persetujuan ?? 'MENUNGGU';
-                            $badgeClass = 'menunggu-verifikasi';
-                            $statusText = 'Menunggu Verifikasi';
-                            if ($status == 'DISETUJUI') {
-                                $badgeClass = 'sedang-diproses';
-                                $statusText = 'Sedang Diproses';
-                            } elseif ($status == 'DITOLAK') {
-                                $badgeClass = 'ditolak';
-                                $statusText = 'Ditolak';
-                            }
-                        ?>
                         <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
+                        <?php if ($status == 'DISETUJUI' && $disposisi == '1' && !empty($row->bidang)) : ?>
+                            <div style="font-size:0.7rem; color:#667085; margin-top:3px;">
+                                <i class="fas fa-building" style="font-size:0.6rem;"></i> <?= esc($row->bidang) ?>
+                            </div>
+                        <?php endif; ?>
                     </td>
                     <td class="text-center">
                         <a href="<?= base_url('sekretariat/verifikasi/detail/' . $row->id_permohonan_magang) ?>" class="riwayat-action-btn" title="Detail">
@@ -101,9 +118,17 @@ $(document).ready(function() {
         table.search(this.value).draw();
     });
 
-    // Custom filter
+    // Custom filter berdasarkan data-attribute
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        var filterVal = $('#filterRiwayat').val();
+        if (!filterVal) return true;
+        var row = table.row(dataIndex).node();
+        var rowStatus = $(row).data('filter-status');
+        return rowStatus === filterVal;
+    });
+
     $('#filterRiwayat').on('change', function() {
-        table.column(5).search(this.value).draw();
+        table.draw();
     });
 
     // Hide default search

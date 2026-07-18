@@ -59,8 +59,8 @@
         <div class="mb-4">
             <div class="disposisi-info-row">
                 <span class="disposisi-info-label">Bidang</span>
-                <span class="disposisi-info-value">:
-                    <select class="disposisi-select" name="id_bidang" required style="display:inline-block; margin-left:8px;">
+                <span class="disposisi-info-value" style="gap:8px;">:
+                    <select class="disposisi-select" name="id_bidang" required>
                         <option value="">Pilih Bidang</option>
                         <?php if (!empty($bidang)) : ?>
                             <?php foreach ($bidang as $b) : ?>
