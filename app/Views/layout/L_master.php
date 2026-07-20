@@ -78,19 +78,21 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Yakin ingin keluar?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">Pilih "Logout" di bawah ini jika Anda ingin mengakhiri sesi.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" href="<?= base_url('auth/logout') ?>">Logout</a>
+    <div class="modal fade modal-logout" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+                <div class="modal-body text-center p-4 p-sm-5">
+                    <div class="mb-3">
+                        <div class="mx-auto d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: #DBEAFE; border-radius: 50%;">
+                            <i class="fas fa-sign-out-alt fa-2x" style="color: #2563EB;"></i>
+                        </div>
+                    </div>
+                    <h5 class="modal-title mb-2 font-weight-bold" id="logoutModalLabel" style="color: #1F2937; font-size: 1.25rem;">Yakin ingin keluar?</h5>
+                    <p class="mb-4" style="color: #6B7280; font-size: 0.95rem;">Pilih "Logout" di bawah ini jika Anda ingin mengakhiri sesi Anda saat ini.</p>
+                    <div class="d-flex justify-content-center" style="gap: 12px;">
+                        <button class="btn btn-light btn-logout-cancel px-4 py-2" type="button" data-dismiss="modal" style="border-radius: 8px; font-weight: 500; color: #4B5563; background: #F3F4F6; border: none; min-width: 100px; transition: all 0.2s;">Batal</button>
+                        <a class="btn btn-primary btn-logout-confirm px-4 py-2" href="<?= base_url('auth/logout') ?>" style="border-radius: 8px; font-weight: 500; background: #2563EB; border: none; min-width: 100px; transition: all 0.2s;">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>

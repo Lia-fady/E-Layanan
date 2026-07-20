@@ -30,9 +30,15 @@ class C_Dashboard extends BaseController
         // STAT CARDS
         // ============================================================
 
-        // 1. Total Pemohon (semua yang sudah dikirim)
-        $total_permohonan = $db->table('t_permohonan_magang')
-            ->where('posting_data', 'kirim')
+        // 1. Total Pemohon (semua yang sudah dikirim, kecuali yang penempatannya SELESAI)
+        $total_permohonan = $db->table('t_permohonan_magang as pm')
+            ->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left')
+            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('pm.posting_data', 'kirim')
+            ->groupStart()
+                ->where('pn.status_penempatan !=', 'SELESAI')
+                ->orWhere('pn.status_penempatan IS NULL')
+            ->groupEnd()
             ->countAllResults();
 
         // 2. Menunggu Verifikasi
@@ -49,14 +55,19 @@ class C_Dashboard extends BaseController
             ->groupEnd()
             ->countAllResults();
 
-        // 4. Disetujui
-        $total_disetujui = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DISETUJUI')
+        // 4. Disetujui (kecuali yang penempatannya SELESAI)
+        $total_disetujui = $db->table('t_persetujuan_magang as ps')
+            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('ps.status_persetujuan', 'DISETUJUI')
+            ->groupStart()
+                ->where('pn.status_penempatan !=', 'SELESAI')
+                ->orWhere('pn.status_penempatan IS NULL')
+            ->groupEnd()
             ->countAllResults();
 
-        // 5. Mahasiswa Aktif (dari m_user_mahasiswa WHERE status = '1')
-        $total_mahasiswa_aktif = $db->table('m_user_mahasiswa')
-            ->where('status', '1')
+        // 5. Mahasiswa Aktif (dari t_penempatan_magang WHERE status_penempatan = 'BERJALAN')
+        $total_mahasiswa_aktif = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'BERJALAN')
             ->countAllResults();
 
         // ============================================================
