@@ -69,8 +69,9 @@ class C_Disposisi extends BaseController
         $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
 
         $data = [
-            'id_bidang'   => $this->request->getPost('id_bidang'),
-            'updated_by'  => session('id_user_pegawai'),
+            'id_bidang'          => $this->request->getPost('id_bidang'),
+            'updated_by'         => session('id_user_pegawai'),
+            'catatan_disposisi'  => $this->request->getPost('catatan_disposisi'),
         ];
 
         $result = $this->disposisiModel->simpanDisposisi($id_persetujuan, $data);

@@ -46,6 +46,9 @@ class C_Auth extends BaseController
     {
         // Jika sudah login, redirect ke dashboard
         if (session()->get('logged_in')) {
+            if (session()->get('group_id') == 3) {
+                return redirect()->to(base_url('kabid/dashboard'));
+            }
             return redirect()->to(base_url('sekretariat/dashboard'));
         }
 
@@ -89,6 +92,13 @@ class C_Auth extends BaseController
             ];
             session()->set($sessionData);
 
+            // Redirect berdasarkan role/group_id
+            if ($user['group_id'] == 3) {
+                // Kepala Bidang → dashboard kabid
+                return redirect()->to(base_url('kabid/dashboard'));
+            }
+
+            // Sekretariat / Superadmin → dashboard sekretariat
             return redirect()->to(base_url('sekretariat/dashboard'));
         }
 

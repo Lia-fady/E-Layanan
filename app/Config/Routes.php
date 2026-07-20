@@ -83,7 +83,24 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
         return redirect()->to(base_url('sekretariat/penilaian'));
     });
 
+    // Riwayat - Edit Disposisi
+    $routes->post('riwayat/edit-disposisi', '\App\Controllers\Sekretariat\C_Riwayat::editDisposisi');
+
     // Sertifikat
     $routes->get('sertifikat', '\App\Controllers\Sekretariat\C_Sertifikat::index');
     $routes->get('sertifikat/download/(:num)', '\App\Controllers\Sekretariat\C_Sertifikat::download/$1');
+});
+
+// =========================================================================
+// Kepala Bidang Route Group (dilindungi filter authKabid)
+// =========================================================================
+$routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
+
+    // Dashboard Kepala Bidang
+    $routes->get('dashboard', '\App\Controllers\Kabid\C_DashboardKabid::index');
+
+    // Persetujuan Penempatan
+    $routes->get('penempatan', '\App\Controllers\Kabid\C_KepalaBidang::index');
+    $routes->post('penempatan/setujui', '\App\Controllers\Kabid\C_KepalaBidang::setujui');
+    $routes->post('penempatan/tolak', '\App\Controllers\Kabid\C_KepalaBidang::tolak');
 });

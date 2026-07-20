@@ -5,7 +5,7 @@
  * Deskripsi : Komponen sidebar navigasi sesuai desain mockup.
  *             Menggunakan warna dark navy blue dengan menu navigasi
  *             modul Sekretariat: Dashboard, Verifikasi Berkas,
- *             Riwayat, dan Pilih Bidang Tujuan.
+ *             Pilih Bidang Tujuan, dan Riwayat.
  */
 ?>
 
@@ -47,11 +47,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading: VERIFIKASI -->
-    <div class="sidebar-heading">
-        VERIFIKASI
-    </div>
-
     <!-- Nav Item - Verifikasi Berkas -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
@@ -60,27 +55,22 @@
         </a>
     </li>
 
-    <!-- Nav Item - Riwayat -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
-            <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat</span>
-        </a>
-    </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider">
-
-    <!-- Heading: DISPOSISI BIDANG -->
-    <div class="sidebar-heading">
-        DISPOSISI BIDANG
-    </div>
 
     <!-- Nav Item - Pilih Bidang Tujuan -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'disposisi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/disposisi') ?>">
             <i class="fas fa-fw fa-share-square"></i>
             <span>Pilih bidang tujuan</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Riwayat -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
         </a>
     </li>
 

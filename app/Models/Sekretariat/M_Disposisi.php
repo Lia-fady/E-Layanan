@@ -150,7 +150,8 @@ class M_Disposisi extends Model
     {
         $db = \Config\Database::connect();
 
-        return $db->table('t_persetujuan_magang')
+        // 1. Update t_persetujuan_magang dengan data disposisi
+        $result = $db->table('t_persetujuan_magang')
             ->where('id_persetujuan_magang', $id_persetujuan)
             ->update([
                 'disposisi'       => '1',
@@ -159,5 +160,41 @@ class M_Disposisi extends Model
                 'updated_at'      => date('Y-m-d H:i:s'),
                 'tgl_persetujuan' => date('Y-m-d H:i:s'),
             ]);
+
+        if (!$result) {
+            return false;
+        }
+
+        // 2. Ambil id_mahasiswa dari relasi persetujuan → permohonan
+        $persetujuan = $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan)
+            ->get()
+            ->getRow();
+
+        if (!$persetujuan) {
+            return false;
+        }
+
+        $permohonan = $db->table('t_permohonan_magang')
+            ->where('id_permohonan_magang', $persetujuan->id_permohonan_magang)
+            ->get()
+            ->getRow();
+
+        if (!$permohonan) {
+            return false;
+        }
+
+        // 3. Insert record ke t_penempatan_magang dengan status MENUNGGU
+        $db->table('t_penempatan_magang')->insert([
+            'id_bidang'             => $data['id_bidang'],
+            'id_persetujuan_magang' => $id_persetujuan,
+            'id_mahasiswa'          => $permohonan->id_mahasiswa,
+            'catatan'               => $data['catatan_disposisi'] ?? null,
+            'status_penempatan'     => 'MENUNGGU',
+            'created_by'            => $data['updated_by'],
+            'created_at'            => date('Y-m-d H:i:s'),
+        ]);
+
+        return true;
     }
 }

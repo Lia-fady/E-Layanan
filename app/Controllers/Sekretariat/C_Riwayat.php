@@ -4,7 +4,8 @@
  * Kode      : C_Riwayat.php
  * Path      : Controllers/Sekretariat/C_Riwayat.php
  * Deskripsi : Controller untuk halaman Riwayat Permohonan.
- *             Menampilkan semua permohonan dengan semua status.
+ *             Menampilkan semua permohonan dengan semua status,
+ *             mendukung edit verifikasi dan edit disposisi.
  * ============================================================
  */
 
@@ -40,7 +41,10 @@ class C_Riwayat extends BaseController
             COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
             ps.disposisi,
             ps.id_bidang,
-            bd.bidang
+            ps.id_persetujuan_magang,
+            bd.bidang,
+            pn.id_penempatan_magang,
+            pn.status_penempatan
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
@@ -48,13 +52,21 @@ class C_Riwayat extends BaseController
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = ps.id_bidang', 'left');
+        $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
         $builder->orderBy('pm.created_at', 'DESC');
+
+        // Ambil daftar bidang aktif untuk dropdown edit disposisi
+        $bidang = $db->table('m_bidang')
+            ->where('status_aktif', 'aktif')
+            ->get()
+            ->getResult();
 
         $data = [
             'title'       => 'Riwayat Permohonan',
             'active_menu' => 'riwayat',
             'permohonan'  => $builder->get()->getResult(),
+            'bidang'      => $bidang,
         ];
 
         return view('dashboard/sekretariat/v_riwayat', $data);
@@ -103,6 +115,59 @@ class C_Riwayat extends BaseController
             session()->setFlashdata('success', 'Permohonan berhasil ditolak.');
         } else {
             session()->setFlashdata('error', 'Gagal menolak permohonan.');
+        }
+
+        return redirect()->to(base_url('sekretariat/riwayat'));
+    }
+
+    /**
+     * Edit disposisi bidang dari halaman riwayat.
+     * Mengubah bidang tujuan pada t_persetujuan_magang
+     * dan update t_penempatan_magang terkait jika ada.
+     *
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
+    public function editDisposisi()
+    {
+        $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
+        $id_bidang_baru = $this->request->getPost('id_bidang');
+
+        if (empty($id_persetujuan) || empty($id_bidang_baru)) {
+            session()->setFlashdata('error', 'Data tidak lengkap.');
+            return redirect()->to(base_url('sekretariat/riwayat'));
+        }
+
+        $db = \Config\Database::connect();
+
+        // 1. Update bidang di t_persetujuan_magang
+        $result = $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan)
+            ->update([
+                'id_bidang'  => $id_bidang_baru,
+                'updated_by' => session('id_user_pegawai'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        // 2. Update bidang di t_penempatan_magang jika ada record terkait
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan)
+            ->get()
+            ->getRow();
+
+        if ($penempatan) {
+            $db->table('t_penempatan_magang')
+                ->where('id_persetujuan_magang', $id_persetujuan)
+                ->update([
+                    'id_bidang'  => $id_bidang_baru,
+                    'updated_by' => session('id_user_pegawai'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+        }
+
+        if ($result) {
+            session()->setFlashdata('success', 'Disposisi bidang berhasil diubah.');
+        } else {
+            session()->setFlashdata('error', 'Gagal mengubah disposisi bidang.');
         }
 
         return redirect()->to(base_url('sekretariat/riwayat'));
