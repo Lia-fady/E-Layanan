@@ -34,17 +34,17 @@ class C_Riwayat extends BaseController
         $builder->select('
             pm.id_permohonan_magang,
             pm.created_at as tgl_pengajuan,
-            mhs.nim,
-            mhs.nama_mahasiswa,
-            jp.jenis_permohonan,
-            ip.instansi_pendidikan,
-            COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
-            ps.disposisi,
-            ps.id_bidang,
-            ps.id_persetujuan_magang,
-            bd.bidang,
-            pn.id_penempatan_magang,
-            pn.status_penempatan
+            MAX(mhs.nim) as nim,
+            MAX(mhs.nama_mahasiswa) as nama_mahasiswa,
+            MAX(jp.jenis_permohonan) as jenis_permohonan,
+            MAX(ip.instansi_pendidikan) as instansi_pendidikan,
+            COALESCE(MAX(ps.status_persetujuan), "MENUNGGU") as status_persetujuan,
+            MAX(ps.disposisi) as disposisi,
+            MAX(ps.id_bidang) as id_bidang,
+            MAX(ps.id_persetujuan_magang) as id_persetujuan_magang,
+            MAX(bd.bidang) as bidang,
+            MAX(pn.id_penempatan_magang) as id_penempatan_magang,
+            MAX(pn.status_penempatan) as status_penempatan
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');

@@ -196,7 +196,7 @@ class M_Penempatan extends Model
         $db = \Config\Database::connect();
 
         $builder = $db->table('t_penempatan_magang');
-        $builder->where('status_penempatan', 'MENUNGGU');
+        $builder->where('status_penempatan', '0');
 
         if ($id_bidang !== null) {
             $builder->where('id_bidang', $id_bidang);

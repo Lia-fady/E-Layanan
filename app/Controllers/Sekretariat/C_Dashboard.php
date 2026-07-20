@@ -141,9 +141,8 @@ class C_Dashboard extends BaseController
             ->where('DATE(tgl_persetujuan)', $hariIni)
             ->countAllResults();
 
-        $ringkasan_disposisi = $db->table('t_persetujuan_magang')
-            ->where('disposisi', '1')
-            ->where('DATE(updated_at)', $hariIni)
+        $ringkasan_disposisi = $db->table('t_penempatan_magang')
+            ->where('DATE(created_at)', $hariIni)
             ->countAllResults();
 
         $ringkasan_ditolak = $db->table('t_persetujuan_magang')

@@ -12,6 +12,34 @@ body {
 }
 
 /* ===================================================================
+   FIX DOUBLE SCROLLBAR
+   Root cause: SB Admin 2 #wrapper (display:flex) tanpa height constraint
+   + .sidebar min-height:100vh → dua konteks scroll saat konten > viewport.
+   Solusi: Kunci #wrapper ke viewport, biarkan #content-wrapper yang scroll.
+   =================================================================== */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#wrapper {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
+    min-height: 0;        /* Override SB Admin 2's min-height: 100vh */
+    height: 100vh;
+    overflow-y: auto;     /* Sidebar bisa scroll jika menu melebihi layar */
+}
+
+#content-wrapper {
+    height: 100vh;
+    overflow-y: auto;     /* Area konten yang melakukan scroll */
+}
+
+
+/* ===================================================================
    SIDEBAR - Dark Navy Blue Theme
    =================================================================== */
 .sidebar-dark-navy {

@@ -62,12 +62,7 @@
                 <!-- /.container-fluid -->
 
                 <!-- Footer -->
-                <footer class="site-footer">
-                    <div class="copyright text-center">
-                        <span>Copyright &copy; Dinas Kominfo Kota Tangerang <?= date('Y') ?></span>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+
 
             </div>
             <!-- End of Main Content -->
