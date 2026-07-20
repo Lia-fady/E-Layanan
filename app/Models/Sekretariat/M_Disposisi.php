@@ -116,7 +116,7 @@ class M_Disposisi extends Model
         $db = \Config\Database::connect();
 
         return $db->table('m_bidang')
-            ->where('status_aktif', 'aktif')
+            ->where('status_aktif', '1')
             ->get()
             ->getResult();
     }

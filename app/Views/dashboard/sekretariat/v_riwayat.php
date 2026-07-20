@@ -74,22 +74,24 @@
                     $disposisi = $row->disposisi ?? '0';
                     $status_penempatan = $row->status_penempatan ?? null;
 
-                    if ($status == 'DISETUJUI' && $disposisi == '1' && $status_penempatan == 'BERJALAN') {
-                        $badgeClass = 'sudah-ditempatkan';
-                        $statusText = 'Sudah Ditempatkan';
-                        $filterValue = 'SUDAH_DITEMPATKAN';
-                    } elseif ($status == 'DISETUJUI' && $disposisi == '1' && $status_penempatan == 'MENUNGGU') {
-                        $badgeClass = 'menunggu-penempatan';
-                        $statusText = 'Menunggu Kabid';
-                        $filterValue = 'MENUNGGU_KABID';
-                    } elseif ($status == 'DISETUJUI' && $disposisi == '1' && $status_penempatan == 'SELESAI') {
-                        $badgeClass = 'sudah-ditempatkan';
-                        $statusText = 'Selesai';
-                        $filterValue = 'SUDAH_DITEMPATKAN';
-                    } elseif ($status == 'DISETUJUI' && $disposisi != '1') {
-                        $badgeClass = 'menunggu-penempatan';
-                        $statusText = 'Menunggu Penempatan';
-                        $filterValue = 'MENUNGGU_PENEMPATAN';
+                    if ($status == 'DISETUJUI') {
+                        if ($status_penempatan == 'BERJALAN') {
+                            $badgeClass = 'sudah-ditempatkan';
+                            $statusText = 'Sudah Ditempatkan';
+                            $filterValue = 'SUDAH_DITEMPATKAN';
+                        } elseif ($status_penempatan == 'SELESAI') {
+                            $badgeClass = 'sudah-ditempatkan';
+                            $statusText = 'Selesai';
+                            $filterValue = 'SUDAH_DITEMPATKAN';
+                        } elseif ($status_penempatan == 'MENUNGGU') {
+                            $badgeClass = 'menunggu-penempatan';
+                            $statusText = 'Menunggu Kabid';
+                            $filterValue = 'MENUNGGU_KABID';
+                        } else {
+                            $badgeClass = 'menunggu-penempatan';
+                            $statusText = 'Menunggu Penempatan';
+                            $filterValue = 'MENUNGGU_PENEMPATAN';
+                        }
                     } elseif ($status == 'DITOLAK') {
                         $badgeClass = 'ditolak';
                         $statusText = 'Ditolak';
@@ -108,7 +110,7 @@
                     <td><?= !empty($row->tgl_pengajuan) ? date('d M Y', strtotime($row->tgl_pengajuan)) : '-' ?></td>
                     <td class="text-center">
                         <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
-                        <?php if ($disposisi == '1' && !empty($row->bidang)) : ?>
+                        <?php if (!empty($row->bidang)) : ?>
                             <div style="font-size:0.7rem; color:#667085; margin-top:3px;">
                                 <i class="fas fa-building" style="font-size:0.6rem;"></i> <?= esc($row->bidang) ?>
                             </div>
@@ -123,11 +125,11 @@
                                 <i class="fas fa-edit"></i>
                             </a>
 
-                            <!-- Edit Disposisi (hanya jika sudah didisposisikan) -->
-                            <?php if ($disposisi == '1' && !empty($row->id_persetujuan_magang)) : ?>
+                            <!-- Edit Disposisi (hanya jika menunggu penempatan atau menunggu kabid) -->
+                            <?php if ($status == 'DISETUJUI' && in_array($filterValue, ['MENUNGGU_PENEMPATAN', 'MENUNGGU_KABID']) && !empty($row->id_persetujuan_magang)) : ?>
                                 <button type="button"
                                         class="riwayat-action-btn btn-edit-disposisi"
-                                        title="Edit Disposisi"
+                                        title="Ubah Penempatan Bidang"
                                         style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; cursor:pointer; background:#EFF6FF; color:#2563EB; border-radius:6px;"
                                         data-id-persetujuan="<?= $row->id_persetujuan_magang ?>"
                                         data-nama="<?= esc($row->nama_mahasiswa ?? '-') ?>"

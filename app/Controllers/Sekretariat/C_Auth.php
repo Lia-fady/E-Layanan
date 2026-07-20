@@ -72,10 +72,10 @@ class C_Auth extends BaseController
         
 
         if ($user) {
-            // Ambil nama role dari tabel user_groups
+            // Ambil nama role dari tabel c_user_group
             $db = \Config\Database::connect();
-            $group = $db->table('user_groups')
-                ->where('id', $user['group_id'])
+            $group = $db->table('c_user_group')
+                ->where('id', $user['id_user_group'])
                 ->get()
                 ->getRow();
 
@@ -84,16 +84,17 @@ class C_Auth extends BaseController
             // Login berhasil - Set session variables
             $sessionData = [
                 'id_user_pegawai' => $user['id_user_pegawai'],
-                'username'        => $user['username'],
-                'nama_user'       => $user['nama_user'],
-                'group_id'        => $user['group_id'],
+                'username'        => $user['nip'],
+                'nama_user'       => $user['nama'],
+                'group_id'        => $user['id_user_group'],
+                'id_bidang'       => $user['id_bidang'],
                 'role_name'       => $roleName,
                 'logged_in'       => true,
             ];
             session()->set($sessionData);
 
             // Redirect berdasarkan role/group_id
-            if ($user['group_id'] == 3) {
+            if ($user['id_user_group'] == 3) {
                 // Kepala Bidang → dashboard kabid
                 return redirect()->to(base_url('kabid/dashboard'));
             }

@@ -73,14 +73,9 @@ class C_Verifikasi extends BaseController
         $id_permohonan = $this->request->getPost('id_permohonan_magang');
         $fileStatuses = $this->request->getPost('file_status') ?? [];
 
-        // Update status per file
-        foreach ($fileStatuses as $fileId => $status) {
-            if (!empty($status)) {
-                $this->verifikasiModel->updateFileStatus($fileId, $status);
-            }
-        }
-
         // Determine file status metrics for notes
+        // Note: status_verifikasi is not supported in the current database schema
+
         $allValid = true;
         $anyInvalid = false;
         foreach ($fileStatuses as $status) {

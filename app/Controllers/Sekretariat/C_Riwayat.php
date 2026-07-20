@@ -54,11 +54,12 @@ class C_Riwayat extends BaseController
         $builder->join('m_bidang as bd', 'bd.id_bidang = ps.id_bidang', 'left');
         $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
+        $builder->groupBy('pm.id_permohonan_magang');
         $builder->orderBy('pm.created_at', 'DESC');
 
         // Ambil daftar bidang aktif untuk dropdown edit disposisi
         $bidang = $db->table('m_bidang')
-            ->where('status_aktif', 'aktif')
+            ->where('status_aktif', '1')
             ->get()
             ->getResult();
 

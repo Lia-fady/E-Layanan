@@ -111,11 +111,11 @@ class M_Verifikasi extends Model
             fpm.id_permohonan_magang,
             fpm.nama_file as nama_file_upload,
             fpm.path_file,
-            fpm.status_verifikasi,
             fpm.created_at,
             mf.nama_file as nama_file_master
         ');
-        $builder->join('m_file as mf', 'mf.id_file = fpm.id_file', 'left');
+        $builder->join('m_file_permohonan as mfp', 'mfp.id_file_permohonan = fpm.id_file_permohonan', 'left');
+        $builder->join('m_file as mf', 'mf.id_file = mfp.id_file', 'left');
         $builder->where('fpm.id_permohonan_magang', $id_permohonan);
 
         return $builder->get()->getResult();
@@ -136,10 +136,10 @@ class M_Verifikasi extends Model
             fpm.id_permohonan_magang,
             fpm.nama_file as nama_file_upload,
             fpm.path_file,
-            fpm.status_verifikasi,
             mf.nama_file as nama_file_master
         ');
-        $builder->join('m_file as mf', 'mf.id_file = fpm.id_file', 'left');
+        $builder->join('m_file_permohonan as mfp', 'mfp.id_file_permohonan = fpm.id_file_permohonan', 'left');
+        $builder->join('m_file as mf', 'mf.id_file = mfp.id_file', 'left');
         $builder->whereIn('fpm.id_permohonan_magang', $ids);
 
         $results = $builder->get()->getResult();
@@ -186,17 +186,6 @@ class M_Verifikasi extends Model
                     'tgl_persetujuan'      => date('Y-m-d H:i:s'),
                 ]);
         }
-    }
-
-    /**
-     * Update status verifikasi per file.
-     */
-    public function updateFileStatus($id_file, $status)
-    {
-        $db = \Config\Database::connect();
-        return $db->table('t_file_permohonan_magang')
-            ->where('id_file_permohonan_magang', $id_file)
-            ->update(['status_verifikasi' => $status]);
     }
 
     /**
