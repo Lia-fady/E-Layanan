@@ -59,5 +59,16 @@
         </a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Nav Item - Upload Surat Penerimaan -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/upload-surat-penerimaan') ?>">
+            <i class="fas fa-fw fa-file-upload"></i>
+            <span>Upload Surat Penerimaan</span>
+        </a>
+    </li>
+
 </ul>
 <!-- End of Sidebar -->

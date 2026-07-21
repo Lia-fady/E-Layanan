@@ -90,11 +90,12 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('sertifikat', '\App\Controllers\Sekretariat\C_Sertifikat::index');
     $routes->get('sertifikat/download/(:num)', '\App\Controllers\Sekretariat\C_Sertifikat::download/$1');
 
-    // Surat Penerimaan Magang
-    $routes->get('file-proses-magang/create/(:num)', '\App\Controllers\Sekretariat\C_FileProsesMagang::create/$1');
-    $routes->post('file-proses-magang/store', '\App\Controllers\Sekretariat\C_FileProsesMagang::store');
-    $routes->post('file-proses-magang/update/(:num)', '\App\Controllers\Sekretariat\C_FileProsesMagang::update/$1');
-    $routes->get('file-proses-magang/download/(:num)', '\App\Controllers\Sekretariat\C_FileProsesMagang::download/$1');
+    // Surat Penerimaan Magang (Menu Baru)
+    $routes->get('upload-surat-penerimaan', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::index');
+    $routes->get('upload-surat-penerimaan/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::create/$1');
+    $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::store');
+    $routes->post('upload-surat-penerimaan/update/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::update/$1');
+    $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::download/$1');
 });
 
 // =========================================================================
@@ -110,9 +111,10 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('penempatan/setujui', '\App\Controllers\Kabid\C_KepalaBidang::setujui');
     $routes->post('penempatan/tolak', '\App\Controllers\Kabid\C_KepalaBidang::tolak');
 
-    // Surat Penerimaan Magang
-    $routes->get('file-proses-magang/create/(:num)', '\App\Controllers\Kabid\C_FileProsesMagangKabid::create/$1');
-    $routes->post('file-proses-magang/store', '\App\Controllers\Kabid\C_FileProsesMagangKabid::store');
-    $routes->post('file-proses-magang/update/(:num)', '\App\Controllers\Kabid\C_FileProsesMagangKabid::update/$1');
-    $routes->get('file-proses-magang/download/(:num)', '\App\Controllers\Kabid\C_FileProsesMagangKabid::download/$1');
+    // Surat Penerimaan Magang (Menu Baru)
+    $routes->get('upload-surat-penerimaan', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::index');
+    $routes->get('upload-surat-penerimaan/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::create/$1');
+    $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::store');
+    $routes->post('upload-surat-penerimaan/update/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::update/$1');
+    $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::download/$1');
 });

@@ -110,7 +110,7 @@
                 </button>
                 
                 <!-- Upload Surat Penerimaan -->
-                <a href="<?= base_url('kabid/file-proses-magang/create/' . $row->id_persetujuan_magang) ?>"
+                <a href="<?= base_url('kabid/upload-surat-penerimaan/' . $row->id_persetujuan_magang) ?>"
                    class="btn-kirim-bidang" style="font-size:0.85rem; padding:0.5rem 1.25rem; background:#F0FDF4; color:#16A34A; border:1px solid #16A34A; text-decoration:none;">
                     <i class="fas fa-file-upload mr-1"></i> Surat
                 </a>

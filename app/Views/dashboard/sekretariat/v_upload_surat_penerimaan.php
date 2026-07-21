@@ -63,8 +63,8 @@
 </div>
 
 <!-- Back Link -->
-<a href="<?= base_url('sekretariat/riwayat') ?>" class="detail-back-link mb-4 d-inline-block">
-    <i class="fas fa-arrow-left"></i> Kembali ke Riwayat
+<a href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>" class="detail-back-link mb-4 d-inline-block">
+    <i class="fas fa-arrow-left"></i> Kembali ke Daftar
 </a>
 
 <div class="row">
@@ -75,7 +75,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Upload Surat Penerimaan</h6>
             </div>
             <div class="card-body">
-                <form action="<?= base_url('sekretariat/file-proses-magang/store') ?>" method="POST" enctype="multipart/form-data">
+                <form action="<?= base_url('sekretariat/upload-surat-penerimaan/store') ?>" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_persetujuan_magang" value="<?= esc($persetujuan->id_persetujuan_magang) ?>">
                     
@@ -135,7 +135,7 @@
                                     <td><?= esc($f->pengunggah ?? '-') ?></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 5px;">
-                                            <a href="<?= base_url('sekretariat/file-proses-magang/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
+                                            <a href="<?= base_url('sekretariat/upload-surat-penerimaan/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-warning btn-ganti-file" 
@@ -219,7 +219,7 @@ $(document).ready(function() {
         var idFile = $(this).data('idfile');
         var namaFile = $(this).data('namafile');
 
-        $('#formGantiFile').attr('action', '<?= base_url('sekretariat/file-proses-magang/update/') ?>' + idSelesai);
+        $('#formGantiFile').attr('action', '<?= base_url('sekretariat/upload-surat-penerimaan/update/') ?>' + idSelesai);
         $('#edit_id_file').val(idFile);
         $('#nama_file_lama').text(namaFile);
         
