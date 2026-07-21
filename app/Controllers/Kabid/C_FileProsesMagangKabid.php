@@ -1,11 +1,11 @@
 <?php
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
 use App\Models\Sekretariat\M_File;
 use App\Models\Sekretariat\M_FileProsesMagang;
 
-class C_FileProsesMagangKabid extends BaseController
+class C_FileProsesMagang extends BaseController
 {
     protected $fileModel;
     protected $fileProsesModel;
@@ -34,18 +34,18 @@ class C_FileProsesMagangKabid extends BaseController
     {
         $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
         if (!$persetujuan) {
-            return redirect()->to(base_url('kabid/penempatan'))->with('error', 'Data persetujuan tidak ditemukan.');
+            return redirect()->to(base_url('sekretariat/riwayat'))->with('error', 'Data persetujuan tidak ditemukan.');
         }
 
         $data = [
             'title'       => 'Upload Surat Penerimaan Magang',
-            'active_menu' => 'penempatan',
+            'active_menu' => 'riwayat',
             'persetujuan' => $persetujuan,
             'jenis_file'  => $this->fileModel->getActiveFiles(),
             'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
         ];
 
-        return view('dashboard/kabid/v_file_proses_magang_kabid', $data);
+        return view('dashboard/sekretariat/v_file_proses_magang', $data);
     }
 
     public function store()
@@ -70,6 +70,17 @@ class C_FileProsesMagangKabid extends BaseController
 
         $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
         
+        // Pengecekan apakah id_persetujuan_magang valid dan ada di tabel t_persetujuan_magang
+        $db = \Config\Database::connect();
+        $cekPersetujuan = $db->table('t_persetujuan_magang')
+                             ->where('id_persetujuan_magang', $id_persetujuan)
+                             ->get()->getRow();
+                             
+        if (!$cekPersetujuan) {
+            return redirect()->back()->with('error', 'Data persetujuan magang tidak valid atau tidak ditemukan.');
+        }
+
+        // Cek jika sudah ada file
         $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan);
         if ($existing) {
             return redirect()->back()->with('error', 'Surat penerimaan sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.');
@@ -127,6 +138,7 @@ class C_FileProsesMagangKabid extends BaseController
             $file->store('surat_penerimaan_magang/', $newName);
             $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
 
+            // Hapus file lama jika ada
             $oldFilePath = WRITEPATH . $existing->path_file;
             if (file_exists($oldFilePath) && is_file($oldFilePath)) {
                 unlink($oldFilePath);

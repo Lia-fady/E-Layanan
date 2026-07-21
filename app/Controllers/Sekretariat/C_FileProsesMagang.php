@@ -70,6 +70,16 @@ class C_FileProsesMagang extends BaseController
 
         $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
         
+        // Pengecekan apakah id_persetujuan_magang valid dan ada di tabel t_persetujuan_magang
+        $db = \Config\Database::connect();
+        $cekPersetujuan = $db->table('t_persetujuan_magang')
+                             ->where('id_persetujuan_magang', $id_persetujuan)
+                             ->get()->getRow();
+                             
+        if (!$cekPersetujuan) {
+            return redirect()->back()->with('error', 'Data persetujuan magang tidak valid atau tidak ditemukan.');
+        }
+
         // Cek jika sudah ada file
         $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan);
         if ($existing) {
