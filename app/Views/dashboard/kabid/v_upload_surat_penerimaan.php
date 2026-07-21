@@ -75,7 +75,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Upload Surat Penerimaan</h6>
             </div>
             <div class="card-body">
-                <form action="<?= base_url('kabid/upload-surat-penerimaan/store') ?>" method="POST" enctype="multipart/form-data">
+                <form id="formUploadSurat" action="<?= base_url('kabid/upload-surat-penerimaan/store') ?>" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_persetujuan_magang" value="<?= esc($persetujuan->id_persetujuan_magang) ?>">
                     
@@ -214,6 +214,7 @@
 <?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
+    // Populate Modal Ganti File
     $('.btn-ganti-file').on('click', function() {
         var idSelesai = $(this).data('id');
         var idFile = $(this).data('idfile');
@@ -224,6 +225,56 @@ $(document).ready(function() {
         $('#nama_file_lama').text(namaFile);
         
         $('#modalGantiFile').modal('show');
+    });
+
+    // SweetAlert untuk Konfirmasi Upload Baru
+    $('#formUploadSurat').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        
+        Swal.fire({
+            title: 'Upload Surat Penerimaan?',
+            text: 'Pastikan file Surat Penerimaan Magang yang Anda unggah sudah benar dan sesuai dengan data permohonan mahasiswa.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4e73df',
+            cancelButtonColor: '#858796',
+            confirmButtonText: 'Ya, Upload',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'shadow-sm rounded'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+
+    // SweetAlert untuk Konfirmasi Ganti/Edit File
+    $('#formGantiFile').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        
+        Swal.fire({
+            title: 'Ganti Surat Penerimaan?',
+            text: 'File surat penerimaan yang lama akan diganti dengan file baru. Pastikan file yang dipilih sudah benar sebelum melanjutkan.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4e73df',
+            cancelButtonColor: '#858796',
+            confirmButtonText: 'Ya, Ganti',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            customClass: {
+                popup: 'shadow-sm rounded'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
     });
 });
 </script>

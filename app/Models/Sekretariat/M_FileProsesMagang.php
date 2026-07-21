@@ -33,4 +33,14 @@ class M_FileProsesMagang extends Model
                     ->orderBy('t_file_proses_magang.created_at', 'DESC') // Urutkan dari yang terbaru
                     ->findAll();
     }
+
+    /**
+     * Check if surat already exists
+     */
+    public function getExistingSurat($id_persetujuan)
+    {
+        return $this->where('id_persetujuan_magang', $id_persetujuan)
+                    ->where('proses_magang', 'SURAT_PENERIMAAN_MAGANG')
+                    ->first();
+    }
 }

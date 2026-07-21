@@ -66,22 +66,22 @@
         </a>
     </li>
 
-    <!-- Nav Item - Riwayat -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
-            <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat</span>
+    <!-- Nav Item - Upload Surat Penerimaan -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
+            <i class="fas fa-fw fa-file-upload"></i>
+            <span>Upload Surat Penerimaan</span>
         </a>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Upload Surat Penerimaan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
-            <i class="fas fa-fw fa-file-upload"></i>
-            <span>Upload Surat Penerimaan</span>
+    <!-- Nav Item - Riwayat -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
         </a>
     </li>
 
