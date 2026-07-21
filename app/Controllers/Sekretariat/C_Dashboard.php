@@ -30,15 +30,8 @@ class C_Dashboard extends BaseController
         // STAT CARDS
         // ============================================================
 
-        // 1. Total Pemohon (semua yang sudah dikirim, kecuali yang penempatannya SELESAI)
-        $total_permohonan = $db->table('t_permohonan_magang as pm')
-            ->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left')
-            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
-            ->where('pm.posting_data', 'kirim')
-            ->groupStart()
-                ->where('pn.status_penempatan !=', 'SELESAI')
-                ->orWhere('pn.status_penempatan IS NULL')
-            ->groupEnd()
+        // 1. Total Permohonan (seluruh data di t_permohonan_magang)
+        $total_permohonan = $db->table('t_permohonan_magang')
             ->countAllResults();
 
         // 2. Menunggu Verifikasi
@@ -46,13 +39,9 @@ class C_Dashboard extends BaseController
             ->where('status_persetujuan', 'MENUNGGU')
             ->countAllResults();
 
-        // 3. Sedang Diproses (disetujui tapi belum didisposisi)
-        $total_sedang_diproses = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DISETUJUI')
-            ->groupStart()
-                ->where('disposisi', '0')
-                ->orWhere('disposisi IS NULL')
-            ->groupEnd()
+        // 3. Sedang Diproses oleh Kepala Bidang (dari t_penempatan_magang WHERE status_penempatan = 'MENUNGGU')
+        $total_sedang_diproses = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'MENUNGGU')
             ->countAllResults();
 
         // 4. Disetujui (kecuali yang penempatannya SELESAI)
@@ -99,43 +88,43 @@ class C_Dashboard extends BaseController
         }
 
         // ============================================================
-        // STATUS VERIFIKASI ADMINISTRASI (Donut Chart)
+        // RINGKASAN PERMOHONAN (Donut Chart)
         // ============================================================
-        // Lengkap: permohonan dengan semua berkas (>= 3 file)
-        $lengkap = $db->query("
-            SELECT COUNT(*) as total FROM t_permohonan_magang pm
-            WHERE pm.posting_data = 'kirim'
-            AND (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) >= 3
-        ")->getRow()->total ?? 0;
 
-        // Tidak Lengkap: permohonan dengan sebagian berkas (1-2 file)
-        $tidak_lengkap = $db->query("
-            SELECT COUNT(*) as total FROM t_permohonan_magang pm
-            WHERE pm.posting_data = 'kirim'
-            AND (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) BETWEEN 1 AND 2
-        ")->getRow()->total ?? 0;
-
-        // Perlu Perbaikan: permohonan yang ditolak
-        $perlu_perbaikan = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DITOLAK')
+        // Total seluruh permohonan masuk (untuk angka di tengah donut)
+        $total_permohonan_chart = $db->table('t_permohonan_magang')
             ->countAllResults();
 
-        $total_status = (int)$lengkap + (int)$tidak_lengkap + (int)$perlu_perbaikan;
+        // Rincian status persetujuan dari t_persetujuan_magang
+        $status_row = $db->query("
+            SELECT
+                SUM(CASE WHEN status_persetujuan = 'MENUNGGU' THEN 1 ELSE 0 END) AS menunggu_verifikasi,
+                SUM(CASE WHEN status_persetujuan = 'DITOLAK' THEN 1 ELSE 0 END) AS ditolak,
+                SUM(CASE WHEN status_persetujuan = 'DISETUJUI' THEN 1 ELSE 0 END) AS disetujui
+            FROM t_persetujuan_magang
+        ")->getRow();
+
+        $menunggu  = (int)($status_row->menunggu_verifikasi ?? 0);
+        $ditolak   = (int)($status_row->ditolak ?? 0);
+        $disetujui = (int)($status_row->disetujui ?? 0);
+
+        // Persentase dihitung berdasarkan total data di t_persetujuan_magang
+        $total_status = $menunggu + $ditolak + $disetujui;
         $status_verifikasi = [
             [
-                'label'  => 'Lengkap',
-                'total'  => (int)$lengkap,
-                'persen' => $total_status > 0 ? round(($lengkap / $total_status) * 100, 1) : 0,
+                'label'  => 'Berkas Disetujui',
+                'total'  => $disetujui,
+                'persen' => $total_status > 0 ? round(($disetujui / $total_status) * 100, 1) : 0,
             ],
             [
-                'label'  => 'Tidak Lengkap',
-                'total'  => (int)$tidak_lengkap,
-                'persen' => $total_status > 0 ? round(($tidak_lengkap / $total_status) * 100, 1) : 0,
+                'label'  => 'Menunggu Verifikasi',
+                'total'  => $menunggu,
+                'persen' => $total_status > 0 ? round(($menunggu / $total_status) * 100, 1) : 0,
             ],
             [
-                'label'  => 'Perlu Perbaikan',
-                'total'  => (int)$perlu_perbaikan,
-                'persen' => $total_status > 0 ? round(($perlu_perbaikan / $total_status) * 100, 1) : 0,
+                'label'  => 'Ditolak',
+                'total'  => $ditolak,
+                'persen' => $total_status > 0 ? round(($ditolak / $total_status) * 100, 1) : 0,
             ],
         ];
 
@@ -193,6 +182,7 @@ class C_Dashboard extends BaseController
             'total_mahasiswa_aktif' => (int) $total_mahasiswa_aktif,
             'permohonan_pending'    => $permohonan_pending,
             'status_verifikasi'     => $status_verifikasi,
+            'total_permohonan_chart' => (int) $total_permohonan_chart,
             'ringkasan'             => [
                 'masuk'      => (int) $ringkasan_masuk,
                 'verifikasi' => (int) $ringkasan_verifikasi,

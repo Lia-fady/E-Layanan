@@ -33,17 +33,17 @@
 
 <!-- Stat Cards Row (5 cards) -->
 <div class="row mb-4">
-    <!-- Total Pemohon -->
+    <!-- Total Permohonan -->
     <div class="col-xl col-md-6 mb-3">
         <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon blue">
                     <i class="fas fa-file-alt"></i>
                 </div>
-                <div class="stat-card-title">Total Pemohon</div>
+                <div class="stat-card-title">Total Permohonan</div>
             </div>
             <div class="stat-card-value"><?= esc($total_permohonan) ?></div>
-            <div class="stat-card-desc">Semua pemohon masuk</div>
+            <div class="stat-card-desc">Semua permohonan masuk</div>
             <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link blue">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
@@ -67,23 +67,6 @@
         </div>
     </div>
 
-    <!-- Sedang Diproses -->
-    <div class="col-xl col-md-6 mb-3">
-        <div class="stat-card">
-            <div class="stat-card-header">
-                <div class="stat-card-icon green">
-                    <i class="fas fa-spinner"></i>
-                </div>
-                <div class="stat-card-title">Sedang Diproses</div>
-            </div>
-            <div class="stat-card-value"><?= esc($total_sedang_diproses) ?></div>
-            <div class="stat-card-desc">Dalam proses</div>
-            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link green">
-                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
-            </a>
-        </div>
-    </div>
-
     <!-- Disetujui -->
     <div class="col-xl col-md-6 mb-3">
         <div class="stat-card">
@@ -101,14 +84,31 @@
         </div>
     </div>
 
-    <!-- Mahaswa Aktif -->
+    <!-- Sedang Diproses oleh Kepala Bidang -->
+    <div class="col-xl col-md-6 mb-3">
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <div class="stat-card-icon green">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="stat-card-title">Sedang Diproses oleh Kepala Bidang</div>
+            </div>
+            <div class="stat-card-value"><?= esc($total_sedang_diproses) ?></div>
+            <div class="stat-card-desc">Dalam proses</div>
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link green">
+                Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mahasiswa Aktif -->
     <div class="col-xl col-md-6 mb-3">
         <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon purple">
                     <i class="fas fa-user-graduate"></i>
                 </div>
-                <div class="stat-card-title">Mahaswa Aktif</div>
+                <div class="stat-card-title">Mahasiswa Aktif</div>
             </div>
             <div class="stat-card-value"><?= esc($total_mahasiswa_aktif) ?></div>
             <div class="stat-card-desc">Sedang Magang</div>
@@ -158,15 +158,15 @@
 
     <!-- Right Column: Chart + Ringkasan -->
     <div class="col-lg-5 mb-4">
-        <!-- Status Verifikasi Administrasi -->
+        <!-- Ringkasan Permohonan -->
         <div class="chart-card mb-4">
-            <div class="card-title">Status Verifikasi Administrasi</div>
+            <div class="card-title">Ringkasan Permohonan</div>
             <div class="chart-container" style="height: 180px;">
                 <canvas id="donutChart"></canvas>
             </div>
             <ul class="chart-legend mt-3">
                 <?php
-                $chartColors = ['#4285F4', '#FFC107', '#EA4335'];
+                $chartColors = ['#34A853', '#FFC107', '#EA4335'];
                 $i = 0;
                 foreach ($status_verifikasi as $sv) :
                     $color = $chartColors[$i % count($chartColors)];
@@ -209,14 +209,14 @@
 
 <?= $this->section('scripts') ?>
 <script>
-// Donut Chart - Status Verifikasi Administrasi
+// Donut Chart - Ringkasan Permohonan
 (function() {
     const donutCtx = document.getElementById('donutChart');
     if (!donutCtx) return;
 
     const statusData = <?= json_encode($status_verifikasi) ?>;
-    const colors = ['#4285F4', '#FFC107', '#EA4335'];
-    const totalAll = statusData.reduce((sum, d) => sum + d.total, 0);
+    const colors = ['#34A853', '#FFC107', '#EA4335'];
+    const totalPermohonan = <?= (int)$total_permohonan_chart ?>;
 
     new Chart(donutCtx, {
         type: 'doughnut',
@@ -255,10 +255,10 @@
                 ctx.textBaseline = 'middle';
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#1d2939';
-                ctx.fillText(totalAll, width / 2, height / 2 - 8);
-                ctx.font = '12px Inter';
+                ctx.fillText(totalPermohonan, width / 2, height / 2 - 10);
+                ctx.font = '11px Inter';
                 ctx.fillStyle = '#98a2b3';
-                ctx.fillText('Total', width / 2, height / 2 + 14);
+                ctx.fillText('Total Permohonan', width / 2, height / 2 + 14);
                 ctx.save();
             }
         }]
