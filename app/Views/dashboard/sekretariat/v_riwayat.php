@@ -137,6 +137,15 @@
                                     <i class="fas fa-exchange-alt"></i>
                                 </button>
                             <?php endif; ?>
+
+                            <!-- Upload Surat Penerimaan -->
+                            <?php if ($status == 'DISETUJUI' && !empty($row->id_persetujuan_magang)) : ?>
+                                <a href="<?= base_url('sekretariat/file-proses-magang/create/' . $row->id_persetujuan_magang) ?>"
+                                   class="riwayat-action-btn" title="Upload Surat Penerimaan"
+                                   style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#F0FDF4; color:#16A34A; border-radius:6px; text-decoration:none;">
+                                    <i class="fas fa-file-upload"></i>
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>
