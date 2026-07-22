@@ -18,7 +18,25 @@ class C_UploadSuratPenerimaan extends BaseController
 
     public function index()
     {
-        return redirect()->to(base_url('sekretariat/riwayat'));
+        $db = \Config\Database::connect();
+        $persetujuan = $db->table('t_persetujuan_magang ps')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
+            ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
+            ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->where('ps.status_persetujuan', 'DISETUJUI')
+            ->orderBy('ps.tgl_persetujuan', 'DESC')
+            ->get()->getResult();
+
+        $data = [
+            'title'       => 'Daftar Surat Penerimaan Magang',
+            'active_menu' => 'upload_surat_penerimaan',
+            'persetujuan' => $persetujuan,
+        ];
+
+        return view('dashboard/sekretariat/v_upload_surat_penerimaan_index', $data);
     }
 
     private function getPersetujuanDetail($id_persetujuan)
@@ -45,8 +63,8 @@ class C_UploadSuratPenerimaan extends BaseController
         $data = [
             'persetujuan' => $persetujuan,
             'jenis_file'  => $this->fileModel->getActiveFiles(),
-            // Mengambil semua surat yang diupload (mendukung multiple files)
-            'files'       => $this->fileProsesModel->where('id_persetujuan_magang', $id_persetujuan)->where('proses_magang', 'PERSETUJUAN_MAGANG')->findAll(),
+            // Mengambil semua surat yang diupload menggunakan query model lengkap
+            'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
         ];
 
         return view('dashboard/sekretariat/v_upload_surat_modal', $data);
@@ -62,13 +80,8 @@ class C_UploadSuratPenerimaan extends BaseController
             'id_persetujuan_magang' => 'required',
             'id_file'               => 'required',
             'file_surat'            => [
-                'rules'  => 'uploaded[file_surat]|max_size[file_surat,5120]|ext_in[file_surat,pdf,doc,docx]|mime_in[file_surat,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
-                'errors' => [
-                    'uploaded' => 'File surat harus diunggah.',
-                    'max_size' => 'Ukuran file maksimal 5MB.',
-                    'ext_in'   => 'Format file hanya diperbolehkan PDF, DOC, atau DOCX.',
-                    'mime_in'  => 'Format file tidak valid.'
-                ]
+                // Not strictly validating the array as a single uploaded file via CI rules since it's multiple.
+                // We will validate each file manually below or through multiple rule.
             ]
         ];
 
@@ -87,26 +100,47 @@ class C_UploadSuratPenerimaan extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Data persetujuan magang tidak valid atau tidak ditemukan.']);
         }
 
-        $file = $this->request->getFile('file_surat');
-        if ($file->isValid() && !$file->hasMoved()) {
-            $newName = $file->getRandomName();
-            $file->store('surat_penerimaan_magang/', $newName);
-            
-            $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
-
-            $this->fileProsesModel->insert([
-                'id_persetujuan_magang' => $id_persetujuan,
-                'id_file'               => $this->request->getPost('id_file'),
-                'nama_file'             => $file->getClientName(),
-                'path_file'             => $path_file,
-                'proses_magang'         => 'PERSETUJUAN_MAGANG', // Sesuai enum
-                'created_by'            => session('id_user_pegawai')
-            ]);
-
-            return $this->response->setJSON(['success' => true, 'message' => 'Surat penerimaan berhasil diunggah.']);
+        $files = $this->request->getFileMultiple('file_surat');
+        if (empty($files)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada file yang diunggah.']);
         }
 
-        return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
+        $berhasil = 0;
+        foreach ($files as $file) {
+            if ($file->isValid() && !$file->hasMoved()) {
+                // Manual validation for each file to ensure correct size and extension
+                $ext = $file->getClientExtension();
+                $size = $file->getSize(); // in bytes
+                
+                if (!in_array(strtolower($ext), ['pdf', 'doc', 'docx'])) {
+                    continue; // Skip invalid extensions
+                }
+                if ($size > 5120000) {
+                    continue; // Skip file > 5MB
+                }
+
+                $newName = $file->getRandomName();
+                $file->store('surat_penerimaan_magang/', $newName);
+                
+                $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
+
+                $this->fileProsesModel->insert([
+                    'id_persetujuan_magang' => $id_persetujuan,
+                    'id_file'               => $this->request->getPost('id_file'),
+                    'nama_file'             => $file->getClientName(),
+                    'path_file'             => $path_file,
+                    'proses_magang'         => 'persetujuan', // Sesuai enum
+                    'created_by'            => session('id_user_pegawai')
+                ]);
+                $berhasil++;
+            }
+        }
+
+        if ($berhasil > 0) {
+            return $this->response->setJSON(['success' => true, 'message' => "$berhasil surat penerimaan berhasil diunggah."]);
+        }
+
+        return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file. Pastikan format dan ukuran sesuai.']);
     }
 
     public function delete($id_file_selesai)
@@ -120,7 +154,7 @@ class C_UploadSuratPenerimaan extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
 
-        $oldFilePath = WRITEPATH . $existing['path_file'];
+        $oldFilePath = WRITEPATH . $existing->path_file;
         if (file_exists($oldFilePath) && is_file($oldFilePath)) {
             unlink($oldFilePath);
         }
@@ -134,14 +168,14 @@ class C_UploadSuratPenerimaan extends BaseController
     {
         $fileData = $this->fileProsesModel->find($id_file_selesai);
         if (!$fileData) {
-            return redirect()->back()->with('error', 'File tidak ditemukan.');
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data file tidak ditemukan di database.');
         }
 
-        $filePath = WRITEPATH . $fileData['path_file'];
+        $filePath = WRITEPATH . $fileData->path_file;
         if (!file_exists($filePath)) {
-            return redirect()->back()->with('error', 'File fisik tidak ditemukan di server.');
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('File fisik tidak ditemukan di server.');
         }
 
-        return $this->response->download($filePath, null)->setFileName($fileData['nama_file']);
+        return $this->response->download($filePath, null)->setFileName($fileData->nama_file);
     }
 }

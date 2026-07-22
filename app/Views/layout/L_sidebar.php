@@ -13,8 +13,19 @@
     /* CSS: wrap teks panjang di sidebar (menghindari nama terlalu panjang terpotong jika di-ellipsis) */
     .sidebar .nav-item .nav-link span {
         white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
         display: inline-block;
         line-height: 1.2;
+        vertical-align: middle;
+    }
+    .sidebar .nav-item .nav-link {
+        height: auto !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        display: flex;
+        align-items: center;
     }
 </style>
 

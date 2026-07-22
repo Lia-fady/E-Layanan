@@ -36,8 +36,8 @@
 
                     <div class="form-group">
                         <label for="file_surat">Pilih File Surat <span class="text-danger">*</span></label>
-                        <input type="file" name="file_surat" id="file_surat" class="form-control-file" accept=".pdf,.doc,.docx" required>
-                        <small class="form-text text-muted">Format yang diizinkan: PDF, DOC, DOCX. Maksimal 5MB.</small>
+                        <input type="file" name="file_surat[]" id="file_surat" class="form-control-file" accept=".pdf,.doc,.docx" multiple required>
+                        <small class="form-text text-muted">Bisa memilih lebih dari 1 file. Format yang diizinkan: PDF, DOC, DOCX. Maksimal 5MB per file.</small>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" id="btnUploadSubmit">
@@ -54,8 +54,11 @@
                         <thead class="thead-light">
                             <tr>
                                 <th width="5%" class="text-center">No</th>
+                                <th width="20%">Jenis File</th>
                                 <th>Nama File</th>
-                                <th width="20%" class="text-center">Aksi</th>
+                                <th width="20%">Tanggal Upload</th>
+                                <th width="15%">Pengunggah</th>
+                                <th width="10%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,13 +66,16 @@
                                 <?php $no = 1; foreach ($files as $f) : ?>
                                     <tr>
                                         <td class="text-center align-middle"><?= $no++ ?></td>
+                                        <td class="align-middle"><?= esc($f->nama_file_master ?? 'Surat Penerimaan') ?></td>
                                         <td class="align-middle">
-                                            <a href="<?= base_url('sekretariat/upload-surat-penerimaan/download/' . $f['id_file_proses_magang']) ?>" target="_blank">
-                                                <?= esc($f['nama_file']) ?>
+                                            <a href="<?= base_url('sekretariat/upload-surat-penerimaan/download/' . $f->id_file_selesai_magang) ?>" target="_blank">
+                                                <?= esc($f->nama_file) ?>
                                             </a>
                                         </td>
+                                        <td class="align-middle"><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></td>
+                                        <td class="align-middle"><?= esc($f->pengunggah ?? '-') ?></td>
                                         <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete-surat" data-id="<?= $f['id_file_proses_magang'] ?>" title="Hapus File">
+                                            <button type="button" class="btn btn-sm btn-danger btn-delete-surat" data-id="<?= $f->id_file_selesai_magang ?>" title="Hapus File">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -77,7 +83,7 @@
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td colspan="3" class="text-center">Belum ada surat penerimaan yang diunggah.</td>
+                                    <td colspan="6" class="text-center">Belum ada surat penerimaan yang diunggah.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

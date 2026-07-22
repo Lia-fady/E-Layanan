@@ -63,9 +63,9 @@
                                 <?= $mulai ?> s/d <?= $selesai ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?= base_url('sekretariat/upload-surat-penerimaan/' . $p->id_persetujuan_magang) ?>" class="btn btn-sm btn-primary" title="Upload Surat">
+                                <button type="button" class="btn btn-sm btn-primary btn-upload-surat" data-id-persetujuan="<?= $p->id_persetujuan_magang ?>" title="Upload Surat">
                                     <i class="fas fa-file-upload mr-1"></i> Upload Surat
-                                </a>
+                                </button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -88,6 +88,26 @@
 <script>
 $(document).ready(function() {
     $('#dataTable').DataTable();
+
+    // Handle Upload Surat Button
+    $('.btn-upload-surat').on('click', function(e) {
+        e.preventDefault();
+        var idPersetujuan = $(this).data('id-persetujuan');
+        // Load the modal content via AJAX to display upload modal without leaving page
+        $.ajax({
+            url: "<?= base_url('sekretariat/upload-surat-penerimaan/form') ?>/" + idPersetujuan,
+            type: "GET",
+            success: function(response) {
+                // If there's an existing modal, remove it
+                $('#modalUploadSuratContainer').remove();
+                $('body').append('<div id="modalUploadSuratContainer">' + response + '</div>');
+                $('#modalUploadSurat').modal('show');
+            },
+            error: function() {
+                Swal.fire({icon: 'error', title: 'Oops...', text: 'Gagal memuat form upload surat.'});
+            }
+        });
+    });
 });
 </script>
 <?= $this->endSection() ?>

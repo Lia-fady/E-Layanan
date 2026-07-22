@@ -29,7 +29,7 @@ class M_FileProsesMagang extends Model
                     ->join('m_file', 'm_file.id_file = t_file_proses_magang.id_file', 'left')
                     ->join('c_user_pegawai', 'c_user_pegawai.id_user_pegawai = t_file_proses_magang.created_by', 'left')
                     ->where('t_file_proses_magang.id_persetujuan_magang', $id_persetujuan)
-                    ->where('t_file_proses_magang.proses_magang', 'SURAT_PENERIMAAN_MAGANG')
+                    ->where('t_file_proses_magang.proses_magang', 'persetujuan')
                     ->orderBy('t_file_proses_magang.created_at', 'DESC') // Urutkan dari yang terbaru
                     ->findAll();
     }
@@ -40,7 +40,7 @@ class M_FileProsesMagang extends Model
     public function getExistingSurat($id_persetujuan)
     {
         return $this->where('id_persetujuan_magang', $id_persetujuan)
-                    ->where('proses_magang', 'SURAT_PENERIMAAN_MAGANG')
+                    ->where('proses_magang', 'persetujuan')
                     ->first();
     }
 }
