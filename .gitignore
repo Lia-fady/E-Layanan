@@ -89,6 +89,8 @@ vendor/
 #-------------------------
 # IDE / Development Files
 #-------------------------
+.env
+.env.*
 
 # Modules Testing
 _modules/*
