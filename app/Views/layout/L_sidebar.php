@@ -9,6 +9,15 @@
  */
 ?>
 
+<style>
+    /* CSS: wrap teks panjang di sidebar (menghindari nama terlalu panjang terpotong jika di-ellipsis) */
+    .sidebar .nav-item .nav-link span {
+        white-space: normal !important;
+        display: inline-block;
+        line-height: 1.2;
+    }
+</style>
+
 <!-- Sidebar -->
 <ul class="navbar-nav sidebar sidebar-dark-navy sidebar-dark accordion d-flex flex-column" id="accordionSidebar">
 
@@ -44,10 +53,6 @@
         </a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - Verifikasi Berkas -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
             <i class="fas fa-fw fa-clipboard-check"></i>
@@ -55,18 +60,6 @@
         </a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - Pilih Bidang Tujuan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'disposisi') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/disposisi') ?>">
-            <i class="fas fa-fw fa-share-square"></i>
-            <span>Pilih bidang tujuan</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Upload Surat Penerimaan -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
             <i class="fas fa-fw fa-file-upload"></i>
@@ -74,21 +67,12 @@
         </a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - Riwayat -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
             <i class="fas fa-fw fa-history"></i>
             <span>Riwayat</span>
         </a>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
-
-    <!-- Nav Item - Logout -->
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-fw fa-sign-out-alt"></i>

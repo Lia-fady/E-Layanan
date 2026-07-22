@@ -54,6 +54,7 @@ class C_Riwayat extends BaseController
         $builder->join('m_bidang as bd', 'bd.id_bidang = ps.id_bidang', 'left');
         $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
+        $builder->where('pn.status_penempatan', 'SELESAI');
         $builder->groupBy('pm.id_permohonan_magang');
         $builder->orderBy('pm.created_at', 'DESC');
 
@@ -171,6 +172,58 @@ class C_Riwayat extends BaseController
             session()->setFlashdata('error', 'Gagal mengubah disposisi bidang.');
         }
 
+        return redirect()->to(base_url('sekretariat/riwayat'));
+    }
+
+    /**
+     * Hapus data riwayat (permohonan magang dan relasinya)
+     */
+    public function delete()
+    {
+        if ($this->request->isAJAX()) {
+            $id_permohonan = $this->request->getPost('id_permohonan_magang');
+            $db = \Config\Database::connect();
+            
+            $db->transStart();
+            
+            // Note: Since we have many tables, we delete manually or rely on FK cascade.
+            // If no FK cascade, we delete from dependent tables first.
+            $db->table('t_logbook_magang')
+               ->whereIn('id_penempatan_magang', function($builder) use ($id_permohonan) {
+                   return $builder->select('id_penempatan_magang')->from('t_penempatan_magang')->where('id_mahasiswa', function($b2) use ($id_permohonan) {
+                       return $b2->select('id_mahasiswa')->from('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan);
+                   });
+               })->delete();
+
+            $db->table('t_penilaian_magang')
+               ->whereIn('id_penempatan_magang', function($builder) use ($id_permohonan) {
+                   return $builder->select('id_penempatan_magang')->from('t_penempatan_magang')->where('id_mahasiswa', function($b2) use ($id_permohonan) {
+                       return $b2->select('id_mahasiswa')->from('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan);
+                   });
+               })->delete();
+
+            $db->table('t_penempatan_magang')->where('id_persetujuan_magang', function($builder) use ($id_permohonan) {
+                return $builder->select('id_persetujuan_magang')->from('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan);
+            })->delete();
+
+            // Delete files records
+            $db->table('t_file_proses_magang')->where('id_persetujuan_magang', function($builder) use ($id_permohonan) {
+                return $builder->select('id_persetujuan_magang')->from('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan);
+            })->delete();
+
+            $db->table('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
+            $db->table('t_file_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
+            $db->table('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
+
+            $db->transComplete();
+
+            if ($db->transStatus() === false) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Gagal menghapus data riwayat.']);
+            }
+
+            return $this->response->setJSON(['success' => true, 'message' => 'Data riwayat berhasil dihapus.']);
+        }
+        
         return redirect()->to(base_url('sekretariat/riwayat'));
     }
 }

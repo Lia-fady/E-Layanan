@@ -50,12 +50,21 @@ class M_Verifikasi extends Model
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
+        $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
         $builder->groupStart();
             $builder->where('ps.id_persetujuan_magang IS NULL');
             $builder->orWhere('ps.status_persetujuan', 'MENUNGGU');
+            $builder->orWhere('ps.status_persetujuan', 'PERBAIKAN_BERKAS');
+            $builder->orGroupStart()
+                ->where('ps.status_persetujuan', 'DISETUJUI')
+                ->groupStart()
+                    ->where('pn.status_penempatan !=', 'SELESAI')
+                    ->orWhere('pn.status_penempatan IS NULL')
+                ->groupEnd()
+            ->groupEnd();
         $builder->groupEnd();
-        $builder->orderBy('pm.created_at', 'DESC');
+        $builder->orderBy('pm.created_at', 'ASC');
 
         return $builder->get()->getResult();
     }
@@ -204,7 +213,7 @@ class M_Verifikasi extends Model
             return $db->table('t_persetujuan_magang')
                 ->where('id_permohonan_magang', $id_permohonan)
                 ->update([
-                    'status_persetujuan' => 'DITOLAK',
+                    'status_persetujuan' => 'PERBAIKAN_BERKAS',
                     'catatan'            => 'Berkas dikembalikan',
                     'tgl_persetujuan'    => date('Y-m-d H:i:s'),
                 ]);
@@ -212,7 +221,7 @@ class M_Verifikasi extends Model
             return $db->table('t_persetujuan_magang')
                 ->insert([
                     'id_permohonan_magang' => $id_permohonan,
-                    'status_persetujuan'   => 'DITOLAK',
+                    'status_persetujuan'   => 'PERBAIKAN_BERKAS',
                     'catatan'              => 'Berkas dikembalikan',
                     'disposisi'            => '0',
                     'tgl_persetujuan'      => date('Y-m-d H:i:s'),

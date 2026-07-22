@@ -45,9 +45,9 @@
         <option value="">Filter</option>
         <option value="MENUNGGU">Menunggu Verifikasi</option>
         <option value="MENUNGGU_PENEMPATAN">Menunggu Penempatan</option>
-        <option value="MENUNGGU_KABID">Menunggu Persetujuan Kabid</option>
+        <option value="MENUNGGU_BIDANG">Menunggu Persetujuan Bidang</option>
         <option value="SUDAH_DITEMPATKAN">Sudah Ditempatkan</option>
-        <option value="DITOLAK">Ditolak</option>
+        <option value="PERBAIKAN_BERKAS">Perbaikan Berkas</option>
     </select>
 </div>
 
@@ -85,17 +85,17 @@
                             $filterValue = 'SUDAH_DITEMPATKAN';
                         } elseif ($status_penempatan == 'MENUNGGU') {
                             $badgeClass = 'menunggu-penempatan';
-                            $statusText = 'Menunggu Kabid';
-                            $filterValue = 'MENUNGGU_KABID';
+                            $statusText = 'Menunggu Bidang';
+                            $filterValue = 'MENUNGGU_BIDANG';
                         } else {
                             $badgeClass = 'menunggu-penempatan';
                             $statusText = 'Menunggu Penempatan';
                             $filterValue = 'MENUNGGU_PENEMPATAN';
                         }
-                    } elseif ($status == 'DITOLAK') {
+                    } elseif ($status == 'PERBAIKAN_BERKAS') {
                         $badgeClass = 'ditolak';
-                        $statusText = 'Ditolak';
-                        $filterValue = 'DITOLAK';
+                        $statusText = 'Perbaikan Berkas';
+                        $filterValue = 'PERBAIKAN_BERKAS';
                     } else {
                         $badgeClass = 'menunggu-verifikasi';
                         $statusText = 'Menunggu Verifikasi';
@@ -125,8 +125,8 @@
                                 <i class="fas fa-edit"></i>
                             </a>
 
-                            <!-- Edit Disposisi (hanya jika menunggu penempatan atau menunggu kabid) -->
-                            <?php if ($status == 'DISETUJUI' && in_array($filterValue, ['MENUNGGU_PENEMPATAN', 'MENUNGGU_KABID']) && !empty($row->id_persetujuan_magang)) : ?>
+                            <!-- Edit Disposisi (hanya jika menunggu penempatan atau menunggu bidang) -->
+                            <?php if ($status == 'DISETUJUI' && in_array($filterValue, ['MENUNGGU_PENEMPATAN', 'MENUNGGU_BIDANG']) && !empty($row->id_persetujuan_magang)) : ?>
                                 <button type="button"
                                         class="riwayat-action-btn btn-edit-disposisi"
                                         title="Ubah Penempatan Bidang"
@@ -140,11 +140,24 @@
 
                             <!-- Upload Surat Penerimaan -->
                             <?php if ($status == 'DISETUJUI' && !empty($row->id_persetujuan_magang)) : ?>
-                                <a href="<?= base_url('sekretariat/upload-surat-penerimaan/' . $row->id_persetujuan_magang) ?>"
-                                   class="riwayat-action-btn" title="Upload Surat Penerimaan"
-                                   style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#F0FDF4; color:#16A34A; border-radius:6px; text-decoration:none;">
+                                <button type="button" 
+                                   class="riwayat-action-btn btn-upload-surat" title="Upload Surat Penerimaan"
+                                   style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#F0FDF4; color:#16A34A; border-radius:6px; text-decoration:none; border:none;"
+                                   data-id-persetujuan="<?= $row->id_persetujuan_magang ?>">
                                     <i class="fas fa-file-upload"></i>
-                                </a>
+                                </button>
+                            <?php endif; ?>
+
+                            <!-- Hapus Data (Hanya untuk SELESAI) -->
+                            <?php if ($status_penempatan == 'SELESAI') : ?>
+                                <button type="button"
+                                        class="riwayat-action-btn btn-delete-riwayat"
+                                        title="Hapus Riwayat"
+                                        style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#FEF2F2; color:#DC2626; border-radius:6px; text-decoration:none; border:none;"
+                                        data-id-permohonan="<?= $row->id_permohonan_magang ?>"
+                                        data-nama="<?= esc($row->nama_mahasiswa ?? '-') ?>">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             <?php endif; ?>
                         </div>
                     </td>
@@ -240,6 +253,66 @@ $(document).ready(function() {
         $('#edit_nama_mahasiswa').text(nama);
         $('#edit_id_bidang').val(bidangId);
         $('#modalEditDisposisi').modal('show');
+    });
+
+    // Handle Upload Surat Button
+    $('.btn-upload-surat').on('click', function(e) {
+        e.preventDefault();
+        var idPersetujuan = $(this).data('id-persetujuan');
+        // Load the modal content via AJAX to display upload modal without leaving page
+        $.ajax({
+            url: "<?= base_url('sekretariat/upload-surat-penerimaan/form') ?>/" + idPersetujuan,
+            type: "GET",
+            success: function(response) {
+                // If there's an existing modal, remove it
+                $('#modalUploadSuratContainer').remove();
+                $('body').append('<div id="modalUploadSuratContainer">' + response + '</div>');
+                $('#modalUploadSurat').modal('show');
+            },
+            error: function() {
+                Swal.fire({icon: 'error', title: 'Oops...', text: 'Gagal memuat form upload surat.'});
+            }
+        });
+    });
+
+    // Delete Riwayat Action
+    $('.btn-delete-riwayat').on('click', function() {
+        var id = $(this).data('id-permohonan');
+        var nama = $(this).data('nama');
+        
+        Swal.fire({
+            title: 'Hapus Riwayat?',
+            text: "Data riwayat atas nama " + nama + " akan dihapus permanen dan tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DC2626',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= base_url('sekretariat/riwayat/delete') ?>',
+                    type: 'POST',
+                    data: {
+                        'id_permohonan_magang': id,
+                        '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Gagal!', response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                    }
+                });
+            }
+        });
     });
 });
 </script>

@@ -39,7 +39,7 @@ class C_Dashboard extends BaseController
             ->where('status_persetujuan', 'MENUNGGU')
             ->countAllResults();
 
-        // 3. Sedang Diproses oleh Kepala Bidang (dari t_penempatan_magang WHERE status_penempatan = 'MENUNGGU')
+        // 3. Sedang Diproses oleh Bidang (dari t_penempatan_magang WHERE status_penempatan = 'MENUNGGU')
         $total_sedang_diproses = $db->table('t_penempatan_magang')
             ->where('status_penempatan', 'MENUNGGU')
             ->countAllResults();
@@ -99,17 +99,17 @@ class C_Dashboard extends BaseController
         $status_row = $db->query("
             SELECT
                 SUM(CASE WHEN status_persetujuan = 'MENUNGGU' THEN 1 ELSE 0 END) AS menunggu_verifikasi,
-                SUM(CASE WHEN status_persetujuan = 'DITOLAK' THEN 1 ELSE 0 END) AS ditolak,
+                SUM(CASE WHEN status_persetujuan = 'PERBAIKAN_BERKAS' THEN 1 ELSE 0 END) AS perbaikan_berkas,
                 SUM(CASE WHEN status_persetujuan = 'DISETUJUI' THEN 1 ELSE 0 END) AS disetujui
             FROM t_persetujuan_magang
         ")->getRow();
 
         $menunggu  = (int)($status_row->menunggu_verifikasi ?? 0);
-        $ditolak   = (int)($status_row->ditolak ?? 0);
+        $perbaikan_berkas   = (int)($status_row->perbaikan_berkas ?? 0);
         $disetujui = (int)($status_row->disetujui ?? 0);
 
         // Persentase dihitung berdasarkan total data di t_persetujuan_magang
-        $total_status = $menunggu + $ditolak + $disetujui;
+        $total_status = $menunggu + $perbaikan_berkas + $disetujui;
         $status_verifikasi = [
             [
                 'label'  => 'Berkas Disetujui',
@@ -122,9 +122,9 @@ class C_Dashboard extends BaseController
                 'persen' => $total_status > 0 ? round(($menunggu / $total_status) * 100, 1) : 0,
             ],
             [
-                'label'  => 'Ditolak',
-                'total'  => $ditolak,
-                'persen' => $total_status > 0 ? round(($ditolak / $total_status) * 100, 1) : 0,
+                'label'  => 'Perbaikan Berkas',
+                'total'  => $perbaikan_berkas,
+                'persen' => $total_status > 0 ? round(($perbaikan_berkas / $total_status) * 100, 1) : 0,
             ],
         ];
 
@@ -145,8 +145,8 @@ class C_Dashboard extends BaseController
             ->where('DATE(created_at)', $hariIni)
             ->countAllResults();
 
-        $ringkasan_ditolak = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DITOLAK')
+        $ringkasan_perbaikan = $db->table('t_persetujuan_magang')
+            ->where('status_persetujuan', 'PERBAIKAN_BERKAS')
             ->where('DATE(tgl_persetujuan)', $hariIni)
             ->countAllResults();
 
@@ -187,7 +187,7 @@ class C_Dashboard extends BaseController
                 'masuk'      => (int) $ringkasan_masuk,
                 'verifikasi' => (int) $ringkasan_verifikasi,
                 'disposisi'  => (int) $ringkasan_disposisi,
-                'ditolak'    => (int) $ringkasan_ditolak,
+                'ditolak'    => (int) $ringkasan_perbaikan,
             ],
             'tanggal_formatted'     => $tanggalFormatted,
         ];

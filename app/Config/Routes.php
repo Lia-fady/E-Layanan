@@ -26,6 +26,13 @@ $routes->get('auth/login', '\App\Controllers\Sekretariat\C_Auth::login');
 $routes->post('auth/login', '\App\Controllers\Sekretariat\C_Auth::login');
 $routes->get('auth/logout', '\App\Controllers\Sekretariat\C_Auth::logout');
 
+$routes->get('temp/update-db', static function() {
+    $db = \Config\Database::connect();
+    $db->table('t_persetujuan_magang')->where('status_persetujuan', 'DITOLAK')->update(['status_persetujuan' => 'PERBAIKAN_BERKAS']);
+    echo "Database updated via route.";
+});
+
+
 // =========================================================================
 // Sekretariat Route Group (dilindungi filter authSekretariat)
 // =========================================================================
@@ -36,25 +43,18 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
 
     // Verifikasi Permohonan
     $routes->get('verifikasi', '\App\Controllers\Sekretariat\C_Verifikasi::index');
-    $routes->get('verifikasi/detail/(:num)', '\App\Controllers\Sekretariat\C_Verifikasi::detail/$1');
-    $routes->post('verifikasi/proses', '\App\Controllers\Sekretariat\C_Verifikasi::proses');
-    $routes->post('verifikasi/kembalikan', '\App\Controllers\Sekretariat\C_Verifikasi::kembalikan');
-    $routes->get('verifikasi/proses', static function () {
-        return redirect()->to(base_url('sekretariat/verifikasi'));
-    });
-
+    $routes->get('verifikasi/detailModal/(:num)', '\App\Controllers\Sekretariat\C_Verifikasi::detailModal/$1');
+    $routes->post('verifikasi/prosesModal', '\App\Controllers\Sekretariat\C_Verifikasi::prosesModal');
     // Riwayat
     $routes->get('riwayat', '\App\Controllers\Sekretariat\C_Riwayat::index');
+    $routes->post('riwayat/delete', '\App\Controllers\Sekretariat\C_Riwayat::delete');
     $routes->post('riwayat/setujui', '\App\Controllers\Sekretariat\C_Riwayat::setujui');
     $routes->post('riwayat/tolak', '\App\Controllers\Sekretariat\C_Riwayat::tolak');
 
-    // Disposisi
-    $routes->get('disposisi', '\App\Controllers\Sekretariat\C_Disposisi::index');
-    $routes->get('disposisi/detail/(:num)', '\App\Controllers\Sekretariat\C_Disposisi::detail/$1');
-    $routes->post('disposisi/proses', '\App\Controllers\Sekretariat\C_Disposisi::proses');
-    $routes->get('disposisi/proses', static function () {
-        return redirect()->to(base_url('sekretariat/disposisi'));
-    });
+    // Disposisi (Disabled as integrated into Verifikasi)
+    // $routes->get('disposisi', '\App\Controllers\Sekretariat\C_Disposisi::index');
+    // $routes->get('disposisi/detail/(:num)', '\App\Controllers\Sekretariat\C_Disposisi::detail/$1');
+    // $routes->post('disposisi/proses', '\App\Controllers\Sekretariat\C_Disposisi::proses');
 
     // Profile
     $routes->get('profile', '\App\Controllers\Sekretariat\C_Profile::index');
@@ -92,9 +92,9 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
 
     // Surat Penerimaan Magang (Menu Baru)
     $routes->get('upload-surat-penerimaan', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::index');
-    $routes->get('upload-surat-penerimaan/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::create/$1');
+    $routes->get('upload-surat-penerimaan/form/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::form/$1');
     $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::store');
-    $routes->post('upload-surat-penerimaan/update/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::update/$1');
+    $routes->post('upload-surat-penerimaan/delete/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::delete/$1');
     $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::download/$1');
 });
 
@@ -113,8 +113,8 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
 
     // Surat Penerimaan Magang (Menu Baru)
     $routes->get('upload-surat-penerimaan', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::index');
-    $routes->get('upload-surat-penerimaan/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::create/$1');
+    $routes->get('upload-surat-penerimaan/form/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::form/$1');
     $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::store');
-    $routes->post('upload-surat-penerimaan/update/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::update/$1');
+    $routes->post('upload-surat-penerimaan/delete/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::delete/$1');
     $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::download/$1');
 });

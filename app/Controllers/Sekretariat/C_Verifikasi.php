@@ -51,30 +51,33 @@ class C_Verifikasi extends BaseController
     }
 
     /**
-     * Halaman detail permohonan dengan validasi per-file.
+     * Data untuk modal detail permohonan.
      */
-    public function detail($id)
+    public function detailModal($id)
     {
+        $db = \Config\Database::connect();
+        
         $data = [
-            'title'       => 'Detail Verifikasi Berkas',
-            'active_menu' => 'verifikasi',
             'permohonan'  => $this->verifikasiModel->getPermohonanById($id),
             'files'       => $this->verifikasiModel->getFilePermohonan($id),
+            'bidang'      => $db->table('m_bidang')->where('status_aktif', '1')->get()->getResult(),
         ];
 
-        return view('dashboard/sekretariat/v_verifikasi_detail', $data);
+        return view('dashboard/sekretariat/v_verifikasi_modal', $data);
     }
 
     /**
-     * Proses verifikasi per-file dan tentukan status keseluruhan.
+     * Proses verifikasi via AJAX Modal.
      */
-    public function proses()
+    public function prosesModal()
     {
+        if (!$this->request->isAJAX()) {
+            return redirect()->to(base_url('sekretariat/verifikasi'));
+        }
+
         $id_permohonan = $this->request->getPost('id_permohonan_magang');
         $fileStatuses = $this->request->getPost('file_status') ?? [];
-
-        // Determine file status metrics for notes
-        // Note: status_verifikasi is not supported in the current database schema
+        $id_bidang = $this->request->getPost('id_bidang');
 
         $allValid = true;
         $anyInvalid = false;
@@ -83,13 +86,12 @@ class C_Verifikasi extends BaseController
             if ($status === 'TIDAK_VALID') $anyInvalid = true;
         }
 
-        // Determine overall status (selalu DISETUJUI sesuai request)
-        $overallStatus = 'DISETUJUI';
+        $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
+        $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
 
-        // Save overall verification
         $data = [
             'id_permohonan_magang' => $id_permohonan,
-            'catatan'              => $anyInvalid ? 'Ada berkas yang tidak valid' : ($allValid ? 'Semua berkas valid' : ''),
+            'catatan'              => $catatan,
             'status_persetujuan'   => $overallStatus,
             'created_by'           => session('id_user_pegawai'),
             'updated_by'           => session('id_user_pegawai'),
@@ -97,13 +99,28 @@ class C_Verifikasi extends BaseController
 
         $result = $this->verifikasiModel->simpanVerifikasi($data);
 
-        if ($result) {
-            session()->setFlashdata('success', 'Verifikasi berhasil disimpan.');
-        } else {
-            session()->setFlashdata('error', 'Gagal menyimpan verifikasi.');
+        // Jika disetujui dan id_bidang dikirim, langsung proses disposisi
+        if ($overallStatus == 'DISETUJUI' && !empty($id_bidang)) {
+            $db = \Config\Database::connect();
+            $persetujuan = $db->table('t_persetujuan_magang')
+                              ->where('id_permohonan_magang', $id_permohonan)
+                              ->get()->getRow();
+                              
+            if ($persetujuan) {
+                $disposisiModel = new \App\Models\Sekretariat\M_Disposisi();
+                $disposisiModel->simpanDisposisi($persetujuan->id_persetujuan_magang, [
+                    'id_bidang'         => $id_bidang,
+                    'updated_by'        => session('id_user_pegawai'),
+                    'catatan_disposisi' => 'Disposisi dari Verifikasi',
+                ]);
+            }
         }
 
-        return redirect()->to(base_url('sekretariat/verifikasi'));
+        if ($result) {
+            return $this->response->setJSON(['success' => true, 'message' => 'Verifikasi berhasil disimpan.']);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Gagal menyimpan verifikasi.']);
+        }
     }
 
     /**

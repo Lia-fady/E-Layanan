@@ -84,14 +84,14 @@
         </div>
     </div>
 
-    <!-- Sedang Diproses oleh Kepala Bidang -->
+    <!-- Sedang Diproses oleh Bidang -->
     <div class="col-xl col-md-6 mb-3">
         <div class="stat-card">
             <div class="stat-card-header">
                 <div class="stat-card-icon green">
                     <i class="fas fa-spinner"></i>
                 </div>
-                <div class="stat-card-title">Sedang Diproses oleh Kepala Bidang</div>
+                <div class="stat-card-title">Sedang Diproses oleh Bidang</div>
             </div>
             <div class="stat-card-value"><?= esc($total_sedang_diproses) ?></div>
             <div class="stat-card-desc">Dalam proses</div>
@@ -198,7 +198,7 @@
                 <span class="summary-value teal"><?= $ringkasan['disposisi'] ?></span>
             </div>
             <div class="summary-item">
-                <span class="summary-label">Dikembalikan / ditolak</span>
+                <span class="summary-label">Perbaikan Berkas</span>
                 <span class="summary-value red"><?= $ringkasan['ditolak'] ?></span>
             </div>
         </div>
