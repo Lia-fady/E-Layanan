@@ -43,7 +43,9 @@ class M_Verifikasi extends Model
             mhs.nama_mahasiswa,
             jp.jenis_permohonan,
             ip.instansi_pendidikan,
-            COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan
+            COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
+            pn.status_penempatan,
+            bd.bidang as nama_bidang
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
@@ -51,6 +53,7 @@ class M_Verifikasi extends Model
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
+        $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
         $builder->where('pm.posting_data', 'kirim');
         $builder->groupStart();
             $builder->where('ps.id_persetujuan_magang IS NULL');

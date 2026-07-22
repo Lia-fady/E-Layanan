@@ -52,6 +52,7 @@
                 <th>Instansi</th>
                 <th>Tanggal Pengajuan</th>
                 <th class="text-center">Status Persetujuan</th>
+                <th class="text-center">Status Penempatan dan Bidang</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -80,6 +81,32 @@
                     <td><?= !empty($row->tgl_pengajuan) ? date('d M Y', strtotime($row->tgl_pengajuan)) : '-' ?></td>
                     <td class="text-center">
                         <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
+                    </td>
+                    <td class="text-center align-middle">
+                        <?php
+                            $raw_status_pn = !empty($row->status_penempatan) ? strtoupper($row->status_penempatan) : 'MENUNGGU';
+                            $bidang = !empty($row->nama_bidang) ? esc($row->nama_bidang) : 'Belum Ditentukan';
+                            
+                            $badgePn = 'badge badge-warning';
+                            $label_pn = 'Menunggu Persetujuan Bidang';
+
+                            if ($raw_status_pn == 'BERJALAN') {
+                                $badgePn = 'badge badge-info';
+                                $label_pn = 'Disetujui Oleh Bidang';
+                            } elseif ($raw_status_pn == 'DIBATALKAN') {
+                                $badgePn = 'badge badge-danger';
+                                $label_pn = 'Tidak Disetujui Oleh Bidang';
+                            } elseif ($raw_status_pn == 'MENUNGGU') {
+                                $badgePn = 'badge badge-warning';
+                                $label_pn = 'Menunggu Persetujuan Bidang';
+                            } else {
+                                // Fallback untuk status lain seperti SELESAI jika ada
+                                if ($raw_status_pn == 'SELESAI') $badgePn = 'badge badge-success';
+                                $label_pn = esc($raw_status_pn);
+                            }
+                        ?>
+                        <span class="<?= $badgePn ?> mb-1"><?= $label_pn ?></span><br>
+                        <small class="text-muted"><i class="fas fa-building mr-1"></i> <?= $bidang ?></small>
                     </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center" style="gap:4px;">
@@ -122,8 +149,8 @@ $(document).ready(function() {
         table.search(this.value).draw();
     });
 
-    // Default Filter ke "Menunggu" jika tidak ada yang dipilih dari sesi dll
-    $('#filterStatus').val('MENUNGGU');
+    // Default Filter ke "" atau semua status jika tidak ada yang dipilih dari sesi dll
+    $('#filterStatus').val('');
 
     // Custom filter berdasarkan data-attribute
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {

@@ -67,7 +67,7 @@
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
             <i class="fas fa-fw fa-clipboard-check"></i>
-            <span>Verifikasi Berkas</span>
+            <span>Verifikasi Permohonan</span>
         </a>
     </li>
 

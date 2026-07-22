@@ -42,7 +42,7 @@ class C_Verifikasi extends BaseController
         }
 
         $data = [
-            'title'       => 'Verifikasi Berkas',
+            'title'       => 'Verifikasi Permohonan',
             'active_menu' => 'verifikasi',
             'permohonan'  => $permohonan,
         ];

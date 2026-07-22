@@ -36,8 +36,8 @@
 
                     <div class="form-group">
                         <label for="file_surat">Pilih File Surat <span class="text-danger">*</span></label>
-                        <input type="file" name="file_surat[]" id="file_surat" class="form-control-file" accept=".pdf,.doc,.docx" multiple required>
-                        <small class="form-text text-muted">Bisa memilih lebih dari 1 file. Format yang diizinkan: PDF, DOC, DOCX. Maksimal 5MB per file.</small>
+                        <input type="file" name="file_surat[]" id="file_surat" class="form-control-file" accept=".pdf,.doc,.docx" required>
+                        <small class="form-text text-muted">Format yang diizinkan: PDF, DOC, DOCX. Maksimal 5MB. (File baru akan menimpa file lama secara otomatis)</small>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" id="btnUploadSubmit">
@@ -75,6 +75,9 @@
                                         <td class="align-middle"><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></td>
                                         <td class="align-middle"><?= esc($f->pengunggah ?? '-') ?></td>
                                         <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-sm btn-warning btn-ganti-surat" data-id="<?= $f->id_file_selesai_magang ?>" title="Ganti File">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
                                             <button type="button" class="btn btn-sm btn-danger btn-delete-surat" data-id="<?= $f->id_file_selesai_magang ?>" title="Hapus File">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -97,6 +100,9 @@
         </div>
     </div>
 </div>
+
+<!-- Input file tersembunyi untuk Ganti File -->
+<input type="file" id="hiddenFileInput" class="d-none" accept=".pdf,.doc,.docx">
 
 <script>
 $(document).ready(function() {
@@ -168,6 +174,58 @@ $(document).ready(function() {
                         Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
                     }
                 });
+            }
+        });
+    });
+
+    // Variabel untuk menyimpan ID file yang sedang ingin diganti
+    var currentFileIdToReplace = null;
+
+    // Ganti surat: trigger file input dialog
+    $('.btn-ganti-surat').on('click', function() {
+        currentFileIdToReplace = $(this).data('id');
+        $('#hiddenFileInput').click(); // Buka dialog
+    });
+
+    // Handle AJAX saat file baru dipilih
+    $('#hiddenFileInput').on('change', function() {
+        if (!this.files || this.files.length === 0) return;
+        
+        var file = this.files[0];
+        var formData = new FormData();
+        formData.append('file_baru', file);
+        formData.append('<?= csrf_token() ?>', '<?= csrf_hash() ?>');
+
+        Swal.fire({
+            title: 'Mengganti File...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: '<?= base_url('sekretariat/upload-surat-penerimaan/updateFile') ?>/' + currentFileIdToReplace,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // Bersihkan value agar event onchange bisa trigger lagi jika user memilih file yang sama
+                $('#hiddenFileInput').val(''); 
+                
+                if (response.success) {
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                        $('#modalUploadSurat').modal('hide');
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Gagal!', response.message, 'error');
+                }
+            },
+            error: function() {
+                $('#hiddenFileInput').val(''); 
+                Swal.fire('Error!', 'Terjadi kesalahan saat mengganti file.', 'error');
             }
         });
     });

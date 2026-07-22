@@ -184,16 +184,36 @@ class M_Disposisi extends Model
             return false;
         }
 
-        // 3. Insert record ke t_penempatan_magang dengan status MENUNGGU
-        $db->table('t_penempatan_magang')->insert([
-            'id_bidang'             => $data['id_bidang'],
-            'id_persetujuan_magang' => $id_persetujuan,
-            'id_mahasiswa'          => $permohonan->id_mahasiswa,
-            'catatan'               => $data['catatan_disposisi'] ?? null,
-            'status_penempatan'     => 'MENUNGGU',
-            'created_by'            => $data['updated_by'],
-            'created_at'            => date('Y-m-d H:i:s'),
-        ]);
+        // 3. Cek apakah id_mahasiswa sudah memiliki penempatan
+        $existingPenempatan = $db->table('t_penempatan_magang')
+            ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+            ->get()
+            ->getRow();
+
+        if ($existingPenempatan) {
+            // Jika sudah ada, lakukan UPDATE
+            $db->table('t_penempatan_magang')
+                ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+                ->update([
+                    'id_bidang'             => $data['id_bidang'],
+                    'id_persetujuan_magang' => $id_persetujuan,
+                    'catatan'               => $data['catatan_disposisi'] ?? null,
+                    'status_penempatan'     => 'MENUNGGU',
+                    'updated_by'            => $data['updated_by'],
+                    'updated_at'            => date('Y-m-d H:i:s'),
+                ]);
+        } else {
+            // Jika belum ada, lakukan INSERT
+            $db->table('t_penempatan_magang')->insert([
+                'id_bidang'             => $data['id_bidang'],
+                'id_persetujuan_magang' => $id_persetujuan,
+                'id_mahasiswa'          => $permohonan->id_mahasiswa,
+                'catatan'               => $data['catatan_disposisi'] ?? null,
+                'status_penempatan'     => 'MENUNGGU',
+                'created_by'            => $data['updated_by'],
+                'created_at'            => date('Y-m-d H:i:s'),
+            ]);
+        }
 
         return true;
     }

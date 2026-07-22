@@ -105,6 +105,8 @@ class C_UploadSuratPenerimaan extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada file yang diunggah.']);
         }
 
+        $prosesMagang = $this->request->getPost('proses_magang') ?? 'persetujuan';
+
         $berhasil = 0;
         foreach ($files as $file) {
             if ($file->isValid() && !$file->hasMoved()) {
@@ -124,15 +126,47 @@ class C_UploadSuratPenerimaan extends BaseController
                 
                 $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
 
+                // Logic khusus untuk 'persetujuan' (hanya 1 file)
+                if ($prosesMagang === 'persetujuan') {
+                    $existing = $this->fileProsesModel
+                                     ->where('id_persetujuan_magang', $id_persetujuan)
+                                     ->where('proses_magang', 'persetujuan')
+                                     ->first();
+
+                    if ($existing) {
+                        // Hapus file fisik lama
+                        $oldPath = WRITEPATH . $existing->path_file;
+                        if (file_exists($oldPath) && is_file($oldPath)) {
+                            unlink($oldPath);
+                        }
+
+                        // UPDATE
+                        $this->fileProsesModel->update($existing->id_file_selesai_magang, [
+                            'id_file'               => $this->request->getPost('id_file'),
+                            'nama_file'             => $file->getClientName(),
+                            'path_file'             => $path_file,
+                            'updated_by'            => session('id_user_pegawai')
+                        ]);
+                        $berhasil++;
+                        break; // Keluar dari loop, pastikan hanya 1 yang diproses
+                    }
+                }
+
+                // Jika 'selesai' ATAU 'persetujuan' tapi belum ada data sama sekali (INSERT)
                 $this->fileProsesModel->insert([
                     'id_persetujuan_magang' => $id_persetujuan,
                     'id_file'               => $this->request->getPost('id_file'),
                     'nama_file'             => $file->getClientName(),
                     'path_file'             => $path_file,
-                    'proses_magang'         => 'persetujuan', // Sesuai enum
+                    'proses_magang'         => $prosesMagang, // Dinamis
                     'created_by'            => session('id_user_pegawai')
                 ]);
                 $berhasil++;
+
+                // Jika persetujuan, batasi max 1 file (hentikan loop foreach)
+                if ($prosesMagang === 'persetujuan') {
+                    break;
+                }
             }
         }
 
@@ -141,6 +175,51 @@ class C_UploadSuratPenerimaan extends BaseController
         }
 
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file. Pastikan format dan ukuran sesuai.']);
+    }
+
+    public function updateFile($id_file_selesai)
+    {
+        if (!$this->request->isAJAX()) {
+            return redirect()->to(base_url('sekretariat/riwayat'));
+        }
+
+        $existing = $this->fileProsesModel->find($id_file_selesai);
+        if (!$existing) {
+            return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
+        }
+
+        $file = $this->request->getFile('file_baru');
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['success' => false, 'message' => 'File tidak valid atau tidak dipilih.']);
+        }
+
+        $ext = $file->getClientExtension();
+        $size = $file->getSize(); 
+        if (!in_array(strtolower($ext), ['pdf', 'doc', 'docx'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Format file tidak valid.']);
+        }
+        if ($size > 5120000) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Ukuran file melebihi 5MB.']);
+        }
+
+        // Hapus file fisik lama
+        $oldPath = WRITEPATH . $existing->path_file;
+        if (file_exists($oldPath) && is_file($oldPath)) {
+            unlink($oldPath);
+        }
+
+        // Simpan file baru
+        $newName = $file->getRandomName();
+        $file->store('surat_penerimaan_magang/', $newName);
+        $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
+
+        $this->fileProsesModel->update($id_file_selesai, [
+            'nama_file'  => $file->getClientName(),
+            'path_file'  => $path_file,
+            'updated_by' => session('id_user_pegawai')
+        ]);
+
+        return $this->response->setJSON(['success' => true, 'message' => 'File berhasil diganti.']);
     }
 
     public function delete($id_file_selesai)
