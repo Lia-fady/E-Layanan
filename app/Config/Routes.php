@@ -32,6 +32,57 @@ $routes->get('temp/update-db', static function() {
     echo "Database updated via route.";
 });
 
+// =========================================================================
+// LOGIN Route Group (DANU)
+// =========================================================================
+
+
+$routes->get('/', 'Home::index');
+$routes->get('landing', 'Home::index');
+
+$routes->get('register', 'Auth\AuthController::register');
+$routes->post('register/process', 'Auth\AuthController::processRegister');
+
+$routes->get('login', 'Auth\AuthController::login');
+$routes->post('login/process', 'Auth\AuthController::processLogin');
+$routes->get('pegawai/login', 'Auth\AuthController::loginPegawai');
+$routes->post('pegawai/login/process', 'Auth\AuthController::processLoginPegawai');
+$routes->get('logout', 'Auth\AuthController::logout');
+
+// =========================================================================
+// MAHASISWA Route Group 
+// =========================================================================
+
+$routes->get('mahasiswa/dashboard', 'Mahasiswa\MahasiswaController::dashboard');
+$routes->get('mahasiswa/permohonan', 'Mahasiswa\MahasiswaController::permohonan');
+
+$routes->post('mahasiswa/permohonan/simpan', 'Mahasiswa\MahasiswaController::simpanPermohonan');
+$routes->get('mahasiswa/permohonan/edit/(:num)', 'Mahasiswa\MahasiswaController::editPermohonan/$1');
+$routes->post('mahasiswa/permohonan/update/(:num)', 'Mahasiswa\MahasiswaController::updatePermohonan/$1');
+// TAMBAHKAN BARIS INI: Rute untuk memproses simpan data dari form permohonan
+// (Sudah didefinisikan di atas menggunakan /simpan)
+
+$routes->get('mahasiswa/profil', 'Mahasiswa\MahasiswaController::profil');
+$routes->post('mahasiswa/profil/update', 'Mahasiswa\MahasiswaController::updateProfil');
+$routes->get('mahasiswa/status', 'Mahasiswa\MahasiswaController::statusPermohonan');
+$routes->get('mahasiswa/batalkan-permohonan/(:num)', 'Mahasiswa\MahasiswaController::batalkanPermohonan/$1');
+
+$routes->get('mahasiswa/view-file/(:num)', 'Mahasiswa\MahasiswaController::viewFile/$1');
+$routes->get('mahasiswa/view-file/(:num)/(:any)', 'Mahasiswa\MahasiswaController::viewFile/$1/$2');
+
+$routes->get('mahasiswa/logbook', 'Mahasiswa\MahasiswaController::logbook');
+
+$routes->post('mahasiswa/logbook/simpan', 'Mahasiswa\MahasiswaController::simpanLogbook');
+
+$routes->get('mahasiswa/sertifikat', 'Mahasiswa\MahasiswaController::sertifikat');
+
+$routes->post('mahasiswa/simpanLogbook', 'Mahasiswa\MahasiswaController::simpanLogbook');
+
+// --- API ROUTES FOR DROPDOWNS ---
+// --- API ROUTES FOR DROPDOWNS ---
+$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
+$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
+
 
 // =========================================================================
 // Sekretariat Route Group (dilindungi filter authSekretariat)
