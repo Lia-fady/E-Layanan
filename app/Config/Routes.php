@@ -53,30 +53,30 @@ $routes->get('logout', 'Auth\AuthController::logout');
 // MAHASISWA Route Group 
 // =========================================================================
 
-$routes->get('mahasiswa/dashboard', 'Mahasiswa\MahasiswaController::dashboard');
-$routes->get('mahasiswa/permohonan', 'Mahasiswa\MahasiswaController::permohonan');
+$routes->get('mahasiswa/dashboard', 'Mahasiswa\C_Mahasiswa::dashboard');
+$routes->get('mahasiswa/permohonan', 'Mahasiswa\C_Mahasiswa::permohonan');
 
-$routes->post('mahasiswa/permohonan/simpan', 'Mahasiswa\MahasiswaController::simpanPermohonan');
-$routes->get('mahasiswa/permohonan/edit/(:num)', 'Mahasiswa\MahasiswaController::editPermohonan/$1');
-$routes->post('mahasiswa/permohonan/update/(:num)', 'Mahasiswa\MahasiswaController::updatePermohonan/$1');
+$routes->post('mahasiswa/permohonan/simpan', 'Mahasiswa\C_Mahasiswa::simpanPermohonan');
+$routes->get('mahasiswa/permohonan/edit/(:num)', 'Mahasiswa\C_Mahasiswa::editPermohonan/$1');
+$routes->post('mahasiswa/permohonan/update/(:num)', 'Mahasiswa\C_Mahasiswa::updatePermohonan/$1');
 // TAMBAHKAN BARIS INI: Rute untuk memproses simpan data dari form permohonan
 // (Sudah didefinisikan di atas menggunakan /simpan)
 
-$routes->get('mahasiswa/profil', 'Mahasiswa\MahasiswaController::profil');
-$routes->post('mahasiswa/profil/update', 'Mahasiswa\MahasiswaController::updateProfil');
-$routes->get('mahasiswa/status', 'Mahasiswa\MahasiswaController::statusPermohonan');
-$routes->get('mahasiswa/batalkan-permohonan/(:num)', 'Mahasiswa\MahasiswaController::batalkanPermohonan/$1');
+$routes->get('mahasiswa/profil', 'Mahasiswa\C_Mahasiswa::profil');
+$routes->post('mahasiswa/profil/update', 'Mahasiswa\C_Mahasiswa::updateProfil');
+$routes->get('mahasiswa/status', 'Mahasiswa\C_Mahasiswa::statusPermohonan');
+$routes->get('mahasiswa/batalkan-permohonan/(:num)', 'Mahasiswa\C_Mahasiswa::batalkanPermohonan/$1');
 
-$routes->get('mahasiswa/view-file/(:num)', 'Mahasiswa\MahasiswaController::viewFile/$1');
-$routes->get('mahasiswa/view-file/(:num)/(:any)', 'Mahasiswa\MahasiswaController::viewFile/$1/$2');
+$routes->get('mahasiswa/view-file/(:num)', 'Mahasiswa\C_Mahasiswa::viewFile/$1');
+$routes->get('mahasiswa/view-file/(:num)/(:any)', 'Mahasiswa\C_Mahasiswa::viewFile/$1/$2');
 
-$routes->get('mahasiswa/logbook', 'Mahasiswa\MahasiswaController::logbook');
+$routes->get('mahasiswa/logbook', 'Mahasiswa\C_Mahasiswa::logbook');
 
-$routes->post('mahasiswa/logbook/simpan', 'Mahasiswa\MahasiswaController::simpanLogbook');
+$routes->post('mahasiswa/logbook/simpan', 'Mahasiswa\C_Mahasiswa::simpanLogbook');
 
-$routes->get('mahasiswa/sertifikat', 'Mahasiswa\MahasiswaController::sertifikat');
+$routes->get('mahasiswa/sertifikat', 'Mahasiswa\C_Mahasiswa::sertifikat');
 
-$routes->post('mahasiswa/simpanLogbook', 'Mahasiswa\MahasiswaController::simpanLogbook');
+$routes->post('mahasiswa/simpanLogbook', 'Mahasiswa\C_Mahasiswa::simpanLogbook');
 
 // --- API ROUTES FOR DROPDOWNS ---
 // --- API ROUTES FOR DROPDOWNS ---

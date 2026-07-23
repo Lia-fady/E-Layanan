@@ -4,7 +4,7 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class PenempatanMagangModel extends Model
+class M_PenempatanMagang extends Model
 {
     protected $table            = 't_penempatan_magang';
     protected $primaryKey       = 'id_penempatan_magang';

@@ -3,11 +3,11 @@
 namespace App\Controllers\Mahasiswa;
 
 use App\Controllers\BaseController;
-use App\Models\PermohonanMagangModel;
-use App\Models\LogbookMagangModel;
-use App\Models\PenempatanMagangModel;
+use App\Models\M_PermohonanMagang;
+use App\Models\M_LogbookMagang;
+use App\Models\M_PenempatanMagang;
 
-class MahasiswaController extends BaseController
+class C_Mahasiswa extends BaseController
 {
     protected $permohonanModel;
     protected $logbookModel;
@@ -16,9 +16,9 @@ class MahasiswaController extends BaseController
     public function __construct()
     {
         // Inisialisasi semua model secara rapi sesuai standar MVC
-        $this->permohonanModel = new PermohonanMagangModel();
-        $this->logbookModel    = new LogbookMagangModel();
-        $this->penempatanModel = new PenempatanMagangModel();
+        $this->permohonanModel = new M_PermohonanMagang();
+        $this->logbookModel    = new M_LogbookMagang();
+        $this->penempatanModel = new M_PenempatanMagang();
     }
 
     /**
@@ -125,7 +125,7 @@ class MahasiswaController extends BaseController
             'file_piagam'      => $file_piagam,
         ];
 
-        return view('mahasiswa/dashboard', $data);
+        return view('mahasiswa/v_dashboard', $data);
     }
 
     /**
@@ -154,7 +154,7 @@ class MahasiswaController extends BaseController
         $data['jenis_permohonan_aktif'] = $stateData['jenis_permohonan'];
         $data['permohonan_aktif'] = $stateData['permohonan_aktif'];
 
-        return view('mahasiswa/permohonan', $data);
+        return view('mahasiswa/v_permohonan', $data);
     }
 
     // ======================================================================
@@ -414,7 +414,7 @@ class MahasiswaController extends BaseController
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
-        return view('mahasiswa/status', $data);
+        return view('mahasiswa/v_status', $data);
     }
 
     /**
@@ -559,7 +559,7 @@ class MahasiswaController extends BaseController
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
-        return view('mahasiswa/logbook', $data);
+        return view('mahasiswa/v_logbook', $data);
     }
 
     /**
@@ -634,7 +634,7 @@ class MahasiswaController extends BaseController
             'file_piagam'      => $file_piagam
         ];
 
-        return view('mahasiswa/sertifikat', $data);
+        return view('mahasiswa/v_sertifikat', $data);
     }
 
     /**
@@ -731,7 +731,7 @@ class MahasiswaController extends BaseController
             'state' => 1
         ];
 
-        return view('mahasiswa/edit_permohonan', $data);
+        return view('mahasiswa/v_edit_permohonan', $data);
     }
 
     /**
@@ -956,7 +956,7 @@ class MahasiswaController extends BaseController
             'i'                => $instansi
         ];
 
-        return view('mahasiswa/profil', $data);
+        return view('mahasiswa/v_profil', $data);
     }
 
     /**

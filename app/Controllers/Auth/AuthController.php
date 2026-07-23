@@ -3,35 +3,35 @@
 namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
-use App\Models\MahasiswaModel;
-use App\Models\UserMahasiswaModel;
-use App\Models\InstansiMahasiswaModel; 
-use App\Models\InstansiPendidikanModel; 
+use App\Models\M_Mahasiswa;
+use App\Models\M_UserMahasiswa;
+use App\Models\M_InstansiMahasiswa; 
+use App\Models\M_InstansiPendidikan; 
 
 class AuthController extends BaseController
 {
-    protected $mahasiswaModel;
-    protected $userMahasiswaModel;
-    protected $instansiMahasiswaModel;
-    protected $instansiPendidikanModel;
+    protected $M_Mahasiswa;
+    protected $M_UserMahasiswa;
+    protected $M_InstansiMahasiswa;
+    protected $M_InstansiPendidikan;
 
     public function __construct()
     {
         // Inisialisasi model-model penunjang data akademik & auth
-        $this->mahasiswaModel          = new MahasiswaModel();
-        $this->userMahasiswaModel      = new UserMahasiswaModel();
-        $this->instansiMahasiswaModel  = new InstansiMahasiswaModel();
-        $this->instansiPendidikanModel = new InstansiPendidikanModel();
+        $this->M_Mahasiswa          = new M_Mahasiswa();
+        $this->M_UserMahasiswa      = new M_UserMahasiswa();
+        $this->M_InstansiMahasiswa  = new M_InstansiMahasiswa();
+        $this->M_InstansiPendidikan = new M_InstansiPendidikan();
     }
 
     // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
     public function register()
     {
         // Mengambil data master kampus aktif untuk dropdown utama sesuai string 'aktif'
-        $data['kampus'] = $this->instansiPendidikanModel->where('status', 'aktif')->findAll();
+        $data['kampus'] = $this->M_InstansiPendidikan->where('status', 'aktif')->findAll();
         $data['title']  = "Registrasi Akun Mahasiswa";
 
-        return view('auth/register', $data);
+        return view('auth/v_register', $data);
     }
 
     // ======================================================================
@@ -260,8 +260,8 @@ class AuthController extends BaseController
             'created_by'             => 'SYSTEM_REGISTRATION'
         ];
         
-        $this->instansiMahasiswaModel->insert($dataAkademik);
-        $idInstansiMahasiswaBaru = $this->instansiMahasiswaModel->getInsertID();
+        $this->M_InstansiMahasiswa->insert($dataAkademik);
+        $idInstansiMahasiswaBaru = $this->M_InstansiMahasiswa->getInsertID();
 
         // STEP 2: Masukkan biodata ke m_mahasiswa LANGSUNG bersama ID akademiknya
         $dataMahasiswa = [
@@ -281,11 +281,11 @@ class AuthController extends BaseController
             'id_instansi_mahasiswa'  => $idInstansiMahasiswaBaru
         ];
         
-        $this->mahasiswaModel->insert($dataMahasiswa);
-        $idMahasiswaBaru = $this->mahasiswaModel->getInsertID();
+        $this->M_Mahasiswa->insert($dataMahasiswa);
+        $idMahasiswaBaru = $this->M_Mahasiswa->getInsertID();
 
         // STEP 3: Update tabel t_instansi_mahasiswa untuk memasukkan id_mahasiswa yang baru didapat
-        $this->instansiMahasiswaModel->update($idInstansiMahasiswaBaru, [
+        $this->M_InstansiMahasiswa->update($idInstansiMahasiswaBaru, [
             'id_mahasiswa' => $idMahasiswaBaru
         ]);
 
@@ -297,7 +297,7 @@ class AuthController extends BaseController
             'status'       => 'AKTIF',
         ];
 
-        $this->userMahasiswaModel->insert($dataUser);
+        $this->M_UserMahasiswa->insert($dataUser);
 
         // Selesaikan transaksi database
         $db->transComplete();
@@ -312,7 +312,7 @@ class AuthController extends BaseController
     public function login()
     {
         $data['title'] = "Login Portal E-Layanan Magang";
-        return view('auth/login', $data);
+        return view('auth/v_login', $data);
     }
 
     // --- VERIFIKASI LOGIN OTOMATIS (DETEKSI MULTI-ACTOR KEDINASAN) ---
@@ -361,7 +361,7 @@ class AuthController extends BaseController
         $db        = \Config\Database::connect();
 
         // --- VALIDASI MAHASISWA ---
-        $userMahasiswa = $this->userMahasiswaModel->where('username', $inputData)->first();
+        $userMahasiswa = $this->M_UserMahasiswa->where('username', $inputData)->first();
 
         if ($userMahasiswa) {
             if ($userMahasiswa['status'] !== 'AKTIF') {
@@ -371,7 +371,7 @@ class AuthController extends BaseController
             if (password_verify($password, $userMahasiswa['password'])) {
                 
                 // Mengambil biodata langsung dan melakukan join ke tabel induk pendidikan
-                $mahasiswa = $this->mahasiswaModel->find($userMahasiswa['id_mahasiswa']);
+                $mahasiswa = $this->M_Mahasiswa->find($userMahasiswa['id_mahasiswa']);
 
                 // Ambil data kampus pasangannya dari tabel jembatan t_instansi_mahasiswa
                 $akademik = $db->table('t_instansi_mahasiswa im')
@@ -413,7 +413,7 @@ class AuthController extends BaseController
             'title' => 'Portal Login Pegawai | E-Layanan',
         ];
 
-        return view('auth/login_pegawai', $data);
+        return view('auth/v_login_pegawai', $data);
     }
 
     // --- PROSES LOGIN KHUSUS PEGAWAI ---

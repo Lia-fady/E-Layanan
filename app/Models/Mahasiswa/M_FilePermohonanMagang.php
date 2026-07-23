@@ -4,25 +4,15 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class FileProsesMagangModel extends Model
+class M_FilePermohonanMagang extends Model
 {
-    protected $table            = 't_file_proses_magang';
-    protected $primaryKey       = 'id_file_selesai_magang';
+    protected $table            = 't_file_permohonan_magang';
+    protected $primaryKey       = 'id_file_permohonan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_persetujuan_magang',
-        'id_file',
-        'nama_file',
-        'path_file',
-        'proses_magang', // 'persetujuan' atau 'selesai'
-        'created_by',
-        'created_at',
-        'updated_by',
-        'updated_at'
-    ];
+    protected $allowedFields    = ['id_permohonan_magang', 'id_file_permohonan', 'nama_file', 'path_file'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

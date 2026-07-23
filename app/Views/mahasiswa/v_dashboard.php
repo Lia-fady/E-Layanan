@@ -1,4 +1,4 @@
-<?= $this->extend('layout/mahasiswa') ?>
+<?= $this->extend('layout/L_mahasiswa') ?>
 
 <?= $this->section('breadcrumb') ?>
 E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--primary-royal);">Dashboard</span>

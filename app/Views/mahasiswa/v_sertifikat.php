@@ -1,4 +1,4 @@
-<?= $this->extend('layout/mahasiswa') ?>
+<?= $this->extend('layout/L_mahasiswa') ?>
 
 <?= $this->section('breadcrumb') ?>
 E-Kinerja Magang &raquo; <strong>Sertifikat & Kelulusan</strong>

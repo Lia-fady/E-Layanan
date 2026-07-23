@@ -4,7 +4,7 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class ProdiModel extends Model
+class M_Prodi extends Model
 {
     protected $table            = 'm_prodi';
     protected $primaryKey       = 'id_prodi';

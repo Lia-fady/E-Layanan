@@ -4,7 +4,7 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class LogbookMagangModel extends Model
+class M_LogbookMagang extends Model
 {
     protected $table            = 't_logbook_magang';
     protected $primaryKey       = 'id_logbook_magang'; // sesuaikan dengan ERD-mu
