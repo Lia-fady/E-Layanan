@@ -353,10 +353,6 @@
                 </button>
             </form>
 
-            <div class="auth-footer">
-                Mahasiswa Magang? <a href="<?= base_url('login') ?>">Masuk di sini</a>
-            </div>
-
             <div class="action-links d-flex flex-column flex-sm-row gap-2 mt-4">
                 <a href="<?= base_url('landing') ?>" class="btn-action btn-action-beranda">
                     <i class="bi bi-house-door-fill me-2 fs-6"></i> Kembali ke Beranda
