@@ -91,7 +91,7 @@
                     <p class="mb-4" style="color: #6B7280; font-size: 0.95rem;">Pilih "Logout" di bawah ini jika Anda ingin mengakhiri sesi Anda saat ini.</p>
                     <div class="d-flex justify-content-center" style="gap: 12px;">
                         <button class="btn btn-light btn-logout-cancel px-4 py-2" type="button" data-dismiss="modal" style="border-radius: 8px; font-weight: 500; color: #4B5563; background: #F3F4F6; border: none; min-width: 100px; transition: all 0.2s;">Batal</button>
-                        <a class="btn btn-primary btn-logout-confirm px-4 py-2" href="<?= base_url('auth/logout') ?>" style="border-radius: 8px; font-weight: 500; background: #2563EB; border: none; min-width: 100px; transition: all 0.2s;">Logout</a>
+                        <a class="btn btn-primary btn-logout-confirm px-4 py-2" href="<?= base_url('logout') ?>" style="border-radius: 8px; font-weight: 500; background: #2563EB; border: none; min-width: 100px; transition: all 0.2s;">Logout</a>
                     </div>
                 </div>
             </div>
