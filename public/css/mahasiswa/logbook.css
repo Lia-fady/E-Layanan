@@ -1,0 +1,53 @@
+/* ISI FILE: public/css/mahasiswa/logbook.css */
+
+/* Mengunci style dasar box card flat harian */
+.card-flat {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+/* Mempercantik input form tanggal dan textarea agar pas di layout */
+.form-control {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+}
+
+.form-control:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.15);
+}
+
+/* Mengatur tinggi minimum kolom input rincian tugas */
+textarea.form-control {
+    resize: vertical;
+    min-height: 130px;
+}
+
+/* Animasi transisi halus saat baris tabel di-hover */
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+/* Memastikan teks deskripsi panjang tidak merusak lebar kolom tabel */
+.table td {
+    word-break: break-word;
+    vertical-align: top;
+    padding: 14px 8px;
+}
+
+/* Efek tombol simpan agar ada feedback saat ditekan */
+.btn-primary {
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+    padding: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
