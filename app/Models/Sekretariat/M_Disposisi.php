@@ -116,7 +116,7 @@ class M_Disposisi extends Model
         $db = \Config\Database::connect();
 
         return $db->table('m_bidang')
-            ->where('status_aktif', 'aktif')
+            ->where('status_aktif', '1')
             ->get()
             ->getResult();
     }
@@ -150,7 +150,8 @@ class M_Disposisi extends Model
     {
         $db = \Config\Database::connect();
 
-        return $db->table('t_persetujuan_magang')
+        // 1. Update t_persetujuan_magang dengan data disposisi
+        $result = $db->table('t_persetujuan_magang')
             ->where('id_persetujuan_magang', $id_persetujuan)
             ->update([
                 'disposisi'       => '1',
@@ -159,5 +160,61 @@ class M_Disposisi extends Model
                 'updated_at'      => date('Y-m-d H:i:s'),
                 'tgl_persetujuan' => date('Y-m-d H:i:s'),
             ]);
+
+        if (!$result) {
+            return false;
+        }
+
+        // 2. Ambil id_mahasiswa dari relasi persetujuan → permohonan
+        $persetujuan = $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan)
+            ->get()
+            ->getRow();
+
+        if (!$persetujuan) {
+            return false;
+        }
+
+        $permohonan = $db->table('t_permohonan_magang')
+            ->where('id_permohonan_magang', $persetujuan->id_permohonan_magang)
+            ->get()
+            ->getRow();
+
+        if (!$permohonan) {
+            return false;
+        }
+
+        // 3. Cek apakah id_mahasiswa sudah memiliki penempatan
+        $existingPenempatan = $db->table('t_penempatan_magang')
+            ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+            ->get()
+            ->getRow();
+
+        if ($existingPenempatan) {
+            // Jika sudah ada, lakukan UPDATE
+            $db->table('t_penempatan_magang')
+                ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+                ->update([
+                    'id_bidang'             => $data['id_bidang'],
+                    'id_persetujuan_magang' => $id_persetujuan,
+                    'catatan'               => $data['catatan_disposisi'] ?? null,
+                    'status_penempatan'     => 'MENUNGGU',
+                    'updated_by'            => $data['updated_by'],
+                    'updated_at'            => date('Y-m-d H:i:s'),
+                ]);
+        } else {
+            // Jika belum ada, lakukan INSERT
+            $db->table('t_penempatan_magang')->insert([
+                'id_bidang'             => $data['id_bidang'],
+                'id_persetujuan_magang' => $id_persetujuan,
+                'id_mahasiswa'          => $permohonan->id_mahasiswa,
+                'catatan'               => $data['catatan_disposisi'] ?? null,
+                'status_penempatan'     => 'MENUNGGU',
+                'created_by'            => $data['updated_by'],
+                'created_at'            => date('Y-m-d H:i:s'),
+            ]);
+        }
+
+        return true;
     }
 }

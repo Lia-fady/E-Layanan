@@ -1,0 +1,5 @@
+php spark db:seed DummyDisposisi
+
+php spark db:seed DummyVerifikasi
+
+innodb_force_recovery=

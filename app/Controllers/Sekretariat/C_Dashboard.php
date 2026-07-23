@@ -5,7 +5,7 @@
  * Path: app/Controllers/Sekretariat/C_Dashboard.php
  * Deskripsi: Controller untuk menampilkan halaman Dashboard modul Sekretariat.
  *            Menyediakan data statistik ringkasan, daftar permohonan pending,
- *            distribusi jenis permohonan, ringkasan hari ini, dan tren bulanan.
+ *            status verifikasi administrasi, dan ringkasan hari ini.
  */
 
 namespace App\Controllers\Sekretariat;
@@ -30,11 +30,8 @@ class C_Dashboard extends BaseController
         // STAT CARDS
         // ============================================================
 
-        // 1. Permohonan Masuk (bulan ini, yang sudah dikirim)
+        // 1. Total Permohonan (seluruh data di t_permohonan_magang)
         $total_permohonan = $db->table('t_permohonan_magang')
-            ->where('posting_data', 'kirim')
-            ->where('MONTH(created_at)', $bulanIni)
-            ->where('YEAR(created_at)', $tahunIni)
             ->countAllResults();
 
         // 2. Menunggu Verifikasi
@@ -42,16 +39,24 @@ class C_Dashboard extends BaseController
             ->where('status_persetujuan', 'MENUNGGU')
             ->countAllResults();
 
-        // 3. Berkas Terverifikasi (bulan ini)
-        $total_terverifikasi = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DISETUJUI')
-            ->where('MONTH(tgl_persetujuan)', $bulanIni)
-            ->where('YEAR(tgl_persetujuan)', $tahunIni)
+        // 3. Sedang Diproses oleh Bidang (dari t_penempatan_magang WHERE status_penempatan = 'MENUNGGU')
+        $total_sedang_diproses = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'MENUNGGU')
             ->countAllResults();
 
-        // 4. Sudah Didisposisi
-        $total_disposisi = $db->table('t_persetujuan_magang')
-            ->where('disposisi', '1')
+        // 4. Disetujui (kecuali yang penempatannya SELESAI)
+        $total_disetujui = $db->table('t_persetujuan_magang as ps')
+            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('ps.status_persetujuan', 'DISETUJUI')
+            ->groupStart()
+                ->where('pn.status_penempatan !=', 'SELESAI')
+                ->orWhere('pn.status_penempatan IS NULL')
+            ->groupEnd()
+            ->countAllResults();
+
+        // 5. Mahasiswa Aktif (dari t_penempatan_magang WHERE status_penempatan = 'BERJALAN')
+        $total_mahasiswa_aktif = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'BERJALAN')
             ->countAllResults();
 
         // ============================================================
@@ -60,11 +65,13 @@ class C_Dashboard extends BaseController
         $permohonan_pending = $db->table('t_persetujuan_magang as ps')
             ->select('
                 ps.id_persetujuan_magang,
+                ps.id_permohonan_magang,
                 ps.status_persetujuan,
                 pm.created_at as tgl_pengajuan,
                 mhs.nim,
                 mhs.nama_mahasiswa,
-                jp.jenis_permohonan
+                jp.jenis_permohonan,
+                (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) as total_berkas
             ')
             ->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
@@ -75,30 +82,51 @@ class C_Dashboard extends BaseController
             ->get()
             ->getResult();
 
-        // ============================================================
-        // DISTRIBUSI JENIS PERMOHONAN (Donut Chart)
-        // ============================================================
-        $distribusi_raw = $db->table('t_permohonan_magang as pm')
-            ->select('jp.jenis_permohonan, COUNT(*) as total')
-            ->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
-            ->where('pm.posting_data', 'kirim')
-            ->groupBy('jp.jenis_permohonan')
-            ->get()
-            ->getResult();
+        // Add required_berkas default
+        foreach ($permohonan_pending as &$p) {
+            $p->required_berkas = 3;
+        }
 
-        $distribusi_jenis = [];
-        $total_semua = 0;
-        foreach ($distribusi_raw as $d) {
-            $total_semua += $d->total;
-        }
-        foreach ($distribusi_raw as $d) {
-            $persen = $total_semua > 0 ? round(($d->total / $total_semua) * 100) : 0;
-            $distribusi_jenis[] = [
-                'label'   => $d->jenis_permohonan ?? 'Lainnya',
-                'total'   => (int) $d->total,
-                'persen'  => $persen,
-            ];
-        }
+        // ============================================================
+        // RINGKASAN PERMOHONAN (Donut Chart)
+        // ============================================================
+
+        // Total seluruh permohonan masuk (untuk angka di tengah donut)
+        $total_permohonan_chart = $db->table('t_permohonan_magang')
+            ->countAllResults();
+
+        // Rincian status persetujuan dari t_persetujuan_magang
+        $status_row = $db->query("
+            SELECT
+                SUM(CASE WHEN status_persetujuan = 'MENUNGGU' THEN 1 ELSE 0 END) AS menunggu_verifikasi,
+                SUM(CASE WHEN status_persetujuan = 'PERBAIKAN_BERKAS' THEN 1 ELSE 0 END) AS perbaikan_berkas,
+                SUM(CASE WHEN status_persetujuan = 'DISETUJUI' THEN 1 ELSE 0 END) AS disetujui
+            FROM t_persetujuan_magang
+        ")->getRow();
+
+        $menunggu  = (int)($status_row->menunggu_verifikasi ?? 0);
+        $perbaikan_berkas   = (int)($status_row->perbaikan_berkas ?? 0);
+        $disetujui = (int)($status_row->disetujui ?? 0);
+
+        // Persentase dihitung berdasarkan total data di t_persetujuan_magang
+        $total_status = $menunggu + $perbaikan_berkas + $disetujui;
+        $status_verifikasi = [
+            [
+                'label'  => 'Berkas Disetujui',
+                'total'  => $disetujui,
+                'persen' => $total_status > 0 ? round(($disetujui / $total_status) * 100, 1) : 0,
+            ],
+            [
+                'label'  => 'Menunggu Verifikasi',
+                'total'  => $menunggu,
+                'persen' => $total_status > 0 ? round(($menunggu / $total_status) * 100, 1) : 0,
+            ],
+            [
+                'label'  => 'Perbaikan Berkas',
+                'total'  => $perbaikan_berkas,
+                'persen' => $total_status > 0 ? round(($perbaikan_berkas / $total_status) * 100, 1) : 0,
+            ],
+        ];
 
         // ============================================================
         // RINGKASAN HARI INI
@@ -113,55 +141,17 @@ class C_Dashboard extends BaseController
             ->where('DATE(tgl_persetujuan)', $hariIni)
             ->countAllResults();
 
-        $ringkasan_disposisi = $db->table('t_persetujuan_magang')
-            ->where('disposisi', '1')
-            ->where('DATE(updated_at)', $hariIni)
+        $ringkasan_disposisi = $db->table('t_penempatan_magang')
+            ->where('DATE(created_at)', $hariIni)
             ->countAllResults();
 
-        $ringkasan_ditolak = $db->table('t_persetujuan_magang')
-            ->where('status_persetujuan', 'DITOLAK')
+        $ringkasan_perbaikan = $db->table('t_persetujuan_magang')
+            ->where('status_persetujuan', 'PERBAIKAN_BERKAS')
             ->where('DATE(tgl_persetujuan)', $hariIni)
             ->countAllResults();
 
         // ============================================================
-        // TREN PERMOHONAN BULANAN (Line Chart - 6 bulan terakhir + bulan ini)
-        // ============================================================
-        $tren_bulanan = [];
-        $bulanLabels = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $bln = date('m', strtotime("-$i months"));
-            $thn = date('Y', strtotime("-$i months"));
-            $label = date('M', strtotime("-$i months")); // Jan, Feb, etc.
-
-            $bulanLabels[] = $label;
-
-            $masuk = $db->table('t_permohonan_magang')
-                ->where('posting_data', 'kirim')
-                ->where('MONTH(created_at)', $bln)
-                ->where('YEAR(created_at)', $thn)
-                ->countAllResults();
-
-            $disetujui = $db->table('t_persetujuan_magang')
-                ->where('status_persetujuan', 'DISETUJUI')
-                ->where('MONTH(tgl_persetujuan)', $bln)
-                ->where('YEAR(tgl_persetujuan)', $thn)
-                ->countAllResults();
-
-            $ditolak = $db->table('t_persetujuan_magang')
-                ->where('status_persetujuan', 'DITOLAK')
-                ->where('MONTH(tgl_persetujuan)', $bln)
-                ->where('YEAR(tgl_persetujuan)', $thn)
-                ->countAllResults();
-
-            $tren_bulanan[] = [
-                'masuk'     => $masuk,
-                'disetujui' => $disetujui,
-                'ditolak'   => $ditolak,
-            ];
-        }
-
-        // ============================================================
-        // NAMA BULAN (Indonesia)
+        // FORMAT TANGGAL INDONESIA
         // ============================================================
         $namaBulan = [
             '01' => 'Januari', '02' => 'Februari', '03' => 'Maret',
@@ -171,7 +161,6 @@ class C_Dashboard extends BaseController
         ];
         $namaBulanIni = $namaBulan[date('m')] ?? date('F');
 
-        // Format hari ini dalam Bahasa Indonesia
         $namaHari = [
             'Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa',
             'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat',
@@ -184,24 +173,23 @@ class C_Dashboard extends BaseController
         // PREPARE DATA
         // ============================================================
         $data = [
-            'title'               => 'Dashboard Sekretariat',
-            'active_menu'         => 'dashboard',
-            'total_permohonan'    => (int) $total_permohonan,
-            'total_verifikasi'    => (int) $total_verifikasi,
-            'total_terverifikasi' => (int) $total_terverifikasi,
-            'total_disposisi'     => (int) $total_disposisi,
-            'permohonan_pending'  => $permohonan_pending,
-            'distribusi_jenis'    => $distribusi_jenis,
-            'ringkasan'           => [
+            'title'                 => 'Dashboard Sekretariat',
+            'active_menu'           => 'dashboard',
+            'total_permohonan'      => (int) $total_permohonan,
+            'total_verifikasi'      => (int) $total_verifikasi,
+            'total_sedang_diproses' => (int) $total_sedang_diproses,
+            'total_disetujui'       => (int) $total_disetujui,
+            'total_mahasiswa_aktif' => (int) $total_mahasiswa_aktif,
+            'permohonan_pending'    => $permohonan_pending,
+            'status_verifikasi'     => $status_verifikasi,
+            'total_permohonan_chart' => (int) $total_permohonan_chart,
+            'ringkasan'             => [
                 'masuk'      => (int) $ringkasan_masuk,
                 'verifikasi' => (int) $ringkasan_verifikasi,
                 'disposisi'  => (int) $ringkasan_disposisi,
-                'ditolak'    => (int) $ringkasan_ditolak,
+                'ditolak'    => (int) $ringkasan_perbaikan,
             ],
-            'tren_labels'         => $bulanLabels,
-            'tren_bulanan'        => $tren_bulanan,
-            'tanggal_formatted'   => $tanggalFormatted,
-            'nama_bulan'          => $namaBulanIni,
+            'tanggal_formatted'     => $tanggalFormatted,
         ];
 
         return view('dashboard/sekretariat/v_dashboard', $data);

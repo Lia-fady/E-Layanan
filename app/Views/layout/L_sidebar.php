@@ -2,27 +2,48 @@
 /**
  * Kode    : L_sidebar.php
  * Path    : app/Views/layout/L_sidebar.php
- * Deskripsi : Komponen sidebar navigasi sesuai desain Figma.
- *             Menggunakan warna dark teal dengan menu navigasi
- *             modul Sekretariat: Dashboard, Permohonan Masuk,
- *             Verifikasi Berkas, Disposisi ke Bidang, Monitoring Status,
- *             Laporan, dan Pengaturan.
+ * Deskripsi : Komponen sidebar navigasi sesuai desain mockup.
+ *             Menggunakan warna dark navy blue dengan menu navigasi
+ *             modul Sekretariat: Dashboard, Verifikasi Berkas,
+ *             Pilih Bidang Tujuan, dan Riwayat.
  */
 ?>
 
+<style>
+    /* CSS: wrap teks panjang di sidebar (menghindari nama terlalu panjang terpotong jika di-ellipsis) */
+    .sidebar .nav-item .nav-link span {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        display: inline-block;
+        line-height: 1.2;
+        vertical-align: middle;
+    }
+    .sidebar .nav-item .nav-link {
+        height: auto !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        display: flex;
+        align-items: center;
+    }
+</style>
+
 <!-- Sidebar -->
-<ul class="navbar-nav sidebar sidebar-dark-teal sidebar-dark accordion d-flex flex-column" id="accordionSidebar" style="background: linear-gradient(180deg, #1a3c34 0%, #1e4a3f 100%) !important;">
+<ul class="navbar-nav sidebar sidebar-dark-navy sidebar-dark accordion d-flex flex-column" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center" href="<?= base_url('sekretariat/dashboard') ?>" style="padding: 1.2rem 1rem; height: auto;">
+    <a class="sidebar-brand d-flex align-items-center" href="<?= base_url('sekretariat/dashboard') ?>">
         <div class="sidebar-brand-icon">
-            <img src="<?= base_url('favicon.ico'); ?>" alt="Icon" style="width: 36px; height: 36px;">
+            <img src="<?= base_url('favicon.ico'); ?>" alt="Logo" style="width: 40px; height: 40px;">
         </div>
-        <div class="sidebar-brand-text mx-2" style="text-align: left; line-height: 1.3;">
-            E-Layanan Akademik
-            <span class="sidebar-brand-subtitle">Kominfo Kota Tangerang</span>
+        <div class="sidebar-brand-text mx-2">
+            <span class="font-weight-bold">KOTA TANGERANG</span>
         </div>
     </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
     <!-- User Profile -->
     <div class="sidebar-user-profile">
@@ -35,11 +56,6 @@
         </div>
     </div>
 
-    <!-- Heading: SEKRETARIAT -->
-    <div class="sidebar-heading" style="color: #6cc4a1;">
-        <span class="sidebar-heading-dot"></span> SEKRETARIAT
-    </div>
-
     <!-- Nav Item - Dashboard -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'dashboard') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/dashboard') ?>">
@@ -48,66 +64,32 @@
         </a>
     </li>
 
-    <!-- Nav Item - Permohonan Masuk -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'permohonan_masuk') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/permohonan-masuk') ?>">
-            <i class="fas fa-fw fa-inbox"></i>
-            <span>Permohonan Masuk</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Verifikasi Berkas -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
             <i class="fas fa-fw fa-clipboard-check"></i>
-            <span>Verifikasi Berkas</span>
+            <span>Verifikasi Permohonan</span>
         </a>
     </li>
 
-    <!-- Nav Item - Disposisi ke Bidang -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'disposisi') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/disposisi') ?>">
-            <i class="fas fa-fw fa-share-square"></i>
-            <span>Disposisi ke Bidang</span>
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
+            <i class="fas fa-fw fa-file-upload"></i>
+            <span>Upload Surat Penerimaan</span>
         </a>
     </li>
 
-    <!-- Nav Item - Monitoring Status -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'monitoring') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/monitoring-status') ?>">
-            <i class="fas fa-fw fa-chart-line"></i>
-            <span>Monitoring Status</span>
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
         </a>
     </li>
-
-    <!-- Nav Item - Laporan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'laporan') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/laporan') ?>">
-            <i class="fas fa-fw fa-chart-bar"></i>
-            <span>Laporan</span>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-fw fa-sign-out-alt"></i>
+            <span>Logout</span>
         </a>
     </li>
-
-    <!-- Nav Item - Pengaturan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'pengaturan') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/pengaturan') ?>">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Pengaturan</span>
-        </a>
-    </li>
-
-    <!-- Spacer -->
-    <div class="flex-grow-1"></div>
-
-    <!-- Keluar dari Sistem -->
-    <div class="sidebar-logout">
-        <li class="nav-item" style="list-style: none;">
-            <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
-                <i class="fas fa-fw fa-sign-out-alt"></i>
-                <span>Keluar dari Sistem</span>
-            </a>
-        </li>
-    </div>
 
 </ul>
 <!-- End of Sidebar -->

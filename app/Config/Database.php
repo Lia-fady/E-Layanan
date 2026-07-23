@@ -26,7 +26,7 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => '192.168.133.95',
+        'hostname'     => '192.168.150.237',
         'username'     => 'remote_user',
         'password'     => '123456',
         'database'     => 'db_elayanan_akademik_kominfo',

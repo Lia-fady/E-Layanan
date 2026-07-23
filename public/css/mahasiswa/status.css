@@ -1,0 +1,53 @@
+/* ISI FILE: public/css/mahasiswa/status.css */
+
+/* Gaya untuk wadah utama tabel data */
+.card-flat {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+/* Trik merapikan tombol pagination bawaan CI4 agar berjejer horizontal rapi */
+.pagination-sm ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    gap: 5px;
+    margin: 0;
+}
+
+.pagination-sm ul li a, .pagination-sm ul li span {
+    position: relative;
+    display: block;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e3a8a;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.pagination-sm ul li a:hover {
+    background-color: #f1f5f9;
+    color: #1d4ed8;
+    border-color: #cbd5e1;
+}
+
+.pagination-sm ul li.active span, 
+.pagination-sm ul li.active a {
+    z-index: 3;
+    color: #fff;
+    background-color: #1e3a8a;
+    border-color: #1e3a8a;
+}
+
+.pagination-sm ul li.disabled span {
+    color: #94a3b8;
+    pointer-events: none;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+}

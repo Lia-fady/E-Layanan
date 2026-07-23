@@ -20,24 +20,24 @@ class M_Auth extends Model
     protected $primaryKey       = 'id_user_pegawai';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['username', 'password', 'nama_user', 'group_id', 'status'];
+    protected $allowedFields    = ['nip', 'password', 'nama', 'id_user_group', 'id_bidang', 'status_aktif', 'kode_unor'];
 
     /**
      * Proses login user.
-     * Mencari data user berdasarkan username yang cocok,
+     * Mencari data user berdasarkan username (NIP) yang cocok,
      * memverifikasi password menggunakan password_verify(),
-     * serta status harus aktif (status = '1').
+     * serta status harus aktif (status_aktif = '1').
      *
-     * @param string $username Username yang diinput
+     * @param string $username Username (NIP) yang diinput
      * @param string $password Password yang diinput (plain text)
      *
      * @return array|null Data user jika ditemukan, null jika tidak valid
      */
     public function login(string $username, string $password)
     {
-        // Cari user berdasarkan username dan status aktif
-        $user = $this->where('username', $username)
-                     ->where('status', '1')
+        // Cari user berdasarkan NIP dan status aktif
+        $user = $this->where('nip', $username)
+                     ->where('status_aktif', '1')
                      ->first();
 
         // Verifikasi password menggunakan password_verify

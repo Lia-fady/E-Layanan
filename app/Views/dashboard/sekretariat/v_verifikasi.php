@@ -3,9 +3,9 @@
  * ============================================================
  * Kode      : v_verifikasi.php
  * Path      : Views/dashboard/sekretariat/v_verifikasi.php
- * Deskripsi : View halaman daftar permohonan masuk untuk
- *             modul Verifikasi Administrasi. Menampilkan
- *             tabel data permohonan dengan DataTables.
+ * Deskripsi : View halaman daftar permohonan untuk verifikasi
+ *             berkas dalam bentuk tabel. Terintegrasi dengan 
+ *             modal verifikasi + disposisi.
  * ============================================================
  */
 ?>
@@ -18,126 +18,222 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-0">
-            <li class="breadcrumb-item"><a href="<?= base_url('sekretariat/dashboard') ?>">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Verifikasi Administrasi</li>
-        </ol>
-    </nav>
-</div>
-
-<!-- Flash Messages -->
+<!-- Flash Messages (dipertahankan untuk fallback) -->
 <?php if (session()->getFlashdata('success')) : ?>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <i class="fas fa-check-circle mr-2"></i>
     <?= session()->getFlashdata('success') ?>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
 </div>
 <?php endif; ?>
 
-<?php if (session()->getFlashdata('error')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    <?= session()->getFlashdata('error') ?>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+<!-- Search & Filter -->
+<div class="verifikasi-search-bar">
+    <div style="position:relative; flex:1; max-width:450px;">
+        <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#98a2b3;"></i>
+        <input type="text" id="searchVerifikasi" placeholder="Cari nama/ universitas..." style="width:100%;">
+    </div>
+    <select id="filterStatus">
+        <option value="">Semua Status</option>
+        <option value="MENUNGGU">Menunggu</option>
+        <option value="PERBAIKAN_BERKAS">Perbaikan Berkas</option>
+        <option value="DISETUJUI">Disetujui</option>
+    </select>
 </div>
-<?php endif; ?>
 
-<!-- DataTable Card -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">
-            <i class="fas fa-clipboard-check mr-2"></i>Daftar Permohonan Masuk
-        </h6>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover dataTable" id="tabelVerifikasi" width="100%" cellspacing="0">
-                <thead class="thead-light">
-                    <tr>
-                        <th width="5%" class="text-center">No</th>
-                        <th>NIM</th>
-                        <th>Nama Mahasiswa</th>
-                        <th>Jenis Permohonan</th>
-                        <th>Tanggal Pengajuan</th>
-                        <th width="12%" class="text-center">Status</th>
-                        <th width="10%" class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($permohonan)) : ?>
-                        <?php $no = 1; foreach ($permohonan as $row) : ?>
-                        <tr>
-                            <td class="text-center"><?= $no++ ?></td>
-                            <td><?= esc($row->nim) ?></td>
-                            <td><?= esc($row->nama_mahasiswa) ?></td>
-                            <td><?= esc($row->jenis_permohonan) ?></td>
-                            <td><?= date('d-m-Y', strtotime($row->tgl_pengajuan)) ?></td>
-                            <td class="text-center">
-                                <?php
-                                    $status = $row->status_persetujuan ?? 'MENUNGGU';
-                                    $badge  = 'warning';
-                                    if ($status == 'DISETUJUI') $badge = 'success';
-                                    elseif ($status == 'DITOLAK') $badge = 'danger';
-                                ?>
-                                <span class="badge badge-<?= $badge ?>"><?= $status ?></span>
-                            </td>
-                            <td class="text-center">
-                                <a href="<?= base_url('sekretariat/verifikasi/detail/' . $row->id_permohonan_magang) ?>"
-                                   class="btn btn-info btn-sm" title="Lihat Detail">
-                                    <i class="fas fa-eye"></i> Detail
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<!-- Verifikasi Table -->
+<div class="table-responsive">
+    <table class="riwayat-table" id="tabelVerifikasi" width="100%">
+        <thead>
+            <tr>
+                <th width="5%" class="text-center">NO</th>
+                <th>Nama Mahasiswa</th>
+                <th>NIM</th>
+                <th>Instansi</th>
+                <th>Tanggal Pengajuan</th>
+                <th class="text-center">Status Persetujuan</th>
+                <th class="text-center">Status Penempatan dan Bidang</th>
+                <th class="text-center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($permohonan)) : ?>
+                <?php $no = 1; foreach ($permohonan as $row) : ?>
+                <?php
+                    $status = $row->status_persetujuan ?? 'MENUNGGU';
+                    
+                    if ($status == 'DISETUJUI') {
+                        $badgeClass = 'disetujui';
+                        $statusText = 'Disetujui';
+                    } elseif ($status == 'PERBAIKAN_BERKAS') {
+                        $badgeClass = 'ditolak';
+                        $statusText = 'Perbaikan Berkas';
+                    } else {
+                        $badgeClass = 'menunggu-verifikasi';
+                        $statusText = 'Menunggu';
+                    }
+                ?>
+                <tr data-filter-status="<?= $status ?>">
+                    <td class="text-center"><?= $no++ ?></td>
+                    <td><strong><?= esc($row->nama_mahasiswa ?? '-') ?></strong></td>
+                    <td><?= esc($row->nim ?? '-') ?></td>
+                    <td><?= esc($row->instansi_pendidikan ?? '-') ?></td>
+                    <td><?= !empty($row->tgl_pengajuan) ? date('d M Y', strtotime($row->tgl_pengajuan)) : '-' ?></td>
+                    <td class="text-center">
+                        <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
+                    </td>
+                    <td class="text-center align-middle">
+                        <?php
+                            $raw_status_pn = !empty($row->status_penempatan) ? strtoupper($row->status_penempatan) : 'MENUNGGU';
+                            $bidang = !empty($row->nama_bidang) ? esc($row->nama_bidang) : 'Belum Ditentukan';
+                            
+                            $badgePn = 'badge badge-warning';
+                            $label_pn = 'Menunggu Persetujuan Bidang';
+
+                            if ($raw_status_pn == 'BERJALAN') {
+                                $badgePn = 'badge badge-info';
+                                $label_pn = 'Disetujui Oleh Bidang';
+                            } elseif ($raw_status_pn == 'DIBATALKAN') {
+                                $badgePn = 'badge badge-danger';
+                                $label_pn = 'Tidak Disetujui Oleh Bidang';
+                            } elseif ($raw_status_pn == 'MENUNGGU') {
+                                $badgePn = 'badge badge-warning';
+                                $label_pn = 'Menunggu Persetujuan Bidang';
+                            } else {
+                                // Fallback untuk status lain seperti SELESAI jika ada
+                                if ($raw_status_pn == 'SELESAI') $badgePn = 'badge badge-success';
+                                $label_pn = esc($raw_status_pn);
+                            }
+                        ?>
+                        <span class="<?= $badgePn ?> mb-1"><?= $label_pn ?></span><br>
+                        <small class="text-muted"><i class="fas fa-building mr-1"></i> <?= $bidang ?></small>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex justify-content-center" style="gap:4px;">
+                            <!-- Ikon Pensil (Edit/Verifikasi) -->
+                            <button type="button" 
+                                    class="riwayat-action-btn btn-verifikasi-modal" 
+                                    title="Verifikasi Permohonan"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; background:#EFF6FF; color:#2563EB; border-radius:6px;"
+                                    data-id="<?= $row->id_permohonan_magang ?>">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
+
+<!-- Tempat memuat Modal Verifikasi -->
+<div id="modalContainer"></div>
 
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
-    $('#tabelVerifikasi').DataTable({
+    var table = $('#tabelVerifikasi').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
         },
-        "order": [[4, "desc"]]
+        "order": [[4, "asc"]], // Urutkan berdasarkan tanggal pengajuan ASC
+        "pageLength": 10,
+        "dom": '<"d-flex justify-content-between align-items-center mb-3"<""l><""f>>rt<"d-flex justify-content-between align-items-center mt-3"<""i><""p>>'
+    });
+
+    // Custom search
+    $('#searchVerifikasi').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+
+    // Default Filter ke "" atau semua status jika tidak ada yang dipilih dari sesi dll
+    $('#filterStatus').val('');
+
+    // Custom filter berdasarkan data-attribute
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        var filterVal = $('#filterStatus').val();
+        if (!filterVal) return true;
+        var row = table.row(dataIndex).node();
+        var rowStatus = $(row).data('filter-status');
+        return rowStatus === filterVal;
+    });
+
+    $('#filterStatus').on('change', function() {
+        table.draw();
+    });
+
+    // Trigger awal untuk default filter
+    table.draw();
+
+    // Hide default search
+    $('#tabelVerifikasi_filter').hide();
+
+    // Handle klik tombol pensil (Buka Modal Verifikasi)
+    $(document).on('click', '.btn-verifikasi-modal', function() {
+        var id = $(this).data('id');
+        
+        // Tampilkan loading jika perlu
+        $('#modalContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat data...</div>');
+        
+        $.ajax({
+            url: "<?= base_url('sekretariat/verifikasi/detailModal') ?>/" + id,
+            type: "GET",
+            success: function(response) {
+                $('#modalContainer').html(response);
+                $('#modalVerifikasi').modal('show');
+            },
+            error: function() {
+                $('#modalContainer').html('');
+                Swal.fire('Error!', 'Gagal memuat detail permohonan.', 'error');
+            }
+        });
+    });
+
+    // Submit form verifikasi dalam modal via AJAX
+    $(document).on('submit', '#formVerifikasiModal', function(e) {
+        e.preventDefault();
+        
+        var form = $(this);
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function(response) {
+                $('#modalVerifikasi').modal('hide');
+                if (response.success) {
+                    Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire('Gagal!', response.message, 'error');
+                }
+            },
+            error: function() {
+                Swal.fire('Error!', 'Terjadi kesalahan sistem saat menyimpan keputusan.', 'error');
+            }
+        });
+    });
+
+    // Set file validitas toggle button classes in modal
+    $(document).on('click', '.btn-validasi-file', function() {
+        var inputHidden = $(this).siblings('input[type="hidden"]');
+        var value = $(this).data('value');
+        
+        inputHidden.val(value);
+        
+        // reset button classes in this group
+        $(this).siblings().removeClass('btn-success btn-danger').addClass('btn-outline-secondary');
+        $(this).removeClass('btn-outline-secondary');
+        
+        if(value === 'VALID') {
+            $(this).addClass('btn-success');
+        } else {
+            $(this).addClass('btn-danger');
+        }
     });
 });
 </script>
-
-<?php if (session()->getFlashdata('success')) : ?>
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: '<?= session()->getFlashdata('success') ?>',
-        showConfirmButton: true,
-        timer: 3000
-    });
-</script>
-<?php endif; ?>
-
-<?php if (session()->getFlashdata('error')) : ?>
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Gagal!',
-        text: '<?= session()->getFlashdata('error') ?>',
-        showConfirmButton: true
-    });
-</script>
-<?php endif; ?>
 <?= $this->endSection() ?>

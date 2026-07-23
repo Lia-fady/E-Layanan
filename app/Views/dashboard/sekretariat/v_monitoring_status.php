@@ -31,9 +31,8 @@
             <select id="filterStatus" class="form-control" style="border: 1px solid #d0d5dd; border-radius: 8px;">
                 <option value="">Semua Status</option>
                 <option value="Menunggu">Menunggu</option>
-                <option value="Verifikasi">Verifikasi</option>
-                <option value="Disetujui">Disetujui</option>
-                <option value="Disposisi">Disposisi</option>
+                <option value="Menunggu Penempatan">Menunggu Penempatan</option>
+                <option value="Sudah Ditempatkan">Sudah Ditempatkan</option>
                 <option value="Ditolak">Ditolak</option>
             </select>
         </div>
@@ -88,22 +87,20 @@
                             <td class="text-center">
                                 <?php
                                     $status = $row['status_persetujuan'] ?? 'MENUNGGU';
-                                    $statusMap = [
-                                        'MENUNGGU'  => ['menunggu', 'Menunggu'],
-                                        'DISETUJUI' => ['disetujui', 'Disetujui'],
-                                        'DITOLAK'   => ['ditolak', 'Ditolak'],
-                                    ];
-                                    if (isset($row['disposisi']) && $row['disposisi'] == '1') {
-                                        $badgeClass = 'disposisi';
-                                        $badgeText = 'Disposisi';
+                                    $disposisi = $row['disposisi'] ?? '0';
+
+                                    if ($status === 'DISETUJUI' && $disposisi == '1') {
+                                        $badgeClass = 'sudah-ditempatkan';
+                                        $badgeText = 'Sudah Ditempatkan';
+                                    } elseif ($status === 'DISETUJUI' && $disposisi != '1') {
+                                        $badgeClass = 'menunggu-penempatan';
+                                        $badgeText = 'Menunggu Penempatan';
+                                    } elseif ($status === 'DITOLAK') {
+                                        $badgeClass = 'ditolak';
+                                        $badgeText = 'Ditolak';
                                     } else {
-                                        $badgeClass = $statusMap[$status][0] ?? 'menunggu';
-                                        $badgeText = $statusMap[$status][1] ?? 'Menunggu';
-                                    }
-                                    // Override untuk verifikasi
-                                    if ($status === 'DISETUJUI' && (!isset($row['disposisi']) || $row['disposisi'] != '1')) {
-                                        $badgeClass = 'verifikasi';
-                                        $badgeText = 'Verifikasi';
+                                        $badgeClass = 'menunggu';
+                                        $badgeText = 'Menunggu';
                                     }
                                 ?>
                                 <span class="status-badge <?= $badgeClass ?>"><?= $badgeText ?></span>

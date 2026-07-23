@@ -1,0 +1,14 @@
+.card-flat {
+    background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px;
+}
+.card-flat.d-flex {
+    display: flex !important; align-items: center; justify-content: space-between; gap: 15px; height: 100%;
+}
+.bg-success-subtle { background-color: #dcfce7 !important; color: #15803d !important; }
+.bg-primary-subtle { background-color: #e0f2fe !important; color: #0369a1 !important; }
+.bg-danger-subtle { background-color: #fee2e2 !important; color: #b91c1c !important; }
+
+.icon-circle {
+    width: 48px !important; height: 48px !important; flex-shrink: 0; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 1.35rem;
+}
