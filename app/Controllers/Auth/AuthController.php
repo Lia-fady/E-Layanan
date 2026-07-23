@@ -454,6 +454,7 @@ class AuthController extends BaseController
                     'nama'            => $userPegawai['nama'],
                     'id_bidang'       => $userPegawai['id_bidang'],
                     'id_user_group'   => $userPegawai['id_user_group'],
+                    'group_id'        => $userPegawai['id_user_group'],
                     'isLoggedIn'      => true,
                     'logged_in'       => true
                 ];
