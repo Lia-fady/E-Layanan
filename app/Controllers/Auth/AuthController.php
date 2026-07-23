@@ -3,10 +3,10 @@
 namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
-use App\Models\M_Mahasiswa;
-use App\Models\M_UserMahasiswa;
-use App\Models\M_InstansiMahasiswa; 
-use App\Models\M_InstansiPendidikan; 
+use App\Models\Mahasiswa\M_Mahasiswa;
+use App\Models\Mahasiswa\M_UserMahasiswa;
+use App\Models\Mahasiswa\M_InstansiMahasiswa; 
+use App\Models\Mahasiswa\M_InstansiPendidikan; 
 
 class AuthController extends BaseController
 {
@@ -454,7 +454,8 @@ class AuthController extends BaseController
                     'nama'            => $userPegawai['nama'],
                     'id_bidang'       => $userPegawai['id_bidang'],
                     'id_user_group'   => $userPegawai['id_user_group'],
-                    'isLoggedIn'      => true
+                    'isLoggedIn'      => true,
+                    'logged_in'       => true
                 ];
 
                 $group = $db->table('c_user_group')->where('id', $userPegawai['id_user_group'])->get()->getRowArray();

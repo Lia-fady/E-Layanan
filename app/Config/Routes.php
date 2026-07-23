@@ -14,10 +14,8 @@ use CodeIgniter\Router\RouteCollection;
 
 // =========================================================================
 // Default Route - Redirect ke halaman login
+// (Dipindahkan ke line bawah: '/' => Home::index untuk landing page)
 // =========================================================================
-$routes->get('/', static function () {
-    return redirect()->to('auth/login');
-});
 
 // =========================================================================
 // Auth Routes (tanpa filter autentikasi)

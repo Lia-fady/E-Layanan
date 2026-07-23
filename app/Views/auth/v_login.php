@@ -148,26 +148,47 @@
             margin-bottom: 0.75rem;
         }
 
-        /* Tombol Kembali */
-        .btn-back {
+        /* Action Buttons (Beranda & Pegawai) */
+        .action-links {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+        .btn-action {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            border: 1.5px solid var(--border);
-            color: var(--text-muted);
-            background: transparent;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 5px 12px;
-            border-radius: 6px;
+            justify-content: center;
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 8px;
             text-decoration: none;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            width: 100%;
         }
-
-        .btn-back:hover {
-            border-color: var(--navy);
+        .btn-action-beranda {
+            background-color: var(--bg-form);
+            color: var(--text-dark);
+            border: 1.5px solid var(--border);
+        }
+        .btn-action-beranda:hover {
+            background-color: var(--white);
+            border-color: #cbd5e1;
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+        .btn-action-pegawai {
+            background-color: rgba(16, 54, 125, 0.05);
             color: var(--navy);
+            border: 1.5px solid rgba(16, 54, 125, 0.15);
+        }
+        .btn-action-pegawai:hover {
+            background-color: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 54, 125, 0.2);
         }
 
         /* Labels */
@@ -296,17 +317,7 @@
 
         .auth-footer a:hover { text-decoration: underline; }
 
-        .portal-pegawai {
-            display: block;
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-decoration: underline;
-        }
 
-        .portal-pegawai:hover { color: var(--navy); }
 
         /* Alerts */
         .auth-alert {
@@ -421,8 +432,6 @@
             <h1 class="form-title">Masuk Akun</h1>
             <p class="form-desc">Silakan gunakan Username dan password terdaftar Anda untuk mengakses portal.</p>
 
-            <a href="<?= base_url('/') ?>" class="btn-back">Kembali ke Beranda</a>
-
             <?php if(session()->getFlashdata('success')): ?>
                 <div class="auth-alert success">
                     <i class="bi bi-check-circle-fill flex-shrink-0"></i>
@@ -473,7 +482,14 @@
                 Belum punya akun? <a href="<?= base_url('register') ?>">Daftar Sekarang</a>
             </div>
 
-            <a href="<?= base_url('pegawai/login') ?>" class="portal-pegawai">Portal Pegawai</a>
+            <div class="action-links d-flex flex-column flex-sm-row gap-2">
+                <a href="<?= base_url('landing') ?>" class="btn-action btn-action-beranda">
+                    <i class="bi bi-house-door-fill me-2 fs-6"></i> Kembali ke Beranda
+                </a>
+                <a href="<?= base_url('pegawai/login') ?>" class="btn-action btn-action-pegawai">
+                    <i class="bi bi-person-badge-fill me-2 fs-6"></i> Portal Pegawai
+                </a>
+            </div>
 
         </div>
     </div>

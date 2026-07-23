@@ -241,6 +241,60 @@
             color: #a0aec0;
             font-weight: 500;
         }
+
+        /* Action Buttons (Beranda & Pegawai) */
+        .action-links {
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        @media (min-width: 576px) {
+            .action-links {
+                flex-direction: row;
+                gap: 15px;
+            }
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            width: 100%;
+        }
+        .btn-action-beranda {
+            background-color: #ffffff;
+            color: #2d3748;
+            border: 1.5px solid #e2e8f0;
+        }
+        .btn-action-beranda:hover {
+            background-color: #f8fbff;
+            border-color: #cbd5e1;
+            color: #2d3748;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+        .btn-action-pegawai {
+            background-color: rgba(0, 74, 173, 0.05);
+            color: #004aad;
+            border: 1.5px solid rgba(0, 74, 173, 0.15);
+        }
+        .btn-action-pegawai:hover {
+            background-color: #004aad;
+            color: #ffffff;
+            border-color: #004aad;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 74, 173, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -301,6 +355,15 @@
 
             <div class="auth-footer">
                 Mahasiswa Magang? <a href="<?= base_url('login') ?>">Masuk di sini</a>
+            </div>
+
+            <div class="action-links d-flex flex-column flex-sm-row gap-2 mt-4">
+                <a href="<?= base_url('landing') ?>" class="btn-action btn-action-beranda">
+                    <i class="bi bi-house-door-fill me-2 fs-6"></i> Kembali ke Beranda
+                </a>
+                <a href="<?= base_url('auth/login') ?>" class="btn-action btn-action-pegawai">
+                    <i class="bi bi-person-badge-fill me-2 fs-6"></i> Portal Mahasiswa
+                </a>
             </div>
         </div>
 
