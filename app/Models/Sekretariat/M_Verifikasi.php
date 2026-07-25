@@ -69,7 +69,47 @@ class M_Verifikasi extends Model
         $builder->groupEnd();
         $builder->orderBy('pm.created_at', 'ASC');
 
-        return $builder->get()->getResult();
+        $results = $builder->get()->getResult();
+
+        foreach ($results as $row) {
+            $status_pers = strtoupper($row->status_persetujuan ?? 'MENUNGGU');
+            $has_bidang = !empty($row->nama_bidang);
+            
+            if ($status_pers === 'PERBAIKAN_BERKAS') {
+                $row->badge_penempatan = 'badge badge-secondary';
+                $row->label_penempatan = 'Berkas Dikembalikan';
+                $row->bidang_display   = '-';
+            } elseif ($status_pers === 'MENUNGGU') {
+                $row->badge_penempatan = 'badge badge-secondary';
+                $row->label_penempatan = 'Belum Diverifikasi';
+                $row->bidang_display   = '-';
+            } elseif ($status_pers === 'DISETUJUI' && !$has_bidang) {
+                $row->badge_penempatan = 'badge badge-secondary';
+                $row->label_penempatan = 'Penempatan Belum Ditentukan';
+                $row->bidang_display   = 'Bidang Belum Ditentukan';
+            } else {
+                $raw_status_pn = !empty($row->status_penempatan) ? strtoupper($row->status_penempatan) : 'MENUNGGU';
+                $row->bidang_display = $has_bidang ? $row->nama_bidang : 'Belum Ditentukan';
+                
+                $row->badge_penempatan = 'badge badge-warning';
+                $row->label_penempatan = 'Menunggu Persetujuan Bidang';
+
+                if ($raw_status_pn == 'BERJALAN') {
+                    $row->badge_penempatan = 'badge badge-info';
+                    $row->label_penempatan = 'Disetujui Oleh Bidang';
+                } elseif ($raw_status_pn == 'DIBATALKAN') {
+                    $row->badge_penempatan = 'badge badge-danger';
+                    $row->label_penempatan = 'Tidak Disetujui Oleh Bidang';
+                } elseif ($raw_status_pn == 'SELESAI') {
+                    $row->badge_penempatan = 'badge badge-success';
+                    $row->label_penempatan = 'SELESAI';
+                } elseif ($raw_status_pn != 'MENUNGGU') {
+                    $row->label_penempatan = esc($raw_status_pn);
+                }
+            }
+        }
+
+        return $results;
     }
 
     /**

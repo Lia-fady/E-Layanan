@@ -83,30 +83,8 @@
                         <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
                     </td>
                     <td class="text-center align-middle">
-                        <?php
-                            $raw_status_pn = !empty($row->status_penempatan) ? strtoupper($row->status_penempatan) : 'MENUNGGU';
-                            $bidang = !empty($row->nama_bidang) ? esc($row->nama_bidang) : 'Belum Ditentukan';
-                            
-                            $badgePn = 'badge badge-warning';
-                            $label_pn = 'Menunggu Persetujuan Bidang';
-
-                            if ($raw_status_pn == 'BERJALAN') {
-                                $badgePn = 'badge badge-info';
-                                $label_pn = 'Disetujui Oleh Bidang';
-                            } elseif ($raw_status_pn == 'DIBATALKAN') {
-                                $badgePn = 'badge badge-danger';
-                                $label_pn = 'Tidak Disetujui Oleh Bidang';
-                            } elseif ($raw_status_pn == 'MENUNGGU') {
-                                $badgePn = 'badge badge-warning';
-                                $label_pn = 'Menunggu Persetujuan Bidang';
-                            } else {
-                                // Fallback untuk status lain seperti SELESAI jika ada
-                                if ($raw_status_pn == 'SELESAI') $badgePn = 'badge badge-success';
-                                $label_pn = esc($raw_status_pn);
-                            }
-                        ?>
-                        <span class="<?= $badgePn ?> mb-1"><?= $label_pn ?></span><br>
-                        <small class="text-muted"><i class="fas fa-building mr-1"></i> <?= $bidang ?></small>
+                        <span class="<?= esc($row->badge_penempatan) ?> mb-1"><?= esc($row->label_penempatan) ?></span><br>
+                        <small class="text-muted"><i class="fas fa-building mr-1"></i> <?= esc($row->bidang_display) ?></small>
                     </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center" style="gap:4px;">
