@@ -29,6 +29,31 @@ class C_Verifikasi extends BaseController
      */
     public function index()
     {
+        $db = \Config\Database::connect();
+
+        // AJAX Handler for getting detail
+        if ($this->request->isAJAX() && $this->request->getPost('action') === 'get_detail') {
+            $id = $this->request->getPost('id');
+            
+            // Ambil id_bidang dari penempatan (jika sudah didisposisi)
+            $penempatan = $db->table('t_penempatan_magang as pn')
+                ->select('pn.id_bidang, pn.status_penempatan')
+                ->join('t_persetujuan_magang as ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'inner')
+                ->where('ps.id_permohonan_magang', $id)
+                ->get()
+                ->getRow();
+
+            $data = [
+                'permohonan'      => $this->verifikasiModel->getPermohonanById($id),
+                'files'           => $this->verifikasiModel->getFilePermohonan($id),
+                'bidang'          => $db->table('m_bidang')->where('status_aktif', '1')->get()->getResult(),
+                'selected_bidang' => $penempatan->id_bidang ?? null,
+                'status_penempatan' => $penempatan->status_penempatan ?? 'MENUNGGU',
+            ];
+
+            return view('dashboard/sekretariat/verifikasi/_detail', $data);
+        }
+
         $permohonan = $this->verifikasiModel->getPermohonanMasuk();
         
         // Attach files to each permohonan
@@ -47,23 +72,7 @@ class C_Verifikasi extends BaseController
             'permohonan'  => $permohonan,
         ];
 
-        return view('dashboard/sekretariat/v_verifikasi', $data);
-    }
-
-    /**
-     * Data untuk modal detail permohonan.
-     */
-    public function detailModal($id)
-    {
-        $db = \Config\Database::connect();
-        
-        $data = [
-            'permohonan'  => $this->verifikasiModel->getPermohonanById($id),
-            'files'       => $this->verifikasiModel->getFilePermohonan($id),
-            'bidang'      => $db->table('m_bidang')->where('status_aktif', '1')->get()->getResult(),
-        ];
-
-        return view('dashboard/sekretariat/v_verifikasi_modal', $data);
+        return view('dashboard/sekretariat/verifikasi/index', $data);
     }
 
     /**
@@ -76,6 +85,26 @@ class C_Verifikasi extends BaseController
         }
 
         $id_permohonan = $this->request->getPost('id_permohonan_magang');
+
+        // Guard: Cek apakah status sudah final
+        $db = \Config\Database::connect();
+        $existing = $db->table('t_persetujuan_magang as ps')
+            ->select('ps.status_persetujuan, pn.status_penempatan')
+            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('ps.id_permohonan_magang', $id_permohonan)
+            ->get()
+            ->getRow();
+
+        if ($existing && $existing->status_persetujuan === 'DISETUJUI') {
+            $statusPenempatan = $existing->status_penempatan ?? 'MENUNGGU';
+            if ($statusPenempatan !== 'MENUNGGU') {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Verifikasi tidak dapat diubah karena penempatan sudah berstatus ' . $statusPenempatan . '.'
+                ]);
+            }
+        }
+
         $fileStatuses = $this->request->getPost('file_status') ?? [];
         $id_bidang = $this->request->getPost('id_bidang');
 
@@ -98,6 +127,13 @@ class C_Verifikasi extends BaseController
         ];
 
         $result = $this->verifikasiModel->simpanVerifikasi($data);
+
+        // Simpan status verifikasi per-file ke t_file_permohonan_magang
+        foreach ($fileStatuses as $idFile => $status) {
+            $db->table('t_file_permohonan_magang')
+                ->where('id_file_permohonan_magang', $idFile)
+                ->update(['status_verifikasi' => $status]);
+        }
 
         // Jika disetujui dan id_bidang dikirim, langsung proses disposisi
         if ($overallStatus == 'DISETUJUI' && !empty($id_bidang)) {

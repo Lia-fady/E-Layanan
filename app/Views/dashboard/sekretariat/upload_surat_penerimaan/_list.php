@@ -1,31 +1,12 @@
 <?php
 /**
- * View untuk Index Upload Surat Penerimaan Magang (Sekretariat)
+ * ============================================================
+ * Kode      : _list.php
+ * Path      : Views/dashboard/sekretariat/upload_surat_penerimaan/_list.php
+ * Deskripsi : Partial view untuk daftar mahasiswa (Persetujuan Magang).
+ * ============================================================
  */
 ?>
-<?= $this->extend('layout/L_master') ?>
-
-<?= $this->section('title') ?>
-<?= esc($title) ?>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
-
-<!-- Flash Messages -->
-<?php if (session()->getFlashdata('success')) : ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle mr-2"></i>
-    <?= session()->getFlashdata('success') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
-<?php if (session()->getFlashdata('error')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    <?= session()->getFlashdata('error') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -81,33 +62,3 @@
         </div>
     </div>
 </div>
-
-<?= $this->endSection() ?>
-
-<?= $this->section('scripts') ?>
-<script>
-$(document).ready(function() {
-    $('#dataTable').DataTable();
-
-    // Handle Upload Surat Button
-    $('.btn-upload-surat').on('click', function(e) {
-        e.preventDefault();
-        var idPersetujuan = $(this).data('id-persetujuan');
-        // Load the modal content via AJAX to display upload modal without leaving page
-        $.ajax({
-            url: "<?= base_url('sekretariat/upload-surat-penerimaan/form') ?>/" + idPersetujuan,
-            type: "GET",
-            success: function(response) {
-                // If there's an existing modal, remove it
-                $('#modalUploadSuratContainer').remove();
-                $('body').append('<div id="modalUploadSuratContainer">' + response + '</div>');
-                $('#modalUploadSurat').modal('show');
-            },
-            error: function() {
-                Swal.fire({icon: 'error', title: 'Oops...', text: 'Gagal memuat form upload surat.'});
-            }
-        });
-    });
-});
-</script>
-<?= $this->endSection() ?>

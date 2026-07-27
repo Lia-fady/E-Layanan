@@ -26,6 +26,13 @@ class C_Dashboard extends BaseController
         $tahunIni = date('Y');
         $hariIni  = date('Y-m-d');
 
+        // Ambil data user dari database (nama dan kode_unor)
+        $userPegawai = $db->table('c_user_pegawai')
+            ->select('nama, kode_unor')
+            ->where('id_user_pegawai', session('id_user_pegawai'))
+            ->get()
+            ->getRow();
+
         // ============================================================
         // STAT CARDS
         // ============================================================
@@ -175,6 +182,8 @@ class C_Dashboard extends BaseController
         $data = [
             'title'                 => 'Dashboard Sekretariat',
             'active_menu'           => 'dashboard',
+            'nama_user'             => $userPegawai->nama ?? '',
+            'kode_unor'             => $userPegawai->kode_unor ?? '',
             'total_permohonan'      => (int) $total_permohonan,
             'total_verifikasi'      => (int) $total_verifikasi,
             'total_sedang_diproses' => (int) $total_sedang_diproses,
