@@ -30,7 +30,7 @@ class AuthSekretariat implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         if (!session()->get('logged_in')) {
-            return redirect()->to(base_url('auth/login'));
+            return redirect()->to(base_url('pegawai/login'));
         }
     }
 
