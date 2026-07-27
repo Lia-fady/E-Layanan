@@ -38,14 +38,14 @@ $routes->get('temp/update-db', static function() {
 $routes->get('/', 'Home::index');
 $routes->get('landing', 'Home::index');
 
-$routes->get('register', 'Auth\AuthController::register');
-$routes->post('register/process', 'Auth\AuthController::processRegister');
+$routes->get('register', 'AuthController::register');
+$routes->post('register/process', 'AuthController::processRegister');
 
-$routes->get('login', 'Auth\AuthController::login');
-$routes->post('login/process', 'Auth\AuthController::processLogin');
-$routes->get('pegawai/login', 'Auth\AuthController::loginPegawai');
-$routes->post('pegawai/login/process', 'Auth\AuthController::processLoginPegawai');
-$routes->get('logout', 'Auth\AuthController::logout');
+$routes->get('login', 'AuthController::login');
+$routes->post('login/process', 'AuthController::processLogin');
+$routes->get('pegawai/login', 'AuthController::loginPegawai');
+$routes->post('pegawai/login/process', 'AuthController::processLoginPegawai');
+$routes->get('logout', 'AuthController::logout');
 
 // =========================================================================
 // MAHASISWA Route Group 

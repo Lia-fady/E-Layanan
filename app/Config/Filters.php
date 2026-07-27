@@ -12,6 +12,8 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\AuthSekretariat;
+use App\Filters\AuthKabid;
 
 class Filters extends BaseFilters
 {
@@ -33,8 +35,9 @@ class Filters extends BaseFilters
         'cors'          => Cors::class,
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
-        'performance'   => PerformanceMetrics::class,
-        'auth'          => \App\Filters\AuthFilter::class,
+        'performance'       => PerformanceMetrics::class,
+        'authSekretariat'   => AuthSekretariat::class,
+        'authKabid'         => AuthKabid::class,
     ];
 
     /**
@@ -107,7 +110,5 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [
-        'auth' => ['before' => ['mahasiswa/*', 'sekretariat/*', 'kabid/*', 'admin/*']]
-    ];
+    public array $filters = [];
 }

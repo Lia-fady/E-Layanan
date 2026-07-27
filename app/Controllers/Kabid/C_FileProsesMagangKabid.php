@@ -1,11 +1,11 @@
 <?php
-namespace App\Controllers\Sekretariat;
+namespace App\Controllers\Kabid;
 
 use App\Controllers\BaseController;
 use App\Models\Sekretariat\M_File;
 use App\Models\Sekretariat\M_FileProsesMagang;
 
-class C_FileProsesMagang extends BaseController
+class C_FileProsesMagangKabid extends BaseController
 {
     protected $fileModel;
     protected $fileProsesModel;

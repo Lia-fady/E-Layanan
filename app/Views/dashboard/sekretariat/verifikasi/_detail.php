@@ -124,7 +124,15 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                         <select name="id_bidang" id="id_bidang" class="form-control" <?= $isLocked ? 'disabled' : '' ?>>
                             <option value="" data-kuota="">-- Pilih Bidang Tujuan --</option>
                             <?php foreach ($bidang as $b) : ?>
-                                <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>><?= esc($b->bidang) ?></option>
+                                <?php if ($b->sisa_kuota > 0): ?>
+                                    <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
+                                        <?= esc($b->bidang) ?> (Sisa Kuota: <?= $b->sisa_kuota ?>)
+                                    </option>
+                                <?php else: ?>
+                                    <option value="<?= $b->id_bidang ?>" data-kuota="0" disabled>
+                                        <?= esc($b->bidang) ?> (Penuh!)
+                                    </option>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
                         <div id="info_kuota_bidang" class="mt-2" style="display: none; font-size: 0.85rem; font-weight: 500;">
