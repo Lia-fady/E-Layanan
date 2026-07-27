@@ -438,18 +438,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         <div class="flex-grow-1"><div class="next-action-title">Mulai layanan akademik Anda</div><div class="next-action-copy">Siapkan dokumen persyaratan dan buat permohonan baru untuk memulai proses.</div></div>
         <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action primary"><i class="bi bi-file-earmark-plus"></i> Mulai Pengajuan</a>
     </div>
-<?php elseif ($state == 3): ?>
-    <div class="next-action-card warning">
-        <span class="next-action-icon"><i class="bi bi-pencil-square"></i></span>
-        <div class="flex-grow-1"><div class="next-action-title">Permohonan memerlukan perhatian Anda</div><div class="next-action-copy">Baca catatan evaluasi dan perbaiki permohonan yang sama tanpa membuat pengajuan baru.</div></div>
-        <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action warning"><i class="bi bi-eye"></i> Lihat Catatan</a>
-    </div>
-<?php elseif ($state == 6): ?>
-    <div class="next-action-card warning">
-        <span class="next-action-icon"><i class="bi bi-arrow-repeat"></i></span>
-        <div class="flex-grow-1"><div class="next-action-title">Perbaikan dokumen diperlukan</div><div class="next-action-copy">Gunakan permohonan yang sama untuk memperbarui dokumen sesuai catatan Sekretariat.</div></div>
-        <a href="<?= base_url('mahasiswa/permohonan/edit/' . ($permohonan_aktif['id_permohonan_magang'] ?? '')) ?>" class="btn-action warning"><i class="bi bi-pencil-square"></i> Perbaiki</a>
-    </div>
+
 <?php elseif ($state == 4 && $jenis_permohonan == 3 && $is_log_book == 'ya'): ?>
     <div class="next-action-card success">
         <span class="next-action-icon"><i class="bi bi-journal-check"></i></span>
@@ -485,8 +474,8 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
             <span class="step-label">Verifikasi<br>Sekretariat</span>
         </li>
         <!-- Step 3: Persetujuan Kabid -->
-        <li class="step-item <?= ($state >= 4) ? 'completed' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? 'current' : '') ?>">
-            <div class="step-circle"><?= ($state >= 4) ? '<i class="bi bi-check-lg"></i>' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? '<i class="bi bi-diagram-3-fill"></i>' : '3') ?></div>
+        <li class="step-item <?= (in_array($state, [4, 5])) ? 'completed' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? 'current' : '') ?>">
+            <div class="step-circle"><?= (in_array($state, [4, 5])) ? '<i class="bi bi-check-lg"></i>' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? '<i class="bi bi-diagram-3-fill"></i>' : '3') ?></div>
             <span class="step-label">Persetujuan<br>Bidang</span>
         </li>
         <!-- Step 4: Pelaksanaan -->
@@ -591,16 +580,18 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         <div class="card-flat h-100 d-flex flex-column">
             <div class="card-label"><i class="bi bi-hourglass-split me-1"></i> Status</div>
             
-            <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
-                <div class="alert-card alert-info mb-3">
-                    <i class="bi bi-diagram-3-fill alert-icon"></i>
-                    <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
-                </div>
-            <?php elseif (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '0'): ?>
-                <div class="alert-card alert-warning mb-3">
-                    <i class="bi bi-building alert-icon"></i>
-                    <div>Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat.</div>
-                </div>
+            <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
+                <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
+                    <div class="alert-card alert-info mb-3">
+                        <i class="bi bi-diagram-3-fill alert-icon"></i>
+                        <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
+                    </div>
+                <?php else: ?>
+                    <div class="alert-card alert-warning mb-3">
+                        <i class="bi bi-building alert-icon"></i>
+                        <div>Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat.</div>
+                    </div>
+                <?php endif; ?>
             <?php else: ?>
                 <div class="alert-card alert-warning mb-3">
                     <i class="bi bi-clock-history alert-icon"></i>

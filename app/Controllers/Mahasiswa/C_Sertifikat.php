@@ -21,6 +21,8 @@ class C_Sertifikat extends C_BaseMahasiswa
         if (!empty($stateData['permohonan_aktif']['id_persetujuan_magang'])) {
             $db = \Config\Database::connect();
             $files = $db->table('t_file_proses_magang')
+                        ->select('t_file_proses_magang.*, c_user_pegawai.nama as pengunggah')
+                        ->join('c_user_pegawai', 'c_user_pegawai.id_user_pegawai = t_file_proses_magang.created_by', 'left')
                         ->where('id_persetujuan_magang', $stateData['permohonan_aktif']['id_persetujuan_magang'])
                         ->get()->getResultArray();
             foreach ($files as $f) {

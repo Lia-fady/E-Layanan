@@ -198,7 +198,7 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                 </div>
                             </div>
                         </td>
-                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;">Sekretariat / Bidang</span></td>
+                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;"><?= esc($file_penerimaan['pengunggah'] ?? 'Sekretariat') ?></span></td>
                         <td class="py-3 text-muted fw-medium" style="font-size: 0.85rem;"><?= isset($file_penerimaan['created_at']) ? date('d M Y', strtotime($file_penerimaan['created_at'])) : date('d M Y') ?></td>
                         <td class="py-3">
                             <div class="status-badge available"><i class="bi bi-check-circle-fill"></i> Tersedia</div>
@@ -222,7 +222,7 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                 </div>
                             </div>
                         </td>
-                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;">Bidang</span></td>
+                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;"><?= esc($file_selesai['pengunggah'] ?? 'Bidang') ?></span></td>
                         <td class="py-3 text-muted fw-medium" style="font-size: 0.85rem;"><?= isset($file_selesai['created_at']) ? date('d M Y', strtotime($file_selesai['created_at'])) : date('d M Y') ?></td>
                         <td class="py-3">
                             <div class="status-badge available"><i class="bi bi-check-circle-fill"></i> Tersedia</div>
@@ -246,7 +246,7 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                 </div>
                             </div>
                         </td>
-                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;">Bidang</span></td>
+                        <td class="py-3"><span class="text-dark fw-medium" style="font-size: 0.85rem;"><?= esc($file_piagam['pengunggah'] ?? 'Bidang') ?></span></td>
                         <td class="py-3 text-muted fw-medium" style="font-size: 0.85rem;"><?= isset($file_piagam['created_at']) ? date('d M Y', strtotime($file_piagam['created_at'])) : date('d M Y') ?></td>
                         <td class="py-3">
                             <div class="status-badge available"><i class="bi bi-check-circle-fill"></i> Tersedia</div>

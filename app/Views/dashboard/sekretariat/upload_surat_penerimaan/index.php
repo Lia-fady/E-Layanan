@@ -88,7 +88,7 @@ $(document).ready(function() {
         e.preventDefault();
         
         var form = $(this);
-        var formData = new FormData(this[0]);
+        var formData = new FormData(this);
         var btn = $('#btnUploadSubmit');
         
         btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Mengunggah...');

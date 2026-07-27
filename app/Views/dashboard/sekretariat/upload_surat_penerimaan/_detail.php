@@ -131,7 +131,8 @@
                                 <th width="5%" class="text-center">No</th>
                                 <th width="20%">Jenis File</th>
                                 <th>Nama File</th>
-                                <th width="20%">Tanggal Upload</th>
+                                <th width="15%">Diunggah Oleh</th>
+                                <th width="15%">Tanggal Upload</th>
                                 <th width="10%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -146,7 +147,12 @@
                                                 <?= esc($f->nama_file) ?>
                                             </a>
                                         </td>
-                                        <td class="align-middle"><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></td>
+                                        <td class="align-middle">
+                                            <small class="text-muted"><?= esc($f->pengunggah ?? 'Sistem') ?></small>
+                                        </td>
+                                        <td class="align-middle">
+                                            <small><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></small>
+                                        </td>
                                         <td class="text-center align-middle">
                                             <button type="button" class="btn btn-sm btn-warning btn-ganti-surat mb-1" data-id="<?= $f->id_file_selesai_magang ?>" title="Ganti File">
                                                 <i class="fas fa-edit"></i>
@@ -159,7 +165,7 @@
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td colspan="5" class="text-center text-muted">Belum ada surat penerimaan yang diunggah.</td>
+                                    <td colspan="6" class="text-center text-muted">Belum ada surat penerimaan yang diunggah.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>

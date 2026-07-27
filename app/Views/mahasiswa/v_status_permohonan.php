@@ -339,8 +339,10 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                                                         $isReject = ($p['status_persetujuan'] == 'DITOLAK');
                                                                         $isRevise = ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS');
                                                                         $isApproved = ($p['status_persetujuan'] == 'DISETUJUI');
-                                                                        $sekreClass = $isReject ? 'danger' : ($isRevise ? 'warning' : 'success');
-                                                                        $sekreTitle = $isReject ? 'Permohonan Ditolak' : ($isRevise ? 'Perlu Perbaikan Berkas' : 'Verifikasi Selesai');
+                                                                        $isWaiting = ($p['status_persetujuan'] == 'MENUNGGU');
+                                                                        
+                                                                        $sekreClass = $isReject ? 'danger' : ($isRevise ? 'warning' : ($isWaiting ? 'primary' : 'success'));
+                                                                        $sekreTitle = $isReject ? 'Permohonan Ditolak' : ($isRevise ? 'Perlu Perbaikan Berkas' : ($isWaiting ? 'Sedang Diverifikasi' : 'Verifikasi Selesai'));
                                                                     ?>
                                                                     <div class="v-timeline-item <?= $sekreClass ?>">
                                                                         <div class="v-timeline-icon"></div>
@@ -419,13 +421,20 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                                                 <?php if (!empty($p['files'])): ?>
                                                                     <?php foreach($p['files'] as $file): ?>
                                                                     <div class="col-12 col-md-6">
-                                                                        <div class="file-card-modern">
+                                                                        <div class="file-card-modern position-relative">
                                                                             <div class="file-icon-box <?= strpos(strtolower($file['nama_file']), '.pdf') !== false ? 'pdf' : 'doc' ?>">
                                                                                 <i class="bi bi-file-earmark-<?= strpos(strtolower($file['nama_file']), '.pdf') !== false ? 'pdf' : 'text' ?>-fill"></i>
                                                                             </div>
                                                                             <div class="overflow-hidden w-100">
                                                                                 <div class="small text-dark text-truncate fw-bold mb-1" title="<?= esc($file['nama_file']) ?>"><?= esc($file['nama_file']) ?></div>
-                                                                                <a href="<?= base_url('mahasiswa/view-file/' . $file['id_file_permohonan_magang']) ?>" target="_blank" class="text-decoration-none small text-primary fw-medium">Lihat File &rarr;</a>
+                                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                                    <a href="<?= base_url('mahasiswa/view-file/' . $file['id_file_permohonan_magang']) ?>" target="_blank" class="text-decoration-none small text-primary fw-medium">Lihat File &rarr;</a>
+                                                                                    <?php if(isset($file['status_verifikasi']) && $file['status_verifikasi'] === 'TIDAK_VALID'): ?>
+                                                                                        <span class="badge bg-danger" style="font-size: 0.65rem;">Tidak Valid</span>
+                                                                                    <?php elseif(isset($file['status_verifikasi']) && $file['status_verifikasi'] === 'VALID'): ?>
+                                                                                        <span class="badge bg-success" style="font-size: 0.65rem;">Valid</span>
+                                                                                    <?php endif; ?>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>

@@ -103,12 +103,14 @@ if(session()->getFlashdata('permohonan_sent')):
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px;">
         <i class="bi bi-hourglass-split"></i>
     </div>
-    <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
-        <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Bidang</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang. Silakan pantau halaman status secara berkala.</p>
-    <?php elseif (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '0'): ?>
-        <h5 class="fw-bold text-dark mb-2">Menunggu Disposisi Sekretariat</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat. Silakan pantau halaman status secara berkala.</p>
+    <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
+        <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
+            <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Bidang</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang. Silakan pantau halaman status secara berkala.</p>
+        <?php else: ?>
+            <h5 class="fw-bold text-dark mb-2">Menunggu Disposisi Sekretariat</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat. Silakan pantau halaman status secara berkala.</p>
+        <?php endif; ?>
     <?php else: ?>
         <h5 class="fw-bold text-dark mb-2">Permohonan Sedang Diproses</h5>
         <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi oleh tim Sekretariat Dinas Kominfo. Silakan pantau halaman status secara berkala.</p>

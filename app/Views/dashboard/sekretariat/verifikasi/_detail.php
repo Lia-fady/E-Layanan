@@ -124,15 +124,9 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                         <select name="id_bidang" id="id_bidang" class="form-control" <?= $isLocked ? 'disabled' : '' ?>>
                             <option value="" data-kuota="">-- Pilih Bidang Tujuan --</option>
                             <?php foreach ($bidang as $b) : ?>
-                                <?php if ($b->sisa_kuota > 0): ?>
-                                    <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
-                                        <?= esc($b->bidang) ?> (Sisa Kuota: <?= $b->sisa_kuota ?>)
-                                    </option>
-                                <?php else: ?>
-                                    <option value="<?= $b->id_bidang ?>" data-kuota="0" disabled>
-                                        <?= esc($b->bidang) ?> (Penuh!)
-                                    </option>
-                                <?php endif; ?>
+                                <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
+                                    <?= esc($b->bidang) ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                         <div id="info_kuota_bidang" class="mt-2" style="display: none; font-size: 0.85rem; font-weight: 500;">
@@ -188,6 +182,11 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
             </div>
             
             <hr>
+            <div class="form-group mb-4">
+                <label for="catatan_manual" class="fw-bold" style="color: #1B2559;"><i class="fas fa-edit mr-1"></i> Catatan Tambahan (Opsional)</label>
+                <textarea name="catatan_manual" id="catatan_manual" class="form-control" rows="3" placeholder="Tulis alasan penolakan spesifik (misal: KTP buram) atau pesan lainnya..." <?= $isLocked ? 'disabled' : '' ?>></textarea>
+                <small class="text-muted">Jika dikosongkan, sistem akan otomatis menggunakan catatan standar berdasarkan status berkas.</small>
+            </div>
             <div class="d-flex justify-content-end mt-3">
                 <button type="button" class="btn btn-secondary mr-2" id="btnKembali" onclick="$('#btnKembali').click()">Batal</button>
                 <?php if (!$isLocked) : ?>
@@ -216,7 +215,7 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                 if (kuota > 0) {
                     infoBox.html('<i class="bi bi-info-circle text-primary me-1"></i> <span class="text-primary">Sisa Kuota Tersedia: <strong>' + kuota + ' Orang</strong></span>');
                 } else {
-                    infoBox.html('<i class="bi bi-exclamation-circle text-danger me-1"></i> <span class="text-danger">Bidang ini sudah penuh!</span>');
+                    infoBox.html('<i class="bi bi-exclamation-circle text-danger me-1"></i> <span class="text-danger">Sisa Kuota Tersedia: <strong>0 Orang (Penuh)</strong></span>');
                 }
             } else {
                 infoBox.hide();

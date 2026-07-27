@@ -24,7 +24,7 @@
 <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
         <div class="dashboard-subtitle mb-1">Akses Kepala Bidang</div>
-        <h1 class="dashboard-header-title mb-0">Selamat Datang, Bidang <?= esc($bidang_info->bidang ?? 'TIK') ?></h1>
+        <h1 class="dashboard-header-title mb-0">Selamat Datang, <?= esc($bidang_info->bidang ?? 'TIK') ?></h1>
     </div>
     <div class="d-flex" style="gap: 10px;">
         <button class="btn btn-outline-secondary bg-white font-weight-bold" style="border-radius: 8px; border-color: #CBD5E1;">

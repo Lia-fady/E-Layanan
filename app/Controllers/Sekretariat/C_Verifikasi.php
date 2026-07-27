@@ -130,7 +130,12 @@ class C_Verifikasi extends BaseController
         }
 
         $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
-        $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
+        $catatanManual = $this->request->getPost('catatan_manual');
+        if (!empty(trim($catatanManual))) {
+            $catatan = trim($catatanManual);
+        } else {
+            $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
+        }
 
         // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
         if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
