@@ -233,14 +233,21 @@ class M_Verifikasi extends Model
                 }
             }
 
+            $updateData = [
+                'catatan'             => $data['catatan'],
+                'status_persetujuan'  => $data['status_persetujuan'],
+                'updated_by'          => $data['updated_by'],
+                'tgl_persetujuan'     => date('Y-m-d H:i:s'),
+            ];
+
+            if ($data['status_persetujuan'] === 'PERBAIKAN_BERKAS' || $data['status_persetujuan'] === 'MENUNGGU') {
+                $updateData['disposisi'] = '0';
+                $updateData['id_bidang'] = null;
+            }
+
             return $db->table('t_persetujuan_magang')
                 ->where('id_permohonan_magang', $data['id_permohonan_magang'])
-                ->update([
-                    'catatan'             => $data['catatan'],
-                    'status_persetujuan'  => $data['status_persetujuan'],
-                    'updated_by'          => $data['updated_by'],
-                    'tgl_persetujuan'     => date('Y-m-d H:i:s'),
-                ]);
+                ->update($updateData);
         } else {
             return $db->table('t_persetujuan_magang')
                 ->insert([
@@ -273,6 +280,8 @@ class M_Verifikasi extends Model
                 ->update([
                     'status_persetujuan' => 'PERBAIKAN_BERKAS',
                     'catatan'            => 'Berkas dikembalikan',
+                    'disposisi'          => '0',
+                    'id_bidang'          => null,
                     'tgl_persetujuan'    => date('Y-m-d H:i:s'),
                 ]);
         } else {

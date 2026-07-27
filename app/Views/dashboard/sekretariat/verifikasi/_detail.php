@@ -122,11 +122,14 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                     <div class="form-group mb-4">
                         <label for="id_bidang" class="text-muted" style="font-size: 0.9rem;">Pilih Bidang Tujuan <small>(Hanya diproses jika semua dokumen Valid)</small></label>
                         <select name="id_bidang" id="id_bidang" class="form-control" <?= $isLocked ? 'disabled' : '' ?>>
-                            <option value="">-- Pilih Bidang Tujuan --</option>
+                            <option value="" data-kuota="">-- Pilih Bidang Tujuan --</option>
                             <?php foreach ($bidang as $b) : ?>
-                                <option value="<?= $b->id_bidang ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>><?= esc($b->bidang) ?></option>
+                                <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>><?= esc($b->bidang) ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <div id="info_kuota_bidang" class="mt-2" style="display: none; font-size: 0.85rem; font-weight: 500;">
+                            <!-- Info kuota akan muncul di sini -->
+                        </div>
                     </div>
                 </div>
 
@@ -151,7 +154,7 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                                             <td class="text-center align-middle"><?= $no++ ?></td>
                                             <td class="align-middle"><?= esc($f->nama_file_master ?? 'Dokumen') ?></td>
                                             <td class="text-center align-middle">
-                                                <a href="<?= base_url('uploads/permohonan/' . $f->path_file) ?>" target="_blank" class="btn btn-sm btn-info" title="Lihat Berkas">
+                                                <a href="<?= base_url($f->path_file) ?>" target="_blank" class="btn btn-sm btn-info" title="Lihat Berkas">
                                                     <i class="fas fa-file-pdf"></i> Lihat
                                                 </a>
                                             </td>
@@ -192,3 +195,24 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
         </form>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#id_bidang').on('change', function() {
+            var selectedOption = $(this).find('option:selected');
+            var kuota = selectedOption.data('kuota');
+            var infoBox = $('#info_kuota_bidang');
+            
+            if (kuota !== undefined && kuota !== '') {
+                infoBox.show();
+                if (kuota > 0) {
+                    infoBox.html('<i class="bi bi-info-circle text-primary me-1"></i> <span class="text-primary">Sisa Kuota Tersedia: <strong>' + kuota + ' Orang</strong></span>');
+                } else {
+                    infoBox.html('<i class="bi bi-exclamation-circle text-danger me-1"></i> <span class="text-danger">Bidang ini sudah penuh!</span>');
+                }
+            } else {
+                infoBox.hide();
+            }
+        });
+    });
+</script>

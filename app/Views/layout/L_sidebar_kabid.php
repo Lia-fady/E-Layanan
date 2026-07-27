@@ -46,27 +46,48 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading: PENEMPATAN -->
+    <!-- Heading: PENEMPATAN & PENGAWASAN -->
     <div class="sidebar-heading">
-        PENEMPATAN
+        MANAJEMEN MAGANG
     </div>
 
-    <!-- Nav Item - Persetujuan Penempatan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'penempatan') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('kabid/penempatan') ?>">
-            <i class="fas fa-fw fa-user-check"></i>
-            <span>Persetujuan Penempatan</span>
+    <!-- Nav Item - Disposisi Masuk -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'disposisi') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/disposisi') ?>">
+            <i class="fas fa-fw fa-inbox"></i>
+            <span>Disposisi Masuk</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Logbook -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'logbook') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/logbook') ?>">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Logbook Mahasiswa</span>
         </a>
     </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Upload Surat Penerimaan -->
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('kabid/upload-surat-penerimaan') ?>">
+    <!-- Heading: ADMINISTRASI -->
+    <div class="sidebar-heading">
+        ADMINISTRASI
+    </div>
+
+    <!-- Nav Item - Kuota Bidang -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'kuota') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/kuota') ?>">
+            <i class="fas fa-fw fa-chart-pie"></i>
+            <span>Kuota Bidang</span>
+        </a>
+    </li>
+
+    <!-- Nav Item - Upload Dokumen -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_dokumen') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/upload-dokumen') ?>">
             <i class="fas fa-fw fa-file-upload"></i>
-            <span>Upload Surat Penerimaan</span>
+            <span>Upload Dokumen</span>
         </a>
     </li>
 

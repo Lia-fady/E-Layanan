@@ -1,7 +1,7 @@
 <?= $this->extend('layout/mahasiswa') ?>
 
 <?= $this->section('extra_css') ?>
-<?= $this->include('mahasiswa/_wz_style') ?>
+<?= $this->include('mahasiswa/v_part_wizard_style') ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('breadcrumb') ?>
@@ -10,8 +10,14 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
 
 <?= $this->section('content') ?>
 <div class="mb-4">
-    <h4 class="fw-bold text-dark m-0" style="letter-spacing: -0.3px;">Ajukan Permohonan</h4>
-    <p class="text-muted m-0 mt-1" style="font-size: 0.83rem;">Silakan lengkapi data permohonan kegiatan akademik Anda.</p>
+    <div class="application-intro">
+        <div class="application-intro-icon"><i class="bi bi-file-earmark-plus"></i></div>
+        <div>
+            <span class="application-intro-kicker">Layanan akademik</span>
+            <h4 class="m-0">Form Layanan Permohonan Akademik</h4>
+            <p>Lengkapi data kegiatan dan dokumen pendukung Anda. Proses pengajuan terdiri dari data, dokumen, review, dan pengiriman.</p>
+        </div>
+    </div>
 </div>
 
 <?php if(session()->getFlashdata('errors')) : ?>
@@ -33,7 +39,7 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
 
 <?php
 // Tentukan apakah form sudah di tahap akhir (Step 4) atau belum
-$isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $state >= 4);
+$isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $state == 4);
 ?>
 
 <!-- ============ STEPPER BAR SELALU TAMPIL ============ -->
@@ -98,8 +104,8 @@ if(session()->getFlashdata('permohonan_sent')):
         <i class="bi bi-hourglass-split"></i>
     </div>
     <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
-        <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Kepala Bidang</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Kepala Bidang. Silakan pantau halaman status secara berkala.</p>
+        <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Bidang</h5>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang. Silakan pantau halaman status secara berkala.</p>
     <?php elseif (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '0'): ?>
         <h5 class="fw-bold text-dark mb-2">Menunggu Disposisi Sekretariat</h5>
         <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat. Silakan pantau halaman status secara berkala.</p>
@@ -110,8 +116,8 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
 
-<?php elseif($state == 4 || $state == 5): ?>
-<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4 ATAU 5) ============ -->
+<?php elseif($state == 4): ?>
+<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4) ============ -->
 <div class="wizard-card text-center py-5">
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
         <i class="bi bi-check-circle-fill"></i>
@@ -119,6 +125,17 @@ if(session()->getFlashdata('permohonan_sent')):
     <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui & Aktif</h5>
     <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan magang/akademik Anda sudah disetujui. Anda tidak perlu mengajukan permohonan baru pada saat ini.</p>
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
+</div>
+
+<?php elseif($state == 6): ?>
+<!-- ============ TAMPILAN JIKA PERMOHONAN SEDANG REVISI (STATE 6) ============ -->
+<div class="wizard-card text-center py-5">
+    <div style="width: 80px; height: 80px; border-radius: 50%; background: #fef08a; color: #ca8a04; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
+        <i class="bi bi-pencil-square"></i>
+    </div>
+    <h5 class="fw-bold text-dark mb-2">Permohonan Perlu Revisi Berkas</h5>
+    <p class="text-muted mx-auto mb-4" style="max-width:450px;">Berkas permohonan Anda sebelumnya dikembalikan oleh Sekretariat karena ada berkas yang tidak valid.<br><br>Anda <strong>tidak perlu membuat permohonan baru</strong>. Silakan kembali ke halaman <strong>Status Permohonan</strong> dan klik tombol Edit (Revisi) untuk mengunggah ulang berkas yang salah.</p>
+    <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-primary" style="background: #eab308; border-color: #ca8a04;"><i class="bi bi-card-checklist"></i> Pergi ke Halaman Status</a>
 </div>
 
 <?php else: ?>
@@ -148,7 +165,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label">Jenis Permohonan <span class="text-danger">*</span></label>
                 <div style="position:relative;">
-                    <select class="wz-form-select" id="sel-jenis" onchange="document.getElementById('jenis_'+this.value).checked=true;applyJenisCfg(this.value);document.getElementById('err-jenis').classList.add('d-none');">
+                    <select class="wz-form-select" id="sel-jenis" onchange="if(this.value){document.getElementById('jenis_'+this.value).checked=true;}else{document.querySelectorAll('input[name=\'id_jenis_permohonan\']').forEach(r=>r.checked=false);} applyJenisCfg(this.value); document.getElementById('err-jenis').classList.add('d-none');">
                         <option value="">-- Pilih Jenis Permohonan --</option>
                         <option value="1" <?= old('id_jenis_permohonan')=='1'?'selected':'' ?>>Penelitian Skripsi / TA</option>
                         <option value="2" <?= old('id_jenis_permohonan')=='2'?'selected':'' ?>>Observasi / Pengambilan Data</option>
@@ -175,11 +192,21 @@ if(session()->getFlashdata('permohonan_sent')):
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_mulai">Tanggal Mulai <span class="text-danger">*</span></label>
-                <input type="date" class="wz-form-control" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai') ?>" required>
+                <?php $errMulai = session('errors.tgl_mulai'); ?>
+                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai') ?>" required>
+                <?php if($errMulai): ?>
+                    <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errMulai) ?></div>
+                <?php endif; ?>
+                <!-- Pesan error dinamis dari JS -->
+                <div class="invalid-feedback d-none" id="err-tgl-mulai-js" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"></div>
             </div>
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_selesai">Tanggal Selesai <span class="text-danger">*</span></label>
-                <input type="date" class="wz-form-control" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai') ?>" required>
+                <?php $errSelesai = session('errors.tgl_selesai'); ?>
+                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai') ?>" required>
+                <?php if($errSelesai): ?>
+                    <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errSelesai) ?></div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -343,7 +370,7 @@ if(session()->getFlashdata('permohonan_sent')):
 <?= $this->endSection() ?>
 
 <?= $this->section('extra_js') ?>
-<?= $this->include('mahasiswa/_wz_script') ?>
+<?= $this->include('mahasiswa/v_part_wizard_script') ?>
 <script>
 // Sync select with tujuan display
 var selJenis = document.getElementById('sel-jenis');
@@ -363,40 +390,54 @@ if(selJenis) {
     if (selJenis.value) selJenis.dispatchEvent(new Event('change'));
 }
 
-// Validasi minimal durasi 2 bulan (60 hari)
-var tglMulai = document.getElementById('tgl_mulai');
-var tglSelesai = document.getElementById('tgl_selesai');
+// ==========================================
+// VALIDASI TANGGAL DINAMIS (FRONTEND)
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    var tglMulai = document.getElementById('tgl_mulai');
+    var tglSelesai = document.getElementById('tgl_selesai');
 
-if (tglMulai && tglSelesai) {
-    tglMulai.addEventListener('change', function() {
-        if (this.value) {
-            var dateMulai = new Date(this.value);
-            // Tambah 60 hari
-            dateMulai.setDate(dateMulai.getDate() + 60);
-            
-            var y = dateMulai.getFullYear();
-            var m = String(dateMulai.getMonth() + 1).padStart(2, '0');
-            var d = String(dateMulai.getDate()).padStart(2, '0');
-            var minDateStr = y + '-' + m + '-' + d;
-            
-            tglSelesai.min = minDateStr;
-            
-            // Jika tanggal selesai sudah terpilih tapi kurang dari min date, kosongkan
-            if (tglSelesai.value && tglSelesai.value < minDateStr) {
-                tglSelesai.value = '';
-                alert('Durasi magang minimal adalah 2 bulan (60 hari) dari tanggal mulai.');
+    if (tglMulai && tglSelesai) {
+        // 1. Blokir Tanggal Masa Lalu untuk Tgl Mulai
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        var todayStr = yyyy + '-' + mm + '-' + dd;
+        tglMulai.setAttribute('min', todayStr);
+
+        // 2. Tampilkan Error Otomatis jika < 60 hari
+        function validateDurasi() {
+            if (tglMulai.value && tglSelesai.value) {
+                var dateMulai = new Date(tglMulai.value);
+                var dateSelesai = new Date(tglSelesai.value);
+                
+                var diffTime = dateSelesai - dateMulai;
+                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                var errDiv = document.getElementById('err-tgl-mulai-js');
+                
+                if (diffDays < 60) {
+                    tglMulai.classList.add('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-none');
+                        errDiv.classList.add('d-block');
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
+                    }
+                } else {
+                    tglMulai.classList.remove('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-block');
+                        errDiv.classList.add('d-none');
+                    }
+                }
             }
-        } else {
-            tglSelesai.min = '';
         }
-    });
-    
-    tglSelesai.addEventListener('change', function() {
-        if (this.value && this.min && this.value < this.min) {
-            alert('Tanggal selesai harus minimal 2 bulan (60 hari) setelah tanggal mulai.');
-            this.value = '';
-        }
-    });
-}
+
+        // Jalankan saat diketik / dipilih
+        tglMulai.addEventListener('change', validateDurasi);
+        tglSelesai.addEventListener('change', validateDurasi);
+    }
+});
 </script>
 <?= $this->endSection() ?>

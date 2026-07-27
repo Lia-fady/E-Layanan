@@ -51,36 +51,31 @@ $routes->get('logout', 'Auth\AuthController::logout');
 // MAHASISWA Route Group 
 // =========================================================================
 
-$routes->get('mahasiswa/dashboard', 'Mahasiswa\C_Mahasiswa::dashboard');
-$routes->get('mahasiswa/permohonan', 'Mahasiswa\C_Mahasiswa::permohonan');
+$routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], static function ($routes) {
+    $routes->get('dashboard', 'C_Dashboard::dashboard');
+    $routes->get('profil', 'C_Profil::profil');
+    $routes->post('profil/update', 'C_Profil::updateProfil');
 
-$routes->post('mahasiswa/permohonan/simpan', 'Mahasiswa\C_Mahasiswa::simpanPermohonan');
-$routes->get('mahasiswa/permohonan/edit/(:num)', 'Mahasiswa\C_Mahasiswa::editPermohonan/$1');
-$routes->post('mahasiswa/permohonan/update/(:num)', 'Mahasiswa\C_Mahasiswa::updatePermohonan/$1');
-// TAMBAHKAN BARIS INI: Rute untuk memproses simpan data dari form permohonan
-// (Sudah didefinisikan di atas menggunakan /simpan)
+    $routes->get('permohonan', 'C_Permohonan::permohonan');
+    $routes->post('permohonan/simpan', 'C_Permohonan::simpanPermohonan');
+    $routes->get('permohonan/edit/(:num)', 'C_Permohonan::editPermohonan/$1');
+    $routes->post('permohonan/update/(:num)', 'C_Permohonan::updatePermohonan/$1');
 
-$routes->get('mahasiswa/profil', 'Mahasiswa\C_Mahasiswa::profil');
-$routes->post('mahasiswa/profil/update', 'Mahasiswa\C_Mahasiswa::updateProfil');
-$routes->get('mahasiswa/status', 'Mahasiswa\C_Mahasiswa::statusPermohonan');
-$routes->get('mahasiswa/batalkan-permohonan/(:num)', 'Mahasiswa\C_Mahasiswa::batalkanPermohonan/$1');
+    $routes->get('status', 'C_Status::statusPermohonan');
+    $routes->get('batalkan-permohonan/(:num)', 'C_Status::batalkanPermohonan/$1');
+    $routes->get('view-file/(:num)', 'C_Status::viewFile/$1');
+    $routes->get('view-file/(:num)/(:any)', 'C_Status::viewFile/$1/$2');
+    
+    // Surat Balasan dari Sekretariat
+    $routes->get('download-surat-penerimaan/(:num)', 'C_Status::downloadSuratPenerimaan/$1');
 
-$routes->get('mahasiswa/view-file/(:num)', 'Mahasiswa\C_Mahasiswa::viewFile/$1');
-$routes->get('mahasiswa/view-file/(:num)/(:any)', 'Mahasiswa\C_Mahasiswa::viewFile/$1/$2');
+    $routes->get('logbook', 'C_Logbook::logbook');
+    $routes->post('logbook/simpan', 'C_Logbook::simpanLogbook');
+    $routes->post('simpanLogbook', 'C_Logbook::simpanLogbook');
+    $routes->get('logbook/cetak', 'C_Logbook::cetakLogbook');
 
-$routes->get('mahasiswa/logbook', 'Mahasiswa\C_Mahasiswa::logbook');
-
-$routes->post('mahasiswa/logbook/simpan', 'Mahasiswa\C_Mahasiswa::simpanLogbook');
-
-$routes->get('mahasiswa/sertifikat', 'Mahasiswa\C_Mahasiswa::sertifikat');
-
-$routes->post('mahasiswa/simpanLogbook', 'Mahasiswa\C_Mahasiswa::simpanLogbook');
-
-// --- API ROUTES FOR DROPDOWNS ---
-// --- API ROUTES FOR DROPDOWNS ---
-$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
-$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
-
+    $routes->get('sertifikat', 'C_Sertifikat::sertifikat');
+});
 
 // =========================================================================
 // Sekretariat Route Group (dilindungi filter authSekretariat)
@@ -150,19 +145,35 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
 // Kepala Bidang Route Group (dilindungi filter authKabid)
 // =========================================================================
 $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
-
-    // Dashboard Kepala Bidang
+    $routes->get('/', '\App\Controllers\Kabid\C_DashboardKabid::index');
     $routes->get('dashboard', '\App\Controllers\Kabid\C_DashboardKabid::index');
 
-    // Persetujuan Penempatan
-    $routes->get('penempatan', '\App\Controllers\Kabid\C_KepalaBidang::index');
-    $routes->post('penempatan/setujui', '\App\Controllers\Kabid\C_KepalaBidang::setujui');
-    $routes->post('penempatan/tolak', '\App\Controllers\Kabid\C_KepalaBidang::tolak');
+    // 1. Disposisi Masuk
+    $routes->get('disposisi', '\App\Controllers\Kabid\C_DisposisiMasuk::index');
+    $routes->post('disposisi/setujui', '\App\Controllers\Kabid\C_DisposisiMasuk::setujui');
+    $routes->post('disposisi/tolak', '\App\Controllers\Kabid\C_DisposisiMasuk::tolak');
+    $routes->post('disposisi/selesaikan', '\App\Controllers\Kabid\C_DisposisiMasuk::selesaikan');
 
-    // Surat Penerimaan Magang (Menu Baru)
-    $routes->get('upload-surat-penerimaan', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::index');
-    $routes->get('upload-surat-penerimaan/form/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::form/$1');
-    $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::store');
-    $routes->post('upload-surat-penerimaan/delete/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::delete/$1');
-    $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Kabid\C_UploadSuratPenerimaan::download/$1');
+    // 2. Logbook (Approval)
+    $routes->get('logbook', '\App\Controllers\Kabid\C_LogbookKabid::index');
+    $routes->get('logbook/detail/(:num)', '\App\Controllers\Kabid\C_LogbookKabid::detail/$1');
+    $routes->post('logbook/approve', '\App\Controllers\Kabid\C_LogbookKabid::approve');
+    $routes->post('logbook/bulkApprove', '\App\Controllers\Kabid\C_LogbookKabid::bulkApprove');
+
+    // 3. (Menu Riwayat Magang dihapus dan digabung ke Disposisi Masuk)
+
+    // 4. Kuota Bidang
+    $routes->get('kuota', '\App\Controllers\Kabid\C_KuotaBidang::index');
+    $routes->post('kuota/update', '\App\Controllers\Kabid\C_KuotaBidang::update');
+
+    // 5. Upload Dokumen Magang
+    $routes->get('upload-dokumen', '\App\Controllers\Kabid\C_UploadDokumen::index');
+    $routes->get('upload-dokumen/form/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::form/$1');
+    $routes->post('upload-dokumen/store', '\App\Controllers\Kabid\C_UploadDokumen::store');
+    $routes->post('upload-dokumen/delete/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::delete/$1');
+    $routes->get('upload-dokumen/download/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::download/$1');
 });
+
+// --- API ROUTES FOR DROPDOWNS ---
+$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
+$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');

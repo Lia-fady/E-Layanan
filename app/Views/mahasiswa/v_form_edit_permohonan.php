@@ -1,7 +1,7 @@
 <?= $this->extend('layout/mahasiswa') ?>
 
 <?= $this->section('extra_css') ?>
-<?= $this->include('mahasiswa/_wz_style') ?>
+<?= $this->include('mahasiswa/v_part_wizard_style') ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('breadcrumb') ?>
@@ -120,10 +120,32 @@ if(session()->getFlashdata('permohonan_sent')):
 
 <?php else: ?>
 <!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3 - DITOLAK/PERLU REVISI) ============ -->
-<?php if($state == 3): ?>
-<div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
-    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-    <strong>Permohonan Sebelumnya Ditolak/Direvisi:</strong> Anda dapat mengajukan permohonan ulang dengan memperbaiki data atau berkas dokumen yang diunggah.
+<?php if($state == 6): ?>
+<div class="alert alert-warning p-4 mb-4 shadow-sm border-warning" style="border-radius: 12px; border-left: 5px solid #ffc107 !important;">
+    <div class="d-flex align-items-start">
+        <div style="font-size: 1.5rem; margin-right: 15px;">
+            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-2 text-dark">Instruksi Revisi dari Sekretariat:</h6>
+            <div class="bg-white p-3 rounded text-dark small border" style="line-height: 1.6;">
+                <?php 
+                    $catatanSekre = esc($draft['catatan_sekretariat'] ?? '');
+                    if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
+                        $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
+                        echo nl2br(trim($parts[0]));
+                    } else {
+                        echo !empty($catatanSekre) ? nl2br($catatanSekre) : 'Silakan perbaiki data atau dokumen Anda.';
+                    }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php elseif($state == 3): ?>
+<div class="alert alert-danger p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
+    <i class="bi bi-x-circle-fill text-danger me-2"></i>
+    <strong>Permohonan Sebelumnya Ditolak:</strong> Anda dapat mengajukan permohonan ulang dengan data yang baru.
 </div>
 <?php endif; ?>
 
@@ -145,7 +167,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label">Jenis Permohonan <span class="text-danger">*</span></label>
                 <div style="position:relative;">
-                    <select class="wz-form-select" id="sel-jenis" onchange="document.getElementById('jenis_'+this.value).checked=true;applyJenisCfg(this.value);document.getElementById('err-jenis').classList.add('d-none');">
+                    <select class="wz-form-select" id="sel-jenis" onchange="if(this.value){document.getElementById('jenis_'+this.value).checked=true;}else{document.querySelectorAll('input[name=\'id_jenis_permohonan\']').forEach(r=>r.checked=false);} applyJenisCfg(this.value); document.getElementById('err-jenis').classList.add('d-none');">
                         <option value="">-- Pilih Jenis Permohonan --</option>
                         <option value="1" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='1'?'selected':'' ?>>Penelitian Skripsi / TA</option>
                         <option value="2" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='2'?'selected':'' ?>>Observasi / Pengambilan Data</option>
@@ -172,11 +194,21 @@ if(session()->getFlashdata('permohonan_sent')):
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_mulai">Tanggal Mulai <span class="text-danger">*</span></label>
-                <input type="date" class="wz-form-control" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai', $draft['tgl_mulai']) ?>" required>
+                <?php $errMulai = session('errors.tgl_mulai'); ?>
+                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai', $draft['tgl_mulai']) ?>" required>
+                <?php if($errMulai): ?>
+                    <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errMulai) ?></div>
+                <?php endif; ?>
+                <!-- Pesan error dinamis dari JS -->
+                <div class="invalid-feedback d-none" id="err-tgl-mulai-js" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"></div>
             </div>
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_selesai">Tanggal Selesai <span class="text-danger">*</span></label>
-                <input type="date" class="wz-form-control" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai', $draft['tgl_selesai']) ?>" required>
+                <?php $errSelesai = session('errors.tgl_selesai'); ?>
+                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai', $draft['tgl_selesai']) ?>" required>
+                <?php if($errSelesai): ?>
+                    <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errSelesai) ?></div>
+                <?php endif; ?>
             </div>
         </div>
 
@@ -340,7 +372,7 @@ if(session()->getFlashdata('permohonan_sent')):
 <?= $this->endSection() ?>
 
 <?= $this->section('extra_js') ?>
-<?= $this->include('mahasiswa/_wz_script') ?>
+<?= $this->include('mahasiswa/v_part_wizard_script') ?>
 <script>
 // Sync select with tujuan display
 var selJenis = document.getElementById('sel-jenis');
@@ -397,6 +429,56 @@ window.addEventListener('load', function() {
                 tb.innerHTML += '<tr><td class="text-muted">'+(n++)+'</td><td class="fw-semibold text-dark">'+nm+'</td><td class="text-end text-primary" style="font-size:0.8rem;">'+txtCv+'</td></tr>';
             }
         };
+    }
+});
+
+// ==========================================
+// VALIDASI TANGGAL DINAMIS (FRONTEND)
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    var tglMulai = document.getElementById('tgl_mulai');
+    var tglSelesai = document.getElementById('tgl_selesai');
+
+    if (tglMulai && tglSelesai) {
+        // 1. Blokir Tanggal Masa Lalu untuk Tgl Mulai
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        var todayStr = yyyy + '-' + mm + '-' + dd;
+        tglMulai.setAttribute('min', todayStr);
+
+        // 2. Tampilkan Error Otomatis jika < 60 hari
+        function validateDurasi() {
+            if (tglMulai.value && tglSelesai.value) {
+                var dateMulai = new Date(tglMulai.value);
+                var dateSelesai = new Date(tglSelesai.value);
+                
+                var diffTime = dateSelesai - dateMulai;
+                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                var errDiv = document.getElementById('err-tgl-mulai-js');
+                
+                if (diffDays < 60) {
+                    tglMulai.classList.add('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-none');
+                        errDiv.classList.add('d-block');
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
+                    }
+                } else {
+                    tglMulai.classList.remove('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-block');
+                        errDiv.classList.add('d-none');
+                    }
+                }
+            }
+        }
+
+        // Jalankan saat diketik / dipilih
+        tglMulai.addEventListener('change', validateDurasi);
+        tglSelesai.addEventListener('change', validateDurasi);
     }
 });
 </script>

@@ -186,7 +186,7 @@
                                 <label class="form-label">Username Akun <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control <?= isset($validationErrors['username']) ? 'is-invalid' : '' ?>" name="username" placeholder="Buat username" value="<?= old('username') ?>" required minlength="5" maxlength="30">
+                                    <input type="text" class="form-control <?= isset($validationErrors['username']) ? 'is-invalid' : '' ?>" name="username" placeholder="Masukan Username" value="<?= old('username') ?>" required minlength="5" maxlength="30">
                                 </div>
                                     <?php if(isset($validationErrors['username'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['username'] ?></div>
@@ -196,7 +196,7 @@
                                 <label class="form-label">Kata Sandi <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" id="password" class="form-control <?= isset($validationErrors['password']) ? 'is-invalid' : '' ?>" name="password" placeholder="Buat kata sandi akun" required>
+                                    <input type="password" id="password" class="form-control <?= isset($validationErrors['password']) ? 'is-invalid' : '' ?>" name="password" placeholder="Masukan Password" value="<?= old('password') ?>" required>
                                     <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePassword()">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>
@@ -256,7 +256,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Angkatan Tahun <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['angkatan_tahun']) ? 'is-invalid' : '' ?>" name="angkatan_tahun" placeholder="Contoh: 2021" value="<?= old('angkatan_tahun') ?>" required minlength="4" maxlength="4">
+                                <input type="text" class="form-control <?= isset($validationErrors['angkatan_tahun']) ? 'is-invalid' : '' ?>" name="angkatan_tahun" placeholder="Contoh: 2021" value="<?= old('angkatan_tahun') ?>" required minlength="4" maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['angkatan_tahun'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['angkatan_tahun'] ?></div>
                                     <?php endif; ?>
@@ -286,14 +286,14 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['nik']) ? 'is-invalid' : '' ?>" name="nik" placeholder="Masukkan NIK 16 digit" value="<?= old('nik') ?>" required minlength="16" maxlength="16">
+                                <input type="text" class="form-control <?= isset($validationErrors['nik']) ? 'is-invalid' : '' ?>" name="nik" placeholder="Masukkan NIK 16 digit" value="<?= old('nik') ?>" required minlength="16" maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['nik'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['nik'] ?></div>
                                     <?php endif; ?>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Nomor Induk Mahasiswa (NIM) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['nim']) ? 'is-invalid' : '' ?>" name="nim" placeholder="Masukkan NIM Anda" value="<?= old('nim') ?>" required minlength="5" maxlength="25">
+                                <input type="text" class="form-control <?= isset($validationErrors['nim']) ? 'is-invalid' : '' ?>" name="nim" placeholder="Masukkan NIM Anda" value="<?= old('nim') ?>" required minlength="5" maxlength="25" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['nim'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['nim'] ?></div>
                                     <?php endif; ?>
@@ -307,14 +307,14 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Alamat Email Aktif <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control <?= isset($validationErrors['email']) ? 'is-invalid' : '' ?>" name="email" placeholder="contohnama@gmail.com" value="<?= old('email') ?>" required maxlength="100">
+                                <input type="email" class="form-control <?= isset($validationErrors['email']) ? 'is-invalid' : '' ?>" name="email" placeholder="Masukan Email" value="<?= old('email') ?>" required maxlength="100">
                                     <?php if(isset($validationErrors['email'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['email'] ?></div>
                                     <?php endif; ?>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Nomor Telepon Aktif <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['no_telp']) ? 'is-invalid' : '' ?>" name="no_telp" placeholder="Contoh: 0812..." value="<?= old('no_telp') ?>" required minlength="10" maxlength="15">
+                                <input type="text" class="form-control <?= isset($validationErrors['no_telp']) ? 'is-invalid' : '' ?>" name="no_telp" placeholder="Masukan nomor telepon"  value="<?= old('no_telp') ?>" required minlength="10" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['no_telp'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['no_telp'] ?></div>
                                     <?php endif; ?>
@@ -355,14 +355,14 @@
     <!-- INPUT RT & RW YANG SEMPAT HILANG -->
     <div class="col-md-2">
         <label class="form-label">RT <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rt']) ? 'is-invalid' : '' ?>" name="rt" placeholder="001" value="<?= old('rt') ?>" required maxlength="3">
+        <input type="text" class="form-control <?= isset($validationErrors['rt']) ? 'is-invalid' : '' ?>" name="rt" placeholder="001" value="<?= old('rt') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['rt'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rt'] ?></div>
                                     <?php endif; ?>
     </div>
     <div class="col-md-2">
         <label class="form-label">RW <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rw']) ? 'is-invalid' : '' ?>" name="rw" placeholder="002" value="<?= old('rw') ?>" required maxlength="3">
+        <input type="text" class="form-control <?= isset($validationErrors['rw']) ? 'is-invalid' : '' ?>" name="rw" placeholder="002" value="<?= old('rw') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                     <?php if(isset($validationErrors['rw'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rw'] ?></div>
                                     <?php endif; ?>

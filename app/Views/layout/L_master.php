@@ -24,14 +24,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- FontAwesome -->
-    <link href="<?= base_url('vendor/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
+    <!-- FontAwesome (CDN) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- SB Admin 2 CSS -->
     <link href="<?= base_url('css/sb-admin-2.min.css') ?>" rel="stylesheet">
 
-    <!-- DataTables CSS -->
-    <link href="<?= base_url('vendor/datatables/dataTables.bootstrap4.min.css') ?>" rel="stylesheet">
+    <!-- DataTables CSS (CDN) -->
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <!-- Custom Sekretariat CSS -->
     <link href="<?= base_url('css/sekretariat-custom.css') ?>" rel="stylesheet">
@@ -98,19 +98,19 @@
         </div>
     </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= base_url('vendor/jquery/jquery.min.js') ?>"></script>
-    <script src="<?= base_url('vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+    <!-- Bootstrap core JavaScript (CDN) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url('vendor/jquery-easing/jquery.easing.min.js') ?>"></script>
+    <!-- Core plugin JavaScript (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="<?= base_url('js/sb-admin-2.min.js') ?>"></script>
 
-    <!-- DataTables JavaScript -->
-    <script src="<?= base_url('vendor/datatables/jquery.dataTables.min.js') ?>"></script>
-    <script src="<?= base_url('vendor/datatables/dataTables.bootstrap4.min.js') ?>"></script>
+    <!-- DataTables JavaScript (CDN) -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

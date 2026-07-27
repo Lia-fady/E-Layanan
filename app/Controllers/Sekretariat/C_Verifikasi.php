@@ -43,10 +43,24 @@ class C_Verifikasi extends BaseController
                 ->get()
                 ->getRow();
 
+            $bidang_list = $db->table('m_bidang')
+                ->select('m_bidang.id_bidang, m_bidang.bidang, IFNULL(m_kuota.kuota, 0) as kuota')
+                ->join('m_kuota', 'm_kuota.id_bidang = m_bidang.id_bidang', 'left')
+                ->where('m_bidang.status_aktif', '1')
+                ->get()->getResult();
+
+            foreach ($bidang_list as &$b) {
+                $activeCount = $db->table('t_penempatan_magang')
+                    ->where('id_bidang', $b->id_bidang)
+                    ->where('status_penempatan', 'BERJALAN')
+                    ->countAllResults();
+                $b->sisa_kuota = max(0, $b->kuota - $activeCount);
+            }
+
             $data = [
                 'permohonan'      => $this->verifikasiModel->getPermohonanById($id),
                 'files'           => $this->verifikasiModel->getFilePermohonan($id),
-                'bidang'          => $db->table('m_bidang')->where('status_aktif', '1')->get()->getResult(),
+                'bidang'          => $bidang_list,
                 'selected_bidang' => $penempatan->id_bidang ?? null,
                 'status_penempatan' => $penempatan->status_penempatan ?? 'MENUNGGU',
             ];
@@ -117,6 +131,14 @@ class C_Verifikasi extends BaseController
 
         $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
         $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
+
+        // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
+        if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.'
+            ]);
+        }
 
         $data = [
             'id_permohonan_magang' => $id_permohonan,

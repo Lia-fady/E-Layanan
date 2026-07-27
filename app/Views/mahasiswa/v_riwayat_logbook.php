@@ -112,6 +112,16 @@
         border-radius: 6px;
         border: 1px solid #fee2e2;
     }
+    .activity-hero { padding: 24px 28px; margin-bottom: 18px; color: #fff; background: linear-gradient(115deg, #102a43, #1769aa); border-radius: 13px; box-shadow: 0 13px 28px rgba(16,42,67,0.14); }
+    .activity-hero-mark { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-bottom: 10px; color: #bfe7f7; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.18); border-radius: 11px; font-size: 1.25rem; }
+    .activity-hero h4 { color: #fff !important; font-weight: 800; }
+    .activity-hero p { max-width: 650px; margin: 5px 0 0; color: rgba(255,255,255,0.68); font-size: 0.82rem; }
+    .activity-summary { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; margin-bottom: 20px; }
+    .activity-summary-item { padding: 14px 16px; background: #fff; border: 1px solid #dce5ec; border-radius: 10px; box-shadow: 0 7px 18px rgba(16,42,67,0.045); }
+    .activity-summary-item i { color: #1769aa; }
+    .activity-summary-item strong { display: block; margin-top: 8px; color: #172b3a; font-size: 1.08rem; }
+    .activity-summary-item span { color: #718492; font-size: 0.72rem; }
+    @media (max-width: 575.98px) { .activity-summary { grid-template-columns: 1fr; } }
 </style>
 <?= $this->endSection() ?>
 
@@ -122,9 +132,22 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
 <?= $this->section('content') ?>
         
         
-        <div class="mb-4">
-            <h4 class="fw-bold text-dark m-0" style="letter-spacing: -0.3px;">Pencatatan Logbook Harian</h4>
-            <p class="text-muted small m-0 mt-1" style="font-size: 0.82rem;">Laporkan rincian tugas harian Anda selama melaksanakan kegiatan akademik di dinas.</p>
+        <?php
+            $totalActivity = count($logbook ?? []);
+            $approvedActivity = 0;
+            foreach (($logbook ?? []) as $activityItem) {
+                if (($activityItem['status_logbook'] ?? '') === 'disetujui') $approvedActivity++;
+            }
+        ?>
+        <div class="activity-hero">
+            <span class="activity-hero-mark"><i class="bi bi-journal-richtext"></i></span>
+            <h4 class="m-0">Ruang Aktivitas Magang</h4>
+            <p>Catat pekerjaan harian dengan ringkas dan pantau hasil review Bidang dalam satu ruang kerja.</p>
+        </div>
+        <div class="activity-summary">
+            <div class="activity-summary-item"><i class="bi bi-journal-text"></i><strong><?= $totalActivity ?></strong><span>Total catatan pada tampilan ini</span></div>
+            <div class="activity-summary-item"><i class="bi bi-check2-circle"></i><strong><?= $approvedActivity ?></strong><span>Catatan disetujui</span></div>
+            <div class="activity-summary-item"><i class="bi bi-calendar3"></i><strong><?= date('M Y') ?></strong><span>Periode berjalan</span></div>
         </div>
 
         <?php if (session()->getFlashdata('success')) : ?>
@@ -143,7 +166,43 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                 <div class="card-flat">
                     <div class="section-title"><i class="bi bi-pencil-square me-1 text-primary"></i> Isi Laporan Baru</div>
                     
-                    <?php if (!empty($penempatan)): ?>
+                    <?php if (empty($penempatan)): ?>
+                        <div class="alert alert-warning border-0 p-3 mb-0 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-lock-fill fs-5 mt-1"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php elseif (isset($is_log_book) && strtolower($is_log_book) == 'tidak'): ?>
+                        <div class="alert alert-secondary border-0 p-3 mb-0 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-info-circle-fill fs-5 mt-1"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Logbook Tidak Diwajibkan</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Berdasarkan pengaturan dari Bidang, kegiatan magang Anda tidak mewajibkan pengisian logbook harian.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php elseif (isset($penempatan['status_penempatan']) && $penempatan['status_penempatan'] == 'SELESAI'): ?>
+                        <div class="alert alert-success border-0 p-3 mb-0 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-check-circle-fill fs-5 mt-1"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Magang Telah Selesai</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Masa kegiatan magang Anda telah berakhir. Anda sudah tidak dapat menambahkan laporan logbook baru, namun tetap dapat melihat riwayat.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else: ?>
                         <form action="<?= base_url('mahasiswa/simpanLogbook') ?>" method="POST" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Laporan Hari Ini?', text: 'Pastikan uraian aktivitas yang Anda tulis sudah lengkap dan sesuai.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi'}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
                             <?= csrf_field() ?>
                             <div class="mb-3">
@@ -156,18 +215,6 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                             </div>
                             <button type="submit" class="btn btn-primary w-100 shadow-sm">Simpan Laporan Hari Ini</button>
                         </form>
-                    <?php else: ?>
-                        <div class="alert border-0 p-3 mb-0" style="background-color: #fffbef; border-left: 4px solid #f59e0b !important; border-radius: 8px;">
-                            <div class="d-flex gap-2">
-                                <i class="bi bi-lock-fill text-warning fs-5"></i>
-                                <div>
-                                    <span class="fw-bold text-dark d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
-                                    <p class="small text-muted m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                                        Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -177,8 +224,15 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3" style="border-color: #edf2f7 !important;">
                         <div class="section-title border-0 pb-0 mb-0 m-0"><i class="bi bi-clock-history me-1 text-primary"></i> Riwayat Aktivitas</div>
                         
-                        <!-- Filter UI Fungsional -->
-                        <form method="GET" action="<?= base_url('mahasiswa/logbook') ?>" class="d-flex gap-2">
+                        <div class="d-flex gap-2 align-items-center">
+                            <?php if(!empty($penempatan)): ?>
+                                <a href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank" class="btn btn-sm btn-danger shadow-sm px-3" style="font-size: 0.78rem;">
+                                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Cetak PDF
+                                </a>
+                            <?php endif; ?>
+
+                            <!-- Filter UI Fungsional -->
+                            <form method="GET" action="<?= base_url('mahasiswa/logbook') ?>" class="d-flex gap-2 m-0">
                             <select name="filter_periode" class="form-select form-select-sm shadow-none" style="width: 140px; font-size: 0.78rem; border-color: #e2e8f0; color: #64748b; background-color: #f8fafc;" onchange="this.form.submit()">
                                 <option value="">Semua Periode</option>
                                 <option value="bulan_ini" <?= (request()->getGet('filter_periode') == 'bulan_ini') ? 'selected' : '' ?>>Bulan Ini</option>
@@ -193,10 +247,11 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                             <?php if(request()->getGet('filter_periode') || request()->getGet('filter_status')): ?>
                                 <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn btn-sm btn-light border shadow-none" style="color: #dc2626; background-color: #fff5f5;" title="Reset Filter"><i class="bi bi-x-lg"></i></a>
                             <?php endif; ?>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                     
-                    <div class="table-responsive">
+                    <div class="table-shell table-responsive">
                         <table class="table table-borderless table-custom align-middle m-0">
                             <thead>
                                 <tr>

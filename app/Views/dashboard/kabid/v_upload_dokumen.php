@@ -1,6 +1,5 @@
-<?php
 /**
- * View untuk Upload Surat Penerimaan Magang (Kepala Bidang)
+ * View untuk Upload Dokumen Magang (Kepala Bidang)
  */
 ?>
 <?= $this->extend('layout/L_master_kabid') ?>
@@ -63,7 +62,7 @@
 </div>
 
 <!-- Back Link -->
-<a href="<?= base_url('kabid/upload-surat-penerimaan') ?>" class="detail-back-link mb-4 d-inline-block">
+<a href="<?= base_url('kabid/upload-dokumen') ?>" class="detail-back-link mb-4 d-inline-block">
     <i class="fas fa-arrow-left"></i> Kembali ke Daftar
 </a>
 
@@ -72,17 +71,17 @@
     <div class="col-lg-4 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Upload Surat Penerimaan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Upload Dokumen</h6>
             </div>
             <div class="card-body">
-                <form id="formUploadSurat" action="<?= base_url('kabid/upload-surat-penerimaan/store') ?>" method="POST" enctype="multipart/form-data">
+                <form id="formUploadSurat" action="<?= base_url('kabid/upload-dokumen/store') ?>" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_persetujuan_magang" value="<?= esc($persetujuan->id_persetujuan_magang) ?>">
                     
                     <div class="form-group">
-                        <label for="id_file">Jenis Surat <span class="text-danger">*</span></label>
+                        <label for="id_file">Jenis Dokumen <span class="text-danger">*</span></label>
                         <select class="form-control" name="id_file" id="id_file" required>
-                            <option value="">-- Pilih Jenis Surat --</option>
+                            <option value="">-- Pilih Jenis Dokumen --</option>
                             <?php foreach ($jenis_file as $jf) : ?>
                                 <option value="<?= esc($jf->id_file) ?>" <?= old('id_file') == $jf->id_file ? 'selected' : '' ?>>
                                     <?= esc($jf->nama_file) ?>
@@ -98,7 +97,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-upload mr-1"></i> Upload Surat
+                        <i class="fas fa-upload mr-1"></i> Upload Dokumen
                     </button>
                 </form>
             </div>
@@ -109,7 +108,7 @@
     <div class="col-lg-8 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Surat Penerimaan Magang</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Dokumen Magang</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -135,7 +134,7 @@
                                     <td><?= esc($f->pengunggah ?? '-') ?></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 5px;">
-                                            <a href="<?= base_url('kabid/upload-surat-penerimaan/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
+                                            <a href="<?= base_url('kabid/upload-dokumen/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-warning btn-ganti-file" 
@@ -172,15 +171,15 @@
             <form action="" method="POST" enctype="multipart/form-data" id="formGantiFile">
                 <?= csrf_field() ?>
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-edit mr-2"></i>Ganti Surat Penerimaan</h5>
+                    <h5 class="modal-title" id="modalGantiFileLabel"><i class="fas fa-edit mr-2"></i>Ganti Dokumen Magang</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
-                    <p>File saat ini: <strong id="nama_file_lama"></strong></p>
+                    <p>Anda akan mengganti file <strong id="nama_file_lama" class="text-primary"></strong>.</p>
                     <div class="form-group">
-                        <label for="edit_id_file">Jenis Surat <span class="text-danger">*</span></label>
+                        <label for="edit_id_file">Jenis Dokumen <span class="text-danger">*</span></label>
                         <select class="form-control" name="id_file" id="edit_id_file" required>
-                            <option value="">-- Pilih Jenis Surat --</option>
+                            <option value="">-- Pilih Jenis Dokumen --</option>
                             <?php foreach ($jenis_file as $jf) : ?>
                                 <option value="<?= esc($jf->id_file) ?>">
                                     <?= esc($jf->nama_file) ?>
@@ -220,7 +219,7 @@ $(document).ready(function() {
         var idFile = $(this).data('idfile');
         var namaFile = $(this).data('namafile');
 
-        $('#formGantiFile').attr('action', '<?= base_url('kabid/upload-surat-penerimaan/update/') ?>' + idSelesai);
+        $('#formGantiFile').attr('action', '<?= base_url('kabid/upload-dokumen/update/') ?>' + idSelesai);
         $('#edit_id_file').val(idFile);
         $('#nama_file_lama').text(namaFile);
         
@@ -233,8 +232,8 @@ $(document).ready(function() {
         var form = this;
         
         Swal.fire({
-            title: 'Upload Surat Penerimaan?',
-            text: 'Pastikan file Surat Penerimaan Magang yang Anda unggah sudah benar dan sesuai dengan data permohonan mahasiswa.',
+            title: 'Upload Dokumen?',
+            text: 'Pastikan file dokumen magang yang Anda unggah sudah benar dan sesuai dengan data mahasiswa bersangkutan.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#4e73df',
@@ -258,8 +257,8 @@ $(document).ready(function() {
         var form = this;
         
         Swal.fire({
-            title: 'Ganti Surat Penerimaan?',
-            text: 'File surat penerimaan yang lama akan diganti dengan file baru. Pastikan file yang dipilih sudah benar sebelum melanjutkan.',
+            title: 'Ganti Dokumen?',
+            text: 'Dokumen lama akan tertimpa dan diganti dengan file baru. Pastikan file yang dipilih sudah benar sebelum melanjutkan.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#4e73df',

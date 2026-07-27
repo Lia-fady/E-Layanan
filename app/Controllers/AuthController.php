@@ -161,7 +161,7 @@ class AuthController extends BaseController
                 'rules'  => 'required|valid_email|is_unique[m_mahasiswa.email]',
                 'errors' => [
                     'required'    => 'Alamat email aktif wajib diisi.',
-                    'valid_email' => 'Format penulisan alamat email tidak valid.',
+                    'valid_email' => 'Format email tidak valid (harus mengandung @, contoh: @gmail.com).',
                     'is_unique'   => 'Alamat email ini sudah terdaftar di sistem.'
                 ]
             ],

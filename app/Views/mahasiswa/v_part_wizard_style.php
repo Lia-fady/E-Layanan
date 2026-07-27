@@ -1,11 +1,18 @@
 <style>
+/* ============ APPLICATION INTRO ============ */
+.application-intro { display: flex; align-items: center; gap: 15px; padding: 19px 22px; color: #fff; background: linear-gradient(115deg, #102a43, #1769aa); border-radius: 12px; box-shadow: 0 11px 24px rgba(16,42,67,0.13); }
+.application-intro-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 42px; width: 42px; height: 42px; color: #bfe7f7; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; font-size: 1.2rem; }
+.application-intro-kicker { color: #bfe7f7; font-size: 0.67rem; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; }
+.application-intro h4 { color: #fff !important; font-size: 1.12rem; font-weight: 800; }
+.application-intro p { margin: 3px 0 0; color: rgba(255,255,255,0.68); font-size: 0.78rem; }
+
 /* ============ WIZARD STEPPER BAR ============ */
 .wizard-stepper-wrap {
-    background: #ffffff;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
     border-radius: 14px;
     padding: 22px 36px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 10px 28px rgba(16,42,67,0.07);
+    border: 1px solid #dce5ec;
     margin-bottom: 24px;
 }
 .stepper-track { display: flex; align-items: center; justify-content: space-between; list-style: none; padding: 0; margin: 0; }
@@ -24,7 +31,7 @@
 .step-label-num.is-done { color: #10b981; }
 
 /* ============ WIZARD CARD ============ */
-.wizard-card { background: #fff; border-radius: 14px; padding: 36px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.04); }
+.wizard-card { background: #fff; border-radius: 12px; padding: 36px; box-shadow: 0 10px 28px rgba(16,42,67,0.07); border: 1px solid #dce5ec; }
 .wizard-step { display: none; }
 .wizard-step.is-active { display: block; animation: wz-slide-in 0.3s cubic-bezier(0.4,0,0.2,1); }
 @keyframes wz-slide-in { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: translateX(0); } }
@@ -32,15 +39,15 @@
 
 /* ============ FORM INPUTS ============ */
 .wz-form-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 7px; display: block; }
-.wz-form-control, .wz-form-select { border: 1px solid #e2e8f0; border-radius: 9px; padding: 11px 14px; font-size: 0.88rem; color: var(--text-dark); background-color: #fafbfc; transition: all 0.2s ease; width: 100%; }
-.wz-form-control:focus, .wz-form-select:focus { background-color: #fff; border-color: var(--accent-blue-soft); box-shadow: 0 0 0 4px rgba(14,165,233,0.1); outline: none; }
+.wz-form-control, .wz-form-select { border: 1px solid #dce5ec; border-radius: 8px; padding: 12px 14px; font-size: 0.88rem; color: var(--text-dark); background-color: #fbfdff; transition: all 0.2s ease; width: 100%; }
+.wz-form-control:focus, .wz-form-select:focus { background-color: #fff; border-color: var(--accent-blue-soft); box-shadow: 0 0 0 4px rgba(47,143,202,0.13); outline: none; }
 textarea.wz-form-control { resize: none; }
 .char-counter { font-size: 0.72rem; color: #94a3b8; text-align: right; margin-top: 4px; }
 .date-range-wrap { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: end; }
 .date-separator { display: flex; align-items: center; justify-content: center; padding-bottom: 3px; color: #94a3b8; font-size: 1rem; }
 
 /* ============ UPLOAD ZONE ============ */
-.upload-zone { border: 2px dashed #d1d9e3; border-radius: 11px; padding: 28px 20px; text-align: center; background: #fafbfc; transition: all 0.22s ease; cursor: pointer; position: relative; overflow: hidden; }
+.upload-zone { border: 2px dashed #c5d5df; border-radius: 10px; padding: 28px 20px; text-align: center; background: #f7fbfd; transition: all 0.22s ease; cursor: pointer; position: relative; overflow: hidden; }
 .upload-zone:hover, .upload-zone.is-dragging { border-color: var(--accent-blue-soft); background: #f0f9ff; }
 .upload-zone.is-filled { border-color: #10b981; background: #f0fdf4; border-style: solid; }
 .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -49,7 +56,7 @@ textarea.wz-form-control { resize: none; }
 .upload-zone:hover .upload-icon-wrap { transform: scale(1.1); }
 
 /* ============ REVIEW STEP ============ */
-.review-data-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 11px; padding: 22px 24px; margin-bottom: 20px; }
+.review-data-card { background: #f6fafc; border: 1px solid #dce5ec; border-radius: 10px; padding: 22px 24px; margin-bottom: 20px; }
 .review-data-card .rv-title { font-size: 0.82rem; font-weight: 700; color: var(--primary-navy); margin-bottom: 16px; display: flex; align-items: center; gap: 7px; }
 .rv-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .rv-table tr td { padding: 7px 0; vertical-align: top; line-height: 1.5; }
@@ -79,4 +86,17 @@ textarea.wz-form-control { resize: none; }
 .info-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 9px; padding: 14px 16px; }
 .warn-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 9px; padding: 14px 16px; }
 .wz-nav-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #edf2f7; padding-top: 24px; margin-top: 8px; }
+
+@media (max-width: 767.98px) {
+    .wizard-stepper-wrap { padding: 18px 14px; overflow-x: auto; }
+    .stepper-track { min-width: 620px; }
+    .step-info { margin-left: 8px; }
+    .step-label-title { font-size: 0.76rem; }
+    .wizard-card { padding: 22px 18px; }
+    .wz-nav-footer { gap: 10px; flex-wrap: wrap; }
+    .wz-nav-footer > * { flex: 1 1 auto; justify-content: center; }
+    .date-range-wrap { grid-template-columns: 1fr; gap: 10px; }
+    .date-separator { display: none; }
+    .rv-table tr td:first-child { width: 44%; }
+}
 </style>

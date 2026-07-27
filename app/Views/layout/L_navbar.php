@@ -32,12 +32,19 @@
                 <img class="img-profile rounded-circle" src="<?= base_url('img/undraw_profile.svg') ?>" alt="Profile"
                      style="width: 36px; height: 36px;">
                 <span class="nav-profile-name d-none d-lg-inline ml-2">
-                    Admin Sekretariat <i class="fas fa-chevron-down fa-xs ml-1"></i>
+                    <?= session()->get('nama') ? esc(session()->get('nama')) : 'User' ?> 
+                    <i class="fas fa-chevron-down fa-xs ml-1"></i>
                 </span>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="<?= base_url('sekretariat/profile') ?>">
+                <?php 
+                $profileLink = '#';
+                if(session('role') == 'mahasiswa') $profileLink = base_url('mahasiswa/profile');
+                elseif(session('role') == 'sekretariat') $profileLink = base_url('sekretariat/profile');
+                elseif(session('role') == 'kabid') $profileLink = base_url('kabid/profile'); // Placeholder
+                ?>
+                <a class="dropdown-item" href="<?= $profileLink ?>">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profile
                 </a>

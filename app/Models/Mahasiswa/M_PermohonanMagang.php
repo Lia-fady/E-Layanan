@@ -38,6 +38,7 @@ class M_PermohonanMagang extends Model
                 t_permohonan_magang.posting_data,
                 t_permohonan_magang.created_at,
                 t_permohonan_magang.id_mahasiswa,
+                t_persetujuan_magang.id_persetujuan_magang,
                 t_persetujuan_magang.status_persetujuan, 
                 t_persetujuan_magang.id_bidang,
                 t_persetujuan_magang.disposisi,

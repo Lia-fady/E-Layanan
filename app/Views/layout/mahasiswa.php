@@ -162,11 +162,50 @@
             background-color: #fef2f2 !important;
             color: #ef4444 !important;
         }
+
+        /* --- PENYESUAIAN LAYOUT TERPUSAT --- */
+        .sidebar { width: 268px; background: linear-gradient(180deg, #102a43 0%, #0b2035 100%); box-shadow: 8px 0 26px rgba(8, 28, 48, 0.13); }
+        .sidebar .brand-area { min-height: 86px; padding: 21px 22px; font-size: 0.98rem; letter-spacing: 0.25px; }
+        .sidebar .menu-group { padding: 23px 22px 8px; color: rgba(255,255,255,0.45); font-size: 0.67rem; letter-spacing: 1.25px; }
+        .sidebar .nav-link { margin: 3px 12px; padding: 12px 14px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: rgba(55,155,211,0.18); transform: translateX(2px); border-left: 0; }
+        .sidebar .nav-link.active { position: relative; }
+        .sidebar .nav-link.active::before { content: ''; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: #66c2ee; }
+        .main-workspace { margin-left: 268px; width: calc(100% - 268px); }
+        .top-bar { height: 76px; padding: 0 38px; border-bottom-color: #dce5ec; box-shadow: 0 2px 12px rgba(16,42,67,0.035); }
+        .content-space { padding: 34px 38px 46px; }
+        .card-flat { border-color: #dce5ec; border-radius: 12px; box-shadow: 0 10px 28px rgba(16,42,67,0.07); }
+        .card-flat:hover { box-shadow: 0 14px 34px rgba(16,42,67,0.12); }
+        .mobile-nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid #dce5ec; border-radius: 8px; background: #fff; color: #102a43; font-size: 1.15rem; }
+        .mobile-nav-backdrop { display: none; }
+
+        @media (max-width: 991.98px) {
+            .mobile-nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+            .sidebar { transform: translateX(-100%); }
+            body.sidebar-open .sidebar { transform: translateX(0); }
+            .mobile-nav-backdrop { position: fixed; inset: 0; z-index: 1035; background: rgba(8,28,48,0.42); }
+            body.sidebar-open .mobile-nav-backdrop { display: block; }
+            .main-workspace { margin-left: 0; width: 100%; }
+            .top-bar { padding: 0 22px; }
+            .content-space { padding: 28px 22px 38px; }
+        }
+
+        @media (max-width: 575.98px) {
+            .top-bar { height: 68px; padding: 0 15px; }
+            .top-bar > .small, .top-bar .text-end { display: none; }
+            .content-space { padding: 22px 15px 32px; }
+            .card-flat { padding: 18px; border-radius: 10px; }
+        }
         
         <?= $this->renderSection('extra_css') ?>
     </style>
 </head>
 <body>
+
+<button type="button" class="mobile-nav-toggle position-fixed top-0 start-0 m-3 shadow-sm" id="mobile-nav-toggle" aria-label="Buka menu navigasi" aria-controls="student-sidebar" aria-expanded="false">
+    <i class="bi bi-list"></i>
+</button>
+<div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
 
 <?php
     $currentURL = uri_string();
@@ -175,7 +214,7 @@
 ?>
 
 <!-- SIDEBAR -->
-<div class="sidebar">
+<div class="sidebar" id="student-sidebar">
     <div class="brand-area d-flex align-items-center gap-2">
         <i class="bi bi-mortarboard-fill fs-3" style="color: #EAB308;"></i>
         <div>E-LAYANAN AKADEMIK<br><small class="fw-normal text-white-50" style="font-size: 0.72rem;">KOMINFO TANGERANG</small></div>
@@ -192,17 +231,17 @@
         </a>
 
         <a href="<?= base_url('mahasiswa/status') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/status') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-clock-history"></i> Status Permohonan
+            <i class="bi bi-clock-history"></i> Riwayat Permohonan
         </a>
 
         <div class="menu-group">Kegiatan Akademik</div>
         
         <a href="<?= base_url('mahasiswa/logbook') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/logbook') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-journal-check"></i> <?= ($stateInfo == 5) ? 'Riwayat Logbook' : 'Logbook' ?>
+            <i class="bi bi-journal-check"></i> <?= ($stateInfo == 5) ? 'Logbook' : 'Logbook' ?>
         </a>
         
         <a href="<?= base_url('mahasiswa/sertifikat') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/sertifikat') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-award"></i> Unduh Sertifikat
+            <i class="bi bi-download"></i> Unduh Dokumen
         </a>
         
         <div class="menu-group">Keluar</div>
@@ -235,6 +274,21 @@ document.getElementById('btn-logout').addEventListener('click', function(e) {
             window.location.href = "<?= base_url('logout') ?>";
         }
     });
+});
+
+const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+const mobileNavBackdrop = document.getElementById('mobile-nav-backdrop');
+const closeMobileNav = function() {
+    document.body.classList.remove('sidebar-open');
+    mobileNavToggle.setAttribute('aria-expanded', 'false');
+};
+mobileNavToggle.addEventListener('click', function() {
+    const isOpen = document.body.classList.toggle('sidebar-open');
+    this.setAttribute('aria-expanded', String(isOpen));
+});
+mobileNavBackdrop.addEventListener('click', closeMobileNav);
+document.querySelectorAll('.sidebar .nav-link').forEach(function(link) {
+    link.addEventListener('click', closeMobileNav);
 });
 
 document.querySelectorAll('.locked-menu').forEach(item => {

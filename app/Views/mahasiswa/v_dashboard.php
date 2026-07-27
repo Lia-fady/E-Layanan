@@ -12,13 +12,13 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
 
     /* --- WELCOME BANNER --- */
     .welcome-banner {
-        background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-royal) 100%);
+        background: linear-gradient(120deg, #102a43 0%, #1769aa 62%, #2f8fca 100%);
         color: white;
         border-radius: 16px;
-        padding: 28px 32px;
+        padding: 34px 36px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 8px 24px rgba(10, 29, 55, 0.12);
+        box-shadow: 0 16px 34px rgba(16, 42, 67, 0.18);
     }
     .welcome-banner::after {
         content: '';
@@ -26,6 +26,16 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         right: -40px; top: -40px;
         width: 200px; height: 200px;
         background: rgba(255,255,255,0.04);
+        border-radius: 50%;
+    }
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        right: 125px;
+        bottom: -100px;
+        width: 230px;
+        height: 230px;
+        border: 1px solid rgba(255,255,255,0.14);
         border-radius: 50%;
     }
     .welcome-banner .welcome-greeting {
@@ -43,6 +53,78 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         font-size: 0.82rem;
         color: rgba(255,255,255,0.5);
     }
+    .welcome-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 12px;
+        color: #bfe7f7;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+    }
+    .welcome-side-note {
+        max-width: 190px;
+        margin-top: 12px;
+        color: rgba(255,255,255,0.62);
+        font-size: 0.76rem;
+        line-height: 1.5;
+    }
+
+    .dashboard-summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+    .summary-tile {
+        position: relative;
+        min-height: 112px;
+        overflow: hidden;
+        padding: 18px 19px;
+        background: #ffffff;
+        border: 1px solid #dce5ec;
+        border-radius: 12px;
+        box-shadow: 0 9px 22px rgba(16,42,67,0.055);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .summary-tile:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(16,42,67,0.11); }
+    .summary-tile::after {
+        content: '';
+        position: absolute;
+        width: 76px;
+        height: 76px;
+        right: -30px;
+        bottom: -34px;
+        border-radius: 50%;
+        background: rgba(47,143,202,0.08);
+    }
+    .summary-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        margin-bottom: 13px;
+        border-radius: 9px;
+        color: #1769aa;
+        background: #eaf5fb;
+        font-size: 1rem;
+    }
+    .summary-label { color: #718492; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.65px; text-transform: uppercase; }
+    .summary-value { margin-top: 4px; color: var(--text-dark); font-size: 0.96rem; font-weight: 800; line-height: 1.25; }
+    .summary-value.compact { font-size: 0.84rem; }
+    .section-kicker { color: #718492; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; }
+    .next-action-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; padding: 18px 21px; background: #fff; border: 1px solid #cfe3ed; border-left: 4px solid #2f8fca; border-radius: 11px; box-shadow: 0 8px 20px rgba(16,42,67,0.055); }
+    .next-action-card.warning { border-color: #f1dfab; border-left-color: #e7a91a; background: #fffdf7; }
+    .next-action-card.success { border-color: #c9ead6; border-left-color: #2c9a63; background: #fbfffc; }
+    .next-action-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 38px; width: 38px; height: 38px; color: #1769aa; background: #eaf5fb; border-radius: 9px; font-size: 1rem; }
+    .next-action-card.warning .next-action-icon { color: #9a6700; background: #fff1c7; }
+    .next-action-card.success .next-action-icon { color: #177245; background: #eaf8f0; }
+    .next-action-title { color: var(--text-dark); font-size: 0.84rem; font-weight: 800; }
+    .next-action-copy { margin-top: 2px; color: var(--text-muted); font-size: 0.76rem; line-height: 1.45; }
+    .next-action-card .btn-action { flex: 0 0 auto; padding: 9px 14px; font-size: 0.78rem; }
 
     /* --- STATUS BADGE --- */
     .status-badge {
@@ -143,6 +225,14 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         margin-top: 8px;
         line-height: 1.3;
     }
+    .stepper-h .step-item:not(:last-child)::after {
+        content: '';
+        display: block;
+        width: 72%;
+        height: 1px;
+        margin: 14px auto 0;
+        background: #edf2f5;
+    }
     .step-item.completed .step-label,
     .step-item.current .step-label { color: var(--text-dark); }
     .step-item.rejected .step-label { color: #ef4444; }
@@ -225,6 +315,22 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     }
     .doc-item .doc-name { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
     .doc-item .doc-desc { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
+
+    @media (max-width: 991.98px) {
+        .dashboard-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 575.98px) {
+        .welcome-banner { padding: 26px 22px; }
+        .welcome-banner .welcome-name { font-size: 1.35rem; }
+        .welcome-side-note { display: none; }
+        .dashboard-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .summary-tile { min-height: 104px; padding: 15px; }
+        .summary-value { font-size: 0.82rem; }
+        .summary-value.compact { font-size: 0.75rem; }
+        .next-action-card { align-items: flex-start; flex-wrap: wrap; padding: 16px; }
+        .next-action-card .next-action-icon { flex-basis: 34px; width: 34px; height: 34px; }
+        .next-action-card .btn-action { width: 100%; justify-content: center; }
+    }
 </style>
 <?= $this->endSection() ?>
 
@@ -256,6 +362,10 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         $statusText  = 'Selesai';
         $statusClass = 'st-selesai';
         $statusIcon  = 'bi-check-circle-fill';
+    } elseif ($state == 6) {
+        $statusText  = 'Perbaikan Berkas';
+        $statusClass = 'st-ditolak';
+        $statusIcon  = 'bi-pencil-square';
     }
 
     // Jenis permohonan label
@@ -275,6 +385,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     <div class="position-relative" style="z-index:1;">
         <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
             <div>
+                <div class="welcome-kicker"><i class="bi bi-stars"></i> Portal Peserta Akademik</div>
                 <div class="welcome-greeting">Halo, Selamat Datang</div>
                 <div class="welcome-name"><?= esc($nama) ?></div>
                 <div class="welcome-meta">
@@ -288,10 +399,70 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 <?php if ($state >= 2 && isset($jenis_permohonan)): ?>
                     <div class="mt-2" style="font-size:0.76rem; color:rgba(255,255,255,0.45);"><?= $jenisLabel ?></div>
                 <?php endif; ?>
+                <div class="welcome-side-note">Pantau setiap tahapan layanan akademik Anda dari satu tempat.</div>
             </div>
         </div>
     </div>
 </div>
+
+<?php
+    $documentCount = (!empty($file_penerimaan) ? 1 : 0) + (!empty($file_sertifikat) ? 1 : 0) + (!empty($file_piagam) ? 1 : 0);
+    $summaryLogbook = ($state >= 4) ? ($total_logbook . ' entri') : 'Belum dimulai';
+?>
+<div class="dashboard-summary" aria-label="Ringkasan aktivitas mahasiswa">
+    <div class="summary-tile">
+        <span class="summary-icon"><i class="bi bi-activity"></i></span>
+        <div class="summary-label">Status layanan</div>
+        <div class="summary-value"><?= esc($statusText) ?></div>
+    </div>
+    <div class="summary-tile">
+        <span class="summary-icon"><i class="bi bi-file-earmark-text"></i></span>
+        <div class="summary-label">Jenis permohonan</div>
+        <div class="summary-value compact"><?= esc($jenisLabel) ?></div>
+    </div>
+    <div class="summary-tile">
+        <span class="summary-icon"><i class="bi bi-journal-check"></i></span>
+        <div class="summary-label">Logbook</div>
+        <div class="summary-value"><?= esc($summaryLogbook) ?></div>
+    </div>
+    <div class="summary-tile">
+        <span class="summary-icon"><i class="bi bi-folder2-open"></i></span>
+        <div class="summary-label">Dokumen tersedia</div>
+        <div class="summary-value"><?= $documentCount ?> dokumen</div>
+    </div>
+</div>
+
+<?php if ($state == 1): ?>
+    <div class="next-action-card">
+        <span class="next-action-icon"><i class="bi bi-arrow-right-circle"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Mulai layanan akademik Anda</div><div class="next-action-copy">Siapkan dokumen persyaratan dan buat permohonan baru untuk memulai proses.</div></div>
+        <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action primary"><i class="bi bi-file-earmark-plus"></i> Mulai Pengajuan</a>
+    </div>
+<?php elseif ($state == 3): ?>
+    <div class="next-action-card warning">
+        <span class="next-action-icon"><i class="bi bi-pencil-square"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Permohonan memerlukan perhatian Anda</div><div class="next-action-copy">Baca catatan evaluasi dan perbaiki permohonan yang sama tanpa membuat pengajuan baru.</div></div>
+        <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action warning"><i class="bi bi-eye"></i> Lihat Catatan</a>
+    </div>
+<?php elseif ($state == 6): ?>
+    <div class="next-action-card warning">
+        <span class="next-action-icon"><i class="bi bi-arrow-repeat"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Perbaikan dokumen diperlukan</div><div class="next-action-copy">Gunakan permohonan yang sama untuk memperbarui dokumen sesuai catatan Sekretariat.</div></div>
+        <a href="<?= base_url('mahasiswa/permohonan/edit/' . ($permohonan_aktif['id_permohonan_magang'] ?? '')) ?>" class="btn-action warning"><i class="bi bi-pencil-square"></i> Perbaiki</a>
+    </div>
+<?php elseif ($state == 4 && $jenis_permohonan == 3 && $is_log_book == 'ya'): ?>
+    <div class="next-action-card success">
+        <span class="next-action-icon"><i class="bi bi-journal-check"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Catat aktivitas hari ini</div><div class="next-action-copy">Logbook kegiatan Anda aktif. Pastikan aktivitas harian dicatat secara berkala.</div></div>
+        <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn-action primary"><i class="bi bi-pencil-square"></i> Isi Logbook</a>
+    </div>
+<?php elseif ($state == 2): ?>
+    <div class="next-action-card">
+        <span class="next-action-icon"><i class="bi bi-hourglass-split"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Tidak ada tindakan yang diperlukan</div><div class="next-action-copy">Permohonan Anda sedang diproses. Pantau pembaruan melalui halaman status permohonan.</div></div>
+        <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action outline"><i class="bi bi-clock-history"></i> Pantau Status</a>
+    </div>
+<?php endif; ?>
 
 <!-- ============================================
      SECTION 2: STEPPER HORIZONTAL (SELALU TAMPIL)
@@ -300,14 +471,14 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     <div class="card-label"><i class="bi bi-signpost-split me-1"></i> Tahapan Alur Permohonan</div>
     <ul class="stepper-h">
         <!-- Step 1: Pengajuan -->
-        <li class="step-item <?= ($state >= 2) ? 'completed' : (($state == 1) ? 'current' : '') ?>">
-            <div class="step-circle"><?= ($state >= 2) ? '<i class="bi bi-check-lg"></i>' : '1' ?></div>
+        <li class="step-item <?= ($state >= 2 && $state != 6) ? 'completed' : (($state == 1 || $state == 6) ? 'current' : '') ?>">
+            <div class="step-circle"><?= ($state >= 2 && $state != 6) ? '<i class="bi bi-check-lg"></i>' : '1' ?></div>
             <span class="step-label">Pengajuan<br>Permohonan</span>
         </li>
         <!-- Step 2: Verifikasi Sekretariat -->
-        <li class="step-item <?= ($state >= 4 || $state == 3 || (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1')) ? (($state == 3) ? 'rejected' : 'completed') : (($state == 2 && (!isset($permohonan_aktif['disposisi']) || in_array($permohonan_aktif['disposisi'], [null, '0']))) ? 'current' : '') ?>">
+        <li class="step-item <?= ($state >= 4 || $state == 3 || $state == 6 || (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1')) ? (($state == 3 || $state == 6) ? 'rejected' : 'completed') : (($state == 2 && (!isset($permohonan_aktif['disposisi']) || in_array($permohonan_aktif['disposisi'], [null, '0']))) ? 'current' : '') ?>">
             <div class="step-circle">
-                <?php if ($state == 3): ?><i class="bi bi-x-lg"></i>
+                <?php if ($state == 3 || $state == 6): ?><i class="bi bi-x-lg"></i>
                 <?php elseif ($state >= 4 || (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1')): ?><i class="bi bi-check-lg"></i>
                 <?php else: ?>2<?php endif; ?>
             </div>
@@ -316,7 +487,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         <!-- Step 3: Persetujuan Kabid -->
         <li class="step-item <?= ($state >= 4) ? 'completed' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? 'current' : '') ?>">
             <div class="step-circle"><?= ($state >= 4) ? '<i class="bi bi-check-lg"></i>' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? '<i class="bi bi-diagram-3-fill"></i>' : '3') ?></div>
-            <span class="step-label">Persetujuan<br>Kepala Bidang</span>
+            <span class="step-label">Persetujuan<br>Bidang</span>
         </li>
         <!-- Step 4: Pelaksanaan -->
         <li class="step-item <?= ($state == 5) ? 'completed' : (($state == 4) ? 'current' : '') ?>">
@@ -423,7 +594,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
             <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
                 <div class="alert-card alert-info mb-3">
                     <i class="bi bi-diagram-3-fill alert-icon"></i>
-                    <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Kepala Bidang.</div>
+                    <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
                 </div>
             <?php elseif (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '0'): ?>
                 <div class="alert-card alert-warning mb-3">
@@ -487,6 +658,43 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     </div>
 </div>
 
+
+<?php elseif ($state == 6): ?>
+<!-- ===================== STATE 6: PERBAIKAN BERKAS ===================== -->
+<div class="row g-4">
+    <div class="col-12">
+        <div class="alert-card alert-warning">
+            <i class="bi bi-pencil-square alert-icon"></i>
+            <div>
+                <strong>Perbaikan Berkas (Revisi)</strong><br>
+                Terdapat kekurangan atau kesalahan pada dokumen yang Anda kirimkan. Silakan perbaiki dokumen sesuai catatan di bawah ini tanpa perlu membuat permohonan baru.
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7">
+        <div class="card-flat h-100">
+            <div class="card-label"><i class="bi bi-chat-square-text me-1"></i> Catatan Revisi dari Sekretariat</div>
+            <div style="background:#fffbeb; border-radius:10px; padding:16px 20px; font-size:0.9rem; line-height:1.7; color:#78350f;">
+                <i class="bi bi-quote" style="font-size:1.2rem; opacity:0.3;"></i><br>
+                <?= esc($catatan_tolak ?? 'Tidak ada catatan spesifik. Harap periksa kembali kelengkapan seluruh dokumen.') ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-5">
+        <div class="card-flat h-100 d-flex flex-column">
+            <div class="card-label"><i class="bi bi-arrow-repeat me-1"></i> Langkah Selanjutnya</div>
+            <div class="alert-card alert-info mb-3">
+                <i class="bi bi-info-circle alert-icon"></i>
+                <div>Perbaiki dokumen sesuai catatan melalui form perbaikan.</div>
+            </div>
+            <div class="mt-auto d-flex flex-column gap-2">
+                <a href="<?= base_url('mahasiswa/permohonan/edit/' . ($permohonan_aktif['id_permohonan_magang'] ?? '')) ?>" class="btn-action warning w-100 justify-content-center">
+                    <i class="bi bi-pencil-square"></i> Revisi Dokumen Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php elseif ($state == 4): ?>
 <!-- ===================== STATE 4: AKTIF BERJALAN ===================== -->
@@ -598,7 +806,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     </div>
     <div class="col-12 col-lg-5">
         <div class="card-flat h-100 d-flex flex-column">
-            <div class="card-label"><i class="bi bi-download me-1"></i> Dokumen Akhir</div>
+            <div class="card-label"><i class="bi bi-download me-1"></i> Dokumen Akhir & Aksi</div>
             <p class="text-muted mb-3" style="font-size:0.84rem;">Anda dapat mengunduh dokumen sertifikat yang telah diterbitkan oleh Bidang terkait.</p>
             <div class="mt-auto d-flex flex-column gap-2">
                 <?php if (!empty($file_sertifikat)): ?>
@@ -615,6 +823,11 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                     <i class="bi bi-journal-check"></i> Lihat Riwayat Logbook
                 </a>
                 <?php endif; ?>
+                <hr style="border-color: #e2e8f0; margin: 10px 0;">
+                <p class="text-muted text-center mb-1" style="font-size: 0.78rem;">Ingin kembali ke Dinas Kominfo?</p>
+                <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action w-100 justify-content-center" style="background: #102a43; color: #fff; border: 1px solid #0a1d37;">
+                    <i class="bi bi-rocket-takeoff-fill"></i> Mulai Pengajuan Baru
+                </a>
             </div>
         </div>
     </div>

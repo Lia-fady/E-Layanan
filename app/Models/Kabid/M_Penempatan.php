@@ -33,13 +33,12 @@ class M_Penempatan extends Model
     protected $updatedField  = 'updated_at';
 
     /**
-     * Ambil daftar penempatan dengan status MENUNGGU
-     * untuk bidang tertentu (berdasarkan id_bidang Kepala Bidang).
+     * Ambil daftar semua penempatan untuk bidang tertentu.
      *
      * @param int|null $id_bidang  Jika null, tampilkan semua
      * @return array
      */
-    public function getPenempatanMenunggu($id_bidang = null)
+    public function getSemuaPenempatan($id_bidang = null)
     {
         $db = \Config\Database::connect();
 
@@ -48,15 +47,19 @@ class M_Penempatan extends Model
             pn.id_penempatan_magang,
             pn.id_bidang,
             pn.id_persetujuan_magang,
+            pm.id_permohonan_magang,
             pn.id_mahasiswa,
             pn.catatan,
             pn.status_penempatan,
+            pn.is_log_book,
             pn.created_at,
             mhs.nim,
+            mhs.nik,
             mhs.nama_mahasiswa,
             mhs.jenis_kelamin,
             mhs.email,
             mhs.no_telp,
+            im.semester,
             bd.bidang,
             pm.deskripsi_keahlian,
             pm.deskripsi_magang,
@@ -64,7 +67,8 @@ class M_Penempatan extends Model
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
             jp.jenis_permohonan,
-            ip.instansi_pendidikan
+            ip.instansi_pendidikan,
+            pr.prodi
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
@@ -73,7 +77,7 @@ class M_Penempatan extends Model
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
-        $builder->where('pn.status_penempatan', 'MENUNGGU');
+        $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
 
         if ($id_bidang !== null) {
             $builder->where('pn.id_bidang', $id_bidang);
@@ -123,13 +127,14 @@ class M_Penempatan extends Model
     }
 
     /**
-     * Setujui penempatan: update status ke BERJALAN.
+     * Setujui penempatan: update status ke BERJALAN dan set is_log_book.
      *
      * @param int $id_penempatan
+     * @param string $is_log_book
      * @param int $updated_by
      * @return bool
      */
-    public function setujuiPenempatan($id_penempatan, $updated_by)
+    public function setujuiPenempatan($id_penempatan, $is_log_book, $updated_by)
     {
         $db = \Config\Database::connect();
 
@@ -137,6 +142,7 @@ class M_Penempatan extends Model
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
                 'status_penempatan' => 'BERJALAN',
+                'is_log_book'       => $is_log_book,
                 'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
@@ -144,9 +150,7 @@ class M_Penempatan extends Model
 
     /**
      * Tolak penempatan:
-     * 1. Hapus record dari t_penempatan_magang
-     * 2. Reset disposisi di t_persetujuan_magang (disposisi = '0', id_bidang = NULL)
-     *    agar permohonan muncul kembali di halaman Disposisi Sekretariat.
+     * Ubah status menjadi DIBATALKAN (tidak dihapus).
      *
      * @param int    $id_penempatan
      * @param string $catatan
@@ -157,32 +161,41 @@ class M_Penempatan extends Model
     {
         $db = \Config\Database::connect();
 
-        // Ambil data penempatan untuk mendapatkan id_persetujuan_magang
-        $penempatan = $db->table('t_penempatan_magang')
-            ->where('id_penempatan_magang', $id_penempatan)
-            ->get()
-            ->getRow();
-
-        if (!$penempatan) {
-            return false;
-        }
-
-        // 1. Hapus record penempatan
+        // Update status di t_penempatan_magang menjadi DIBATALKAN
         $db->table('t_penempatan_magang')
             ->where('id_penempatan_magang', $id_penempatan)
-            ->delete();
-
-        // 2. Reset disposisi di t_persetujuan_magang agar muncul kembali di halaman Disposisi
-        $db->table('t_persetujuan_magang')
-            ->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)
             ->update([
-                'disposisi'  => '0',
-                'id_bidang'  => null,
-                'updated_by' => $updated_by,
-                'updated_at' => date('Y-m-d H:i:s'),
+                'status_penempatan' => 'DIBATALKAN',
+                'updated_by'        => $updated_by,
+                'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
+        // (Opsional) Jika perlu mengembalikan ke Sekretariat, uncomment baris bawah.
+        // Sesuai permintaan "Data tetap berada pada halaman ini, hanya statusnya yang berubah menjadi Dibatalkan",
+        // kita tidak perlu me-reset disposisi di t_persetujuan_magang agar tidak terduplikasi.
+
         return true;
+    }
+
+    /**
+     * Selesaikan penempatan:
+     * Ubah status menjadi SELESAI.
+     *
+     * @param int $id_penempatan
+     * @param int $updated_by
+     * @return bool
+     */
+    public function selesaikanPenempatan($id_penempatan, $updated_by)
+    {
+        $db = \Config\Database::connect();
+
+        return $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->update([
+                'status_penempatan' => 'SELESAI',
+                'updated_by'        => $updated_by,
+                'updated_at'        => date('Y-m-d H:i:s'),
+            ]);
     }
 
     /**

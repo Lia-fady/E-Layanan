@@ -178,7 +178,22 @@ function vStep1() {
     var mg = document.getElementById('deskripsi_magang').value.trim();
     if (!tM) { sAlert('Tanggal mulai wajib diisi.'); return false; }
     if (!tS) { sAlert('Tanggal selesai wajib diisi.'); return false; }
-    if (new Date(tS) <= new Date(tM)) { sAlert('Tanggal selesai harus setelah tanggal mulai.'); return false; }
+    
+    var diffTime = new Date(tS) - new Date(tM);
+    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays <= 0) { sAlert('Tanggal selesai harus setelah tanggal mulai.'); return false; }
+    if (diffDays < 60) {
+        document.getElementById('tgl_mulai').classList.add('is-invalid');
+        var errDiv = document.getElementById('err-tgl-mulai-js');
+        if(errDiv){
+            errDiv.classList.remove('d-none');
+            errDiv.classList.add('d-block');
+            errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
+        }
+        document.getElementById('tgl_mulai').focus();
+        return false; 
+    }
     if (k.length < 10) { sAlert('Deskripsi keahlian minimal 10 karakter.'); return false; }
     if (mg.length < 20) { sAlert('Deskripsi rencana kegiatan minimal 20 karakter.'); return false; }
     return true;

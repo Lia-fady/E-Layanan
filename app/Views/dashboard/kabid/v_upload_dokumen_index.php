@@ -29,7 +29,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Mahasiswa (Persetujuan Magang)</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Daftar Dokumen Magang</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -63,8 +63,8 @@
                                 <?= $mulai ?> s/d <?= $selesai ?>
                             </td>
                             <td class="text-center">
-                                <a href="<?= base_url('kabid/upload-surat-penerimaan/' . $p->id_persetujuan_magang) ?>" class="btn btn-sm btn-primary" title="Upload Surat">
-                                    <i class="fas fa-file-upload mr-1"></i> Upload Surat
+                                <a href="<?= base_url('kabid/upload-dokumen/form/' . $p->id_persetujuan_magang) ?>" class="btn btn-sm btn-primary" title="Kelola Dokumen">
+                                    <i class="fas fa-upload mr-1"></i> Kelola Dokumen
                                 </a>
                             </td>
                         </tr>

@@ -20,6 +20,16 @@
     $inisial = strtoupper(mb_substr($inisial, 0, 2));
 ?>
 
+<div class="profile-hero">
+    <div class="profile-hero-avatar"><?= $inisial ?></div>
+    <div class="profile-hero-copy">
+        <span class="profile-eyebrow"><i class="bi bi-shield-check me-1"></i> Identitas Peserta</span>
+        <h4><?= $nama ?></h4>
+        <p><?= $nim ?> <span aria-hidden="true">&bull;</span> <?= $kampus ?></p>
+    </div>
+    <button class="btn btn-light btn-sm profile-hero-action" data-bs-toggle="modal" data-bs-target="#modalEditProfil"><i class="bi bi-pencil-square me-1"></i> Edit Profil</button>
+</div>
+
 <div class="container-fluid p-0">
     <div class="row g-4">
     <!-- KOLOM KIRI: KARTU IDENTITAS -->
@@ -43,9 +53,6 @@
                 <div class="fw-semibold text-dark small"><i class="bi bi-building me-2 text-primary"></i> <?= $kampus ?></div>
             </div>
             
-            <button class="btn btn-outline-primary btn-sm w-100 fw-bold rounded-3 mt-2 py-2" data-bs-toggle="modal" data-bs-target="#modalEditProfil">
-                <i class="bi bi-pencil-square me-1"></i> Edit Profil
-            </button>
         </div>
     </div>
 

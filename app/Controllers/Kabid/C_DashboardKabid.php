@@ -69,9 +69,38 @@ class C_DashboardKabid extends BaseController
                 ->getRow();
         }
 
-        // Ambil daftar penempatan menunggu (5 terbaru)
-        $penempatan_menunggu = $this->penempatanModel->getPenempatanMenunggu($id_bidang);
+        // Hitung kuota bidang
+        $kuotaRow = $db->table('m_kuota')->where('id_bidang', $id_bidang)->get()->getRow();
+        $sisa_kuota = 0;
+        if ($kuotaRow) {
+            $sisa_kuota = max(0, $kuotaRow->kuota - $total_berjalan);
+        }
+
+        // Ambil daftar logbook menunggu persetujuan
+        $logbook_list = $db->table('t_logbook_magang l')
+            ->select('l.id_logbook_magang, l.tgl_logbook, l.logbook_magang, m.nama_mahasiswa')
+            ->join('t_penempatan_magang p', 'p.id_penempatan_magang = l.id_penempatan_magang')
+            ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
+            ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
+            ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
+            ->where('p.id_bidang', $id_bidang)
+            ->where('l.disetujui_oleh', null)
+            ->orderBy('l.tgl_logbook', 'ASC') // yang terlama dulu
+            ->limit(5)
+            ->get()->getResult();
+
+        $semua_penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang);
+        
+        $penempatan_menunggu = array_filter($semua_penempatan, function($p) {
+            return $p->status_penempatan == 'MENUNGGU';
+        });
         $penempatan_menunggu = array_slice($penempatan_menunggu, 0, 5);
+
+        // Ambil daftar penempatan berjalan (untuk list kecil di kanan atas/bawah)
+        $penempatan_berjalan = array_filter($semua_penempatan, function($p) {
+            return $p->status_penempatan == 'BERJALAN';
+        });
+        $penempatan_berjalan = array_slice($penempatan_berjalan, 0, 5);
 
         // Format tanggal Indonesia
         $namaBulan = [
@@ -97,6 +126,9 @@ class C_DashboardKabid extends BaseController
             'total_selesai'        => $total_selesai,
             'bidang_info'          => $bidang_info,
             'penempatan_menunggu'  => $penempatan_menunggu,
+            'penempatan_berjalan'  => $penempatan_berjalan,
+            'sisa_kuota'           => $sisa_kuota,
+            'logbook_list'         => $logbook_list,
             'tanggal_formatted'    => $tanggalFormatted,
         ];
 

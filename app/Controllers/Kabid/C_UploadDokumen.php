@@ -5,7 +5,7 @@ use App\Controllers\BaseController;
 use App\Models\Sekretariat\M_File;
 use App\Models\Sekretariat\M_FileProsesMagang;
 
-class C_UploadSuratPenerimaan extends BaseController
+class C_UploadDokumen extends BaseController
 {
     protected $fileModel;
     protected $fileProsesModel;
@@ -41,11 +41,11 @@ class C_UploadSuratPenerimaan extends BaseController
 
         $data = [
             'title'       => 'Daftar Surat Penerimaan Magang',
-            'active_menu' => 'upload_surat_penerimaan',
+            'active_menu' => 'upload_dokumen',
             'persetujuan' => $persetujuan,
         ];
 
-        return view('dashboard/kabid/v_upload_surat_penerimaan_index', $data);
+        return view('dashboard/kabid/v_upload_dokumen_index', $data);
     }
 
     private function getPersetujuanDetail($id_persetujuan)
@@ -62,22 +62,22 @@ class C_UploadSuratPenerimaan extends BaseController
             ->get()->getRow();
     }
 
-    public function create($id_persetujuan)
+    public function form($id_persetujuan)
     {
         $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
         if (!$persetujuan) {
-            return redirect()->to(base_url('kabid/upload-surat-penerimaan'))->with('error', 'Data persetujuan tidak ditemukan.');
+            return redirect()->to(base_url('kabid/upload-dokumen'))->with('error', 'Data persetujuan tidak ditemukan.');
         }
 
         $data = [
             'title'       => 'Upload Surat Penerimaan Magang',
-            'active_menu' => 'upload_surat_penerimaan',
+            'active_menu' => 'upload_dokumen',
             'persetujuan' => $persetujuan,
-            'jenis_file'  => $this->fileModel->getActiveFiles(),
+            'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Penerimaan Magang', 'Surat Telah Selesai Magang', 'Sertifikat Magang'])->where('status_aktif', '1')->findAll(),
             'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
         ];
 
-        return view('dashboard/kabid/v_upload_surat_penerimaan', $data);
+        return view('dashboard/kabid/v_upload_dokumen', $data);
     }
 
     public function store()
@@ -112,10 +112,10 @@ class C_UploadSuratPenerimaan extends BaseController
             return redirect()->back()->with('error', 'Data persetujuan magang tidak valid atau tidak ditemukan.');
         }
 
-        // Cek jika sudah ada file
-        $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan);
+        $id_file = $this->request->getPost('id_file');
+        $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan, $id_file);
         if ($existing) {
-            return redirect()->back()->with('error', 'Surat penerimaan sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.');
+            return redirect()->back()->with('error', 'Dokumen jenis ini sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.');
         }
 
         $file = $this->request->getFile('file_surat');
