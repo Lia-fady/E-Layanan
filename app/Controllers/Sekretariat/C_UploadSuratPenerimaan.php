@@ -32,7 +32,7 @@ class C_UploadSuratPenerimaan extends BaseController
                 'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
             ];
 
-            return view('dashboard/sekretariat/upload_surat_penerimaan/_detail', $data);
+            return view('dashboard/sekretariat/upload_surat_penerimaan/v_detail', $data);
         }
 
         $db = \Config\Database::connect();
@@ -53,7 +53,7 @@ class C_UploadSuratPenerimaan extends BaseController
             'persetujuan' => $persetujuan,
         ];
 
-        return view('dashboard/sekretariat/upload_surat_penerimaan/index', $data);
+        return view('dashboard/sekretariat/upload_surat_penerimaan/v_index', $data);
     }
 
     private function getPersetujuanDetail($id_persetujuan)

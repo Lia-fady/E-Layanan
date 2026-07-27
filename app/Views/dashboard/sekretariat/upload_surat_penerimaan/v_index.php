@@ -33,7 +33,7 @@
 
 <!-- Section Daftar Upload Surat -->
 <div id="sectionList">
-    <?= $this->include('dashboard/sekretariat/upload_surat_penerimaan/_list') ?>
+    <?= $this->include('dashboard/sekretariat/upload_surat_penerimaan/v_list') ?>
 </div>
 
 <!-- Section Detail Upload Surat -->

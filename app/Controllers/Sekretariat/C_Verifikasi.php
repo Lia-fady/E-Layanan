@@ -51,7 +51,7 @@ class C_Verifikasi extends BaseController
                 'status_penempatan' => $penempatan->status_penempatan ?? 'MENUNGGU',
             ];
 
-            return view('dashboard/sekretariat/verifikasi/_detail', $data);
+            return view('dashboard/sekretariat/verifikasi/v_detail', $data);
         }
 
         $permohonan = $this->verifikasiModel->getPermohonanMasuk();
@@ -72,7 +72,7 @@ class C_Verifikasi extends BaseController
             'permohonan'  => $permohonan,
         ];
 
-        return view('dashboard/sekretariat/verifikasi/index', $data);
+        return view('dashboard/sekretariat/verifikasi/v_index', $data);
     }
 
     /**

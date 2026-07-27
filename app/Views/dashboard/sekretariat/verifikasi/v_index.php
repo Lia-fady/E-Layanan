@@ -27,7 +27,7 @@
 
 <!-- Section Daftar Permohonan -->
 <div id="sectionList">
-    <?= $this->include('dashboard/sekretariat/verifikasi/_list') ?>
+    <?= $this->include('dashboard/sekretariat/verifikasi/v_list') ?>
 </div>
 
 <!-- Section Detail Permohonan -->
