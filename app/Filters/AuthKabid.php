@@ -28,12 +28,12 @@ class AuthKabid implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (!session()->get('logged_in')) {
+        if (!session()->get('isLoggedIn')) {
             return redirect()->to(base_url('pegawai/login'));
         }
 
         // Cek apakah user memiliki role Kepala Bidang (group_id == 3)
-        if (session()->get('group_id') != 3) {
+        if (session()->get('id_user_group') != 3) {
             return redirect()->to(base_url('pegawai/login'));
         }
     }
