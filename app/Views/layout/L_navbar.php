@@ -29,7 +29,7 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="<?= base_url('img/undraw_profile.svg') ?>" alt="Profile"
+                <img class="img-profile rounded-circle" src="<?= base_url('images/undraw_profile.svg') ?>" alt="Profile"
                      style="width: 36px; height: 36px;">
                 <span class="nav-profile-name d-none d-lg-inline ml-2">
                     Admin Sekretariat <i class="fas fa-chevron-down fa-xs ml-1"></i>

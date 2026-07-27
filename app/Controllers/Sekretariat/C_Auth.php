@@ -88,6 +88,7 @@ class C_Auth extends BaseController
                 'nama_user'       => $user['nama'],
                 'group_id'        => $user['id_user_group'],
                 'id_bidang'       => $user['id_bidang'],
+                'kode_unor'       => $user['kode_unor'],
                 'role_name'       => $roleName,
                 'logged_in'       => true,
             ];

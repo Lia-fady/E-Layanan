@@ -91,7 +91,7 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('dashboard', '\App\Controllers\Sekretariat\C_Dashboard::index');
 
     // Verifikasi Permohonan
-    $routes->get('verifikasi', '\App\Controllers\Sekretariat\C_Verifikasi::index');
+    $routes->match(['get', 'post'], 'verifikasi', '\App\Controllers\Sekretariat\C_Verifikasi::index');
     $routes->get('verifikasi/detailModal/(:num)', '\App\Controllers\Sekretariat\C_Verifikasi::detailModal/$1');
     $routes->post('verifikasi/prosesModal', '\App\Controllers\Sekretariat\C_Verifikasi::prosesModal');
     // Riwayat
@@ -140,8 +140,7 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('sertifikat/download/(:num)', '\App\Controllers\Sekretariat\C_Sertifikat::download/$1');
 
     // Surat Penerimaan Magang (Menu Baru)
-    $routes->get('upload-surat-penerimaan', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::index');
-    $routes->get('upload-surat-penerimaan/form/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::form/$1');
+    $routes->match(['get', 'post'], 'upload-surat-penerimaan', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::index');
     $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::store');
     $routes->post('upload-surat-penerimaan/delete/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::delete/$1');
     $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::download/$1');

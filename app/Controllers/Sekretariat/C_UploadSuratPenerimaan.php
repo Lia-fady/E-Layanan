@@ -18,6 +18,23 @@ class C_UploadSuratPenerimaan extends BaseController
 
     public function index()
     {
+        if ($this->request->isAJAX() && $this->request->getPost('action') === 'get_detail') {
+            $id_persetujuan = $this->request->getPost('id');
+            $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
+            
+            if (!$persetujuan) {
+                return "Data persetujuan tidak ditemukan.";
+            }
+
+            $data = [
+                'persetujuan' => $persetujuan,
+                'jenis_file'  => $this->fileModel->getActiveFiles(),
+                'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
+            ];
+
+            return view('dashboard/sekretariat/upload_surat_penerimaan/_detail', $data);
+        }
+
         $db = \Config\Database::connect();
         $persetujuan = $db->table('t_persetujuan_magang ps')
             ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
@@ -36,38 +53,36 @@ class C_UploadSuratPenerimaan extends BaseController
             'persetujuan' => $persetujuan,
         ];
 
-        return view('dashboard/sekretariat/v_upload_surat_penerimaan_index', $data);
+        return view('dashboard/sekretariat/upload_surat_penerimaan/index', $data);
     }
 
     private function getPersetujuanDetail($id_persetujuan)
     {
         $db = \Config\Database::connect();
         return $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
+            ->select('
+                ps.*, 
+                pm.tgl_mulai, 
+                pm.tgl_selesai, 
+                pm.created_at,
+                pm.deskripsi_keahlian,
+                pm.deskripsi_magang,
+                mhs.nama_mahasiswa, 
+                mhs.nim, 
+                mhs.nik,
+                mhs.no_telp,
+                ip.instansi_pendidikan, 
+                pr.prodi,
+                fk.fakultas
+            ')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_fakultas fk', 'fk.id_fakultas = pr.id_fakultas', 'left')
             ->where('ps.id_persetujuan_magang', $id_persetujuan)
             ->get()->getRow();
-    }
-
-    public function form($id_persetujuan)
-    {
-        $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
-        if (!$persetujuan) {
-            return "Data persetujuan tidak ditemukan.";
-        }
-
-        $data = [
-            'persetujuan' => $persetujuan,
-            'jenis_file'  => $this->fileModel->getActiveFiles(),
-            // Mengambil semua surat yang diupload menggunakan query model lengkap
-            'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
-        ];
-
-        return view('dashboard/sekretariat/v_upload_surat_modal', $data);
     }
 
     public function store()

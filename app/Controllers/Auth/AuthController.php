@@ -451,7 +451,8 @@ class AuthController extends BaseController
                 $sessionData = [
                     'id_user_pegawai' => $userPegawai['id_user_pegawai'],
                     'nip'             => $userPegawai['nip'],
-                    'nama'            => $userPegawai['nama'],
+                    'nama_user'       => $userPegawai['nama'],
+                    'kode_unor'       => $userPegawai['kode_unor'],
                     'id_bidang'       => $userPegawai['id_bidang'],
                     'id_user_group'   => $userPegawai['id_user_group'],
                     'group_id'        => $userPegawai['id_user_group'],

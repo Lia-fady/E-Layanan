@@ -122,6 +122,7 @@ class M_Verifikasi extends Model
         $builder = $db->table('t_permohonan_magang as pm');
         $builder->select('
             pm.*,
+            mhs.nik,
             mhs.nim,
             mhs.nama_mahasiswa,
             mhs.jenis_kelamin,
@@ -163,6 +164,7 @@ class M_Verifikasi extends Model
             fpm.id_permohonan_magang,
             fpm.nama_file as nama_file_upload,
             fpm.path_file,
+            fpm.status_verifikasi,
             fpm.created_at,
             mf.nama_file as nama_file_master
         ');
@@ -218,6 +220,19 @@ class M_Verifikasi extends Model
             ->getRow();
 
         if ($existing) {
+            // Guard: Jangan izinkan update jika status sudah final
+            if ($existing->status_persetujuan === 'DISETUJUI') {
+                $penempatan = $db->table('t_penempatan_magang')
+                    ->where('id_persetujuan_magang', $existing->id_persetujuan_magang)
+                    ->get()
+                    ->getRow();
+                $statusPenempatan = $penempatan->status_penempatan ?? 'MENUNGGU';
+                
+                if ($statusPenempatan !== 'MENUNGGU') {
+                    return false;
+                }
+            }
+
             return $db->table('t_persetujuan_magang')
                 ->where('id_permohonan_magang', $data['id_permohonan_magang'])
                 ->update([

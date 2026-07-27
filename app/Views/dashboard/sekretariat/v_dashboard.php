@@ -19,8 +19,8 @@
 <!-- Welcome Card -->
 <div class="welcome-card">
     <div class="welcome-label">Selamat datang,</div>
-    <div class="welcome-name"><?= esc(session('nama_user') ?? 'User') ?></div>
-    <div class="welcome-role"><?= esc(session('role_name') ?? 'Sekretariat') ?> · Dinas Kominfo Kota Tangerang</div>
+    <div class="welcome-name"><?= esc($nama_user) ?></div>
+    <div class="welcome-role"><?= esc($kode_unor) ?> · Dinas Kominfo Kota Tangerang</div>
     <div>
         <span class="welcome-badge welcome-badge-date"><?= esc($tanggal_formatted) ?></span>
         <?php if ($total_verifikasi > 0) : ?>
