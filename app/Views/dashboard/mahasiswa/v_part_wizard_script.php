@@ -53,7 +53,7 @@ const JENIS_CFG = {
 function countChars(el, sid) {
     document.getElementById(sid).textContent = el.value.length;
 }
-['deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+['deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el && el.value) el.dispatchEvent(new Event('input'));
 });
@@ -65,7 +65,7 @@ function applyJenisCfg(val) {
     document.getElementById('lbl-keahlian').innerHTML = cfg.keahlian + ' <span class="text-danger">*</span>';
     document.getElementById('deskripsi_keahlian').placeholder = cfg.phK;
     document.getElementById('lbl-magang').innerHTML = cfg.magang + ' <span class="text-danger">*</span>';
-    document.getElementById('deskripsi_magang').placeholder = cfg.phM;
+    document.getElementById('deskripsi').placeholder = cfg.phM;
     document.getElementById('lbl-surat').innerHTML = cfg.surat + ' <span class="text-danger">*</span>';
 
     var wCv = document.getElementById('wrapper-cv');
@@ -175,7 +175,7 @@ function vStep1() {
     var tM = document.getElementById('tgl_mulai').value;
     var tS = document.getElementById('tgl_selesai').value;
     var k = document.getElementById('deskripsi_keahlian').value.trim();
-    var mg = document.getElementById('deskripsi_magang').value.trim();
+    var mg = document.getElementById('deskripsi').value.trim();
     if (!tM) { sAlert('Tanggal mulai wajib diisi.'); return false; }
     if (!tS) { sAlert('Tanggal selesai wajib diisi.'); return false; }
     
@@ -229,7 +229,7 @@ function fillReview() {
     document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
     document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
     document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
-    document.getElementById('rv-magang').textContent = document.getElementById('deskripsi_magang').value || '—';
+    document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';
 
     var tb = document.getElementById('rv-doc-tbody');
     tb.innerHTML = '';
@@ -393,7 +393,7 @@ function resetFormCustom() {
 }
 /* ============ LocalStorage Auto-Save ============ */
 var LS_KEY = 'form_permohonan_<?= session()->get("id_mahasiswa") ?? "guest" ?>';
-var LS_FIELDS = ['id_jenis_permohonan', 'tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'];
+var LS_FIELDS = ['id_jenis_permohonan', 'tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'];
 
 function saveToLocal() {
     try {
@@ -402,7 +402,7 @@ function saveToLocal() {
         var jRadio = document.querySelector('input[name="id_jenis_permohonan"]:checked');
         data['id_jenis_permohonan'] = jRadio ? jRadio.value : '';
         // Ambil value field lainnya
-        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             data[id] = el ? el.value : '';
         });
@@ -427,13 +427,13 @@ function loadFromLocal() {
         }
 
         // Isi field teks lainnya
-        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el && data[id]) { el.value = data[id]; hasData = true; }
         });
 
         // Update character counters
-        ['deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el && el.value) el.dispatchEvent(new Event('input'));
         });

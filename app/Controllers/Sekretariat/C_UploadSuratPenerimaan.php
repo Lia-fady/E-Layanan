@@ -66,7 +66,7 @@ class C_UploadSuratPenerimaan extends BaseController
                 pm.tgl_selesai, 
                 pm.created_at,
                 pm.deskripsi_keahlian,
-                pm.deskripsi_magang,
+                pm.deskripsi,
                 mhs.nama_mahasiswa, 
                 mhs.nim, 
                 mhs.nik,

@@ -112,7 +112,7 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                             <div>
                                 <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi / Tujuan Magang</span>
                                 <strong style="font-size: 0.95rem;">
-                                    <?= !empty($permohonan->deskripsi_magang) ? esc($permohonan->deskripsi_magang) : 'Belum diisi' ?>
+                                    <?= !empty($permohonan->deskripsi) ? esc($permohonan->deskripsi) : 'Belum diisi' ?>
                                 </strong>
                             </div>
                         </div>

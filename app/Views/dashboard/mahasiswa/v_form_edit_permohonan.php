@@ -239,7 +239,7 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Deskripsi Magang -->
         <div class="mb-4">
             <label class="wz-form-label" id="lbl-magang">Deskripsi Rencana Magang / Kegiatan <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi_magang" id="deskripsi_magang" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi_magang', $draft['deskripsi_magang']) ?></textarea>
+            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi', $draft['deskripsi']) ?></textarea>
             <div class="char-counter"><span id="cc-magang">0</span>/1000 karakter</div>
         </div>
 
@@ -416,7 +416,7 @@ window.addEventListener('load', function() {
             document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
             document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
             document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
-            document.getElementById('rv-magang').textContent = document.getElementById('deskripsi_magang').value || '—';
+            document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';
 
             var tb = document.getElementById('rv-doc-tbody');
             tb.innerHTML = '';

@@ -11,7 +11,7 @@ class M_PermohonanMagang extends Model
     protected $returnType       = 'array';
     protected $allowedFields    = [
         'id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 
-        'deskripsi_keahlian', 'deskripsi_magang', 'tgl_mulai', 
+        'deskripsi_keahlian', 'deskripsi', 'tgl_mulai', 
         'tgl_selesai', 'posting_data', 'created_at', 'updated_at'
     ];
 
@@ -32,7 +32,7 @@ class M_PermohonanMagang extends Model
                 t_permohonan_magang.id_jenis_permohonan,
                 t_permohonan_magang.id_instansi_mahasiswa,
                 t_permohonan_magang.deskripsi_keahlian,
-                t_permohonan_magang.deskripsi_magang,
+                t_permohonan_magang.deskripsi,
                 t_permohonan_magang.tgl_mulai,
                 t_permohonan_magang.tgl_selesai,
                 t_permohonan_magang.posting_data,

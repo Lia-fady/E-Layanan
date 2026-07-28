@@ -79,7 +79,7 @@
                         <div>
                             <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi / Tujuan Magang</span>
                             <strong style="font-size: 0.95rem;">
-                                <?= !empty($persetujuan->deskripsi_magang) ? esc($persetujuan->deskripsi_magang) : 'Belum diisi' ?>
+                                <?= !empty($persetujuan->deskripsi) ? esc($persetujuan->deskripsi) : 'Belum diisi' ?>
                             </strong>
                         </div>
                     </div>

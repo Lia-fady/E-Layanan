@@ -571,7 +571,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 </div>
                 <div class="mt-3">
                     <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
-                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi_magang'] ?? '-') ?></p>
+                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? '-') ?></p>
                 </div>
             <?php endif; ?>
         </div>
@@ -711,7 +711,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 </div>
                 <div class="mt-3">
                     <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
-                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi_magang'] ?? '-') ?></p>
+                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? '-') ?></p>
                 </div>
             <?php endif; ?>
 

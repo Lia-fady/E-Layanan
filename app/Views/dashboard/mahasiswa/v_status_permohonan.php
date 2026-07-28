@@ -411,7 +411,7 @@ E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primar
                                                                 <div class="row">
                                                                     <div class="col-sm-5 text-muted fw-medium">Tujuan Detail</div>
                                                                     <div class="col-sm-7 text-dark" style="line-height: 1.5;">
-                                                                        <?= !empty($p['deskripsi_magang']) ? nl2br(esc($p['deskripsi_magang'])) : '-' ?>
+                                                                        <?= !empty($p['deskripsi']) ? nl2br(esc($p['deskripsi'])) : '-' ?>
                                                                     </div>
                                                                 </div>
                                                             </div>

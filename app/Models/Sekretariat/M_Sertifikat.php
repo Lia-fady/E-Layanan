@@ -90,7 +90,7 @@ class M_Sertifikat extends Model
             'pm.tgl_mulai',
             'pm.tgl_selesai',
             'pm.deskripsi_keahlian',
-            'pm.deskripsi_magang',
+            'pm.deskripsi',
             'ip.instansi_pendidikan',
             'ip.jenis_instansi',
             'pr.prodi',

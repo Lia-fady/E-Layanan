@@ -87,9 +87,9 @@
                                             <div class="fw-semibold text-primary mb-1">
                                                 <i class="bi bi-lightbulb me-1"></i> <?= esc($p['deskripsi_keahlian']); ?>
                                             </div>
-                                            <?php if(!empty($p['deskripsi_magang'])): ?>
+                                            <?php if(!empty($p['deskripsi'])): ?>
                                                 <div class="text-muted small" style="line-height: 1.3;">
-                                                    <strong>Rencana:</strong> <?= esc($p['deskripsi_magang']); ?>
+                                                    <strong>Rencana:</strong> <?= esc($p['deskripsi']); ?>
                                                 </div>
                                             <?php endif; ?>
                                         </td>

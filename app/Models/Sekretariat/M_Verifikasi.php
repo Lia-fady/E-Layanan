@@ -34,7 +34,7 @@ class M_Verifikasi extends Model
         $builder->select('
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.posting_data,

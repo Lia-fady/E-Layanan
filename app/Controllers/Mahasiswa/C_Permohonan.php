@@ -45,7 +45,7 @@ class C_Permohonan extends C_BaseMahasiswa
                     'min_length' => 'Deskripsi keahlian minimal harus 10 karakter.'
                 ]
             ],
-            'deskripsi_magang' => [
+            'deskripsi' => [
                 'rules'  => 'required|min_length[20]',
                 'errors' => [
                     'required'   => 'Maksud dan tujuan magang wajib diisi.',
@@ -113,7 +113,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $tgl_mulai           = $this->request->getPost('tgl_mulai');
         $tgl_selesai         = $this->request->getPost('tgl_selesai');
         $deskripsi_keahlian  = $this->request->getPost('deskripsi_keahlian');
-        $deskripsi_magang    = $this->request->getPost('deskripsi_magang');
+        $deskripsi    = $this->request->getPost('deskripsi');
 
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $id_instansi_mahasiswa = $mhs['id_instansi_mahasiswa'] ?? 1;
@@ -127,7 +127,7 @@ class C_Permohonan extends C_BaseMahasiswa
             'id_instansi_mahasiswa' => $id_instansi_mahasiswa,
             'id_jenis_permohonan'   => $id_jenis_permohonan,
             'deskripsi_keahlian'    => $deskripsi_keahlian,
-            'deskripsi_magang'      => $deskripsi_magang,
+            'deskripsi'      => $deskripsi,
             'tgl_mulai'             => $tgl_mulai,
             'tgl_selesai'           => $tgl_selesai,
             'posting_data'          => $action_type,
@@ -272,7 +272,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $rules = [
             'id_jenis_permohonan' => ['rules' => 'required'],
             'deskripsi_keahlian'  => ['rules' => 'required|min_length[10]'],
-            'deskripsi_magang'    => ['rules' => 'required|min_length[20]'],
+            'deskripsi'    => ['rules' => 'required|min_length[20]'],
             'tgl_mulai'           => ['rules' => 'required|valid_date'],
             'tgl_selesai'         => ['rules' => 'required|valid_date']
         ];
@@ -296,7 +296,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $dataPermohonan = [
             'id_jenis_permohonan' => $id_jenis_permohonan,
             'deskripsi_keahlian'  => $this->request->getPost('deskripsi_keahlian'),
-            'deskripsi_magang'    => $this->request->getPost('deskripsi_magang'),
+            'deskripsi'    => $this->request->getPost('deskripsi'),
             'tgl_mulai'           => $this->request->getPost('tgl_mulai'),
             'tgl_selesai'         => $this->request->getPost('tgl_selesai'),
             'posting_data'        => $action_type,
