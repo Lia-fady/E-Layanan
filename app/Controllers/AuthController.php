@@ -244,6 +244,25 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        // 1.5 VERIFIKASI GOOGLE RECAPTCHA v2
+        $recaptchaResponse = trim((string)$this->request->getPost('g-recaptcha-response'));
+        $recaptchaSecret   = getenv('RECAPTCHA_SECRET_KEY');
+
+        if (!empty($recaptchaSecret)) {
+            if (empty($recaptchaResponse)) {
+                return redirect()->back()->withInput()->with('error', 'Silakan centang kotak "I\'m not a robot" (reCAPTCHA) terlebih dahulu.');
+            }
+
+            $verifyUrl      = "https://www.google.com/recaptcha/api/siteverify?secret={$recaptchaSecret}&response={$recaptchaResponse}";
+            $verifyResponse = @file_get_contents($verifyUrl);
+            if ($verifyResponse) {
+                $responseData = json_decode($verifyResponse);
+                if (!$responseData->success) {
+                    return redirect()->back()->withInput()->with('error', 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.');
+                }
+            }
+        }
+
         // 2. Mulai Database Transaction agar data aman berantai (LOGIKA UTUH PUNYA KELOMPOKMU)
         $db = \Config\Database::connect();
         $db->transStart();

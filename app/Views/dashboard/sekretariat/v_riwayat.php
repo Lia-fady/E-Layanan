@@ -35,6 +35,10 @@
 </div>
 <?php endif; ?>
 
+<!-- Heading -->
+<h1 style="font-size: 1.6rem; font-weight: 600; color: #1e3a5f; margin-bottom: 6px;">Riwayat Permohonan</h1>
+<p style="font-size: 0.9rem; color: #667085; margin-bottom: 20px;">Lihat seluruh riwayat permohonan magang beserta status verifikasi dan penempatannya.</p>
+
 <!-- Search & Filter -->
 <div class="verifikasi-search-bar">
     <div style="position:relative; flex:1; max-width:450px;">
@@ -118,37 +122,7 @@
                     </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center" style="gap:4px;">
-                            <!-- Edit Verifikasi -->
-                            <a href="<?= base_url('sekretariat/verifikasi/detail/' . $row->id_permohonan_magang) ?>"
-                               class="riwayat-action-btn" title="Edit Verifikasi"
-                               style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px;">
-                                <i class="fas fa-edit"></i>
-                            </a>
-
-                            <!-- Edit Disposisi (hanya jika menunggu penempatan atau menunggu bidang) -->
-                            <?php if ($status == 'DISETUJUI' && in_array($filterValue, ['MENUNGGU_PENEMPATAN', 'MENUNGGU_BIDANG']) && !empty($row->id_persetujuan_magang)) : ?>
-                                <button type="button"
-                                        class="riwayat-action-btn btn-edit-disposisi"
-                                        title="Ubah Penempatan Bidang"
-                                        style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; cursor:pointer; background:#EFF6FF; color:#2563EB; border-radius:6px;"
-                                        data-id-persetujuan="<?= $row->id_persetujuan_magang ?>"
-                                        data-nama="<?= esc($row->nama_mahasiswa ?? '-') ?>"
-                                        data-bidang-id="<?= $row->id_bidang ?? '' ?>">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </button>
-                            <?php endif; ?>
-
-                            <!-- Upload Surat Penerimaan -->
-                            <?php if ($status == 'DISETUJUI' && !empty($row->id_persetujuan_magang)) : ?>
-                                <button type="button" 
-                                   class="riwayat-action-btn btn-upload-surat" title="Upload Surat Penerimaan"
-                                   style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#F0FDF4; color:#16A34A; border-radius:6px; text-decoration:none; border:none;"
-                                   data-id-persetujuan="<?= $row->id_persetujuan_magang ?>">
-                                    <i class="fas fa-file-upload"></i>
-                                </button>
-                            <?php endif; ?>
-
-                            <!-- Hapus Data (Hanya untuk SELESAI) -->
+                            <!-- Hapus Data -->
                             <?php if ($status_penempatan == 'SELESAI') : ?>
                                 <button type="button"
                                         class="riwayat-action-btn btn-delete-riwayat"

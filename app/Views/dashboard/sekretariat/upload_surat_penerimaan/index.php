@@ -31,6 +31,10 @@
 </div>
 <?php endif; ?>
 
+<!-- Heading -->
+<h1 style="font-size: 1.6rem; font-weight: 600; color: #1e3a5f; margin-bottom: 6px;">Upload Surat Penerimaan Magang</h1>
+<p style="font-size: 0.9rem; color: #667085; margin-bottom: 20px;">Unggah surat penerimaan magang untuk mahasiswa yang telah disetujui permohonannya.</p>
+
 <!-- Section Daftar Upload Surat -->
 <div id="sectionList">
     <?= $this->include('dashboard/sekretariat/upload_surat_penerimaan/_list') ?>

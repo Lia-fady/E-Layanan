@@ -8,6 +8,10 @@
  */
 ?>
 
+<!-- Heading -->
+<h1 style="font-size: 1.6rem; font-weight: 600; color: #1e3a5f; margin-bottom: 6px;">Verifikasi Permohonan</h1>
+<p style="font-size: 0.9rem; color: #667085; margin-bottom: 20px;">Kelola dan verifikasi berkas permohonan magang yang masuk dari mahasiswa.</p>
+
 <!-- Search & Filter -->
 <div class="verifikasi-search-bar">
     <div style="position:relative; flex:1; max-width:450px;">

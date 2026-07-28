@@ -7,6 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     
     <style>
         /* --- TEMA CORPORATE ENTERPRISE & CLEAN BACKGROUND --- */
@@ -389,6 +390,10 @@
                                     <?php endif; ?>
     </div>
 </div>
+
+                        <div class="mb-3" style="overflow: hidden;">
+                            <div class="g-recaptcha" data-sitekey="<?= getenv('RECAPTCHA_SITE_KEY') ?>"></div>
+                        </div>
 
                         <div class="d-grid mt-4 mb-4">
                             <button type="submit" class="btn btn-register shadow-sm">
