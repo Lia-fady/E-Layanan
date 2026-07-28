@@ -101,8 +101,27 @@
     $(document).ready(function() {
         $('#tablePenilaian').DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
+            "decimal": "",
+            "emptyTable": "Tidak ada data yang tersedia",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+            "infoFiltered": "(disaring dari _MAX_ total entri)",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": "Cari:",
+            "zeroRecords": "Tidak ditemukan data yang cocok",
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                "next": "Selanjutnya",
+                "previous": "Sebelumnya"
             },
+            "aria": {
+                "sortAscending": ": aktifkan untuk mengurutkan kolom secara ascending",
+                "sortDescending": ": aktifkan untuk mengurutkan kolom secara descending"
+            }
+        },    
             "order": [],
             "responsive": true
         });

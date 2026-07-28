@@ -31,9 +31,8 @@
             <select id="filterStatus" class="form-control" style="border: 1px solid #d0d5dd; border-radius: 8px;">
                 <option value="">Semua Status</option>
                 <option value="Menunggu">Menunggu</option>
-                <option value="Verifikasi">Verifikasi</option>
-                <option value="Disetujui">Disetujui</option>
-                <option value="Disposisi">Disposisi</option>
+                <option value="Menunggu Penempatan">Menunggu Penempatan</option>
+                <option value="Sudah Ditempatkan">Sudah Ditempatkan</option>
                 <option value="Ditolak">Ditolak</option>
             </select>
         </div>
@@ -88,22 +87,20 @@
                             <td class="text-center">
                                 <?php
                                     $status = $row['status_persetujuan'] ?? 'MENUNGGU';
-                                    $statusMap = [
-                                        'MENUNGGU'  => ['menunggu', 'Menunggu'],
-                                        'DISETUJUI' => ['disetujui', 'Disetujui'],
-                                        'DITOLAK'   => ['ditolak', 'Ditolak'],
-                                    ];
-                                    if (isset($row['disposisi']) && $row['disposisi'] == '1') {
-                                        $badgeClass = 'disposisi';
-                                        $badgeText = 'Disposisi';
+                                    $disposisi = $row['disposisi'] ?? '0';
+
+                                    if ($status === 'DISETUJUI' && $disposisi == '1') {
+                                        $badgeClass = 'sudah-ditempatkan';
+                                        $badgeText = 'Sudah Ditempatkan';
+                                    } elseif ($status === 'DISETUJUI' && $disposisi != '1') {
+                                        $badgeClass = 'menunggu-penempatan';
+                                        $badgeText = 'Menunggu Penempatan';
+                                    } elseif ($status === 'DITOLAK') {
+                                        $badgeClass = 'ditolak';
+                                        $badgeText = 'Ditolak';
                                     } else {
-                                        $badgeClass = $statusMap[$status][0] ?? 'menunggu';
-                                        $badgeText = $statusMap[$status][1] ?? 'Menunggu';
-                                    }
-                                    // Override untuk verifikasi
-                                    if ($status === 'DISETUJUI' && (!isset($row['disposisi']) || $row['disposisi'] != '1')) {
-                                        $badgeClass = 'verifikasi';
-                                        $badgeText = 'Verifikasi';
+                                        $badgeClass = 'menunggu';
+                                        $badgeText = 'Menunggu';
                                     }
                                 ?>
                                 <span class="status-badge <?= $badgeClass ?>"><?= $badgeText ?></span>
@@ -128,7 +125,26 @@
 $(document).ready(function() {
     var table = $('#tabelMonitoring').DataTable({
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json"
+            "decimal": "",
+            "emptyTable": "Tidak ada data yang tersedia",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+            "infoFiltered": "(disaring dari _MAX_ total entri)",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": "Cari:",
+            "zeroRecords": "Tidak ditemukan data yang cocok",
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                "next": "Selanjutnya",
+                "previous": "Sebelumnya"
+            },
+            "aria": {
+                "sortAscending": ": aktifkan untuk mengurutkan kolom secara ascending",
+                "sortDescending": ": aktifkan untuk mengurutkan kolom secara descending"
+            }
         },
         "order": [],
         "responsive": true,

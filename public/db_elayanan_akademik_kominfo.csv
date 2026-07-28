@@ -1,0 +1,42 @@
+"id","id_parent","name","url","position","icon","status","target_blank","created_at","created_by","updated_at","updated_by"
+"1",NULL,"Dashboard","dashboard","1","mdi mdi-monitor-dashboard","1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"2",NULL,"System Setting","#","50","mdi mdi-cog-outline","1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"3","2","Menu Admin","menu-admin","1",,"1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"4","2","Set Privileges","previleges","2",,"1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"5","2","Users","users","3",,"1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"6","2","Profile","setting-profile","4",,"1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"7",NULL,"Data Master","#","49","mdi mdi-database-cog-outline","1","0","2026-03-10 10:16:26",NULL,"2026-03-10 10:16:26",NULL
+"8","7","Sekolah","master-sekolah","1",,"1","0","2026-03-10 10:16:26",NULL,"0000-00-00 00:00:00",NULL
+"9","2","Jadwal Pelaksanaan","jadwal-pelaksanaan","5",,"1","0","0000-00-00 00:00:00",NULL,"2026-03-26 09:27:35",NULL
+"10","7","Daya Tampung","master-daya-tampung","2",,"1","0","0000-00-00 00:00:00",NULL,"2026-04-09 15:21:30",NULL
+"id","id_user_group","id_menu","created_at","updated_at"
+"1","1","1","2026-04-15 10:52:27",NULL
+"2","1","7","2026-04-15 10:52:27",NULL
+"3","1","8","2026-04-15 10:52:27",NULL
+"id","group","status","created_at","created_by","updated_at","updated_by"
+"1","Superadmin","1","2026-03-10 10:16:26",NULL,"2026-04-15 10:59:01","1"
+"2","Bidang Seketariat","1","2026-03-10 10:16:26",NULL,"2026-04-15 10:59:27","1"
+"3","Bidang E-Gov","1","2026-03-10 10:16:26",NULL,"2026-03-27 10:22:00","1"
+"id_user_pegawai","group_id","username","password","nama_user","status","created_at","created_by","updated_at","updated_by","last_login","kode_path"
+"1","1","superadmin","123456","superadmin","1","2026-03-10 10:28:22","1","2026-03-10 10:28:22","1","2026-06-30 09:27:50",NULL
+"2","1","sekretariat","123456","sekretariat","1",NULL,NULL,NULL,NULL,NULL,NULL
+"3","2","kabid","123456","kabid","1",NULL,NULL,NULL,NULL,NULL,NULL
+"id_bidang","bidang","status_aktif","id_opd"
+"id_fakultas","fakultas","status","created_at","updated_at"
+"id_file","nama_file","status_aktif","id_jenis_permohonan"
+"id_instansi_pendidikan","instansi_pendidikan","jenis_instansi","status","created_at","updated_at"
+"id_jenis_permohonan","jenis_permohonan","status"
+"id_kuota","id_bidang","kuota","status_aktif"
+"id_mahasiswa","nim","nama_mahasiswa","jenis_kelamin","tgl_lahir","alamat","rt","rw","kelurahan","kecamatan","provinsi","no_telp","email","id_instansi_mahasiswa","created_at","updated_at"
+"1","1202220001","Danu Putra","L",NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,"danu@example.com",NULL,NULL,NULL
+"id_opd","opd","status_aktif"
+"id_prodi","id_fakultas","prodi","status","created_at","updated_at"
+"id_user_mahasiswa","id_mahasiswa","username","password","status","created_at","updated_at"
+"1","1","danu","12345","aktif",NULL,NULL
+"id_file_permohonan_magang","id_permohonan_magang","id_file","nama_file","path_file","created_at","updated_at"
+"id_instansi_mahasiswa","id_mahasiswa","id_instansi_pendidikan","id_prodi","jenjang_pendidikan","angkatan_tahun","semester","tahun_akademik","created_by","updated_at"
+"id_logbook_magang","id_penempatan_magang","logbook_magang","tgl_logbook","created_at","updated_at","disetujui_oleh","file_tanda_tangan","tgl_disetujui"
+"id_penempatan_magang","id_bidang","id_persetujuan_magang","id_mahasiswa","catatan","status_penempatan","created_by","updated_by","created_at","updated_at"
+"id_penilaian_magang","id_penempatan_magang","id_komponen_penilaian","nilai","created_by","created_at","updated_at"
+"id_permohonan_magang","id_mahasiswa","id_instansi_mahasiswa","id_jenis_permohonan","deskripsi_keahlian","deskripsi_magang","tgl_mulai","tgl_selesai","posting_data","created_at","updated_at"
+"id_persetujuan_magang","id_permohonan_magang","catatan","status_persetujuan","created_by","updated_by","disposisi","id_bidang","tgl_persetujuan"
