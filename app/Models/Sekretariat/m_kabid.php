@@ -43,6 +43,8 @@ class m_kabid extends Model
         if (! $db->tableExists($mahasiswaTable)) {
             $mahasiswaTable = $this->resolveTable(['m_mahasiswa', 'mahasiswa']);
         }
+        $instansiTable = $this->resolveTable(['m_instansi_pendidikan', 'instansi_pendidikan']);
+        $jenisPermohonanTable = $this->resolveTable(['m_jenis_permohonan', 'jenis_permohonan']);
 
         $select = ["{$alias}.*"];
 
@@ -51,9 +53,20 @@ class m_kabid extends Model
             $select[] = 'pm.deskripsi_magang';
             $select[] = 'pm.tgl_mulai';
             $select[] = 'pm.tgl_selesai';
+            $select[] = 'pm.created_at as tgl_pengajuan';
         }
 
-        if ($mahasiswaTable) {
+        if ($permohonanTable && $instansiTable) {
+            $builder->join("{$instansiTable} inst", 'pm.id_instansi_mahasiswa = inst.id_instansi_pendidikan', 'left');
+            $select[] = 'inst.instansi_pendidikan as universitas';
+        }
+
+        if ($permohonanTable && $jenisPermohonanTable) {
+            $builder->join("{$jenisPermohonanTable} jp", 'pm.id_jenis_permohonan = jp.id_jenis_permohonan', 'left');
+            $select[] = 'jp.jenis_permohonan';
+        }
+
+        if ($permohonanTable && $mahasiswaTable) {
             $builder->join("{$mahasiswaTable} m", 'pm.id_mahasiswa = m.id_mahasiswa', 'left');
             $select[] = 'm.nama_mahasiswa';
         }
@@ -62,6 +75,77 @@ class m_kabid extends Model
         $builder->where("{$alias}.id_bidang", $id_bidang);
 
         return $builder->get()->getResultArray();
+    }
+
+    public function getPermohonanById(int $id): array
+    {
+        $db = Database::connect();
+        $persetujuanTable = 't_persetujuan_magang';
+        if (! $db->tableExists($persetujuanTable)) {
+            $persetujuanTable = $this->resolveTable(['persetujuan_magang', 't_persetujuan_magang']);
+            if (! $persetujuanTable) {
+                return [];
+            }
+        }
+
+        $permohonanTable = $this->resolveTable(['t_permohonan_magang', 'permohonan_magang']);
+        $mahasiswaTable = $this->resolveTable(['m_mahasiswa', 'mahasiswa']);
+        $instansiTable = $this->resolveTable(['m_instansi_pendidikan', 'instansi_pendidikan']);
+        $jenisPermohonanTable = $this->resolveTable(['m_jenis_permohonan', 'jenis_permohonan']);
+        $bidangTable = $this->resolveTable(['m_bidang', 'bidang']);
+
+        $alias = 'per';
+        $builder = $db->table("{$persetujuanTable} {$alias}");
+
+        if ($permohonanTable) {
+            $builder->join("{$permohonanTable} pm", "{$alias}.id_permohonan_magang = pm.id_permohonan_magang", 'left');
+        }
+
+        if ($permohonanTable && $mahasiswaTable) {
+            $builder->join("{$mahasiswaTable} m", 'pm.id_mahasiswa = m.id_mahasiswa', 'left');
+        }
+
+        if ($permohonanTable && $instansiTable) {
+            $builder->join("{$instansiTable} inst", 'pm.id_instansi_mahasiswa = inst.id_instansi_pendidikan', 'left');
+        }
+
+        if ($permohonanTable && $jenisPermohonanTable) {
+            $builder->join("{$jenisPermohonanTable} jp", 'pm.id_jenis_permohonan = jp.id_jenis_permohonan', 'left');
+        }
+
+        if ($bidangTable) {
+            $builder->join("{$bidangTable} b", "{$alias}.id_bidang = b.id_bidang", 'left');
+        }
+
+        $select = ["{$alias}.*"];
+        if ($permohonanTable) {
+            $select = array_merge($select, [
+                'pm.deskripsi_magang',
+                'pm.tgl_mulai',
+                'pm.tgl_selesai',
+                'pm.created_at as tgl_pengajuan',
+            ]);
+        }
+        if ($mahasiswaTable) {
+            $select[] = 'm.nama_mahasiswa';
+        }
+        if ($instansiTable) {
+            $select[] = 'inst.instansi_pendidikan as universitas';
+        }
+        if ($jenisPermohonanTable) {
+            $select[] = 'jp.jenis_permohonan';
+        }
+        if ($bidangTable) {
+            $select[] = 'b.bidang as nama_bidang';
+        }
+
+        $select[] = 'per.catatan as catatan_sekretariat';
+        $select[] = 'per.tgl_persetujuan as tgl_disposisi';
+
+        $builder->select($select);
+        $builder->where("{$alias}.id_persetujuan_magang", $id);
+
+        return $builder->get()->getRowArray() ?? [];
     }
 
     public function updatePersetujuan(int $id, array $data): bool
@@ -106,171 +190,28 @@ class m_kabid extends Model
         return (bool) $updated;
     }
 
-    public function getKomponenPenilaian(): array
+    public function deletePenempatan(int $id): bool
     {
         $db = Database::connect();
-        $table = 'm_komponen_penilaian';
+        $table = 't_penempatan_magang';
         if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['m_komponen_penilaian', 'komponen_penilaian']);
-            if (! $table) {
-                return [];
-            }
-        }
-
-        return $db->table($table)
-            ->where('status_aktif', '1')
-            ->orderBy('komponen_penilaian', 'ASC')
-            ->get()
-            ->getResultArray();
-    }
-
-    // CRUD for komponen penilaian
-    public function getAllKomponen(): array
-    {
-        $db = Database::connect();
-        $table = 'm_komponen_penilaian';
-        if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['m_komponen_penilaian', 'komponen_penilaian']);
-            if (! $table) {
-                return [];
-            }
-        }
-
-        return $db->table($table)->orderBy('komponen_penilaian','ASC')->get()->getResultArray();
-    }
-
-    public function saveKomponen(array $data): bool
-    {
-        $db = Database::connect();
-        $table = 'm_komponen_penilaian';
-        if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['m_komponen_penilaian', 'komponen_penilaian']);
+            $table = $this->resolveTable(['t_penempatan_magang','penempatan_magang','t_penempatan','penempatan']);
             if (! $table) {
                 return false;
             }
         }
 
-        $now = date('Y-m-d H:i:s');
-        if (! empty($data['id_komponen_penilaian'])) {
-            $id = $data['id_komponen_penilaian'];
-            $update = [
-                'komponen_penilaian' => $data['komponen_penilaian'] ?? '',
-                'status_aktif' => $data['status_aktif'] ?? '1',
-                'updated_at' => $now,
-            ];
-            return (bool) $db->table($table)->where('id_komponen_penilaian', $id)->update($update);
-        }
+        $deleted = $db->table($table)
+            ->where('id_penempatan_magang', $id)
+            ->delete();
 
-        $insert = [
-            'komponen_penilaian' => $data['komponen_penilaian'] ?? '',
-            'status_aktif' => $data['status_aktif'] ?? '1',
-            'created_at' => $now,
-        ];
-        return (bool) $db->table($table)->insert($insert);
-    }
-
-    public function deleteKomponen(int $id): bool
-    {
-        $db = Database::connect();
-        $table = 'm_komponen_penilaian';
-        if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['m_komponen_penilaian', 'komponen_penilaian']);
-            if (! $table) {
-                return false;
-            }
-        }
-
-        return (bool) $db->table($table)->where('id_komponen_penilaian', $id)->delete();
-    }
-
-    public function getPenilaian(?int $id_bidang = null): array
-    {
-        $db = Database::connect();
-        $table = 't_penilaian_magang';
-        if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['t_penilaian_magang', 'penilaian_magang']);
-            if (! $table) {
-                return [];
-            }
-        }
-
-        $penempatanTable = $this->resolveTable(['t_penempatan_magang', 'penempatan_magang', 't_penempatan', 'penempatan']);
-        if (! $penempatanTable) {
-            return [];
-        }
-
-        $mahasiswaTable = $this->resolveTable(['m_mahasiswa', 'mahasiswa']);
-        $komponenTable = $this->resolveTable(['m_komponen_penilaian', 'komponen_penilaian']);
-        $persetujuanTable = $this->resolveTable(['t_persetujuan_magang', 'persetujuan_magang']);
-        $permohonanTable = $this->resolveTable(['t_permohonan_magang', 'permohonan_magang']);
-
-        $builder = $db->table("{$table} tpm");
-        $builder->join("{$penempatanTable} pm", 'tpm.id_penempatan_magang = pm.id_penempatan_magang', 'left');
-
-        if ($mahasiswaTable) {
-            $builder->join("{$mahasiswaTable} m", 'pm.id_mahasiswa = m.id_mahasiswa', 'left');
-        }
-
-        if ($komponenTable) {
-            $builder->join("{$komponenTable} kp", 'tpm.id_komponen_penilaian = kp.id_komponen_penilaian', 'left');
-        }
-
-        if ($persetujuanTable) {
-            $builder->join("{$persetujuanTable} per", 'pm.id_persetujuan_magang = per.id_persetujuan_magang', 'left');
-        }
-
-        if ($permohonanTable) {
-            $builder->join("{$permohonanTable} perm", 'per.id_permohonan_magang = perm.id_permohonan_magang', 'left');
-        }
-
-        $select = [
-            'tpm.*',
-            'pm.id_bidang',
-            'pm.id_mahasiswa',
-            'pm.status_penempatan',
-            'm.nama_mahasiswa',
-            'kp.komponen_penilaian',
-            'perm.deskripsi_magang',
-            'perm.tgl_mulai',
-            'perm.tgl_selesai',
-        ];
-
-        $builder->select($select);
-        if ($id_bidang !== null) {
-            $builder->where('pm.id_bidang', $id_bidang);
-        }
-
-        return $builder->get()->getResultArray();
-    }
-
-    public function savePenilaian(array $data): bool
-    {
-        $db = Database::connect();
-        $table = 't_penilaian_magang';
-        if (! $db->tableExists($table)) {
-            $table = $this->resolveTable(['t_penilaian_magang', 'penilaian_magang']);
-            if (! $table) {
-                return false;
-            }
-        }
-
-        $existing = $db->table($table)
-            ->where('id_penempatan_magang', $data['id_penempatan_magang'])
-            ->where('id_komponen_penilaian', $data['id_komponen_penilaian'])
-            ->get()
-            ->getRowArray();
-
-        if ($existing) {
+        if ($deleted === false) {
             return (bool) $db->table($table)
-                ->where('id_penilaian_magang', $existing['id_penilaian_magang'])
-                ->update([
-                    'nilai' => $data['nilai'],
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
+                ->where('id_penempatan', $id)
+                ->delete();
         }
 
-        $data['created_at'] = date('Y-m-d H:i:s');
-        return (bool) $db->table($table)->insert($data);
+        return (bool) $deleted;
     }
 
     public function getPenempatan(?int $id_bidang = null): array
@@ -309,10 +250,17 @@ class m_kabid extends Model
                 $select[] = 'perm.tgl_selesai';
             }
 
-            if ($mahasiswaTable) {
+            $bidangTable = $this->resolveTable(['m_bidang', 'bidang']);
+
+            if ($permohonanTable && $mahasiswaTable) {
                 // join to mahasiswa only if permohonan was joined (perm alias exists)
                 $builder->join("{$mahasiswaTable} m", 'perm.id_mahasiswa = m.id_mahasiswa', 'left');
                 $select[] = 'm.nama_mahasiswa';
+            }
+
+        if ($bidangTable) {
+            $builder->join("{$bidangTable} b", 'pm.id_bidang = b.id_bidang', 'left');
+            $select[] = 'b.bidang as nama_bidang';
             }
 
             $builder->select($select);
@@ -330,6 +278,86 @@ class m_kabid extends Model
         }
 
         return $qb->get()->getResultArray();
+    }
+
+    /**
+     * Ambil data kuota setiap bidang (terisi & total).
+     * Mengembalikan array berindeks id_bidang untuk akses cepat di view.
+     *
+     * @return array  [id_bidang => ['kuota_total', 'kuota_terisi', 'aktif', 'selesai'], ...]
+     */
+    public function getKuotaBidang(): array
+    {
+        $db         = Database::connect();
+        $bidangTable = $this->resolveTable(['m_bidang', 'bidang']);
+        $penempatanTable = $this->resolveTable(['t_penempatan_magang', 'penempatan_magang']);
+
+        if (! $bidangTable) {
+            return [];
+        }
+
+        // Ambil semua bidang beserta kuota jika kolom tersedia
+        $bidangRows = $db->table($bidangTable)->get()->getResultArray();
+
+        $result = [];
+        foreach ($bidangRows as $row) {
+            $id = (int) ($row['id_bidang'] ?? 0);
+            if (! $id) continue;
+
+            $kuota_total = (int) ($row['kuota_total'] ?? $row['kuota'] ?? 10);
+
+            // Hitung terisi dari tabel penempatan jika ada
+            $aktif   = 0;
+            $selesai = 0;
+            if ($penempatanTable) {
+                $aktif   = (int) $db->table($penempatanTable)
+                    ->where('id_bidang', $id)
+                    ->where('status_penempatan', self::PENEMPATAN_BERJALAN)
+                    ->countAllResults();
+                $selesai = (int) $db->table($penempatanTable)
+                    ->where('id_bidang', $id)
+                    ->where('status_penempatan', self::PENEMPATAN_SELESAI)
+                    ->countAllResults();
+            }
+
+            $result[$id] = [
+                'kuota_total'  => $kuota_total,
+                'kuota_terisi' => $aktif + $selesai,
+                'aktif'        => $aktif,
+                'selesai'      => $selesai,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Perbarui kuota total sebuah bidang.
+     *
+     * @param int $id_bidang
+     * @param int $kuota_total
+     * @return bool
+     */
+    public function updateKuotaBidang(int $id_bidang, int $kuota_total): bool
+    {
+        $db          = Database::connect();
+        $bidangTable = $this->resolveTable(['m_bidang', 'bidang']);
+
+        if (! $bidangTable) {
+            return false;
+        }
+
+        // Coba kolom 'kuota_total' dulu, fallback ke 'kuota'
+        $columns = $db->getFieldNames($bidangTable);
+        $col     = in_array('kuota_total', $columns) ? 'kuota_total' : (in_array('kuota', $columns) ? 'kuota' : null);
+
+        if (! $col) {
+            return false;
+        }
+
+        return (bool) $db->table($bidangTable)
+            ->where('id_bidang', $id_bidang)
+            ->update([$col => $kuota_total]);
     }
 
     protected function resolveTable(array $candidates): ?string
@@ -392,14 +420,83 @@ class m_kabid extends Model
         $builder = $db->table("{$persetujuan} p");
         $builder->where('p.status_persetujuan', self::PERSETUJUAN_MENUNGGU);
         $builder->join("{$permohonan} pm", 'p.id_permohonan_magang = pm.id_permohonan_magang', 'left');
+
+        $select = ['p.*', 'pm.deskripsi_magang'];
         if ($mahasiswa) {
             $builder->join("{$mahasiswa} m", 'pm.id_mahasiswa = m.id_mahasiswa', 'left');
+            $select[] = 'm.nama_mahasiswa';
         }
 
-        $builder->select(['p.*', 'pm.deskripsi_magang', 'm.nama_mahasiswa']);
+        $builder->select($select);
         $builder->orderBy('p.updated_at', 'DESC');
         $builder->limit($limit);
 
         return $builder->get()->getResultArray();
+    }
+
+    /**
+     * Hitung logbook yang masih pending (belum disetujui)
+     * 
+     * @return int Jumlah logbook pending
+     */
+    public function countPendingLogbook(): int
+    {
+        $db = Database::connect();
+        $table = $this->resolveTable(['t_logbook_magang', 'logbook_magang']);
+        if (! $table) {
+            return 0;
+        }
+
+        return (int) $db->table($table)->where('disetujui_oleh', null)->countAllResults();
+    }
+
+    /**
+     * Hitung penempatan yang sudah selesai (siap untuk sertifikat)
+     * 
+     * @return int Jumlah penempatan selesai
+     */
+    public function countSertifikatSiap(): int
+    {
+        $db = Database::connect();
+        $table = $this->resolveTable(['t_penempatan_magang', 'penempatan_magang']);
+        if (! $table) {
+            return 0;
+        }
+
+        return (int) $db->table($table)->where('status_penempatan', self::PENEMPATAN_SELESAI)->countAllResults();
+    }
+
+    /**
+     * Simpan atau update data sertifikat
+     * 
+     * @param array $data Data sertifikat (id_penempatan_magang, file_sertifikat, catatan, tgl_upload)
+     * @return bool True jika berhasil, false jika gagal
+     */
+    public function saveSertifikat(array $data): bool
+    {
+        $db = Database::connect();
+        $table = $this->resolveTable(['t_sertifikat', 'sertifikat']);
+
+        if (! $table) {
+            // Table tidak ditemukan, simpan ke table penempatan dengan field tambahan
+            $table = $this->resolveTable(['t_penempatan_magang', 'penempatan_magang']);
+            if (! $table) {
+                return false;
+            }
+
+            // Update penempatan dengan data sertifikat
+            $update_data = [
+                'file_sertifikat' => $data['file_sertifikat'] ?? null,
+                'catatan_sertifikat' => $data['catatan'] ?? null,
+                'tgl_upload_sertifikat' => $data['tgl_upload'] ?? date('Y-m-d H:i:s'),
+            ];
+
+            return $db->table($table)
+                ->where('id_penempatan_magang', $data['id_penempatan_magang'])
+                ->update($update_data);
+        }
+
+        // Table sertifikat ada, insert data
+        return $db->table($table)->insert($data);
     }
 }

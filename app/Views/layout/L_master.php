@@ -7,11 +7,33 @@
     <link href="https://startbootstrap.github.io/startbootstrap-sb-admin-2/css/sb-admin-2.min.css" rel="stylesheet">
     
     <style>
-        body, #content { 
-            background-color: #ebf3fc !important; 
+        /* ── Global reset & layout ── */
+        body {
+            background-color: #ebf3fc !important;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        #content {
+            background-color: #ebf3fc !important;
         }
         .card {
             border-radius: 8px !important;
+        }
+
+        /* ── Wrapper flex row ── */
+        #wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        #content-wrapper {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Remove default SB Admin sidebar styles yang bentrok ── */
+        #sidebar-wrapper .nav-item .nav-link {
+            padding: 0 !important;
         }
     </style>
 </head>
@@ -47,6 +69,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?= base_url('js/kabid.js') ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <?= $this->renderSection('scripts') ?>
 </body>
 </html>
