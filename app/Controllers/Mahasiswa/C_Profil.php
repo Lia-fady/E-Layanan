@@ -40,7 +40,7 @@ class C_Profil extends C_BaseMahasiswa
             'i'                => $instansi
         ];
 
-        return view('mahasiswa/v_profil_mahasiswa', $data);
+        return view('dashboard/mahasiswa/v_profil_mahasiswa', $data);
     }
 
     public function updateProfil()

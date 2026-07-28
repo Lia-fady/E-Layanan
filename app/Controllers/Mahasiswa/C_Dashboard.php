@@ -103,6 +103,6 @@ class C_Dashboard extends C_BaseMahasiswa
             'file_piagam'      => $file_piagam,
         ];
 
-        return view('mahasiswa/v_dashboard', $data);
+        return view('dashboard/mahasiswa/v_dashboard', $data);
     }
 }

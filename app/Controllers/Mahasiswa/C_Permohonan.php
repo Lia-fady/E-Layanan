@@ -23,7 +23,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $data['jenis_permohonan_aktif'] = $stateData['jenis_permohonan'];
         $data['permohonan_aktif'] = $stateData['permohonan_aktif'];
 
-        return view('mahasiswa/v_form_permohonan', $data);
+        return view('dashboard/mahasiswa/v_form_permohonan', $data);
     }
 
     public function simpanPermohonan()
@@ -247,7 +247,7 @@ class C_Permohonan extends C_BaseMahasiswa
             'state' => ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') ? 6 : 1
         ];
 
-        return view('mahasiswa/v_form_edit_permohonan', $data);
+        return view('dashboard/mahasiswa/v_form_edit_permohonan', $data);
     }
 
     public function updatePermohonan($id_permohonan)

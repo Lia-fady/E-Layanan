@@ -52,7 +52,7 @@ class C_Logbook extends C_BaseMahasiswa
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
-        return view('mahasiswa/v_riwayat_logbook', $data);
+        return view('dashboard/mahasiswa/v_riwayat_logbook', $data);
     }
 
     public function simpanLogbook()
@@ -123,6 +123,6 @@ class C_Logbook extends C_BaseMahasiswa
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
-        return view('mahasiswa/v_cetak_logbook', $data);
+        return view('dashboard/mahasiswa/v_cetak_logbook', $data);
     }
 }

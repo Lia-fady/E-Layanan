@@ -44,6 +44,6 @@ class C_Sertifikat extends C_BaseMahasiswa
             'file_piagam'      => $file_piagam
         ];
 
-        return view('mahasiswa/v_unduh_sertifikat', $data);
+        return view('dashboard/mahasiswa/v_unduh_sertifikat', $data);
     }
 }

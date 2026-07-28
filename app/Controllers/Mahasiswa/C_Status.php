@@ -65,7 +65,7 @@ class C_Status extends C_BaseMahasiswa
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
-        return view('mahasiswa/v_status_permohonan', $data);
+        return view('dashboard/mahasiswa/v_status_permohonan', $data);
     }
 
     public function batalkanPermohonan($id_permohonan)
