@@ -124,3 +124,6 @@ _modules/*
 
 /results/
 /phpunit.xml
+dump_menus.php
+list_tables.php
+migrate_views.php
