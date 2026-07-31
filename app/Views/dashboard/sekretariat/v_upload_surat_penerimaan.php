@@ -3,7 +3,7 @@
  * View untuk Upload Surat Penerimaan Magang (Sekretariat)
  */
 ?>
-<?= $this->extend('layout/L_master') ?>
+<?= $this->extend('layouts/sekretariat/L_main_sekretariat') ?>
 
 <?= $this->section('title') ?>
 <?= esc($title) ?>

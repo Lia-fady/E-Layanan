@@ -1,4 +1,4 @@
-<?= $this->extend('layout/mahasiswa') ?>
+<?= $this->extend('layouts/mahasiswa/L_main_mahasiswa') ?>
 
 <?= $this->section('breadcrumb') ?>
     <i class="bi bi-person-bounding-box me-1 text-primary"></i> Profil Mahasiswa

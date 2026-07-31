@@ -1,4 +1,4 @@
-<?= $this->extend('layout/mahasiswa') ?>
+<?= $this->extend('layouts/mahasiswa/L_main_mahasiswa') ?>
 
 <?= $this->section('extra_css') ?>
 <?= $this->include('dashboard/mahasiswa/v_part_wizard_style') ?>

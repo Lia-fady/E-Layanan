@@ -1,11 +1,7 @@
 <?php
-/**
- * Kode    : L_navbar.php
- * Path    : app/Views/layout/L_navbar.php
- * Deskripsi : Komponen navbar (topbar) sesuai desain mockup.
- *             Menampilkan teks E-LAYANAN di tengah, dan
- *             profil Admin Sekretariat dengan dropdown di kanan.
- */
+/* ====================================================
+ * NAVBAR: KABID
+ * ==================================================== */
 ?>
 
 <!-- Topbar -->
@@ -29,10 +25,10 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="img-profile rounded-circle" src="<?= base_url('img/undraw_profile.svg') ?>" alt="Profile"
+                <img class="img-profile rounded-circle" src="<?= !empty(session('foto_profil')) ? base_url('uploads/profil/' . session('foto_profil')) : base_url('img/undraw_profile.svg') ?>" alt="Profile"
                      style="width: 36px; height: 36px;">
                 <span class="nav-profile-name d-none d-lg-inline ml-2">
-                    <?= session()->get('nama') ? esc(session()->get('nama')) : 'User' ?> 
+                    <?= esc(!empty(session('nama_user')) ? session('nama_user') : (!empty(session('nama')) ? session('nama') : 'User')) ?> 
                     <i class="fas fa-chevron-down fa-xs ml-1"></i>
                 </span>
             </a>

@@ -12,12 +12,13 @@ if (!function_exists('get_dynamic_menus')) {
         
         $db = \Config\Database::connect();
         
-        // If Super Admin, get all menus
         if ($id_user_group == 1) {
-            $menus = $db->table('c_menus')
-                      ->select('c_menus.*, 0 as target_blank')
-                      ->where('status', 1)
-                      ->orderBy('position', 'ASC')
+            $menus = $db->table('c_menus m')
+                      ->select('m.id, m.id_parent, m.name, m.url, m.position, m.icon, m.status, 0 as target_blank')
+                      ->join('c_menus_privileges p', 'p.id_menu = m.id')
+                      ->where('p.id_user_group', 1)
+                      ->where('m.status', 1)
+                      ->orderBy('m.position', 'ASC')
                       ->get()
                       ->getResultArray();
         } else {
