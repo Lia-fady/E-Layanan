@@ -52,7 +52,8 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif">
+                                <input type="hidden" name="status_aktif" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -72,7 +73,7 @@
                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.reload();">
                         <i class="fas fa-sync-alt"></i> Refresh
                     </button>
-                    <a href="<?= base_url('superadmin/odp/create') ?>" class="btn btn-primary btn-sm">
+                    <a href="<?= base_url('superadmin/opd/create') ?>" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Tambah OPD
                     </a>
                 </div>
@@ -177,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const status = this.getAttribute('data-status');
 
             // Set Form Action
-            formEditInline.action = `<?= base_url('superadmin/odp/update') ?>/${id}`;
+            formEditInline.action = `<?= base_url('superadmin/opd/update') ?>/${id}`;
 
             // Populate Data
             editOpd.value = opd;

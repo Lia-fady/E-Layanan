@@ -42,6 +42,7 @@
                         <div class="col-md-2 mb-3">
                             <label class="form-label fw-bold d-block">Status Aktif</label>
                             <div class="form-check form-switch mt-2">
+                                <input type="hidden" name="status_aktif" value="0">
                                 <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
                             </div>
                         </div>
@@ -154,7 +155,8 @@ $(function () {
             <div class="mb-3">
                 <label class="form-label fw-bold d-block">Status Aktif</label>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="statusAktifUser" name="status_aktif" value="1" checked>
+                    <input type="hidden" name="status_aktif" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktifUser" name="status_aktif" value="1" checked>
                 </div>
             </div>
         </div>

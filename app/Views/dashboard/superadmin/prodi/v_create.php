@@ -12,7 +12,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="<?= base_url('superadmin/dashboard') ?>">Master Data</a></li>
-                    <li class="breadcrumb-item"><a href="<?= base_url('superadmin/prodi') ?>">Program Studi</a></li>
+                    <li class="breadcrumb-item"><a href="<?= base_url('superadmin/program-studi') ?>">Program Studi</a></li>
                     <li class="breadcrumb-item active">Tambah</li>
                 </ol>
             </div>
@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah Program Studi</h3>
             </div>
-            <form id="formTambah" action="<?= base_url('superadmin/prodi/store') ?>" method="post">
+            <form id="formTambah" action="<?= base_url('superadmin/program-studi/store') ?>" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
@@ -54,7 +54,8 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked>
+                                    <input type="hidden" name="status" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="1">
                                     <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
                                 </div>
                             </div>
@@ -68,7 +69,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-light d-flex gap-2">
-                    <a href="<?= base_url('superadmin/prodi') ?>" class="btn btn-outline-secondary">
+                    <a href="<?= base_url('superadmin/program-studi') ?>" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                     <button type="reset" class="btn btn-warning text-white ms-auto">
@@ -123,7 +124,7 @@ $(function () {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/prodi') ?>";
+                        window.location.href = "<?= base_url('superadmin/program-studi') ?>";
                     });
                 } else {
                     Swal.fire({

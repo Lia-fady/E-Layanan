@@ -128,8 +128,8 @@
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'mahasiswa') ? 'active' : '' ?>" href="<?= base_url('superadmin/mahasiswa') ?>">Mahasiswa</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'user_mahasiswa') ? 'active' : '' ?>" href="<?= base_url('superadmin/user-mahasiswa') ?>">User Mahasiswa</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'jenis_permohonan') ? 'active' : '' ?>" href="<?= base_url('superadmin/jenis-permohonan') ?>">Jenis Permohonan</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'file') ? 'active' : '' ?>" href="<?= base_url('superadmin/file') ?>">File Persyaratan</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'odp') ? 'active' : '' ?>" href="<?= base_url('superadmin/odp') ?>">OPD</a>
+                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'file_persyaratan') ? 'active' : '' ?>" href="<?= base_url('superadmin/file-persyaratan') ?>">File Persyaratan</a>
+                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'opd') ? 'active' : '' ?>" href="<?= base_url('superadmin/opd') ?>">OPD</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'bidang') ? 'active' : '' ?>" href="<?= base_url('superadmin/bidang') ?>">Bidang</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'kuota') ? 'active' : '' ?>" href="<?= base_url('superadmin/kuota') ?>">Kuota</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'komponen_penilaian') ? 'active' : '' ?>" href="<?= base_url('superadmin/komponen-penilaian') ?>">Komponen Penilaian</a>

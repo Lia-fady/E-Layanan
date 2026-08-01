@@ -63,7 +63,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif">
+                                <input type="hidden" name="status_aktif" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -83,7 +84,7 @@
                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.reload();">
                         <i class="fas fa-sync-alt"></i> Refresh
                     </button>
-                    <a href="<?= base_url('superadmin/file_persyaratan/create') ?>" class="btn btn-primary btn-sm">
+                    <a href="<?= base_url('superadmin/file-persyaratan/create') ?>" class="btn btn-primary btn-sm">
                         <i class="fas fa-plus"></i> Tambah File Persyaratan
                     </a>
                 </div>
@@ -145,7 +146,7 @@
                                         <!-- Kolom Aksi -->
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
-                                                <a href="<?= base_url('superadmin/file/detail/' . ($row['id_file'] ?? '')) ?>" class="btn btn-sm btn-info text-white" title="Lihat"><i class="fas fa-eye"></i></a>
+                                                <a href="<?= base_url('superadmin/file-persyaratan/detail/' . ($row['id_file'] ?? '')) ?>" class="btn btn-sm btn-info text-white" title="Lihat"><i class="fas fa-eye"></i></a>
                                                 <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
                                                     data-id="<?= $row['id_file'] ?? '' ?>" 
                                                     data-id-jenis="<?= esc($row['id_jenis_permohonan'] ?? '') ?>"
@@ -200,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const status = this.getAttribute('data-status');
 
             // Set Form Action
-            formEditInline.action = `<?= base_url('superadmin/file/update') ?>/${id}`;
+            formEditInline.action = `<?= base_url('superadmin/file-persyaratan/update') ?>/${id}`;
 
             // Populate Data
             editJenis.value = idJenis;

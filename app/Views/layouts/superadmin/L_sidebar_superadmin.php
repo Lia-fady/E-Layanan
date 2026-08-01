@@ -115,21 +115,21 @@
             </div>
         </li>
 
-        <li class="nav-item <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'prodi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file', 'odp', 'bidang', 'kuota', 'komponen_penilaian'])) ? 'active' : '' ?>">
-            <a class="nav-link <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'prodi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file', 'odp', 'bidang', 'kuota', 'komponen_penilaian'])) ? '' : 'collapsed' ?>" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
+        <li class="nav-item <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'program_studi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file_persyaratan', 'opd', 'bidang', 'kuota', 'komponen_penilaian'])) ? 'active' : '' ?>">
+            <a class="nav-link <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'program_studi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file_persyaratan', 'opd', 'bidang', 'kuota', 'komponen_penilaian'])) ? '' : 'collapsed' ?>" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseMaster">
                 <i class="fas fa-fw fa-database"></i>
                 <span>Data Master</span>
             </a>
-            <div id="collapseMaster" class="collapse <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'prodi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file', 'odp', 'bidang', 'kuota', 'komponen_penilaian'])) ? 'show' : '' ?>" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
+            <div id="collapseMaster" class="collapse <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'program_studi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file_persyaratan', 'opd', 'bidang', 'kuota', 'komponen_penilaian'])) ? 'show' : '' ?>" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
                 <div class="py-2 collapse-inner rounded">
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'fakultas') ? 'active' : '' ?>" href="<?= base_url('superadmin/fakultas') ?>">Fakultas</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'prodi') ? 'active' : '' ?>" href="<?= base_url('superadmin/prodi') ?>">Program Studi</a>
+                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'program_studi') ? 'active' : '' ?>" href="<?= base_url('superadmin/program-studi') ?>">Program Studi</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'instansi') ? 'active' : '' ?>" href="<?= base_url('superadmin/instansi-pendidikan') ?>">Instansi Pendidikan</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'mahasiswa') ? 'active' : '' ?>" href="<?= base_url('superadmin/mahasiswa') ?>">Mahasiswa</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'user_mahasiswa') ? 'active' : '' ?>" href="<?= base_url('superadmin/user-mahasiswa') ?>">User Mahasiswa</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'jenis_permohonan') ? 'active' : '' ?>" href="<?= base_url('superadmin/jenis-permohonan') ?>">Jenis Permohonan</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'file') ? 'active' : '' ?>" href="<?= base_url('superadmin/file') ?>">File Persyaratan</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'odp') ? 'active' : '' ?>" href="<?= base_url('superadmin/odp') ?>">OPD</a>
+                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'file_persyaratan') ? 'active' : '' ?>" href="<?= base_url('superadmin/file-persyaratan') ?>">File Persyaratan</a>
+                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'opd') ? 'active' : '' ?>" href="<?= base_url('superadmin/opd') ?>">OPD</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'bidang') ? 'active' : '' ?>" href="<?= base_url('superadmin/bidang') ?>">Bidang</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'kuota') ? 'active' : '' ?>" href="<?= base_url('superadmin/kuota') ?>">Kuota</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'komponen_penilaian') ? 'active' : '' ?>" href="<?= base_url('superadmin/komponen-penilaian') ?>">Komponen Penilaian</a>

@@ -12,7 +12,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="<?= base_url('superadmin/dashboard') ?>">Master Data</a></li>
-                    <li class="breadcrumb-item"><a href="<?= base_url('superadmin/odp') ?>">OPD</a></li>
+                    <li class="breadcrumb-item"><a href="<?= base_url('superadmin/opd') ?>">OPD</a></li>
                     <li class="breadcrumb-item active">Tambah</li>
                 </ol>
             </div>
@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah OPD</h3>
             </div>
-            <form id="formTambah" action="<?= base_url('superadmin/odp/store') ?>" method="post">
+            <form id="formTambah" action="<?= base_url('superadmin/opd/store') ?>" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
@@ -42,7 +42,8 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked>
+                                    <input type="hidden" name="status_aktif" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="1">
                                     <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
                                 </div>
                             </div>
@@ -56,7 +57,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-light d-flex gap-2">
-                    <a href="<?= base_url('superadmin/odp') ?>" class="btn btn-outline-secondary">
+                    <a href="<?= base_url('superadmin/opd') ?>" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
                     <button type="reset" class="btn btn-warning text-white ms-auto">
@@ -111,7 +112,7 @@ $(function () {
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/odp') ?>";
+                        window.location.href = "<?= base_url('superadmin/opd') ?>";
                     });
                 } else {
                     Swal.fire({
