@@ -28,7 +28,7 @@ class M_Mahasiswa extends Model
     {
         return $this->db->table($this->table)
             ->select('m_mahasiswa.*, m_prodi.prodi as nama_prodi, m_instansi_pendidikan.instansi_pendidikan')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id = m_mahasiswa.id_instansi_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_instansi_mahasiswa = m_mahasiswa.id_instansi_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->orderBy('m_instansi_pendidikan.instansi_pendidikan', 'ASC')

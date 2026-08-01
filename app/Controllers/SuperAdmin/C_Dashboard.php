@@ -15,13 +15,18 @@ class C_Dashboard extends BaseController
         $menuAktif = $stats['menuAktif'];
         $totalPermohonan = $stats['totalPermohonan'];
 
+        $distribusiPeran = $stats['distribusiPeran'];
+        $aktivitasTerbaru = $stats['aktivitasTerbaru'];
+
         // Menyiapkan data untuk dikirim ke view
         $data = [
-            'title'           => 'Dashboard',
-            'active_menu'     => 'dashboard',
-            'totalPengguna'   => $totalPengguna,
-            'menuAktif'       => $menuAktif,
-            'totalPermohonan' => $totalPermohonan,
+            'title'            => 'Dashboard',
+            'active_menu'      => 'dashboard',
+            'totalPengguna'    => $totalPengguna,
+            'menuAktif'        => $menuAktif,
+            'totalPermohonan'  => $totalPermohonan,
+            'distribusiPeran'  => $distribusiPeran,
+            'aktivitasTerbaru' => $aktivitasTerbaru,
         ];
 
         return view('dashboard/superadmin/v_dashboard', $data);

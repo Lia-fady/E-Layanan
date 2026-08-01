@@ -177,6 +177,20 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
 // =========================================================================
 // Super Admin Route Group (dilindungi filter authSekretariat)
 // =========================================================================
+// Fallback redirects untuk mencegah error typo "super admin" atau "super-admin"
+$routes->get('super admin/(.*)', static function($path) {
+    return redirect()->to(base_url('superadmin/' . $path));
+});
+$routes->get('super-admin/(.*)', static function($path) {
+    return redirect()->to(base_url('superadmin/' . $path));
+});
+$routes->get('super admin', static function() {
+    return redirect()->to(base_url('superadmin/dashboard'));
+});
+$routes->get('super-admin', static function() {
+    return redirect()->to(base_url('superadmin/dashboard'));
+});
+
 $routes->group('superadmin', ['filter' => 'authSekretariat'], static function ($routes) {
     // Dashboard
     $routes->get('dashboard', '\App\Controllers\SuperAdmin\C_Dashboard::index');
@@ -184,84 +198,100 @@ $routes->group('superadmin', ['filter' => 'authSekretariat'], static function ($
     // Manajemen
     $routes->get('manajemen-menu', '\App\Controllers\SuperAdmin\C_Management::menu');
     $routes->post('manajemen-menu/store', '\App\Controllers\SuperAdmin\C_Management::menuStore');
+    $routes->post('manajemen-menu/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::menuUpdate/$1');
+    $routes->post('manajemen-menu/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::menuDelete/$1');
+
     $routes->get('manajemen-pengguna', '\App\Controllers\SuperAdmin\C_Management::pengguna');
     $routes->post('manajemen-pengguna/store', '\App\Controllers\SuperAdmin\C_Management::penggunaStore');
+    $routes->post('manajemen-pengguna/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::penggunaUpdate/$1');
+    $routes->post('manajemen-pengguna/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::penggunaDelete/$1');
 
     // Master Data - Fakultas
     $routes->get('fakultas', '\App\Controllers\SuperAdmin\C_Management::fakultas');
     $routes->get('fakultas/create', '\App\Controllers\SuperAdmin\C_Management::fakultasCreate');
     $routes->post('fakultas/store', '\App\Controllers\SuperAdmin\C_Management::fakultasStore');
-    $routes->get('fakultas/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::fakultasEdit/$1');
+    $routes->post('fakultas/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::fakultasUpdate/$1');
+    $routes->post('fakultas/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::fakultasDelete/$1');
     $routes->get('fakultas/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::fakultasDetail/$1');
 
     // Master Data - Prodi
     $routes->get('prodi', '\App\Controllers\SuperAdmin\C_Management::prodi');
     $routes->get('prodi/create', '\App\Controllers\SuperAdmin\C_Management::prodiCreate');
     $routes->post('prodi/store', '\App\Controllers\SuperAdmin\C_Management::prodiStore');
-    $routes->get('prodi/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::prodiEdit/$1');
+    $routes->post('prodi/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::prodiUpdate/$1');
+    $routes->post('prodi/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::prodiDelete/$1');
     $routes->get('prodi/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::prodiDetail/$1');
 
     // Master Data - Instansi Pendidikan
     $routes->get('instansi-pendidikan', '\App\Controllers\SuperAdmin\C_Management::instansi');
     $routes->get('instansi-pendidikan/create', '\App\Controllers\SuperAdmin\C_Management::instansiCreate');
     $routes->post('instansi-pendidikan/store', '\App\Controllers\SuperAdmin\C_Management::instansiStore');
-    $routes->get('instansi-pendidikan/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::instansiEdit/$1');
+    $routes->post('instansi-pendidikan/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::instansiUpdate/$1');
+    $routes->post('instansi-pendidikan/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::instansiDelete/$1');
     $routes->get('instansi-pendidikan/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::instansiDetail/$1');
 
     // Master Data - Mahasiswa
     $routes->get('mahasiswa', '\App\Controllers\SuperAdmin\C_Management::mahasiswa');
     $routes->get('mahasiswa/create', '\App\Controllers\SuperAdmin\C_Management::mahasiswaCreate');
     $routes->post('mahasiswa/store', '\App\Controllers\SuperAdmin\C_Management::mahasiswaStore');
-    $routes->get('mahasiswa/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::mahasiswaEdit/$1');
+    $routes->post('mahasiswa/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::mahasiswaUpdate/$1');
+    $routes->post('mahasiswa/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::mahasiswaDelete/$1');
     $routes->get('mahasiswa/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::mahasiswaDetail/$1');
 
     // Master Data - User Mahasiswa
     $routes->get('user-mahasiswa', '\App\Controllers\SuperAdmin\C_Management::userMahasiswa');
     $routes->get('user-mahasiswa/create', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaCreate');
     $routes->post('user-mahasiswa/store', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaStore');
-    $routes->get('user-mahasiswa/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaEdit/$1');
+    $routes->post('user-mahasiswa/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaUpdate/$1');
+    $routes->post('user-mahasiswa/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaDelete/$1');
     $routes->get('user-mahasiswa/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::userMahasiswaDetail/$1');
 
     // Master Data - Jenis Permohonan
     $routes->get('jenis-permohonan', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonan');
     $routes->get('jenis-permohonan/create', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanCreate');
     $routes->post('jenis-permohonan/store', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanStore');
-    $routes->get('jenis-permohonan/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanEdit/$1');
+    $routes->post('jenis-permohonan/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanUpdate/$1');
+    $routes->post('jenis-permohonan/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanDelete/$1');
     $routes->get('jenis-permohonan/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::jenisPermohonanDetail/$1');
 
     // Master Data - File Persyaratan
     $routes->get('file', '\App\Controllers\SuperAdmin\C_Management::file');
     $routes->get('file/create', '\App\Controllers\SuperAdmin\C_Management::fileCreate');
     $routes->post('file/store', '\App\Controllers\SuperAdmin\C_Management::fileStore');
-    $routes->get('file/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::fileEdit/$1');
+    $routes->post('file/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::fileUpdate/$1');
+    $routes->post('file/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::fileDelete/$1');
     $routes->get('file/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::fileDetail/$1');
 
     // Master Data - OPD
     $routes->get('odp', '\App\Controllers\SuperAdmin\C_Management::odp');
     $routes->get('odp/create', '\App\Controllers\SuperAdmin\C_Management::odpCreate');
     $routes->post('odp/store', '\App\Controllers\SuperAdmin\C_Management::odpStore');
-    $routes->get('odp/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::odpEdit/$1');
+    $routes->post('odp/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::odpUpdate/$1');
+    $routes->post('odp/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::odpDelete/$1');
     $routes->get('odp/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::odpDetail/$1');
 
     // Master Data - Bidang
     $routes->get('bidang', '\App\Controllers\SuperAdmin\C_Management::bidang');
     $routes->get('bidang/create', '\App\Controllers\SuperAdmin\C_Management::bidangCreate');
     $routes->post('bidang/store', '\App\Controllers\SuperAdmin\C_Management::bidangStore');
-    $routes->get('bidang/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::bidangEdit/$1');
+    $routes->post('bidang/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::bidangUpdate/$1');
+    $routes->post('bidang/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::bidangDelete/$1');
     $routes->get('bidang/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::bidangDetail/$1');
 
     // Master Data - Kuota
     $routes->get('kuota', '\App\Controllers\SuperAdmin\C_Management::kuota');
     $routes->get('kuota/create', '\App\Controllers\SuperAdmin\C_Management::kuotaCreate');
     $routes->post('kuota/store', '\App\Controllers\SuperAdmin\C_Management::kuotaStore');
-    $routes->get('kuota/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::kuotaEdit/$1');
+    $routes->post('kuota/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::kuotaUpdate/$1');
+    $routes->post('kuota/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::kuotaDelete/$1');
     $routes->get('kuota/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::kuotaDetail/$1');
 
     // Master Data - Komponen Penilaian
     $routes->get('komponen-penilaian', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaian');
     $routes->get('komponen-penilaian/create', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianCreate');
     $routes->post('komponen-penilaian/store', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianStore');
-    $routes->get('komponen-penilaian/edit/(:num)', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianEdit/$1');
+    $routes->post('komponen-penilaian/update/(:num)', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianUpdate/$1');
+    $routes->post('komponen-penilaian/delete/(:num)', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianDelete/$1');
     $routes->get('komponen-penilaian/detail/(:num)', '\App\Controllers\SuperAdmin\C_Management::komponenPenilaianDetail/$1');
 });
 
