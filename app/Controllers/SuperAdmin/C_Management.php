@@ -87,7 +87,9 @@ class C_Management extends BaseController
     public function prodi()
     {
         $model = new \App\Models\SuperAdmin\M_Prodi();
+        $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas();
         $data['prodiList'] = $model->getAllWithRelations();
+        $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->findAll();
         return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi', 'prodi', $data);
     }
     public function prodiCreate()
@@ -233,6 +235,8 @@ class C_Management extends BaseController
     public function file()
     {
         $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan();
+        $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan();
+        $data['jenisPermohonanList'] = $jenisModel->findAll();
         $data['fileList'] = $filePermohonanModel->getAllWithRelations();
         return $this->renderPage('dashboard/superadmin/file_persyaratan/v_index', 'Master Data File Persyaratan', 'file', $data);
     }
@@ -294,7 +298,9 @@ class C_Management extends BaseController
     public function bidang()
     {
         $model = new \App\Models\SuperAdmin\M_Bidang();
+        $opdModel = new \App\Models\SuperAdmin\M_Opd();
         $data['bidangList'] = $model->getAllWithRelations();
+        $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
         return $this->renderPage('dashboard/superadmin/bidang/v_index', 'Master Data Bidang', 'bidang', $data);
     }
     public function bidangCreate()
@@ -324,6 +330,8 @@ class C_Management extends BaseController
     public function kuota()
     {
         $model = new \App\Models\SuperAdmin\M_Kuota();
+        $bidangModel = new \App\Models\SuperAdmin\M_Bidang();
+        $data['bidangList'] = $bidangModel->where('status_aktif', '1')->findAll();
         $data['kuotaList'] = $model->getAllWithRelations();
         return $this->renderPage('dashboard/superadmin/kuota/v_index', 'Master Data Kuota', 'kuota', $data);
     }
@@ -378,47 +386,6 @@ class C_Management extends BaseController
     // STORE ACTIONS (REDIRECT WITH FLASHDATA)
     // ==========================================
 
-    public function menuStore()
-    {
-        $model = new \App\Models\SuperAdmin\M_Menu();
-        $data = $this->request->getPost();
-        if (empty($data)) {
-            return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-        }
-        try {
-            if (isset($data['status'])) {
-                $data['status'] = ($data['status'] == 'on') ? 1 : 0;
-            }
-            if ($model->insert($data)) {
-                return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil ditambahkan.');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
-    }
-
-    public function penggunaStore()
-    {
-        $model = new \App\Models\SuperAdmin\M_Pengguna();
-        $data = $this->request->getPost();
-        if (empty($data)) {
-            return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-        }
-        try {
-            if (isset($data['password']) && !empty($data['password'])) {
-                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-            }
-            if ($model->insert($data)) {
-                return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil ditambahkan.');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-        }
-    }
 
     public function fakultasStore()
     {
@@ -567,21 +534,65 @@ class C_Management extends BaseController
         }
     }
 
+    public function odpUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Opd();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        $data['opd'] = trim($data['opd']);
+        
+        // Cek duplikasi
+        $existing = $model->where('LOWER(opd)', strtolower($data['opd']))->where('id_opd !=', $id)->first();
+        if ($existing) return redirect()->back()->withInput()->with('error', 'Data OPD sudah tersedia.');
+
+        if ($model->update($id, $data)) {
+            return redirect()->to(base_url('superadmin/odp'))->with('success', 'Data berhasil diupdate.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+        }
+    }
+
     public function bidangStore()
     {
         $model = new \App\Models\SuperAdmin\M_Bidang();
         $data = $this->request->getPost();
-        if (empty($data)) {
-            return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        $data['nama_bidang'] = trim($data['nama_bidang']);
+
+        // Cek duplikasi di OPD yang sama
+        $existing = $model->where('LOWER(nama_bidang)', strtolower($data['nama_bidang']))
+                          ->where('id_opd', $data['id_opd'])
+                          ->first();
+        if ($existing) return redirect()->back()->withInput()->with('error', 'Nama Bidang sudah digunakan pada OPD tersebut.');
+
+        if ($model->insert($data)) {
+            return redirect()->to(base_url('superadmin/bidang'))->with('success', 'Data berhasil ditambahkan.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
         }
-        try {
-            if ($model->insert($data)) {
-                return redirect()->to(base_url('superadmin/bidang'))->with('success', 'Data berhasil ditambahkan.');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+
+    public function bidangUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Bidang();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        $data['nama_bidang'] = trim($data['nama_bidang']);
+
+        // Cek duplikasi
+        $existing = $model->where('LOWER(nama_bidang)', strtolower($data['nama_bidang']))
+                          ->where('id_opd', $data['id_opd'])
+                          ->where('id_bidang !=', $id)
+                          ->first();
+        if ($existing) return redirect()->back()->withInput()->with('error', 'Nama Bidang sudah digunakan pada OPD tersebut.');
+
+        if ($model->update($id, $data)) {
+            return redirect()->to(base_url('superadmin/bidang'))->with('success', 'Data berhasil diupdate.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
         }
     }
 
@@ -589,17 +600,33 @@ class C_Management extends BaseController
     {
         $model = new \App\Models\SuperAdmin\M_Kuota();
         $data = $this->request->getPost();
-        if (empty($data)) {
-            return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        // Cek duplikasi
+        $existing = $model->where('id_bidang', $data['id_bidang'])->first();
+        if ($existing) return redirect()->back()->withInput()->with('error', 'Data Kuota untuk Bidang tersebut sudah ada.');
+
+        if ($model->insert($data)) {
+            return redirect()->to(base_url('superadmin/kuota'))->with('success', 'Data berhasil ditambahkan.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
         }
-        try {
-            if ($model->insert($data)) {
-                return redirect()->to(base_url('superadmin/kuota'))->with('success', 'Data berhasil ditambahkan.');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
+
+    public function kuotaUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Kuota();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        // Cek duplikasi
+        $existing = $model->where('id_bidang', $data['id_bidang'])->where('id_kuota !=', $id)->first();
+        if ($existing) return redirect()->back()->withInput()->with('error', 'Data Kuota untuk Bidang tersebut sudah ada.');
+
+        if ($model->update($id, $data)) {
+            return redirect()->to(base_url('superadmin/kuota'))->with('success', 'Data berhasil diupdate.');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
         }
     }
 
@@ -618,6 +645,393 @@ class C_Management extends BaseController
             }
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function menuStore()
+    {
+        $model = new \App\Models\SuperAdmin\M_Menu();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['status'])) {
+                $data['status'] = ($data['status'] == 'on') ? 1 : 0;
+            } else {
+                $data['status'] = 0;
+            }
+            // default position or parent if needed
+            if (empty($data['id_parent'])) $data['id_parent'] = 0;
+            
+            if ($model->insert($data)) {
+                return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil ditambahkan.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function menuUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Menu();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['status'])) {
+                $data['status'] = ($data['status'] == 'on') ? 1 : 0;
+            } else {
+                $data['status'] = 0;
+            }
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function menuDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Menu();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/manajemen-menu'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/manajemen-menu'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function penggunaStore()
+    {
+        $model = new \App\Models\SuperAdmin\M_Pengguna();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['password']) && !empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            }
+            if ($model->insert($data)) {
+                return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil ditambahkan.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function penggunaUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Pengguna();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['password']) && !empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            } else {
+                unset($data['password']); // Jangan update password jika kosong
+            }
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function penggunaDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Pengguna();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function fakultasUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Fakultas();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/fakultas'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function fakultasDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Fakultas();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/fakultas'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/fakultas'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/fakultas'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function prodiUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Prodi();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/prodi'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function prodiDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Prodi();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/prodi'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/prodi'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/prodi'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function instansiUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_InstansiPendidikan();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/instansi-pendidikan'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function instansiDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_InstansiPendidikan();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/instansi-pendidikan'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/instansi-pendidikan'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/instansi-pendidikan'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function mahasiswaUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Mahasiswa();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/mahasiswa'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function mahasiswaDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Mahasiswa();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/mahasiswa'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/mahasiswa'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/mahasiswa'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function userMahasiswaUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_UserMahasiswa();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['password']) && !empty($data['password'])) {
+                $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            } else {
+                unset($data['password']);
+            }
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/user-mahasiswa'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function userMahasiswaDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_UserMahasiswa();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/user-mahasiswa'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/user-mahasiswa'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/user-mahasiswa'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function jenisPermohonanUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_JenisPermohonan();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/jenis-permohonan'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function jenisPermohonanDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_JenisPermohonan();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/jenis-permohonan'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/jenis-permohonan'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/jenis-permohonan'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function fileUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_FilePermohonan();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/file'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function fileDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_FilePermohonan();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/file'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/file'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/file'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function odpDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Opd();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/odp'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/odp'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/odp'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function bidangDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Bidang();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/bidang'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/bidang'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/bidang'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function kuotaDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Kuota();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/kuota'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/kuota'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/kuota'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function komponenPenilaianUpdate($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/komponen-penilaian'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function komponenPenilaianDelete($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/komponen-penilaian'))->with('success', 'Data berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/komponen-penilaian'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/komponen-penilaian'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }

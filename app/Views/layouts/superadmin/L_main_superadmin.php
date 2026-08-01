@@ -115,6 +115,29 @@
     <!-- Page-specific scripts -->
     <?= $this->renderSection('scripts') ?>
 
+    <!-- Super Admin Master Data Logic -->
+    <script src="<?= base_url('js/superadmin-master.js') ?>"></script>
+    <script>
+        $(document).ready(function() {
+            <?php if(session()->getFlashdata('success')): ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: '<?= session()->getFlashdata('success') ?>',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            <?php endif; ?>
+
+            <?php if(session()->getFlashdata('error')): ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '<?= session()->getFlashdata('error') ?>'
+                });
+            <?php endif; ?>
+        });
+    </script>
 </body>
 
 </html>

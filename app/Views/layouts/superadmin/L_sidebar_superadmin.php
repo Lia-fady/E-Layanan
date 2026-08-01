@@ -38,7 +38,7 @@
     }
     .sidebar .nav-item .collapse .collapse-inner .collapse-item {
         color: rgba(255, 255, 255, 0.7) !important;
-        padding: 0.5rem 1rem 0.5rem 3rem !important; /* Indentasi submenu lebih rapi dan masuk ke dalam */
+        padding: 0.5rem 1rem 0.5rem 1.5rem !important; /* Indentasi submenu lebih rapi dan masuk ke dalam */
         white-space: normal !important;
         margin: 0 !important;
         border-radius: 0 !important;
@@ -108,7 +108,7 @@
                 <span>Manajemen</span>
             </a>
             <div id="collapseManajemen" class="collapse <?= (isset($active_menu) && in_array($active_menu, ['manajemen_menu', 'manajemen_pengguna'])) ? 'show' : '' ?>" aria-labelledby="headingManajemen" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div class="py-2 collapse-inner rounded">
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'manajemen_menu') ? 'active' : '' ?>" href="<?= base_url('superadmin/manajemen-menu') ?>">Manajemen Menu</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'manajemen_pengguna') ? 'active' : '' ?>" href="<?= base_url('superadmin/manajemen-pengguna') ?>">Manajemen Pengguna</a>
                 </div>
@@ -121,7 +121,7 @@
                 <span>Data Master</span>
             </a>
             <div id="collapseMaster" class="collapse <?= (isset($active_menu) && in_array($active_menu, ['fakultas', 'prodi', 'instansi', 'mahasiswa', 'user_mahasiswa', 'jenis_permohonan', 'file', 'odp', 'bidang', 'kuota', 'komponen_penilaian'])) ? 'show' : '' ?>" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div class="py-2 collapse-inner rounded">
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'fakultas') ? 'active' : '' ?>" href="<?= base_url('superadmin/fakultas') ?>">Fakultas</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'prodi') ? 'active' : '' ?>" href="<?= base_url('superadmin/prodi') ?>">Program Studi</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'instansi') ? 'active' : '' ?>" href="<?= base_url('superadmin/instansi-pendidikan') ?>">Instansi Pendidikan</a>

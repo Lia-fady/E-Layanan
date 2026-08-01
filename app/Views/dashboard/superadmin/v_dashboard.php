@@ -129,8 +129,8 @@ $formatted_date = "$current_day, $current_date $current_month $current_year";
                 </div>
                 <div>
                     <span class="text-muted small fw-semibold d-block">Total Pengguna</span>
-                    <h3 class="fw-bold text-dark mb-0 my-1">60</h3>
-                    <span class="text-muted small">3 peran aktif</span>
+                    <h3 class="fw-bold text-dark mb-0 my-1"><?= esc($totalPengguna) ?></h3>
+                    <span class="text-muted small">Total semua peran</span>
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top py-3 d-flex justify-content-between align-items-center">
@@ -149,8 +149,8 @@ $formatted_date = "$current_day, $current_date $current_month $current_year";
                 </div>
                 <div>
                     <span class="text-muted small fw-semibold d-block">Menu Aktif</span>
-                    <h3 class="fw-bold text-dark mb-0 my-1">32</h3>
-                    <span class="text-muted small">4 peran</span>
+                    <h3 class="fw-bold text-dark mb-0 my-1"><?= esc($menuAktif) ?></h3>
+                    <span class="text-muted small">Status aktif</span>
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top py-3 d-flex justify-content-between align-items-center">
@@ -169,8 +169,8 @@ $formatted_date = "$current_day, $current_date $current_month $current_year";
                 </div>
                 <div>
                     <span class="text-muted small fw-semibold d-block">Total Permohonan</span>
-                    <h3 class="fw-bold text-dark mb-0 my-1">50</h3>
-                    <span class="text-muted small">Sedang Berjalan</span>
+                    <h3 class="fw-bold text-dark mb-0 my-1"><?= esc($totalPermohonan) ?></h3>
+                    <span class="text-muted small">Total keseluruhan</span>
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top py-3 d-flex justify-content-between align-items-center">
@@ -187,56 +187,22 @@ $formatted_date = "$current_day, $current_date $current_month $current_year";
         <div class="card stat-card p-4">
             <h5 class="fw-bold text-dark mb-3"><i class="fas fa-history me-2 text-secondary"></i> Aktivitas Terbaru</h5>
             <div class="activity-list">
-                <div class="activity-list-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold text-dark d-block">Menambahkan Fakultas</span>
-                        <small class="text-muted">Fakultas Ilmu Komputer</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge bg-light text-dark small d-block">Super Admin</span>
-                        <small class="text-muted">08:00</small>
-                    </div>
-                </div>
-                <div class="activity-list-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold text-dark d-block">Registrasi Akun</span>
-                        <small class="text-muted">Mendaftar magang</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge bg-light text-dark small d-block">Mahasiswa</span>
-                        <small class="text-muted">11:30</small>
-                    </div>
-                </div>
-                <div class="activity-list-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold text-dark d-block">Memverifikasi Akun</span>
-                        <small class="text-muted">Menyetujui persyaratan</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge bg-light text-dark small d-block">Sekretariat</span>
-                        <small class="text-muted">13:00</small>
-                    </div>
-                </div>
-                <div class="activity-list-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold text-dark d-block">Menambahkan OPD</span>
-                        <small class="text-muted">Dinas Komunikasi & Informatika</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge bg-light text-dark small d-block">Super Admin</span>
-                        <small class="text-muted">15:00</small>
-                    </div>
-                </div>
-                <div class="activity-list-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="fw-bold text-dark d-block">Mengubah Kuota</span>
-                        <small class="text-muted">Bidang Aplikasi Informatika</small>
-                    </div>
-                    <div class="text-end">
-                        <span class="badge bg-light text-dark small d-block">Super Admin</span>
-                        <small class="text-muted">16:45</small>
-                    </div>
-                </div>
+                <?php if (!empty($aktivitasTerbaru)): ?>
+                    <?php foreach ($aktivitasTerbaru as $act): ?>
+                        <div class="activity-list-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold text-dark d-block">Permohonan Baru</span>
+                                <small class="text-muted"><?= esc($act['jenis_permohonan'] ?? 'Magang/Riset') ?> (<?= esc($act['nama_mahasiswa']) ?>)</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-light text-dark small d-block">Mahasiswa</span>
+                                <small class="text-muted"><?= date('d M Y, H:i', strtotime($act['created_at'])) ?></small>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="text-muted small text-center py-3">Belum ada aktivitas.</div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -246,49 +212,27 @@ $formatted_date = "$current_day, $current_date $current_month $current_year";
         <div class="card stat-card p-4">
             <h5 class="fw-bold text-dark mb-4"><i class="fas fa-chart-pie me-2 text-secondary"></i> Distribusi Pengguna per Peran</h5>
             
-            <!-- Peran 1: Mahasiswa -->
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold text-secondary small">Mahasiswa</span>
-                    <span class="fw-bold text-dark small">180</span>
+            <?php
+            $colors = [
+                'Mahasiswa' => '#0d6efd',
+                'Sekretariat' => '#20c997',
+                'Kepala Bidang' => '#6f42c1',
+                'Super Admin' => '#212529'
+            ];
+            foreach ($distribusiPeran as $role => $count): 
+                $percentage = $totalPengguna > 0 ? round(($count / $totalPengguna) * 100) : 0;
+                $color = $colors[$role] ?? '#6c757d';
+            ?>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="fw-semibold text-secondary small"><?= esc($role) ?></span>
+                        <span class="fw-bold text-dark small"><?= esc($count) ?></span>
+                    </div>
+                    <div class="progress custom-progress">
+                        <div class="progress-bar custom-progress-bar" role="progressbar" style="width: <?= $percentage ?>%; background-color: <?= $color ?>;"></div>
+                    </div>
                 </div>
-                <div class="progress custom-progress">
-                    <div class="progress-bar custom-progress-bar bg-primary" role="progressbar" style="width: 85%"></div>
-                </div>
-            </div>
-
-            <!-- Peran 2: Sekretariat -->
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold text-secondary small">Sekretariat</span>
-                    <span class="fw-bold text-dark small">8</span>
-                </div>
-                <div class="progress custom-progress">
-                    <div class="progress-bar custom-progress-bar bg-teal" role="progressbar" style="width: 25%; background-color: #20c997 !important;"></div>
-                </div>
-            </div>
-
-            <!-- Peran 3: Kepala Bidang -->
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold text-secondary small">Kepala Bidang</span>
-                    <span class="fw-bold text-dark small">6</span>
-                </div>
-                <div class="progress custom-progress">
-                    <div class="progress-bar custom-progress-bar" role="progressbar" style="width: 18%; background-color: #6f42c1;"></div>
-                </div>
-            </div>
-
-            <!-- Peran 4: Super Admin -->
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <span class="fw-semibold text-secondary small">Super Admin</span>
-                    <span class="fw-bold text-dark small">4</span>
-                </div>
-                <div class="progress custom-progress">
-                    <div class="progress-bar custom-progress-bar bg-dark" role="progressbar" style="width: 12%"></div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
