@@ -12,7 +12,7 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_StatusPermohonan;
+use App\Models\Sekretariat\M_StatusPermohonanSekretariat;
 
 class C_StatusPermohonan extends BaseController
 {
@@ -20,7 +20,7 @@ class C_StatusPermohonan extends BaseController
 
     public function __construct()
     {
-        $this->statusPermohonanModel = new M_StatusPermohonan();
+        $this->statusPermohonanModel = new M_StatusPermohonanSekretariat();
     }
 
     /**

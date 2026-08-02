@@ -3,10 +3,10 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\MahasiswaModel;
-use App\Models\UserMahasiswaModel;
-use App\Models\InstansiMahasiswaModel; 
-use App\Models\InstansiPendidikanModel; 
+use App\Models\Auth\M_MahasiswaAuth;
+use App\Models\Auth\M_UserMahasiswaAuth;
+use App\Models\Auth\M_InstansiMahasiswaAuth; 
+use App\Models\Auth\M_InstansiPendidikanAuth; 
 
 class AuthController extends BaseController
 {
@@ -18,10 +18,10 @@ class AuthController extends BaseController
     public function __construct()
     {
         // Inisialisasi model-model penunjang data akademik & auth
-        $this->mahasiswaModel          = new MahasiswaModel();
-        $this->userMahasiswaModel      = new UserMahasiswaModel();
-        $this->instansiMahasiswaModel  = new InstansiMahasiswaModel();
-        $this->instansiPendidikanModel = new InstansiPendidikanModel();
+        $this->mahasiswaModel          = new M_MahasiswaAuth();
+        $this->userMahasiswaModel      = new M_UserMahasiswaAuth();
+        $this->instansiMahasiswaModel  = new M_InstansiMahasiswaAuth();
+        $this->instansiPendidikanModel = new M_InstansiPendidikanAuth();
     }
 
     // --- TAMPILAN FORM REGISTRASI MAHASISWA ---

@@ -2,8 +2,8 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_File;
-use App\Models\Sekretariat\M_FileProsesMagang;
+use App\Models\Sekretariat\M_FileSekretariat;
+use App\Models\Mahasiswa\M_FileProsesMagangMahasiswa;
 
 class C_FileProsesMagang extends BaseController
 {
@@ -12,8 +12,8 @@ class C_FileProsesMagang extends BaseController
 
     public function __construct()
     {
-        $this->fileModel = new M_File();
-        $this->fileProsesModel = new M_FileProsesMagang();
+        $this->fileModel = new M_FileSekretariat();
+        $this->fileProsesModel = new M_FileProsesMagangMahasiswa();
     }
 
     private function getPersetujuanDetail($id_persetujuan)

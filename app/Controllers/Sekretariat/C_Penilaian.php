@@ -11,7 +11,7 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_Penilaian;
+use App\Models\Sekretariat\M_PenilaianSekretariat;
 
 class C_Penilaian extends BaseController
 {
@@ -19,7 +19,7 @@ class C_Penilaian extends BaseController
 
     public function __construct()
     {
-        $this->penilaianModel = new M_Penilaian();
+        $this->penilaianModel = new M_PenilaianSekretariat();
     }
 
     /**

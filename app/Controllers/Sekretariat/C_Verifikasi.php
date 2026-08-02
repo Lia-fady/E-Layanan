@@ -13,7 +13,7 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_Verifikasi;
+use App\Models\Sekretariat\M_VerifikasiSekretariat;
 
 class C_Verifikasi extends BaseController
 {
@@ -21,7 +21,7 @@ class C_Verifikasi extends BaseController
 
     public function __construct()
     {
-        $this->verifikasiModel = new M_Verifikasi();
+        $this->verifikasiModel = new M_VerifikasiSekretariat();
     }
 
     /**

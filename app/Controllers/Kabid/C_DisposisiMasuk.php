@@ -12,7 +12,7 @@
 namespace App\Controllers\Kabid;
 
 use App\Controllers\BaseController;
-use App\Models\Kabid\M_Penempatan;
+use App\Models\Kabid\M_PenempatanKabid;
 
 class C_DisposisiMasuk extends BaseController
 {
@@ -20,7 +20,7 @@ class C_DisposisiMasuk extends BaseController
 
     public function __construct()
     {
-        $this->penempatanModel = new M_Penempatan();
+        $this->penempatanModel = new M_PenempatanKabid();
     }
 
     /**

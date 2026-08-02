@@ -12,7 +12,7 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_Auth;
+use App\Models\Sekretariat\M_AuthSekretariat;
 
 class C_Auth extends BaseController
 {
@@ -20,7 +20,7 @@ class C_Auth extends BaseController
 
     public function __construct()
     {
-        $this->authModel = new M_Auth();
+        $this->authModel = new M_AuthSekretariat();
     }
 
     /**
