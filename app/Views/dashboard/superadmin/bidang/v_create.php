@@ -42,21 +42,21 @@
                                     OPD wajib dipilih.
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="nama_bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="nama_bidang" name="nama_bidang" placeholder="Masukkan Nama Bidang"  required>
-                                <!-- Contoh validasi error -->
-                                <div class="invalid-feedback d-block text-danger d-none">
-                                    Nama Bidang wajib diisi.
-                                </div>
-                            </div>
+                              <div class="mb-3">
+                                  <label for="bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
+                                  <input type="text" class="form-control" id="bidang" name="bidang" placeholder="Masukkan Nama Bidang"  required>
+                                  <!-- Contoh validasi error -->
+                                  <div class="invalid-feedback d-block text-danger d-none">
+                                      Nama Bidang wajib diisi.
+                                  </div>
+                              </div>
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="status" value="nonaktif">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="aktif">
-                                    <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
+                                <div class="form-check form-switch fs-5">
+                                    <input type="hidden" name="status_aktif" value="nonaktif">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="aktif">
+                                    <label class="form-check-label ms-2" for="statusAktif" id="statusLabel">Aktif / Nonaktif</label>
                                 </div>
                             </div>
                         </div>

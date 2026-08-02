@@ -46,24 +46,23 @@
                     <div class="row">
                         <div class="col-md-3 mb-3">
                             <label for="edit_nama" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_nama" name="nama_lengkap" required>
+                            <input type="text" class="form-control" id="edit_nama" name="nama" required>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="edit_username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_username" name="username" required>
+                            <input type="text" class="form-control" id="edit_username" name="nip" required>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="edit_password" class="form-label fw-bold">Password Baru</label>
+                            <label for="edit_password" class="form-label fw-bold">Password</label>
                             <input type="password" class="form-control" id="edit_password" name="password" placeholder="Kosongkan jika tidak diubah">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="edit_role" class="form-label fw-bold">Role <span class="text-danger">*</span></label>
-                            <select class="form-select form-control" id="edit_role" name="role" required>
+                            <select class="form-select form-control" id="edit_role" name="id_user_group" required>
                                 <option value="">-- Role --</option>
-                                <option value="superadmin">Superadmin</option>
-                                <option value="admin">Admin</option>
-                                <option value="validator">Validator</option>
-                                <option value="fasilitator">Fasilitator</option>
+                                <?php if(isset($userGroups)): foreach($userGroups as $group): ?>
+                                    <option value="<?= $group['id'] ?>"><?= esc($group['group']) ?></option>
+                                <?php endforeach; endif; ?>
                             </select>
                         </div>
                         <div class="col-md-1 mb-3">
@@ -112,27 +111,27 @@
                                 <?php $no = 1; foreach ($users as $u): ?>
                                 <tr>
                                     <td><?= $no++ ?></td>
-                                    <td><?= esc($u['nama_lengkap']) ?></td>
-                                    <td><?= esc($u['username']) ?></td>
+                                    <td><?= esc($u['nama']) ?></td>
+                                    <td><?= esc($u['nip']) ?></td>
                                     <td>
-                                        <span class="badge bg-secondary"><?= esc(ucfirst($u['role'])) ?></span>
+                                        <span class="badge bg-secondary"><?= esc($u['nama_group'] ?? 'No Group') ?></span>
                                     </td>
                                     <td>
-                                        <div class="form-check form-switch">
+                                        <div class="form-check form-switch d-flex justify-content-center">
                                             <input class="form-check-input" type="checkbox" role="switch" <?= ($u['status_aktif'] == 'aktif' || $u['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex gap-1 justify-content-center">
                                             <button class="btn btn-sm btn-warning text-white btn-edit" 
-                                                data-id="<?= $u['id_pengguna'] ?>"
-                                                data-nama="<?= esc($u['nama_lengkap']) ?>"
-                                                data-username="<?= esc($u['username']) ?>"
-                                                data-role="<?= esc($u['role']) ?>"
+                                                data-id="<?= $u['id_user_pegawai'] ?>"
+                                                data-nama="<?= esc($u['nama']) ?>"
+                                                data-username="<?= esc($u['nip']) ?>"
+                                                data-role="<?= esc($u['id_user_group']) ?>"
                                                 data-status="<?= esc($u['status_aktif']) ?>"
                                                 title="Edit"><i class="fas fa-edit"></i></button>
                                             <button class="btn btn-sm btn-danger btn-hapus" 
-                                                data-id="<?= $u['id_pengguna'] ?>" 
+                                                data-id="<?= $u['id_user_pegawai'] ?>" 
                                                 data-bs-toggle="modal" 
                                                 data-bs-target="#deleteModal" 
                                                 title="Hapus"><i class="fas fa-trash"></i></button>
@@ -163,12 +162,12 @@
         <div class="modal-body">
             <div class="mb-3">
                 <label for="nama" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="nama" name="nama_lengkap" required>
+                <input type="text" class="form-control" id="nama" name="nama" required>
                 <div class="invalid-feedback d-none text-danger">Nama Lengkap wajib diisi.</div>
             </div>
             <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="username" name="username" required>
+                <input type="text" class="form-control" id="username" name="nip" required>
                 <div class="invalid-feedback d-none text-danger">Username wajib diisi.</div>
             </div>
             <div class="mb-3">
@@ -178,12 +177,11 @@
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label fw-bold">Role <span class="text-danger">*</span></label>
-                <select class="form-select form-control" id="role" name="role" required>
+                <select class="form-select form-control" id="role" name="id_user_group" required>
                     <option value="">-- Pilih Role --</option>
-                    <option value="superadmin">Superadmin</option>
-                    <option value="admin">Admin</option>
-                    <option value="validator">Validator</option>
-                    <option value="fasilitator">Fasilitator</option>
+                    <?php if(isset($userGroups)): foreach($userGroups as $group): ?>
+                        <option value="<?= $group['id'] ?>"><?= esc($group['group']) ?></option>
+                    <?php endforeach; endif; ?>
                 </select>
                 <div class="invalid-feedback d-none text-danger">Role wajib diisi.</div>
             </div>

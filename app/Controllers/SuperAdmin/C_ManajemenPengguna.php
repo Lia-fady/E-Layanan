@@ -22,10 +22,14 @@ class C_ManajemenPengguna extends BaseController
     public function index()
     {
         $model = new \App\Models\SuperAdmin\M_Pengguna();
-        $users = $model->findAll();
+        $users = $model->getAllWithGroup();
+
+        $db = \Config\Database::connect();
+        $userGroups = $db->table('c_user_group')->get()->getResultArray();
 
         $data = [
             'users' => $users,
+            'userGroups' => $userGroups
         ];
         return $this->renderPage('dashboard/superadmin/v_manajemen_pengguna', 'Manajemen Pengguna', 'manajemen_pengguna', $data);
     }

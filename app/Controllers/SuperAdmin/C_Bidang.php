@@ -24,14 +24,14 @@ class C_Bidang extends BaseController
             $model = new \App\Models\SuperAdmin\M_Bidang();
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
             $data['bidangList'] = $model->getAllWithRelations();
-            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
+            $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_index', 'Master Data Bidang', 'bidang', $data);
         }
 
     public function create()
         {
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
-            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
+            $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_create', 'Tambah Bidang', 'bidang', $data);
         }
 
@@ -39,7 +39,7 @@ class C_Bidang extends BaseController
         {
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
             $bidangModel = new \App\Models\SuperAdmin\M_Bidang();
-            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
+            $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             $data['bidang'] = $bidangModel->find($id);
             return $this->renderPage('dashboard/superadmin/bidang/v_edit', 'Edit Bidang', 'bidang', $data);
         }
@@ -55,14 +55,14 @@ class C_Bidang extends BaseController
         {
             $model = new \App\Models\SuperAdmin\M_Bidang();
             $data = $this->request->getPost();
-            if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-    
-            $data['nama_bidang'] = trim($data['nama_bidang']);
-    
-            // Cek duplikasi di OPD yang sama
-            $existing = $model->where('LOWER(nama_bidang)', strtolower($data['nama_bidang']))
-                              ->where('id_opd', $data['id_opd'])
-                              ->first();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        $data['bidang'] = trim($data['bidang']);
+
+        // Cek duplikasi di OPD yang sama
+        $existing = $model->where('LOWER(bidang)', strtolower($data['bidang']))
+                          ->where('id_opd', $data['id_opd'])
+                          ->first();
             if ($existing) return redirect()->back()->withInput()->with('error', 'Nama Bidang sudah digunakan pada OPD tersebut.');
     
             if ($model->insert($data)) {
@@ -76,15 +76,15 @@ class C_Bidang extends BaseController
         {
             $model = new \App\Models\SuperAdmin\M_Bidang();
             $data = $this->request->getPost();
-            if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-    
-            $data['nama_bidang'] = trim($data['nama_bidang']);
-    
-            // Cek duplikasi
-            $existing = $model->where('LOWER(nama_bidang)', strtolower($data['nama_bidang']))
-                              ->where('id_opd', $data['id_opd'])
-                              ->where('id_bidang !=', $id)
-                              ->first();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+
+        $data['bidang'] = trim($data['bidang']);
+
+        // Cek duplikasi
+        $existing = $model->where('LOWER(bidang)', strtolower($data['bidang']))
+                          ->where('id_opd', $data['id_opd'])
+                          ->where('id_bidang !=', $id)
+                          ->first();
             if ($existing) return redirect()->back()->withInput()->with('error', 'Nama Bidang sudah digunakan pada OPD tersebut.');
     
             if ($model->update($id, $data)) {
