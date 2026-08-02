@@ -52,18 +52,27 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="nama_file" class="form-label fw-bold">Nama File <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="nama_file" name="nama_file" placeholder="Masukkan Nama File (contoh: KTP, Surat Pengantar)" required>
+                                <label for="id_file" class="form-label fw-bold">Pilih File <span class="text-danger">*</span></label>
+                                <select class="form-select" id="id_file" name="id_file" required>
+                                    <option value="">-- Pilih File --</option>
+                                    <?php if (!empty($fileList)) : ?>
+                                        <?php foreach ($fileList as $file) : ?>
+                                            <option value="<?= $file['id_file']; ?>">
+                                                <?= esc($file['nama_file']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
                                 <div class="invalid-feedback d-block text-danger d-none">
-                                    Nama File wajib diisi.
+                                    File wajib dipilih.
                                 </div>
                             </div>
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch">
-                                    <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="1">
+                                    <input type="hidden" name="status_aktif" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="aktif">
                                     <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
                                 </div>
                             </div>

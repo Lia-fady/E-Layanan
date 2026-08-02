@@ -20,22 +20,15 @@ class C_ManajemenPengguna extends BaseController
     }
 
     public function index()
-        {
-            $db = \Config\Database::connect();
-            
-            $users = $db->table('c_user_pegawai u')
-                ->select('u.*, g.group as role_name')
-                ->join('c_user_group g', 'g.id = u.id_user_group', 'left')
-                ->get()->getResultArray();
-                
-            $roles = $db->table('c_user_group')->get()->getResultArray();
-    
-            $data = [
-                'users' => $users,
-                'roles' => $roles
-            ];
-            return $this->renderPage('dashboard/superadmin/v_manajemen_pengguna', 'Manajemen Pengguna', 'manajemen_pengguna', $data);
-        }
+    {
+        $model = new \App\Models\SuperAdmin\M_Pengguna();
+        $users = $model->findAll();
+
+        $data = [
+            'users' => $users,
+        ];
+        return $this->renderPage('dashboard/superadmin/v_manajemen_pengguna', 'Manajemen Pengguna', 'manajemen_pengguna', $data);
+    }
 
     public function store()
         {

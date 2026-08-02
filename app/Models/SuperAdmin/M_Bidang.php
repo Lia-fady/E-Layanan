@@ -12,15 +12,15 @@ class M_Bidang extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_bidang', 'bidang', 'status_aktif', 'id_opd', 'kuota_total'];
+    protected $allowedFields    = ['id_bidang', 'id_opd', 'nama_bidang', 'status'];
 
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_bidang.*, m_opd.opd as nama_opd')
+            ->select('m_bidang.*, m_opd.nama_opd as nama_opd')
             ->join('m_opd', 'm_opd.id_opd = m_bidang.id_opd', 'left')
-            ->orderBy('m_opd.opd', 'ASC')
-            ->orderBy('m_bidang.bidang', 'ASC')
+            ->orderBy('m_opd.nama_opd', 'ASC')
+            ->orderBy('m_bidang.nama_bidang', 'ASC')
             ->get()->getResultArray();
     }
 }

@@ -17,9 +17,9 @@ class M_Kuota extends Model
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_kuota.*, m_bidang.bidang as nama_bidang')
+            ->select('m_kuota.*, m_bidang.nama_bidang as nama_bidang')
             ->join('m_bidang', 'm_bidang.id_bidang = m_kuota.id_bidang', 'left')
-            ->orderBy('m_bidang.bidang', 'ASC')
+            ->orderBy('m_bidang.nama_bidang', 'ASC')
             ->get()->getResultArray();
     }
 }

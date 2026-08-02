@@ -31,6 +31,18 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="mb-3">
+                                <label for="id_instansi_pendidikan" class="form-label fw-bold">Instansi Pendidikan <span class="text-danger">*</span></label>
+                                <select class="form-select" id="id_instansi_pendidikan" name="id_instansi_pendidikan" required>
+                                    <option value="">Pilih Instansi Pendidikan</option>
+                                    <?php foreach($instansiList as $instansi): ?>
+                                        <option value="<?= $instansi['id_instansi_pendidikan'] ?>"><?= esc($instansi['instansi_pendidikan']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="invalid-feedback d-block text-danger d-none">
+                                    Instansi Pendidikan wajib dipilih.
+                                </div>
+                            </div>
+                            <div class="mb-3">
                                 <label for="nama_fakultas" class="form-label fw-bold">Nama Fakultas <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="nama_fakultas" name="fakultas" placeholder="Masukkan Nama Fakultas"  required>
                                 <!-- Contoh validasi error -->

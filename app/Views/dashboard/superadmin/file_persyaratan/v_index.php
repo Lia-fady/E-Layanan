@@ -57,14 +57,23 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="edit_nama_file" class="form-label fw-bold">Nama File <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_nama_file" name="nama_file" required>
+                            <label for="edit_id_file" class="form-label fw-bold">File <span class="text-danger">*</span></label>
+                            <select class="form-select" id="edit_id_file" name="id_file" required>
+                                <option value="">-- Pilih File --</option>
+                                <?php if (!empty($fileMasterList)) : ?>
+                                    <?php foreach ($fileMasterList as $file) : ?>
+                                        <option value="<?= $file['id_file']; ?>">
+                                            <?= esc($file['nama_file']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
+                                <input type="hidden" name="status_aktif" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="aktif">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -146,15 +155,15 @@
                                         <!-- Kolom Aksi -->
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
-                                                <a href="<?= base_url('superadmin/file-persyaratan/detail/' . ($row['id_file'] ?? '')) ?>" class="btn btn-sm btn-info text-white" title="Lihat"><i class="fas fa-eye"></i></a>
+                                                <a href="<?= base_url('superadmin/file-persyaratan/detail/' . ($row['id_file_permohonan'] ?? '')) ?>" class="btn btn-sm btn-info text-white" title="Lihat"><i class="fas fa-eye"></i></a>
                                                 <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
-                                                    data-id="<?= $row['id_file'] ?? '' ?>" 
+                                                    data-id="<?= $row['id_file_permohonan'] ?? '' ?>" 
                                                     data-id-jenis="<?= esc($row['id_jenis_permohonan'] ?? '') ?>"
-                                                    data-nama="<?= esc($row['nama_file'] ?? '') ?>" 
+                                                    data-id-file="<?= esc($row['id_file'] ?? '') ?>" 
                                                     data-status="<?= $row['status_aktif'] ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
-                                                    data-id="<?= $row['id_file'] ?? '' ?>" 
+                                                    data-id="<?= $row['id_file_permohonan'] ?? '' ?>" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#deleteModal" 
                                                     title="Hapus"><i class="fas fa-trash"></i></button>
@@ -190,14 +199,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inputs
     const editJenis = document.getElementById('edit_id_jenis_permohonan');
-    const editNama = document.getElementById('edit_nama_file');
+    const editIdFile = document.getElementById('edit_id_file');
     const editStatus = document.getElementById('edit_status');
 
     editButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
             const idJenis = this.getAttribute('data-id-jenis');
-            const nama = this.getAttribute('data-nama');
+            const idFile = this.getAttribute('data-id-file');
             const status = this.getAttribute('data-status');
 
             // Set Form Action
@@ -205,9 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Populate Data
             editJenis.value = idJenis;
-            editNama.value = nama;
+            editIdFile.value = idFile;
             
-            if (status === 'Aktif' || status == '1') {
+            if (status === 'aktif' || status === 'Aktif' || status == '1') {
                 editStatus.checked = true;
             } else {
                 editStatus.checked = false;

@@ -69,13 +69,8 @@
                             <label for="edit_jenis_instansi" class="form-label fw-bold">Jenis Instansi <span class="text-danger">*</span></label>
                             <select class="form-select" id="edit_jenis_instansi" name="jenis_instansi" required>
                                 <option value="">-- Pilih Jenis --</option>
-                                <option value="Universitas">Universitas</option>
-                                <option value="Institut">Institut</option>
-                                <option value="Sekolah Tinggi">Sekolah Tinggi</option>
-                                <option value="Politeknik">Politeknik</option>
-                                <option value="Akademi">Akademi</option>
-                                <option value="Sekolah Menengah Kejuruan">Sekolah Menengah Kejuruan</option>
-                                <option value="Lainnya">Lainnya</option>
+                                <option value="negeri">Negeri</option>
+                                <option value="swasta">Swasta</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">

@@ -45,6 +45,7 @@
                     <div class="invalid-feedback d-block text-danger d-none">
                         Mahasiswa wajib dipilih.
                     </div>
+                </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan Username"  required>
@@ -65,8 +66,8 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch">
-                                    <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="1">
+                                    <input type="hidden" name="status" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="aktif">
                                     <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
                                 </div>
                             </div>

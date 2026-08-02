@@ -12,11 +12,7 @@ class M_Pengguna extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_user_pegawai', 'nama', 'nip', 'password', 'kode_unor',
-        'id_user_group', 'id_bidang', 'status_aktif',
-        'file_tanda_tangan', 'last_login'
-    ];
+    protected $allowedFields    = ['id_user_pegawai', 'nama', 'nip', 'password', 'kode_unor', 'id_user_group', 'id_bidang', 'status_aktif', 'file_tanda_tangan', 'last_login'];
 
     // Dates
     protected $useTimestamps = true;

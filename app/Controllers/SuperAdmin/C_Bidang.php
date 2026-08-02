@@ -24,14 +24,14 @@ class C_Bidang extends BaseController
             $model = new \App\Models\SuperAdmin\M_Bidang();
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
             $data['bidangList'] = $model->getAllWithRelations();
-            $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
+            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_index', 'Master Data Bidang', 'bidang', $data);
         }
 
     public function create()
         {
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
-            $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
+            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_create', 'Tambah Bidang', 'bidang', $data);
         }
 
@@ -39,7 +39,7 @@ class C_Bidang extends BaseController
         {
             $opdModel = new \App\Models\SuperAdmin\M_Opd();
             $bidangModel = new \App\Models\SuperAdmin\M_Bidang();
-            $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
+            $data['opdList'] = $opdModel->where('status', 'aktif')->findAll();
             $data['bidang'] = $bidangModel->find($id);
             return $this->renderPage('dashboard/superadmin/bidang/v_edit', 'Edit Bidang', 'bidang', $data);
         }

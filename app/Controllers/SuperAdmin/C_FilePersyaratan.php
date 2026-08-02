@@ -20,13 +20,16 @@ class C_FilePersyaratan extends BaseController
     }
 
     public function index()
-        {
-            $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan();
-            $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan();
-            $data['jenisPermohonanList'] = $jenisModel->findAll();
-            $data['fileList'] = $filePermohonanModel->getAllWithRelations();
-            return $this->renderPage('dashboard/superadmin/file_persyaratan/v_index', 'Master Data File Persyaratan', 'file_persyaratan', $data);
-        }
+    {
+        $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan();
+        $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan();
+        $fileModel = new \App\Models\SuperAdmin\M_File();
+        
+        $data['jenisPermohonanList'] = $jenisModel->findAll();
+        $data['fileMasterList'] = $fileModel->findAll();
+        $data['fileList'] = $filePermohonanModel->getAllWithRelations();
+        return $this->renderPage('dashboard/superadmin/file_persyaratan/v_index', 'Master Data File Persyaratan', 'file_persyaratan', $data);
+    }
 
     public function create()
         {

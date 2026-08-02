@@ -39,11 +39,14 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label for="jenis_instansi_(negeri/swasta)" class="form-label fw-bold">Jenis Instansi (Negeri/Swasta) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="jenis_instansi_(negeri/swasta)" name="jenis_instansi" placeholder="Masukkan Jenis Instansi (Negeri/Swasta)"  required>
-                                <!-- Contoh validasi error -->
+                                <label for="jenis_instansi" class="form-label fw-bold">Jenis Instansi <span class="text-danger">*</span></label>
+                                <select class="form-select" id="jenis_instansi" name="jenis_instansi" required>
+                                    <option value="">-- Pilih Jenis Instansi --</option>
+                                    <option value="negeri">Negeri</option>
+                                    <option value="swasta">Swasta</option>
+                                </select>
                                 <div class="invalid-feedback d-block text-danger d-none">
-                                    Jenis Instansi (Negeri/Swasta) wajib diisi.
+                                    Jenis Instansi wajib dipilih.
                                 </div>
                             </div>
                             

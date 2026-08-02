@@ -52,8 +52,8 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="1">
+                                <input type="hidden" name="status" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="aktif">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>

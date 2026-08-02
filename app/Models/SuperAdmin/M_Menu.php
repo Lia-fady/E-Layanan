@@ -12,10 +12,7 @@ class M_Menu extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_parent', 'name', 'url', 'position', 'icon',
-        'status', 'target_blank', 'created_by', 'updated_by'
-    ];
+    protected $allowedFields    = ['id', 'id_parent', 'name', 'url', 'position', 'icon', 'status', 'target_blank', 'created_by', 'updated_by'];
 
     // Dates
     protected $useTimestamps = true;

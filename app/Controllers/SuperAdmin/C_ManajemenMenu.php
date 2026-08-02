@@ -27,49 +27,49 @@ class C_ManajemenMenu extends BaseController
         }
 
     public function store()
-        {
-            $model = new \App\Models\SuperAdmin\M_Menu();
-            $data = $this->request->getPost();
-            if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-            try {
-                if (isset($data['status'])) {
-                    $data['status'] = ($data['status'] == 'on') ? 1 : 0;
-                } else {
-                    $data['status'] = 0;
-                }
-                // default position or parent if needed
-                if (empty($data['id_parent'])) $data['id_parent'] = 0;
-                
-                if ($model->insert($data)) {
-                    return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil ditambahkan.');
-                } else {
-                    return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
-                }
-            } catch (\Exception $e) {
-                return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    {
+        $model = new \App\Models\SuperAdmin\M_Menu();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['status'])) {
+                $data['status'] = ($data['status'] == 'on' || $data['status'] == '1') ? 1 : 0;
+            } else {
+                $data['status'] = 0;
             }
+            // default position or parent if needed
+            if (empty($data['id_parent'])) $data['id_parent'] = 0;
+            
+            if ($model->insert($data)) {
+                return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil ditambahkan.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
 
     public function update($id)
-        {
-            $model = new \App\Models\SuperAdmin\M_Menu();
-            $data = $this->request->getPost();
-            if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
-            try {
-                if (isset($data['status'])) {
-                    $data['status'] = ($data['status'] == 'on') ? 1 : 0;
-                } else {
-                    $data['status'] = 0;
-                }
-                if ($model->update($id, $data)) {
-                    return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil diupdate.');
-                } else {
-                    return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
-                }
-            } catch (\Exception $e) {
-                return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    {
+        $model = new \App\Models\SuperAdmin\M_Menu();
+        $data = $this->request->getPost();
+        if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
+        try {
+            if (isset($data['status'])) {
+                $data['status'] = ($data['status'] == 'on' || $data['status'] == '1') ? 1 : 0;
+            } else {
+                $data['status'] = 0;
             }
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
 
     public function delete($id)
         {

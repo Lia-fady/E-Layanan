@@ -12,11 +12,7 @@ class M_Mahasiswa extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_mahasiswa', 'nik', 'nim', 'nama_mahasiswa', 'jenis_kelamin',
-        'tgl_lahir', 'alamat', 'rt', 'rw', 'kelurahan', 'kecamatan',
-        'provinsi', 'no_telp', 'id_instansi_mahasiswa', 'email'
-    ];
+    protected $allowedFields    = ['id_mahasiswa', 'nik', 'nim', 'nama_mahasiswa', 'jenis_kelamin', 'tgl_lahir', 'alamat', 'rt', 'rw', 'kelurahan', 'kecamatan', 'provinsi', 'no_telp', 'id_instansi_mahasiswa', 'email'];
 
     // Dates
     protected $useTimestamps = true;

@@ -24,7 +24,7 @@ $routes->get('auth/login', '\App\Controllers\Sekretariat\C_Auth::login');
 $routes->post('auth/login', '\App\Controllers\Sekretariat\C_Auth::login');
 $routes->get('auth/logout', '\App\Controllers\Sekretariat\C_Auth::logout');
 
-$routes->get('temp/update-db', static function() {
+$routes->get('temp/update-db', static function () {
     $db = \Config\Database::connect();
     $db->table('t_persetujuan_magang')->where('status_persetujuan', 'DITOLAK')->update(['status_persetujuan' => 'PERBAIKAN_BERKAS']);
     echo "Database updated via route.";
@@ -65,7 +65,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->get('batalkan-permohonan/(:num)', 'C_Status::batalkanPermohonan/$1');
     $routes->get('view-file/(:num)', 'C_Status::viewFile/$1');
     $routes->get('view-file/(:num)/(:any)', 'C_Status::viewFile/$1/$2');
-    
+
     // Surat Balasan dari Sekretariat
     $routes->get('download-surat-penerimaan/(:num)', 'C_Status::downloadSuratPenerimaan/$1');
 
@@ -178,16 +178,16 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
 // Super Admin Route Group (dilindungi filter authSekretariat)
 // =========================================================================
 // Fallback redirects untuk mencegah error typo "super admin" atau "super-admin"
-$routes->get('super admin/(.*)', static function($path) {
+$routes->get('super admin/(.*)', static function ($path) {
     return redirect()->to(base_url('superadmin/' . $path));
 });
-$routes->get('super-admin/(.*)', static function($path) {
+$routes->get('super-admin/(.*)', static function ($path) {
     return redirect()->to(base_url('superadmin/' . $path));
 });
-$routes->get('super admin', static function() {
+$routes->get('super admin', static function () {
     return redirect()->to(base_url('superadmin/dashboard'));
 });
-$routes->get('super-admin', static function() {
+$routes->get('super-admin', static function () {
     return redirect()->to(base_url('superadmin/dashboard'));
 });
 
@@ -196,7 +196,7 @@ $routes->group('superadmin', ['filter' => 'authSekretariat'], static function ($
     $routes->get('dashboard', '\App\Controllers\SuperAdmin\C_Dashboard::index');
 
     // Helper untuk mendaftarkan standard CRUD routes
-    $setupStandardRoutes = function($prefix, $controller) use ($routes) {
+    $setupStandardRoutes = function ($prefix, $controller) use ($routes) {
         $routes->get($prefix, "\\App\\Controllers\\SuperAdmin\\$controller::index");
         $routes->get("$prefix/create", "\\App\\Controllers\\SuperAdmin\\$controller::create");
         $routes->post("$prefix/store", "\\App\\Controllers\\SuperAdmin\\$controller::store");
@@ -211,7 +211,7 @@ $routes->group('superadmin', ['filter' => 'authSekretariat'], static function ($
     // Manajemen
     $setupStandardRoutes('manajemen-menu', 'C_ManajemenMenu');
     $setupStandardRoutes('manajemen-pengguna', 'C_ManajemenPengguna');
-    
+
     // Master Data
     $setupStandardRoutes('fakultas', 'C_Fakultas');
     $setupStandardRoutes('program-studi', 'C_Prodi');

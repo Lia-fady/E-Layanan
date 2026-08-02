@@ -52,7 +52,7 @@
                                 <?php if (!empty($bidangList)) : ?>
                                     <?php foreach ($bidangList as $bidang) : ?>
                                         <option value="<?= $bidang['id_bidang']; ?>">
-                                            <?= esc($bidang['bidang']); ?>
+                                            <?= esc($bidang['nama_bidang']); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -65,8 +65,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
+                                <input type="hidden" name="status_aktif" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="aktif">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                         <td><?= esc($row['kuota']) ?> Orang</td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == 'aktif' || $row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
                                             </div>
                                         </td>
                                         <td class="col-aksi">
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
             editBidang.value = idBidang;
             editKuota.value = kuota;
             
-            if (status === '1') {
+            if (status === 'aktif' || status === 'Aktif' || status == '1') {
                 editStatus.checked = true;
             } else {
                 editStatus.checked = false;

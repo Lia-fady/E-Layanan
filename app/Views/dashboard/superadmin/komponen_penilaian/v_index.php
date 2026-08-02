@@ -131,8 +131,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!empty($komponenList)) : ?>
-                                <?php foreach ($komponenList as $key => $row) : ?>
+                            <?php if (!empty($komponenPenilaianList)) : ?>
+                                <?php foreach ($komponenPenilaianList as $key => $row) : ?>
                                     <tr>
                                         <td><?= $key + 1 ?></td>
                                         <td><?= esc($row['komponen_penilaian']) ?></td>

@@ -47,13 +47,13 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="edit_opd" class="form-label fw-bold">Nama OPD <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_opd" name="opd" required>
+                            <input type="text" class="form-control" id="edit_opd" name="nama_opd" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
+                                <input type="hidden" name="status" value="nonaktif">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="aktif">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -119,18 +119,18 @@
                                 <?php foreach ($opdList as $key => $row) : ?>
                                     <tr>
                                         <td class="col-no"><?= $key + 1 ?></td>
-                                        <td><?= esc($row['opd']) ?></td>
+                                        <td><?= esc($row['nama_opd']) ?></td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
                                             </div>
                                         </td>
                                         <td class="col-aksi">
                                             <div class="d-flex gap-1 justify-content-center">
                                                 <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
                                                     data-id="<?= $row['id_opd'] ?>" 
-                                                    data-opd="<?= esc($row['opd']) ?>" 
-                                                    data-status="<?= $row['status_aktif'] ?>" 
+                                                    data-opd="<?= esc($row['nama_opd']) ?>" 
+                                                    data-status="<?= $row['status'] ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
                                                     data-id="<?= $row['id_opd'] ?>" 
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Populate Data
             editOpd.value = opd;
             
-            if (status === '1') {
+            if (status === 'aktif' || status === 'Aktif' || status == '1') {
                 editStatus.checked = true;
             } else {
                 editStatus.checked = false;

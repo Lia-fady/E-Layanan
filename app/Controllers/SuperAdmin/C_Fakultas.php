@@ -22,7 +22,15 @@ class C_Fakultas extends BaseController
     public function index()
         {
             $model = new \App\Models\SuperAdmin\M_Fakultas();
-            $data['fakultasList'] = $model->findAll();
+            // Perform JOIN to get instansi_pendidikan name
+            $data['fakultasList'] = $model->select('m_fakultas.*, m_instansi_pendidikan.instansi_pendidikan')
+                                          ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = m_fakultas.id_instansi_pendidikan', 'left')
+                                          ->findAll();
+            
+            // Get instansi list for inline edit modal
+            $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan();
+            $data['instansiList'] = $instansiModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+            
             return $this->renderPage('dashboard/superadmin/fakultas/v_index', 'Master Data Fakultas', 'fakultas', $data);
         }
 

@@ -45,11 +45,20 @@
             <form id="formEditInline" action="" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
+                            <label for="edit_id_instansi_pendidikan" class="form-label fw-bold">Instansi Pendidikan <span class="text-danger">*</span></label>
+                            <select class="form-select" id="edit_id_instansi_pendidikan" name="id_instansi_pendidikan" required>
+                                <option value="">Pilih Instansi</option>
+                                <?php if(isset($instansiList)): foreach($instansiList as $instansi): ?>
+                                    <option value="<?= $instansi['id_instansi_pendidikan'] ?>"><?= esc($instansi['instansi_pendidikan']) ?></option>
+                                <?php endforeach; endif; ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
                             <label for="edit_nama_fakultas" class="form-label fw-bold">Nama Fakultas <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="edit_nama_fakultas" name="fakultas" required>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
                                 <input type="hidden" name="status" value="0">
@@ -109,6 +118,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="col-no">No</th>
+                                <th>Instansi Pendidikan</th>
                                 <th>Nama Fakultas</th>
                                 <th class="col-status">Status</th>
                                 <th>Dibuat</th>
@@ -120,6 +130,7 @@
                                 <?php foreach ($fakultasList as $key => $row) : ?>
                                     <tr>
                                         <td class="col-no"><?= $key + 1 ?></td>
+                                        <td><?= esc($row['instansi_pendidikan'] ?? '-') ?></td>
                                         <td><?= esc($row['fakultas']) ?></td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
@@ -131,6 +142,7 @@
                                             <div class="d-flex gap-1 justify-content-center">
                                                 <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
                                                     data-id="<?= $row['id_fakultas'] ?>" 
+                                                    data-id-instansi="<?= $row['id_instansi_pendidikan'] ?>"
                                                     data-nama="<?= esc($row['fakultas']) ?>" 
                                                     data-status="<?= $row['status'] ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
@@ -170,12 +182,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelEditBtns = document.querySelectorAll('.btn-cancel-edit');
     
     // Inputs
+    const editIdInstansi = document.getElementById('edit_id_instansi_pendidikan');
     const editNamaFakultas = document.getElementById('edit_nama_fakultas');
     const editStatus = document.getElementById('edit_status');
 
     editButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
+            const idInstansi = this.getAttribute('data-id-instansi');
             const nama = this.getAttribute('data-nama');
             const status = this.getAttribute('data-status');
 
@@ -183,6 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formEditInline.action = `<?= base_url('superadmin/fakultas/update') ?>/${id}`;
 
             // Populate Data
+            editIdInstansi.value = idInstansi;
             editNamaFakultas.value = nama;
             
             if (status === 'aktif' || status == '1') {

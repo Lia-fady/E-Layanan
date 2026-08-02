@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah Komponen Penilaian</h3>
             </div>
-            <form action="#" method="post">
+            <form action="<?= base_url('superadmin/komponen-penilaian/store') ?>" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
