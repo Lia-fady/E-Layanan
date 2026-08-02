@@ -1,0 +1,948 @@
+{
+  "operations": [
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/FakultasModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Api/M_FakultasApi.php",
+      "old_class": "FakultasModel",
+      "new_class": "M_FakultasApi",
+      "new_namespace": "App\\Models\\Api"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/FakultasModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/InstansiMahasiswaModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Auth/M_InstansiMahasiswaAuth.php",
+      "old_class": "InstansiMahasiswaModel",
+      "new_class": "M_InstansiMahasiswaAuth",
+      "new_namespace": "App\\Models\\Auth"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/InstansiMahasiswaModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/InstansiPendidikanModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Auth/M_InstansiPendidikanAuth.php",
+      "old_class": "InstansiPendidikanModel",
+      "new_class": "M_InstansiPendidikanAuth",
+      "new_namespace": "App\\Models\\Auth"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/InstansiPendidikanModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/LogbookMagangModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_LogbookMagangMahasiswa.php",
+      "old_class": "LogbookMagangModel",
+      "new_class": "M_LogbookMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/LogbookMagangModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/MahasiswaModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Auth/M_MahasiswaAuth.php",
+      "old_class": "MahasiswaModel",
+      "new_class": "M_MahasiswaAuth",
+      "new_namespace": "App\\Models\\Auth"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/MahasiswaModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/M_Dashboard.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_DashboardSuperAdmin.php",
+      "old_class": "M_Dashboard",
+      "new_class": "M_DashboardSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/M_Dashboard.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/PenempatanMagangModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PenempatanMagangMahasiswa.php",
+      "old_class": "PenempatanMagangModel",
+      "new_class": "M_PenempatanMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/PenempatanMagangModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/PermohonanMagangModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PermohonanMagangMahasiswa.php",
+      "old_class": "PermohonanMagangModel",
+      "new_class": "M_PermohonanMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/PermohonanMagangModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Admin/M_PermohonanMagangAdmin.php",
+      "old_class": "PermohonanMagangModel",
+      "new_class": "M_PermohonanMagangAdmin",
+      "new_namespace": "App\\Models\\Admin"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/PermohonanMagangModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/ProdiModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Api/M_ProdiApi.php",
+      "old_class": "ProdiModel",
+      "new_class": "M_ProdiApi",
+      "new_namespace": "App\\Models\\Api"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/ProdiModel.php"
+    },
+    {
+      "type": "copy",
+      "src": "d:/Data/sistem_magang/app/Models/UserMahasiswaModel.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Auth/M_UserMahasiswaAuth.php",
+      "old_class": "UserMahasiswaModel",
+      "new_class": "M_UserMahasiswaAuth",
+      "new_namespace": "App\\Models\\Auth"
+    },
+    {
+      "type": "delete",
+      "src": "d:/Data/sistem_magang/app/Models/UserMahasiswaModel.php"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Kabid/M_Penempatan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Kabid/M_PenempatanKabid.php",
+      "old_class": "M_Penempatan",
+      "new_class": "M_PenempatanKabid",
+      "new_namespace": "App\\Models\\Kabid"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_Fakultas.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FakultasMahasiswa.php",
+      "old_class": "M_Fakultas",
+      "new_class": "M_FakultasMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FilePermohonan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FilePermohonanMahasiswa.php",
+      "old_class": "M_FilePermohonan",
+      "new_class": "M_FilePermohonanMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FilePermohonanMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FilePermohonanMagangMahasiswa.php",
+      "old_class": "M_FilePermohonanMagang",
+      "new_class": "M_FilePermohonanMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FileProsesMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FileProsesMagangMahasiswa.php",
+      "old_class": "M_FileProsesMagang",
+      "new_class": "M_FileProsesMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_InstansiPendidikan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_InstansiPendidikanMahasiswa.php",
+      "old_class": "M_InstansiPendidikan",
+      "new_class": "M_InstansiPendidikanMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_LogbookMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_LogbookMagangMahasiswa.php",
+      "old_class": "M_LogbookMagang",
+      "new_class": "M_LogbookMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PenempatanMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PenempatanMagangMahasiswa.php",
+      "old_class": "M_PenempatanMagang",
+      "new_class": "M_PenempatanMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PermohonanMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_PermohonanMagangMahasiswa.php",
+      "old_class": "M_PermohonanMagang",
+      "new_class": "M_PermohonanMagangMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_Prodi.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Mahasiswa/M_ProdiMahasiswa.php",
+      "old_class": "M_Prodi",
+      "new_class": "M_ProdiMahasiswa",
+      "new_namespace": "App\\Models\\Mahasiswa"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_Auth.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_AuthSekretariat.php",
+      "old_class": "M_Auth",
+      "new_class": "M_AuthSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_Disposisi.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_DisposisiSekretariat.php",
+      "old_class": "M_Disposisi",
+      "new_class": "M_DisposisiSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_File.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_FileSekretariat.php",
+      "old_class": "M_File",
+      "new_class": "M_FileSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_FileProsesMagang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_FileProsesMagangSekretariat.php",
+      "old_class": "M_FileProsesMagang",
+      "new_class": "M_FileProsesMagangSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_Penilaian.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_PenilaianSekretariat.php",
+      "old_class": "M_Penilaian",
+      "new_class": "M_PenilaianSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_Sertifikat.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_SertifikatSekretariat.php",
+      "old_class": "M_Sertifikat",
+      "new_class": "M_SertifikatSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_StatusPermohonan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_StatusPermohonanSekretariat.php",
+      "old_class": "M_StatusPermohonan",
+      "new_class": "M_StatusPermohonanSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/Sekretariat/M_Verifikasi.php",
+      "dest": "d:/Data/sistem_magang/app/Models/Sekretariat/M_VerifikasiSekretariat.php",
+      "old_class": "M_Verifikasi",
+      "new_class": "M_VerifikasiSekretariat",
+      "new_namespace": "App\\Models\\Sekretariat"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Bidang.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_BidangSuperAdmin.php",
+      "old_class": "M_Bidang",
+      "new_class": "M_BidangSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Fakultas.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_FakultasSuperAdmin.php",
+      "old_class": "M_Fakultas",
+      "new_class": "M_FakultasSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_File.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_FileSuperAdmin.php",
+      "old_class": "M_File",
+      "new_class": "M_FileSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_FilePermohonan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_FilePermohonanSuperAdmin.php",
+      "old_class": "M_FilePermohonan",
+      "new_class": "M_FilePermohonanSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_InstansiPendidikan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_InstansiPendidikanSuperAdmin.php",
+      "old_class": "M_InstansiPendidikan",
+      "new_class": "M_InstansiPendidikanSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_JenisPermohonan.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_JenisPermohonanSuperAdmin.php",
+      "old_class": "M_JenisPermohonan",
+      "new_class": "M_JenisPermohonanSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_KomponenPenilaian.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_KomponenPenilaianSuperAdmin.php",
+      "old_class": "M_KomponenPenilaian",
+      "new_class": "M_KomponenPenilaianSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Kuota.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_KuotaSuperAdmin.php",
+      "old_class": "M_Kuota",
+      "new_class": "M_KuotaSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Mahasiswa.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_MahasiswaSuperAdmin.php",
+      "old_class": "M_Mahasiswa",
+      "new_class": "M_MahasiswaSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Menu.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_MenuSuperAdmin.php",
+      "old_class": "M_Menu",
+      "new_class": "M_MenuSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Opd.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_OpdSuperAdmin.php",
+      "old_class": "M_Opd",
+      "new_class": "M_OpdSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Pengguna.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_PenggunaSuperAdmin.php",
+      "old_class": "M_Pengguna",
+      "new_class": "M_PenggunaSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Prodi.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_ProdiSuperAdmin.php",
+      "old_class": "M_Prodi",
+      "new_class": "M_ProdiSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    },
+    {
+      "type": "rename",
+      "src": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_UserMahasiswa.php",
+      "dest": "d:/Data/sistem_magang/app/Models/SuperAdmin/M_UserMahasiswaSuperAdmin.php",
+      "old_class": "M_UserMahasiswa",
+      "new_class": "M_UserMahasiswaSuperAdmin",
+      "new_namespace": "App\\Models\\SuperAdmin"
+    }
+  ],
+  "replacements": {
+    "d:/Data/sistem_magang/app/Controllers/ApiController.php": [
+      {
+        "old_class": "FakultasModel",
+        "new_class": "M_FakultasApi",
+        "new_namespace": "App\\Models\\Api",
+        "old_namespace": "App\\Models\\FakultasModel"
+      },
+      {
+        "old_class": "ProdiModel",
+        "new_class": "M_ProdiApi",
+        "new_namespace": "App\\Models\\Api",
+        "old_namespace": "App\\Models\\ProdiModel"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/AuthController.php": [
+      {
+        "old_class": "InstansiMahasiswaModel",
+        "new_class": "M_InstansiMahasiswaAuth",
+        "new_namespace": "App\\Models\\Auth",
+        "old_namespace": "App\\Models\\InstansiMahasiswaModel"
+      },
+      {
+        "old_class": "InstansiPendidikanModel",
+        "new_class": "M_InstansiPendidikanAuth",
+        "new_namespace": "App\\Models\\Auth",
+        "old_namespace": "App\\Models\\InstansiPendidikanModel"
+      },
+      {
+        "old_class": "MahasiswaModel",
+        "new_class": "M_MahasiswaAuth",
+        "new_namespace": "App\\Models\\Auth",
+        "old_namespace": "App\\Models\\MahasiswaModel"
+      },
+      {
+        "old_class": "UserMahasiswaModel",
+        "new_class": "M_UserMahasiswaAuth",
+        "new_namespace": "App\\Models\\Auth",
+        "old_namespace": "App\\Models\\UserMahasiswaModel"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Mahasiswa/C_BaseMahasiswa.php": [
+      {
+        "old_class": "LogbookMagangModel",
+        "new_class": "M_LogbookMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\LogbookMagangModel"
+      },
+      {
+        "old_class": "PenempatanMagangModel",
+        "new_class": "M_PenempatanMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\PenempatanMagangModel"
+      },
+      {
+        "old_class": "PermohonanMagangModel",
+        "new_class": "M_PermohonanMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\PermohonanMagangModel"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Dashboard.php": [
+      {
+        "old_class": "M_Dashboard",
+        "new_class": "M_DashboardSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\M_Dashboard"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Admin.php": [
+      {
+        "old_class": "PermohonanMagangModel",
+        "new_class": "M_PermohonanMagangAdmin",
+        "new_namespace": "App\\Models\\Admin",
+        "old_namespace": "App\\Models\\PermohonanMagangModel"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Kabid/C_DashboardKabid.php": [
+      {
+        "old_class": "M_Penempatan",
+        "new_class": "M_PenempatanKabid",
+        "new_namespace": "App\\Models\\Kabid",
+        "old_namespace": "App\\Models\\Kabid\\M_Penempatan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Kabid/C_DisposisiMasuk.php": [
+      {
+        "old_class": "M_Penempatan",
+        "new_class": "M_PenempatanKabid",
+        "new_namespace": "App\\Models\\Kabid",
+        "old_namespace": "App\\Models\\Kabid\\M_Penempatan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/M_Dashboard.php": [
+      {
+        "old_class": "M_Penempatan",
+        "new_class": "M_PenempatanKabid",
+        "new_namespace": "App\\Models\\Kabid",
+        "old_namespace": "App\\Models\\Kabid\\M_Penempatan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Fakultas.php": [
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_Fakultas"
+      },
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_InstansiPendidikan"
+      },
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Fakultas"
+      },
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_InstansiPendidikan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Prodi.php": [
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_Fakultas"
+      },
+      {
+        "old_class": "M_Prodi",
+        "new_class": "M_ProdiMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_Prodi"
+      },
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Fakultas"
+      },
+      {
+        "old_class": "M_Prodi",
+        "new_class": "M_ProdiSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Prodi"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Fakultas.php": [
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_Fakultas"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_FilePersyaratan.php": [
+      {
+        "old_class": "M_FilePermohonan",
+        "new_class": "M_FilePermohonanMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FilePermohonan"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      },
+      {
+        "old_class": "M_FilePermohonan",
+        "new_class": "M_FilePermohonanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_FilePermohonan"
+      },
+      {
+        "old_class": "M_JenisPermohonan",
+        "new_class": "M_JenisPermohonanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_JenisPermohonan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/SuperAdmin/M_FilePermohonan.php": [
+      {
+        "old_class": "M_FilePermohonan",
+        "new_class": "M_FilePermohonanMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FilePermohonan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Kabid/C_FileProsesMagangKabid.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      },
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Kabid/C_UploadDokumen.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      },
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_FileProsesMagang.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      },
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_UploadSuratPenerimaan.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      },
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_FileProsesMagang"
+      },
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Sekretariat/M_FileProsesMagang.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_FileProsesMagang"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_InstansiPendidikan.php": [
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_InstansiPendidikan"
+      },
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_InstansiPendidikan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/SuperAdmin/M_InstansiPendidikan.php": [
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_InstansiPendidikan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/SuperAdmin/M_Prodi.php": [
+      {
+        "old_class": "M_Prodi",
+        "new_class": "M_ProdiMahasiswa",
+        "new_namespace": "App\\Models\\Mahasiswa",
+        "old_namespace": "App\\Models\\Mahasiswa\\M_Prodi"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_Auth.php": [
+      {
+        "old_class": "M_Auth",
+        "new_class": "M_AuthSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Auth"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_Verifikasi.php": [
+      {
+        "old_class": "M_Disposisi",
+        "new_class": "M_DisposisiSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Disposisi"
+      },
+      {
+        "old_class": "M_Verifikasi",
+        "new_class": "M_VerifikasiSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Verifikasi"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/SuperAdmin/M_File.php": [
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FileProsesMagang.php": [
+      {
+        "old_class": "M_FileProsesMagang",
+        "new_class": "M_FileProsesMagangSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_FileProsesMagang"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_Penilaian.php": [
+      {
+        "old_class": "M_Penilaian",
+        "new_class": "M_PenilaianSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Penilaian"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_Sertifikat.php": [
+      {
+        "old_class": "M_Sertifikat",
+        "new_class": "M_SertifikatSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Sertifikat"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_StatusPermohonan.php": [
+      {
+        "old_class": "M_StatusPermohonan",
+        "new_class": "M_StatusPermohonanSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_StatusPermohonan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/Sekretariat/C_Riwayat.php": [
+      {
+        "old_class": "M_Verifikasi",
+        "new_class": "M_VerifikasiSekretariat",
+        "new_namespace": "App\\Models\\Sekretariat",
+        "old_namespace": "App\\Models\\Sekretariat\\M_Verifikasi"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Bidang.php": [
+      {
+        "old_class": "M_Bidang",
+        "new_class": "M_BidangSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Bidang"
+      },
+      {
+        "old_class": "M_Opd",
+        "new_class": "M_OpdSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Opd"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Kuota.php": [
+      {
+        "old_class": "M_Bidang",
+        "new_class": "M_BidangSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Bidang"
+      },
+      {
+        "old_class": "M_Kuota",
+        "new_class": "M_KuotaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Kuota"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_Fakultas.php": [
+      {
+        "old_class": "M_Fakultas",
+        "new_class": "M_FakultasSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Fakultas"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Sekretariat/M_File.php": [
+      {
+        "old_class": "M_File",
+        "new_class": "M_FileSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_File"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_FilePermohonan.php": [
+      {
+        "old_class": "M_FilePermohonan",
+        "new_class": "M_FilePermohonanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_FilePermohonan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_InstansiPendidikan.php": [
+      {
+        "old_class": "M_InstansiPendidikan",
+        "new_class": "M_InstansiPendidikanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_InstansiPendidikan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_JenisPermohonan.php": [
+      {
+        "old_class": "M_JenisPermohonan",
+        "new_class": "M_JenisPermohonanSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_JenisPermohonan"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_KomponenPenilaian.php": [
+      {
+        "old_class": "M_KomponenPenilaian",
+        "new_class": "M_KomponenPenilaianSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_KomponenPenilaian"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Mahasiswa.php": [
+      {
+        "old_class": "M_Mahasiswa",
+        "new_class": "M_MahasiswaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Mahasiswa"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_UserMahasiswa.php": [
+      {
+        "old_class": "M_Mahasiswa",
+        "new_class": "M_MahasiswaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Mahasiswa"
+      },
+      {
+        "old_class": "M_UserMahasiswa",
+        "new_class": "M_UserMahasiswaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_UserMahasiswa"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_Mahasiswa.php": [
+      {
+        "old_class": "M_Mahasiswa",
+        "new_class": "M_MahasiswaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Mahasiswa"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_ManajemenMenu.php": [
+      {
+        "old_class": "M_Menu",
+        "new_class": "M_MenuSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Menu"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_Opd.php": [
+      {
+        "old_class": "M_Opd",
+        "new_class": "M_OpdSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Opd"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Controllers/SuperAdmin/C_ManajemenPengguna.php": [
+      {
+        "old_class": "M_Pengguna",
+        "new_class": "M_PenggunaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Pengguna"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_Prodi.php": [
+      {
+        "old_class": "M_Prodi",
+        "new_class": "M_ProdiSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_Prodi"
+      }
+    ],
+    "d:/Data/sistem_magang/app/Models/Mahasiswa/M_UserMahasiswa.php": [
+      {
+        "old_class": "M_UserMahasiswa",
+        "new_class": "M_UserMahasiswaSuperAdmin",
+        "new_namespace": "App\\Models\\SuperAdmin",
+        "old_namespace": "App\\Models\\SuperAdmin\\M_UserMahasiswa"
+      }
+    ]
+  }
+}

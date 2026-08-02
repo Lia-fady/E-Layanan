@@ -1,0 +1,68 @@
+{
+  "usage": {
+    "PermohonanMagangModel": [
+      "Mahasiswa",
+      "RootControllers"
+    ],
+    "FakultasModel": [
+      "Api"
+    ],
+    "ProdiModel": [
+      "Api"
+    ],
+    "InstansiMahasiswaModel": [
+      "Auth"
+    ],
+    "InstansiPendidikanModel": [
+      "Auth"
+    ],
+    "MahasiswaModel": [
+      "Auth"
+    ],
+    "UserMahasiswaModel": [
+      "Auth"
+    ],
+    "LogbookMagangModel": [
+      "Mahasiswa"
+    ],
+    "PenempatanMagangModel": [
+      "Mahasiswa"
+    ],
+    "M_Dashboard": [
+      "SuperAdmin"
+    ]
+  },
+  "references": {
+    "PermohonanMagangModel": [
+      "Controllers/Admin.php",
+      "Controllers/Mahasiswa/C_BaseMahasiswa.php"
+    ],
+    "FakultasModel": [
+      "Controllers/ApiController.php"
+    ],
+    "ProdiModel": [
+      "Controllers/ApiController.php"
+    ],
+    "InstansiMahasiswaModel": [
+      "Controllers/AuthController.php"
+    ],
+    "InstansiPendidikanModel": [
+      "Controllers/AuthController.php"
+    ],
+    "MahasiswaModel": [
+      "Controllers/AuthController.php"
+    ],
+    "UserMahasiswaModel": [
+      "Controllers/AuthController.php"
+    ],
+    "LogbookMagangModel": [
+      "Controllers/Mahasiswa/C_BaseMahasiswa.php"
+    ],
+    "PenempatanMagangModel": [
+      "Controllers/Mahasiswa/C_BaseMahasiswa.php"
+    ],
+    "M_Dashboard": [
+      "Controllers/SuperAdmin/C_Dashboard.php"
+    ]
+  }
+}
