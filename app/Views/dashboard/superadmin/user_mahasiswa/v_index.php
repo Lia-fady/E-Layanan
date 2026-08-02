@@ -76,8 +76,8 @@
                         <div class="col-md-3 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status" value="nonaktif">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="aktif">
+                                <input type="hidden" name="status" value="NONAKTIF">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="AKTIF">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -116,8 +116,8 @@
                     <div class="col-md-2 text-end">
                         <select class="form-select form-select-sm" id="filterStatus">
                             <option value="all">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
+                            <option value="AKTIF">Aktif</option>
+                            <option value="NONAKTIF">Nonaktif</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -148,7 +148,7 @@
                                         <td><?= esc($row['username']) ?></td>
                                         <td>
                                             <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'AKTIF' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
                                             </div>
                                         </td>
                                         <td>
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             editUsername.value = username;
             editPassword.value = ''; // Kosongkan saat diedit
             
-            if (status === 'aktif' || status == '1') {
+            if (status === 'AKTIF' || status == '1') {
                 editStatus.checked = true;
             } else {
                 editStatus.checked = false;
