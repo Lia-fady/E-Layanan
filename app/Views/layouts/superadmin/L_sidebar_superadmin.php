@@ -132,7 +132,7 @@
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'opd') ? 'active' : '' ?>" href="<?= base_url('superadmin/opd') ?>">OPD</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'bidang') ? 'active' : '' ?>" href="<?= base_url('superadmin/bidang') ?>">Bidang</a>
                     <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'kuota') ? 'active' : '' ?>" href="<?= base_url('superadmin/kuota') ?>">Kuota</a>
-                    <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'komponen_penilaian') ? 'active' : '' ?>" href="<?= base_url('superadmin/komponen-penilaian') ?>">Komponen Penilaian</a>
+                    <!-- <a class="collapse-item <?= (isset($active_menu) && $active_menu == 'komponen_penilaian') ? 'active' : '' ?>" href="<?= base_url('superadmin/komponen-penilaian') ?>">Komponen Penilaian</a> -->
                 </div>
             </div>
         </li>
