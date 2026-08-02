@@ -52,7 +52,7 @@
                                 <?php if (!empty($bidangList)) : ?>
                                     <?php foreach ($bidangList as $bidang) : ?>
                                         <option value="<?= $bidang['id_bidang']; ?>">
-                                            <?= esc($bidang['nama_bidang']); ?>
+                                            <?= esc($bidang['bidang']); ?>
                                         </option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -133,7 +133,7 @@
                                 <?php foreach ($kuotaList as $key => $row) : ?>
                                     <tr>
                                         <td class="col-no"><?= $key + 1 ?></td>
-                                        <td><?= esc($row['nama_bidang'] ?? '-') ?></td>
+                                        <td><?= esc($row['bidang'] ?? '-') ?></td>
                                         <td><?= esc($row['kuota']) ?> Orang</td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">

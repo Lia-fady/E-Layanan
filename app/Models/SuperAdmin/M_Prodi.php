@@ -23,7 +23,7 @@ class M_Prodi extends Model
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_prodi.*, m_fakultas.fakultas as nama_fakultas')
+            ->select('m_prodi.*, m_fakultas.fakultas')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
             ->orderBy('m_fakultas.fakultas', 'ASC')
             ->orderBy('m_prodi.prodi', 'ASC')

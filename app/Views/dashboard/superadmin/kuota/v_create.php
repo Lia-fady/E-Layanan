@@ -35,7 +35,7 @@
                                 <select class="form-select" id="id_bidang" name="id_bidang" required>
                                     <option value="">-- Pilih Bidang --</option>
                                     <?php if(isset($bidangList)): foreach($bidangList as $bid): ?>
-                                    <option value="<?= $bid['id_bidang'] ?>"><?= $bid['nama_bidang'] ?></option>
+                                    <option value="<?= $bid['id_bidang'] ?>"><?= $bid['bidang'] ?></option>
                                     <?php endforeach; endif; ?>
                                 </select>
                                 <div class="invalid-feedback d-block text-danger d-none">

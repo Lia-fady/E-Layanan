@@ -69,11 +69,11 @@ class C_Opd extends BaseController
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
 
-        if (isset($data['nama_opd'])) {
-            $data['nama_opd'] = trim($data['nama_opd']);
+        if (isset($data['opd'])) {
+            $data['opd'] = trim($data['opd']);
             
             // Cek duplikasi
-            $existing = $model->where('LOWER(nama_opd)', strtolower($data['nama_opd']))->where('id_opd !=', $id)->first();
+            $existing = $model->where('LOWER(opd)', strtolower($data['opd']))->where('id_opd !=', $id)->first();
             if ($existing) return redirect()->back()->withInput()->with('error', 'Data OPD sudah tersedia.');
         }
 

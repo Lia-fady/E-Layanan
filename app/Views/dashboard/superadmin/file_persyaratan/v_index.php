@@ -143,7 +143,7 @@
                                         <!-- Kolom Nama File -->
                                         <td><?= $row['nama_file']; ?></td>
                                         <!-- Kolom Jenis Permohonan -->
-                                        <td><?= $row['nama_jenis_permohonan'] ?? '-'; ?></td>
+                                        <td><?= $row['jenis_permohonan'] ?? '-'; ?></td>
                                         <!-- Kolom Status -->
                                         <td class="text-center">
                                             <?php if (isset($row['status_aktif']) && ($row['status_aktif'] == 'Aktif' || $row['status_aktif'] == '1')) : ?>

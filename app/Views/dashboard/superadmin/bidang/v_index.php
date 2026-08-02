@@ -92,11 +92,11 @@
                                 <?php foreach ($bidangList as $key => $row) : ?>
                                     <tr>
                                         <td class="col-no"><?= $key + 1 ?></td>
-                                        <td><?= esc($row['nama_opd']) ?></td>
-                                        <td><?= esc($row['nama_bidang']) ?></td>
+                                        <td><?= esc($row['opd']) ?></td>
+                                        <td><?= esc($row['bidang']) ?></td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == 'aktif' || $row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
                                             </div>
                                         </td>
                                         <td class="col-aksi">
@@ -104,8 +104,8 @@
                                                 <button type="button" class="btn btn-sm btn-warning text-white btn-edit-inline" 
                                                     data-id="<?= $row['id_bidang'] ?>" 
                                                     data-opd="<?= $row['id_opd'] ?>"
-                                                    data-nama="<?= esc($row['nama_bidang']) ?>"
-                                                    data-status="<?= $row['status'] ?>"
+                                                    data-nama="<?= esc($row['bidang']) ?>"
+                                                    data-status="<?= $row['status_aktif'] ?>"
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" data-id="<?= $row['id_bidang'] ?>" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Hapus"><i class="fas fa-trash"></i></button>
                                             </div>
@@ -137,18 +137,18 @@
                         <select class="form-select" id="edit_id_opd" name="id_opd" required>
                             <option value="">-- Pilih OPD --</option>
                             <?php foreach ($opdList as $opd) : ?>
-                                <option value="<?= $opd['id_opd'] ?>"><?= esc($opd['nama_opd']) ?></option>
+                                <option value="<?= $opd['id_opd'] ?>"><?= esc($opd['opd']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="edit_nama_bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="edit_nama_bidang" name="nama_bidang" required>
+                        <input type="text" class="form-control" id="edit_nama_bidang" name="bidang" required>
                     </div>
                     <div class="mb-3 form-check form-switch">
-                        <input type="hidden" name="status" value="nonaktif">
-                        <input type="checkbox" class="form-check-input" id="edit_status" name="status" value="aktif">
-                        <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
+                        <input type="hidden" name="status_aktif" value="nonaktif">
+                        <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="aktif">
+                        <label class="form-check-label" for="edit_status">Aktif</label>
                     </div>
                 </div>
                 <div class="card-footer bg-white border-top border-light">

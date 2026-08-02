@@ -129,7 +129,7 @@
                                 <?php foreach ($prodiList as $key => $row) : ?>
                                     <tr>
                                         <td class="col-no"><?= $key + 1 ?></td>
-                                        <td><?= esc($row['nama_fakultas'] ?? '-') ?></td>
+                                        <td><?= esc($row['fakultas'] ?? '-') ?></td>
                                         <td><?= esc($row['prodi']) ?></td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
