@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mahasiswa;
 
-class C_Status extends C_BaseMahasiswa
+class C_Status_Mahasiswa extends C_Base_Mahasiswa
 {
     public function statusPermohonan()
     {

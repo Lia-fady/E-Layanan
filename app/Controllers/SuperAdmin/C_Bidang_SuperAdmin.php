@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Bidang extends BaseController
+class C_Bidang_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,8 +21,8 @@ class C_Bidang extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
-            $opdModel = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
+            $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data['bidangList'] = $model->getAllWithRelations();
             $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_index', 'Master Data Bidang', 'bidang', $data);
@@ -30,15 +30,15 @@ class C_Bidang extends BaseController
 
     public function create()
         {
-            $opdModel = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             return $this->renderPage('dashboard/superadmin/bidang/v_create', 'Tambah Bidang', 'bidang', $data);
         }
 
     public function edit($id = null)
         {
-            $opdModel = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
-            $bidangModel = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
+            $bidangModel = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
             $data['bidang'] = $bidangModel->find($id);
             return $this->renderPage('dashboard/superadmin/bidang/v_edit', 'Edit Bidang', 'bidang', $data);
@@ -46,14 +46,14 @@ class C_Bidang extends BaseController
 
     public function detail($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data['bidang'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/bidang/v_detail', 'Detail Bidang', 'bidang', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
 
@@ -74,7 +74,7 @@ class C_Bidang extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
 
@@ -96,7 +96,7 @@ class C_Bidang extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/bidang'))->with('success', 'Data berhasil dihapus.');

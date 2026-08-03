@@ -1,9 +1,9 @@
 <?php
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Bidang;
 
 use App\Controllers\BaseController;
 
-class C_KuotaBidang extends BaseController
+class C_Kuota_Bidang extends BaseController
 {
     public function index()
     {
@@ -44,7 +44,7 @@ class C_KuotaBidang extends BaseController
             'terisi'      => $activeCount
         ];
 
-        return view('dashboard/kabid/v_kuota_bidang', $data);
+        return view('dashboard/bidang/v_kuota_bidang', $data);
     }
 
     public function update()

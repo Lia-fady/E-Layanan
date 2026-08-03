@@ -4,7 +4,7 @@ namespace App\Models\Api;
 
 use CodeIgniter\Model;
 
-class M_ProdiApi extends Model
+class M_Prodi_Api extends Model
 {
     protected $table            = 'm_prodi';
     protected $primaryKey       = 'id_prodi';

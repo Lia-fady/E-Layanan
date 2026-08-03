@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_ManajemenMenu extends BaseController
+class C_ManajemenMenu_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,14 +21,14 @@ class C_ManajemenMenu extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Menu_SuperAdmin();
             $data['menuList'] = $model->findAll();
             return $this->renderPage('dashboard/superadmin/v_manajemen_menu', 'Manajemen Menu', 'manajemen_menu', $data);
         }
 
     public function store()
     {
-        $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
+        $model = new \App\Models\SuperAdmin\M_Menu_SuperAdmin();
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
         try {
@@ -52,7 +52,7 @@ class C_ManajemenMenu extends BaseController
 
     public function update($id)
     {
-        $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
+        $model = new \App\Models\SuperAdmin\M_Menu_SuperAdmin();
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
         try {
@@ -73,7 +73,7 @@ class C_ManajemenMenu extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Menu_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil dihapus.');

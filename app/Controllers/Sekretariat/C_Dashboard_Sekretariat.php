@@ -12,7 +12,7 @@ namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
 
-class C_Dashboard extends BaseController
+class C_Dashboard_Sekretariat extends BaseController
 {
     /**
      * Menampilkan halaman dashboard Sekretariat dengan data ringkasan.
@@ -81,7 +81,7 @@ class C_Dashboard extends BaseController
                 (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) as total_berkas
             ')
             ->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
-            ->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->where('ps.status_persetujuan', 'MENUNGGU')
             ->orderBy('pm.created_at', 'DESC')

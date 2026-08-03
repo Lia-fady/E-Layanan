@@ -14,7 +14,7 @@ namespace App\Models\Sekretariat;
 
 use CodeIgniter\Model;
 
-class M_AuthSekretariat extends Model
+class M_Auth_Sekretariat extends Model
 {
     protected $table            = 'c_user_pegawai';
     protected $primaryKey       = 'id_user_pegawai';

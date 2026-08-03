@@ -40,8 +40,8 @@ class CreateUserMahasiswa extends Migration
         // Mengatur id_user_mahasiswa sebagai Primary Key
         $this->forge->addKey('id_user_mahasiswa', true);
 
-        // Membuat Foreign Key ke tabel m_mahasiswa
-        $this->forge->addForeignKey('id_mahasiswa', 'm_mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
+        // Membuat Foreign Key ke tabel M_Mahasiswa_Mahasiswa
+        $this->forge->addForeignKey('id_mahasiswa', 'M_Mahasiswa_Mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
         
         // Membuat tabel m_user_mahasiswa
         $this->forge->createTable('m_user_mahasiswa');

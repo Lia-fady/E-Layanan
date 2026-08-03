@@ -4,7 +4,7 @@ namespace App\Models\SuperAdmin;
 
 use CodeIgniter\Model;
 
-class M_UserMahasiswaSuperAdmin extends Model
+class M_UserMahasiswa_SuperAdmin extends Model
 {
     protected $table            = 'm_user_mahasiswa';
     protected $primaryKey       = 'id_user_mahasiswa';
@@ -23,9 +23,9 @@ class M_UserMahasiswaSuperAdmin extends Model
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_user_mahasiswa.*, m_mahasiswa.nama_mahasiswa')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = m_user_mahasiswa.id_mahasiswa', 'left')
-            ->orderBy('m_mahasiswa.nama_mahasiswa', 'ASC')
+            ->select('m_user_mahasiswa.*, M_Mahasiswa_Mahasiswa.nama_mahasiswa')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = m_user_mahasiswa.id_mahasiswa', 'left')
+            ->orderBy('M_Mahasiswa_Mahasiswa.nama_mahasiswa', 'ASC')
             ->get()->getResultArray();
     }
 }

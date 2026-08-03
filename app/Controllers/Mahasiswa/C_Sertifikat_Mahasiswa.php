@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mahasiswa;
 
-class C_Sertifikat extends C_BaseMahasiswa
+class C_Sertifikat_Mahasiswa extends C_Base_Mahasiswa
 {
     public function sertifikat()
     {

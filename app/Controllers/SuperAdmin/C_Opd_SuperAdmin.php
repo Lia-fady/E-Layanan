@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Opd extends BaseController
+class C_Opd_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,7 +21,7 @@ class C_Opd extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data['opdList'] = $model->findAll();
             return $this->renderPage('dashboard/superadmin/odp/v_index', 'Master Data OPD', 'opd', $data);
         }
@@ -33,21 +33,21 @@ class C_Opd extends BaseController
 
     public function edit($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data['opd'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/odp/v_edit', 'Edit OPD', 'opd', $data);
         }
 
     public function detail($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data['opd'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/odp/v_detail', 'Detail OPD', 'opd', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) {
                 return redirect()->back()->with('error', 'Data tidak boleh kosong.');
@@ -65,7 +65,7 @@ class C_Opd extends BaseController
 
     public function update($id)
     {
-        $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+        $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
 
@@ -86,7 +86,7 @@ class C_Opd extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_OpdSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/opd'))->with('success', 'Data berhasil dihapus.');

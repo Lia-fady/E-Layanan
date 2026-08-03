@@ -12,15 +12,15 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_SertifikatSekretariat;
+use App\Models\Sekretariat\M_Sertifikat_Sekretariat;
 
-class C_Sertifikat extends BaseController
+class C_Sertifikat_Sekretariat extends BaseController
 {
     protected $sertifikatModel;
 
     public function __construct()
     {
-        $this->sertifikatModel = new M_SertifikatSekretariat();
+        $this->sertifikatModel = new M_Sertifikat_Sekretariat();
     }
 
     /**

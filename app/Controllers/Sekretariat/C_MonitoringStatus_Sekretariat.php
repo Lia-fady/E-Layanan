@@ -1,8 +1,8 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_MonitoringStatus.php
- * Path      : Controllers/Sekretariat/C_MonitoringStatus.php
+ * Kode      : C_MonitoringStatus_Sekretariat.php
+ * Path      : Controllers/Sekretariat/C_MonitoringStatus_Sekretariat.php
  * Deskripsi : Controller untuk halaman Monitoring Status.
  *             Menampilkan tabel monitoring seluruh permohonan
  *             dengan status berkas, verifikasi, dan disposisi.
@@ -13,7 +13,7 @@ namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
 
-class C_MonitoringStatus extends BaseController
+class C_MonitoringStatus_Sekretariat extends BaseController
 {
     /**
      * Halaman monitoring status permohonan.
@@ -38,7 +38,7 @@ class C_MonitoringStatus extends BaseController
             ps.disposisi,
             (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) as total_berkas
         ');
-        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');

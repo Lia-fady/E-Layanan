@@ -4,7 +4,7 @@ namespace App\Models\SuperAdmin;
 
 use CodeIgniter\Model;
 
-class M_MenuSuperAdmin extends Model
+class M_Menu_SuperAdmin extends Model
 {
     protected $table            = 'c_menus';
     protected $primaryKey       = 'id';

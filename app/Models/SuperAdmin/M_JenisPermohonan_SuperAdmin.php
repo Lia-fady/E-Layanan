@@ -4,7 +4,7 @@ namespace App\Models\SuperAdmin;
 
 use CodeIgniter\Model;
 
-class M_JenisPermohonanSuperAdmin extends Model
+class M_JenisPermohonan_SuperAdmin extends Model
 {
     protected $table            = 'm_jenis_permohonan';
     protected $primaryKey       = 'id_jenis_permohonan';

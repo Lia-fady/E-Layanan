@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mahasiswa;
 
-class C_Permohonan extends C_BaseMahasiswa
+class C_Permohonan_Mahasiswa extends C_Base_Mahasiswa
 {
     public function permohonan()
     {
@@ -115,7 +115,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $deskripsi_keahlian  = $this->request->getPost('deskripsi_keahlian');
         $deskripsi    = $this->request->getPost('deskripsi');
 
-        $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $mhs = $db->table('M_Mahasiswa_Mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $id_instansi_mahasiswa = $mhs['id_instansi_mahasiswa'] ?? 1;
 
         $db->transStart();

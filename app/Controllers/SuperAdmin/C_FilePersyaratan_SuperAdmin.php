@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_FilePersyaratan extends BaseController
+class C_FilePersyaratan_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,9 +21,9 @@ class C_FilePersyaratan extends BaseController
 
     public function index()
     {
-        $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
-        $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonanSuperAdmin();
-        $fileModel = new \App\Models\SuperAdmin\M_FileSuperAdmin();
+        $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
+        $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan_SuperAdmin();
+        $fileModel = new \App\Models\SuperAdmin\M_File_SuperAdmin();
         
         $data['jenisPermohonanList'] = $jenisModel->findAll();
         $data['fileMasterList'] = $fileModel->findAll();
@@ -33,8 +33,8 @@ class C_FilePersyaratan extends BaseController
 
     public function create()
         {
-            $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonanSuperAdmin();
-            $fileModel = new \App\Models\SuperAdmin\M_FileSuperAdmin();
+            $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan_SuperAdmin();
+            $fileModel = new \App\Models\SuperAdmin\M_File_SuperAdmin();
             $data['jenisPermohonanList'] = $jenisModel->findAll();
             $data['fileList'] = $fileModel->findAll();
             return $this->renderPage('dashboard/superadmin/file_persyaratan/v_create', 'Tambah File Persyaratan', 'file_persyaratan', $data);
@@ -42,9 +42,9 @@ class C_FilePersyaratan extends BaseController
 
     public function edit($id = null)
         {
-            $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
-            $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonanSuperAdmin();
-            $fileModel = new \App\Models\SuperAdmin\M_FileSuperAdmin();
+            $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
+            $jenisModel = new \App\Models\SuperAdmin\M_JenisPermohonan_SuperAdmin();
+            $fileModel = new \App\Models\SuperAdmin\M_File_SuperAdmin();
     
             $data['filePermohonan'] = $filePermohonanModel->find($id);
             $data['jenisPermohonanList'] = $jenisModel->findAll();
@@ -54,14 +54,14 @@ class C_FilePersyaratan extends BaseController
 
     public function detail($id = null)
         {
-            $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
+            $filePermohonanModel = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
             $data['file'] = $filePermohonanModel->getAllWithRelations($id);
             return $this->renderPage('dashboard/superadmin/file_persyaratan/v_detail', 'Detail File Persyaratan', 'file_persyaratan', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) {
                 return redirect()->back()->with('error', 'Data tidak boleh kosong.');
@@ -79,7 +79,7 @@ class C_FilePersyaratan extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -95,7 +95,7 @@ class C_FilePersyaratan extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_FilePermohonanSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_FilePermohonan_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/file-persyaratan'))->with('success', 'Data berhasil dihapus.');

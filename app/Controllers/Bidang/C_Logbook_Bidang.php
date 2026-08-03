@@ -1,16 +1,16 @@
 <?php
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Bidang;
 
 use App\Controllers\BaseController;
-use App\Models\Kabid\M_LogbookKabid;
+use App\Models\Bidang\M_Logbook_Bidang;
 
-class C_LogbookKabid extends BaseController
+class C_Logbook_Bidang extends BaseController
 {
     protected $logbookModel;
 
     public function __construct()
     {
-        $this->logbookModel = new M_LogbookKabid();
+        $this->logbookModel = new M_Logbook_Bidang();
     }
 
     public function index()
@@ -23,7 +23,7 @@ class C_LogbookKabid extends BaseController
             'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang)
         ];
 
-        return view('dashboard/kabid/v_logbook_mahasiswa', $data);
+        return view('dashboard/bidang/v_logbook_mahasiswa', $data);
     }
 
     public function detail($id_penempatan)
@@ -41,7 +41,7 @@ class C_LogbookKabid extends BaseController
             'logbooks'      => $this->logbookModel->getLogbooks($id_penempatan)
         ];
 
-        return view('dashboard/kabid/v_logbook_detail_approval', $data);
+        return view('dashboard/bidang/v_logbook_detail_approval', $data);
     }
 
     public function approve()

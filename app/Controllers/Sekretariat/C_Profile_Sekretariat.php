@@ -1,8 +1,8 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_Profile.php
- * Path      : Controllers/Sekretariat/C_Profile.php
+ * Kode      : C_Profile_Sekretariat.php
+ * Path      : Controllers/Sekretariat/C_Profile_Sekretariat.php
  * Deskripsi : Controller untuk halaman Profil user Sekretariat.
  *             Menampilkan dan mengupdate data profil.
  * ============================================================
@@ -12,7 +12,7 @@ namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
 
-class C_Profile extends BaseController
+class C_Profile_Sekretariat extends BaseController
 {
     /**
      * Halaman profil user.

@@ -3,14 +3,14 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
-use App\Models\Api\M_FakultasApi;
-use App\Models\Api\M_ProdiApi;
+use App\Models\Api\M_Fakultas_Api;
+use App\Models\Api\M_Prodi_Api;
 
-class ApiController extends Controller
+class C_Api extends Controller
 {
     public function getFakultasByKampus($id_kampus)
     {
-        $fakultasModel = new M_FakultasApi();
+        $fakultasModel = new M_Fakultas_Api();
         $fakultas = $fakultasModel->where('id_instansi_pendidikan', $id_kampus)
                                   ->groupStart()
                                     ->where('status', 'aktif')
@@ -23,7 +23,7 @@ class ApiController extends Controller
 
     public function getProdiByFakultas($id_fakultas)
     {
-        $prodiModel = new M_ProdiApi();
+        $prodiModel = new M_Prodi_Api();
         $prodi = $prodiModel->where('id_fakultas', $id_fakultas)
                             ->groupStart()
                               ->where('status', 'aktif')

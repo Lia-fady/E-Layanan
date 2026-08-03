@@ -1,26 +1,26 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_DashboardKabid.php
- * Path      : Controllers/Kabid/C_DashboardKabid.php
+ * Kode      : C_Dashboard_Bidang.php
+ * Path      : Controllers/Kabid/C_Dashboard_Bidang.php
  * Deskripsi : Controller untuk Dashboard Kepala Bidang.
  *             Menampilkan ringkasan penempatan yang menunggu
  *             persetujuan dan statistik bidang.
  * ============================================================
  */
 
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Bidang;
 
 use App\Controllers\BaseController;
-use App\Models\Kabid\M_PenempatanKabid;
+use App\Models\Bidang\M_Penempatan_Bidang;
 
-class C_DashboardKabid extends BaseController
+class C_Dashboard_Bidang extends BaseController
 {
     protected $penempatanModel;
 
     public function __construct()
     {
-        $this->penempatanModel = new M_PenempatanKabid();
+        $this->penempatanModel = new M_Penempatan_Bidang();
     }
 
     /**
@@ -82,7 +82,7 @@ class C_DashboardKabid extends BaseController
             ->join('t_penempatan_magang p', 'p.id_penempatan_magang = l.id_penempatan_magang')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
-            ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
+            ->join('M_Mahasiswa_Mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->where('p.id_bidang', $id_bidang)
             ->where('l.disetujui_oleh', null)
             ->orderBy('l.tgl_logbook', 'ASC') // yang terlama dulu
@@ -132,6 +132,6 @@ class C_DashboardKabid extends BaseController
             'tanggal_formatted'    => $tanggalFormatted,
         ];
 
-        return view('dashboard/kabid/v_dashboard_kabid', $data);
+        return view('dashboard/bidang/v_dashboard_kabid', $data);
     }
 }

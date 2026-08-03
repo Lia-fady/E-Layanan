@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Kuota extends BaseController
+class C_Kuota_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,8 +21,8 @@ class C_Kuota extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
-            $bidangModel = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
+            $bidangModel = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data['bidangList'] = $bidangModel->where('status_aktif', '1')->findAll();
             $data['kuotaList'] = $model->getAllWithRelations();
             return $this->renderPage('dashboard/superadmin/kuota/v_index', 'Master Data Kuota', 'kuota', $data);
@@ -30,15 +30,15 @@ class C_Kuota extends BaseController
 
     public function create()
         {
-            $bidangModel = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
+            $bidangModel = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
             $data['bidangList'] = $bidangModel->where('status_aktif', '1')->findAll();
             return $this->renderPage('dashboard/superadmin/kuota/v_create', 'Tambah Kuota', 'kuota', $data);
         }
 
     public function edit($id = null)
         {
-            $bidangModel = new \App\Models\SuperAdmin\M_BidangSuperAdmin();
-            $kuotaModel = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
+            $bidangModel = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
+            $kuotaModel = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
             $data['bidangList'] = $bidangModel->where('status_aktif', '1')->findAll();
             $data['kuota'] = $kuotaModel->find($id);
             return $this->renderPage('dashboard/superadmin/kuota/v_edit', 'Edit Kuota', 'kuota', $data);
@@ -46,14 +46,14 @@ class C_Kuota extends BaseController
 
     public function detail($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
             $data['kuota'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/kuota/v_detail', 'Detail Kuota', 'kuota', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
     
@@ -70,7 +70,7 @@ class C_Kuota extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
     
@@ -87,7 +87,7 @@ class C_Kuota extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_KuotaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Kuota_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/kuota'))->with('success', 'Data berhasil dihapus.');

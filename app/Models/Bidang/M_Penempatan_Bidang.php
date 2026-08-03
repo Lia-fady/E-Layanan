@@ -9,11 +9,11 @@
  * ============================================================
  */
 
-namespace App\Models\Kabid;
+namespace App\Models\Bidang;
 
 use CodeIgniter\Model;
 
-class M_PenempatanKabid extends Model
+class M_Penempatan_Bidang extends Model
 {
     protected $table            = 't_penempatan_magang';
     protected $primaryKey       = 'id_penempatan_magang';
@@ -70,7 +70,7 @@ class M_PenempatanKabid extends Model
             ip.instansi_pendidikan,
             pr.prodi
         ');
-        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
@@ -114,7 +114,7 @@ class M_PenempatanKabid extends Model
             jp.jenis_permohonan,
             ip.instansi_pendidikan
         ');
-        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');

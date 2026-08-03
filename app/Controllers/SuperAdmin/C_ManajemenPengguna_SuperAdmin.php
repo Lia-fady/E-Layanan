@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_ManajemenPengguna extends BaseController
+class C_ManajemenPengguna_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,7 +21,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function index()
     {
-        $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
+        $model = new \App\Models\SuperAdmin\M_Pengguna_SuperAdmin();
         $users = $model->getAllWithGroup();
 
         $db = \Config\Database::connect();
@@ -36,7 +36,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Pengguna_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -55,7 +55,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Pengguna_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -76,7 +76,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Pengguna_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil dihapus.');

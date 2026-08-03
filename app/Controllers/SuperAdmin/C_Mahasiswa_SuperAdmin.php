@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Mahasiswa extends BaseController
+class C_Mahasiswa_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,7 +21,7 @@ class C_Mahasiswa extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             $data['mahasiswaList'] = $model->getAllWithRelations();
             return $this->renderPage('dashboard/superadmin/mahasiswa/v_index', 'Master Data Mahasiswa', 'mahasiswa', $data);
         }
@@ -33,21 +33,21 @@ class C_Mahasiswa extends BaseController
 
     public function edit($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             $data['mahasiswa'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/mahasiswa/v_edit', 'Edit Mahasiswa', 'mahasiswa', $data);
         }
 
     public function detail($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             $data['mahasiswa'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/mahasiswa/v_detail', 'Detail Mahasiswa', 'mahasiswa', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) {
                 return redirect()->back()->with('error', 'Data tidak boleh kosong.');
@@ -65,7 +65,7 @@ class C_Mahasiswa extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -81,7 +81,7 @@ class C_Mahasiswa extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_MahasiswaSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Mahasiswa_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/mahasiswa'))->with('success', 'Data berhasil dihapus.');

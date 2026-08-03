@@ -4,9 +4,9 @@ namespace App\Models\SuperAdmin;
 
 use CodeIgniter\Model;
 
-class M_MahasiswaSuperAdmin extends Model
+class M_Mahasiswa_SuperAdmin extends Model
 {
-    protected $table            = 'm_mahasiswa';
+    protected $table            = 'M_Mahasiswa_Mahasiswa';
     protected $primaryKey       = 'id_mahasiswa';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -23,12 +23,12 @@ class M_MahasiswaSuperAdmin extends Model
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_mahasiswa.*, m_prodi.prodi as nama_prodi, m_instansi_pendidikan.instansi_pendidikan')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_instansi_mahasiswa = m_mahasiswa.id_instansi_mahasiswa', 'left')
+            ->select('M_Mahasiswa_Mahasiswa.*, m_prodi.prodi as nama_prodi, m_instansi_pendidikan.instansi_pendidikan')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_instansi_mahasiswa = M_Mahasiswa_Mahasiswa.id_instansi_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->orderBy('m_instansi_pendidikan.instansi_pendidikan', 'ASC')
-            ->orderBy('m_mahasiswa.nama_mahasiswa', 'ASC')
+            ->orderBy('M_Mahasiswa_Mahasiswa.nama_mahasiswa', 'ASC')
             ->get()->getResultArray();
     }
 }

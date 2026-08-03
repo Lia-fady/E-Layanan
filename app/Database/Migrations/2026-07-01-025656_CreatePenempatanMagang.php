@@ -67,8 +67,8 @@ class CreatePenempatanMagang extends Migration
         // Membuat Foreign Key ke tabel t_persetujuan_magang
         $this->forge->addForeignKey('id_persetujuan_magang', 't_persetujuan_magang', 'id_persetujuan_magang', 'CASCADE', 'CASCADE');
 
-        // Membuat Foreign Key ke tabel m_mahasiswa
-        $this->forge->addForeignKey('id_mahasiswa', 'm_mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
+        // Membuat Foreign Key ke tabel M_Mahasiswa_Mahasiswa
+        $this->forge->addForeignKey('id_mahasiswa', 'M_Mahasiswa_Mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
         
         // Membuat tabel t_penempatan_magang
         $this->forge->createTable('t_penempatan_magang');

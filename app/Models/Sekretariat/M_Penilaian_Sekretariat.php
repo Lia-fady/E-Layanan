@@ -12,7 +12,7 @@ namespace App\Models\Sekretariat;
 
 use CodeIgniter\Model;
 
-class M_PenilaianSekretariat extends Model
+class M_Penilaian_Sekretariat extends Model
 {
     protected $table            = 't_penilaian_magang';
     protected $primaryKey       = 'id_penilaian_magang';
@@ -46,7 +46,7 @@ class M_PenilaianSekretariat extends Model
             'b.bidang',
         ]);
 
-        $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang AS b', 'b.id_bidang = pn.id_bidang', 'left');
 
         $builder->whereIn('pn.status_penempatan', ['BERJALAN', 'SELESAI']);
@@ -120,7 +120,7 @@ class M_PenilaianSekretariat extends Model
             'pm.deskripsi',
         ]);
 
-        $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang AS b', 'b.id_bidang = pn.id_bidang', 'left');
         $builder->join('t_persetujuan_magang AS ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
         $builder->join('t_permohonan_magang AS pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');

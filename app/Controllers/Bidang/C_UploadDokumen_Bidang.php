@@ -1,19 +1,19 @@
 <?php
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Bidang;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_FileSekretariat;
-use App\Models\Mahasiswa\M_FileProsesMagangMahasiswa;
+use App\Models\Sekretariat\M_File_Sekretariat;
+use App\Models\Mahasiswa\M_FileProsesMagang_Mahasiswa;
 
-class C_UploadDokumen extends BaseController
+class C_UploadDokumen_Bidang extends BaseController
 {
     protected $fileModel;
     protected $fileProsesModel;
 
     public function __construct()
     {
-        $this->fileModel = new M_FileSekretariat();
-        $this->fileProsesModel = new M_FileProsesMagangMahasiswa();
+        $this->fileModel = new M_File_Sekretariat();
+        $this->fileProsesModel = new M_FileProsesMagang_Mahasiswa();
     }
 
     public function index()
@@ -25,7 +25,7 @@ class C_UploadDokumen extends BaseController
         $builder = $db->table('t_persetujuan_magang ps')
             ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
-            ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
@@ -45,7 +45,7 @@ class C_UploadDokumen extends BaseController
             'persetujuan' => $persetujuan,
         ];
 
-        return view('dashboard/kabid/v_upload_dokumen_index', $data);
+        return view('dashboard/bidang/v_upload_dokumen_index', $data);
     }
 
     private function getPersetujuanDetail($id_persetujuan)
@@ -54,7 +54,7 @@ class C_UploadDokumen extends BaseController
         return $db->table('t_persetujuan_magang ps')
             ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
-            ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
@@ -77,7 +77,7 @@ class C_UploadDokumen extends BaseController
             'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
         ];
 
-        return view('dashboard/kabid/v_upload_dokumen', $data);
+        return view('dashboard/bidang/v_upload_dokumen', $data);
     }
 
     public function store()

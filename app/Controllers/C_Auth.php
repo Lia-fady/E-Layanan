@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Auth\M_MahasiswaAuth;
-use App\Models\Auth\M_UserMahasiswaAuth;
-use App\Models\Auth\M_InstansiMahasiswaAuth; 
-use App\Models\Auth\M_InstansiPendidikanAuth; 
+use App\Models\Auth\M_Mahasiswa_Auth;
+use App\Models\Auth\M_UserMahasiswa_Auth;
+use App\Models\Auth\M_InstansiMahasiswa_Auth; 
+use App\Models\Auth\M_InstansiPendidikan_Auth; 
 
-class AuthController extends BaseController
+class C_Auth extends BaseController
 {
     protected $mahasiswaModel;
     protected $userMahasiswaModel;
@@ -18,10 +18,10 @@ class AuthController extends BaseController
     public function __construct()
     {
         // Inisialisasi model-model penunjang data akademik & auth
-        $this->mahasiswaModel          = new M_MahasiswaAuth();
-        $this->userMahasiswaModel      = new M_UserMahasiswaAuth();
-        $this->instansiMahasiswaModel  = new M_InstansiMahasiswaAuth();
-        $this->instansiPendidikanModel = new M_InstansiPendidikanAuth();
+        $this->mahasiswaModel          = new M_Mahasiswa_Auth();
+        $this->userMahasiswaModel      = new M_UserMahasiswa_Auth();
+        $this->instansiMahasiswaModel  = new M_InstansiMahasiswa_Auth();
+        $this->instansiPendidikanModel = new M_InstansiPendidikan_Auth();
     }
 
     // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
@@ -130,7 +130,7 @@ class AuthController extends BaseController
                 'errors' => ['required' => 'Jenjang pendidikan (D3/S1) wajib dipilih.']
             ],
             'nik' => [
-                'rules'  => 'required|numeric|exact_length[16]|is_unique[m_mahasiswa.nik]',
+                'rules'  => 'required|numeric|exact_length[16]|is_unique[M_Mahasiswa_Mahasiswa.nik]',
                 'errors' => [
                     'required'     => 'NIK KTP wajib diisi.',
                     'numeric'      => 'NIK harus berupa angka tanpa spasi/simbol.',
@@ -139,7 +139,7 @@ class AuthController extends BaseController
                 ]
             ],
             'nim' => [
-                'rules'  => 'required|numeric|min_length[5]|max_length[25]|is_unique[m_mahasiswa.nim]',
+                'rules'  => 'required|numeric|min_length[5]|max_length[25]|is_unique[M_Mahasiswa_Mahasiswa.nim]',
                 'errors' => [
                     'required'      => 'Nomor Induk Mahasiswa (NIM) wajib diisi.',
                     'numeric'       => 'NIM hanya boleh berisi angka tanpa spasi atau karakter lainnya.',
@@ -158,7 +158,7 @@ class AuthController extends BaseController
                 ]
             ],
             'email' => [
-                'rules'  => 'required|valid_email|is_unique[m_mahasiswa.email]',
+                'rules'  => 'required|valid_email|is_unique[M_Mahasiswa_Mahasiswa.email]',
                 'errors' => [
                     'required'    => 'Alamat email aktif wajib diisi.',
                     'valid_email' => 'Format email tidak valid (harus mengandung @, contoh: @gmail.com).',
@@ -282,7 +282,7 @@ class AuthController extends BaseController
         $this->instansiMahasiswaModel->insert($dataAkademik);
         $idInstansiMahasiswaBaru = $this->instansiMahasiswaModel->getInsertID();
 
-        // STEP 2: Masukkan biodata ke m_mahasiswa LANGSUNG bersama ID akademiknya
+        // STEP 2: Masukkan biodata ke M_Mahasiswa_Mahasiswa LANGSUNG bersama ID akademiknya
         $dataMahasiswa = [
             'nik'                    => $this->request->getPost('nik'),
             'nim'                    => $this->request->getPost('nim'),

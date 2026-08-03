@@ -1,8 +1,8 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_Penilaian.php
- * Path      : Controllers/Sekretariat/C_Penilaian.php
+ * Kode      : C_Penilaian_Sekretariat.php
+ * Path      : Controllers/Sekretariat/C_Penilaian_Sekretariat.php
  * Deskripsi : Controller untuk mengelola penilaian magang mahasiswa,
  *             termasuk form penilaian dan penyimpanan nilai
  * ============================================================
@@ -11,15 +11,15 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_PenilaianSekretariat;
+use App\Models\Sekretariat\M_Penilaian_Sekretariat;
 
-class C_Penilaian extends BaseController
+class C_Penilaian_Sekretariat extends BaseController
 {
     protected $penilaianModel;
 
     public function __construct()
     {
-        $this->penilaianModel = new M_PenilaianSekretariat();
+        $this->penilaianModel = new M_Penilaian_Sekretariat();
     }
 
     /**

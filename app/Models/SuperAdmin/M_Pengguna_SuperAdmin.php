@@ -4,7 +4,7 @@ namespace App\Models\SuperAdmin;
 
 use CodeIgniter\Model;
 
-class M_PenggunaSuperAdmin extends Model
+class M_Pengguna_SuperAdmin extends Model
 {
     protected $table            = 'c_user_pegawai';
     protected $primaryKey       = 'id_user_pegawai';

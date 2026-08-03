@@ -3,13 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Admin\M_PermohonanMagangAdmin; // Memanggil model secara global di atas
+use App\Models\Admin\M_PermohonanMagang_Admin; // Memanggil model secara global di atas
 
-class Admin extends BaseController
+class C_Admin extends BaseController
 {
     public function index()
     {
-        $permohonanModel = new M_PermohonanMagangAdmin();
+        $permohonanModel = new M_PermohonanMagang_Admin();
 
         // Ambil semua data permohonan magang yang masuk dari database
         $daftarPengajuan = $permohonanModel->findAll();
@@ -24,7 +24,7 @@ class Admin extends BaseController
 
     public function updateStatus($id, $status)
     {
-        $permohonanModel = new M_PermohonanMagangAdmin();
+        $permohonanModel = new M_PermohonanMagang_Admin();
 
         // Konversi kata dari tombol menjadi angka ENUM database
         $enumStatus = '1'; 

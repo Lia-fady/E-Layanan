@@ -4,7 +4,7 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class M_PermohonanMagangMahasiswa extends Model
+class M_PermohonanMagang_Mahasiswa extends Model
 {
     protected $table            = 't_permohonan_magang';
     protected $primaryKey       = 'id_permohonan_magang';
@@ -47,9 +47,9 @@ class M_PermohonanMagangMahasiswa extends Model
                 t_penempatan_magang.catatan,
                 t_penempatan_magang.status_penempatan,
                 t_penempatan_magang.is_log_book,
-                m_mahasiswa.nim
+                M_Mahasiswa_Mahasiswa.nim
             ') 
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa') 
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa') 
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('m_bidang', 'm_bidang.id_bidang = t_persetujuan_magang.id_bidang', 'left')
             ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
@@ -72,10 +72,10 @@ class M_PermohonanMagangMahasiswa extends Model
      */
     public function getAntreanSekretariat()
     {
-        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, m_mahasiswa.nama_mahasiswa, m_prodi.prodi')
+        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, M_Mahasiswa_Mahasiswa.nama_mahasiswa, m_prodi.prodi')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->where('t_permohonan_magang.posting_data', 'kirim')
             ->where('t_persetujuan_magang.status_persetujuan IS NULL')
@@ -88,9 +88,9 @@ class M_PermohonanMagangMahasiswa extends Model
      */
     public function getDetailPermohonan($id_permohonan)
     {
-        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, m_prodi.prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+        return $this->select('t_permohonan_magang.*, M_Mahasiswa_Mahasiswa.nama_mahasiswa, M_Mahasiswa_Mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, m_prodi.prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = t_instansi_mahasiswa.id_fakultas', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
@@ -113,13 +113,13 @@ class M_PermohonanMagangMahasiswa extends Model
                 t_persetujuan_magang.catatan,
                 t_persetujuan_magang.tgl_persetujuan,
                 t_persetujuan_magang.disposisi,
-                m_mahasiswa.nama_mahasiswa,
+                M_Mahasiswa_Mahasiswa.nama_mahasiswa,
                 m_prodi.prodi,
                 m_instansi_pendidikan.instansi_pendidikan as universitas
             ')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             // KUNCI FIX: Arsip menampilkan yang sudah diteruskan ke kabid (1), selesai diplot kabid (2), ATAU yang sah DITOLAK
@@ -134,10 +134,10 @@ class M_PermohonanMagangMahasiswa extends Model
      */
     public function getAntreanDisposisi()
     {
-        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, m_mahasiswa.nama_mahasiswa, m_prodi.prodi')
+        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, M_Mahasiswa_Mahasiswa.nama_mahasiswa, m_prodi.prodi')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->where('t_permohonan_magang.posting_data', 'kirim')
             ->where('t_persetujuan_magang.status_persetujuan', 'MENUNGGU')
@@ -165,12 +165,12 @@ class M_PermohonanMagangMahasiswa extends Model
                 t_persetujuan_magang.status_persetujuan,
                 t_persetujuan_magang.disposisi,
                 t_persetujuan_magang.catatan,
-                m_mahasiswa.nama_mahasiswa,
-                m_mahasiswa.nim,
+                M_Mahasiswa_Mahasiswa.nama_mahasiswa,
+                M_Mahasiswa_Mahasiswa.nim,
                 m_instansi_pendidikan.instansi_pendidikan
             ')
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('M_Mahasiswa_Mahasiswa', 'M_Mahasiswa_Mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
             ->where('t_persetujuan_magang.disposisi', '1'); // Menangkap operan dari sekretariat (mengabaikan status_persetujuan demi kompatibilitas data lama)

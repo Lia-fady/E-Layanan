@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Prodi extends BaseController
+class C_Prodi_SuperAdmin extends BaseController
 {
     /**
      * Helper: Render halaman dengan layout L_master (SB Admin 2)
@@ -21,8 +21,8 @@ class C_Prodi extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
-            $fakultasModel = new \App\Models\SuperAdmin\M_FakultasSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
+            $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
             $data['prodiList'] = $model->getAllWithRelations();
             $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->findAll();
             return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi', 'program_studi', $data);
@@ -30,15 +30,15 @@ class C_Prodi extends BaseController
 
     public function create()
         {
-            $fakultasModel = new \App\Models\SuperAdmin\M_FakultasSuperAdmin();
+            $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
             $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->findAll();
             return $this->renderPage('dashboard/superadmin/prodi/v_create', 'Tambah Program Studi', 'program_studi', $data);
         }
 
     public function edit($id = null)
         {
-            $fakultasModel = new \App\Models\SuperAdmin\M_FakultasSuperAdmin();
-            $prodiModel = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
+            $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
+            $prodiModel = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
             $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->findAll();
             $data['prodi'] = $prodiModel->find($id);
             return $this->renderPage('dashboard/superadmin/prodi/v_edit', 'Edit Program Studi', 'program_studi', $data);
@@ -46,14 +46,14 @@ class C_Prodi extends BaseController
 
     public function detail($id = null)
         {
-            $prodiModel = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
+            $prodiModel = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
             $data['prodi'] = $prodiModel->find($id);
             return $this->renderPage('dashboard/superadmin/prodi/v_detail', 'Detail Program Studi', 'program_studi', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) {
                 return redirect()->back()->with('error', 'Data tidak boleh kosong.');
@@ -71,7 +71,7 @@ class C_Prodi extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -87,7 +87,7 @@ class C_Prodi extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_ProdiSuperAdmin();
+            $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/program-studi'))->with('success', 'Data berhasil dihapus.');

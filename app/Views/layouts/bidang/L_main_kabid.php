@@ -38,7 +38,7 @@
     <div id="wrapper">
 
         <!-- Sidebar Kabid -->
-        <?= $this->include('layouts/kabid/L_sidebar_kabid') ?>
+        <?= $this->include('layouts/bidang/L_sidebar_kabid') ?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -48,7 +48,7 @@
             <div id="content">
 
                 <!-- Topbar / Navbar -->
-                <?= $this->include('layouts/kabid/L_navbar_kabid') ?>
+                <?= $this->include('layouts/bidang/L_navbar_kabid') ?>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mahasiswa;
 
-class C_Dashboard extends C_BaseMahasiswa
+class C_Dashboard_Mahasiswa extends C_Base_Mahasiswa
 {
     public function dashboard()
     {

@@ -3,7 +3,7 @@ namespace App\Models\Sekretariat;
 
 use CodeIgniter\Model;
 
-class M_FileSekretariat extends Model
+class M_File_Sekretariat extends Model
 {
     protected $table            = 'm_file';
     protected $primaryKey       = 'id_file';

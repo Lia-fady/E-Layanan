@@ -14,7 +14,7 @@ namespace App\Models\Sekretariat;
 
 use CodeIgniter\Model;
 
-class M_DisposisiSekretariat extends Model
+class M_Disposisi_Sekretariat extends Model
 {
     protected $table            = 't_persetujuan_magang';
     protected $primaryKey       = 'id_persetujuan_magang';
@@ -50,7 +50,7 @@ class M_DisposisiSekretariat extends Model
             jp.jenis_permohonan
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
-        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->where('ps.status_persetujuan', 'DISETUJUI');
         $builder->groupStart();
@@ -94,7 +94,7 @@ class M_DisposisiSekretariat extends Model
             bd.bidang
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
-        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');

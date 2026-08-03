@@ -3,11 +3,11 @@
 namespace App\Controllers\Mahasiswa;
 
 use App\Controllers\BaseController;
-use App\Models\Mahasiswa\M_PermohonanMagangMahasiswa;
-use App\Models\Mahasiswa\M_LogbookMagangMahasiswa;
-use App\Models\Mahasiswa\M_PenempatanMagangMahasiswa;
+use App\Models\Mahasiswa\M_PermohonanMagang_Mahasiswa;
+use App\Models\Mahasiswa\M_LogbookMagang_Mahasiswa;
+use App\Models\Mahasiswa\M_PenempatanMagang_Mahasiswa;
 
-class C_BaseMahasiswa extends BaseController
+class C_Base_Mahasiswa extends BaseController
 {
     protected $permohonanModel;
     protected $logbookModel;
@@ -16,9 +16,9 @@ class C_BaseMahasiswa extends BaseController
     public function __construct()
     {
         // Inisialisasi semua model secara rapi sesuai standar MVC
-        $this->permohonanModel = new M_PermohonanMagangMahasiswa();
-        $this->logbookModel    = new M_LogbookMagangMahasiswa();
-        $this->penempatanModel = new M_PenempatanMagangMahasiswa();
+        $this->permohonanModel = new M_PermohonanMagang_Mahasiswa();
+        $this->logbookModel    = new M_LogbookMagang_Mahasiswa();
+        $this->penempatanModel = new M_PenempatanMagang_Mahasiswa();
     }
 
     /**

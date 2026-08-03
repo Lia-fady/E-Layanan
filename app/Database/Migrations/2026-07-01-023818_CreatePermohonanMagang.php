@@ -56,8 +56,8 @@ class CreatePermohonanMagang extends Migration
         // Mengatur id_permohonan_magang sebagai Primary Key
         $this->forge->addKey('id_permohonan_magang', true);
 
-        // Membuat Foreign Key ke tabel m_mahasiswa
-        $this->forge->addForeignKey('id_mahasiswa', 'm_mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
+        // Membuat Foreign Key ke tabel M_Mahasiswa_Mahasiswa
+        $this->forge->addForeignKey('id_mahasiswa', 'M_Mahasiswa_Mahasiswa', 'id_mahasiswa', 'CASCADE', 'CASCADE');
 
         // Membuat Foreign Key ke tabel t_instansi_mahasiswa
         $this->forge->addForeignKey('id_instansi_mahasiswa', 't_instansi_mahasiswa', 'id_instansi_mahasiswa', 'CASCADE', 'CASCADE');

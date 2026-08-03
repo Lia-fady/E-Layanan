@@ -4,9 +4,9 @@ namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
-class M_Mahasiswa extends Model
+class M_Mahasiswa_Mahasiswa extends Model
 {
-    protected $table            = 'm_mahasiswa';
+    protected $table            = 'M_Mahasiswa_Mahasiswa';
     protected $primaryKey       = 'id_mahasiswa';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

@@ -1,8 +1,8 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_Placeholder.php
- * Path      : Controllers/Sekretariat/C_Placeholder.php
+ * Kode      : C_Placeholder_Sekretariat.php
+ * Path      : Controllers/Sekretariat/C_Placeholder_Sekretariat.php
  * Deskripsi : Controller untuk halaman placeholder yang sedang
  *             dalam pengembangan (Permohonan Masuk, Laporan,
  *             Pengaturan).
@@ -13,7 +13,7 @@ namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
 
-class C_Placeholder extends BaseController
+class C_Placeholder_Sekretariat extends BaseController
 {
     /**
      * Halaman Permohonan Masuk (placeholder).

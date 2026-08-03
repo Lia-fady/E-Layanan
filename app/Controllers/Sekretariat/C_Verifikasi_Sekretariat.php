@@ -1,8 +1,8 @@
 <?php
 /**
  * ============================================================
- * Kode      : C_Verifikasi.php
- * Path      : Controllers/Sekretariat/C_Verifikasi.php
+ * Kode      : C_Verifikasi_Sekretariat.php
+ * Path      : Controllers/Sekretariat/C_Verifikasi_Sekretariat.php
  * Deskripsi : Controller untuk modul Verifikasi Administrasi.
  *             Menampilkan daftar permohonan masuk (card-based),
  *             detail permohonan dengan validasi per file,
@@ -13,15 +13,15 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\Sekretariat\M_VerifikasiSekretariat;
+use App\Models\Sekretariat\M_Verifikasi_Sekretariat;
 
-class C_Verifikasi extends BaseController
+class C_Verifikasi_Sekretariat extends BaseController
 {
     protected $verifikasiModel;
 
     public function __construct()
     {
-        $this->verifikasiModel = new M_VerifikasiSekretariat();
+        $this->verifikasiModel = new M_Verifikasi_Sekretariat();
     }
 
     /**
@@ -170,7 +170,7 @@ class C_Verifikasi extends BaseController
                               ->get()->getRow();
                               
             if ($persetujuan) {
-                $disposisiModel = new \App\Models\Sekretariat\M_DisposisiSekretariat();
+                $disposisiModel = new \App\Models\Sekretariat\M_Disposisi_Sekretariat();
                 $disposisiModel->simpanDisposisi($persetujuan->id_persetujuan_magang, [
                     'id_bidang'         => $id_bidang,
                     'updated_by'        => session('id_user_pegawai'),

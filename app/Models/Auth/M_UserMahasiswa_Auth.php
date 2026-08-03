@@ -4,7 +4,7 @@ namespace App\Models\Auth;
 
 use CodeIgniter\Model;
 
-class M_UserMahasiswaAuth extends Model
+class M_UserMahasiswa_Auth extends Model
 {
     protected $table            = 'm_user_mahasiswa';
     protected $primaryKey       = 'id_user_mahasiswa';

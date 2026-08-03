@@ -433,7 +433,7 @@ $(document).ready(function() {
         if (idKampus) {
             fakultasSelect.html('<option value="">Sedang memuat...</option>');
             
-            // Tembak AJAX ke AuthController
+            // Tembak AJAX ke C_Auth
             $.ajax({
                 url: baseUrl + 'api/fakultas/' + idKampus,
                 type: 'GET',

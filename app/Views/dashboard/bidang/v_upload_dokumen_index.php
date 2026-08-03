@@ -3,7 +3,7 @@
  * View untuk Index Upload Surat Penerimaan Magang (Kabid)
  */
 ?>
-<?= $this->extend('layouts/kabid/L_main_kabid') ?>
+<?= $this->extend('layouts/bidang/L_main_kabid') ?>
 
 <?= $this->section('title') ?>
 <?= esc($title) ?>

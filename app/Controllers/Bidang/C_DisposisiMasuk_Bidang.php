@@ -9,18 +9,18 @@
  * ============================================================
  */
 
-namespace App\Controllers\Kabid;
+namespace App\Controllers\Bidang;
 
 use App\Controllers\BaseController;
-use App\Models\Kabid\M_PenempatanKabid;
+use App\Models\Bidang\M_Penempatan_Bidang;
 
-class C_DisposisiMasuk extends BaseController
+class C_DisposisiMasuk_Bidang extends BaseController
 {
     protected $penempatanModel;
 
     public function __construct()
     {
-        $this->penempatanModel = new M_PenempatanKabid();
+        $this->penempatanModel = new M_Penempatan_Bidang();
     }
 
     /**
@@ -70,7 +70,7 @@ class C_DisposisiMasuk extends BaseController
             'status_filter' => $status_filter ?? 'all'
         ];
 
-        return view('dashboard/kabid/v_disposisi_masuk', $data);
+        return view('dashboard/bidang/v_disposisi_masuk', $data);
     }
 
     /**
