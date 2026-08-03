@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class M_Mahasiswa_Auth extends Model
 {
-    protected $table            = 'M_Mahasiswa_Mahasiswa';
+    protected $table            = 'm_mahasiswa';
     protected $primaryKey       = 'id_mahasiswa';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
