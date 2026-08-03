@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Kode: v_dashboard.php
  * Path: app/Views/dashboard/sekretariat/v_dashboard.php
@@ -44,7 +45,7 @@
             </div>
             <div class="stat-card-value"><?= esc($total_permohonan) ?></div>
             <div class="stat-card-desc">Semua permohonan masuk</div>
-            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link blue">
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link blue">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
         </div>
@@ -78,7 +79,7 @@
             </div>
             <div class="stat-card-value"><?= esc($total_disetujui) ?></div>
             <div class="stat-card-desc">Pemohon disetujui</div>
-            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link teal">
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link teal">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
         </div>
@@ -112,7 +113,7 @@
             </div>
             <div class="stat-card-value"><?= esc($total_mahasiswa_aktif) ?></div>
             <div class="stat-card-desc">Sedang Magang</div>
-            <a href="<?= site_url('sekretariat/riwayat') ?>" class="stat-card-link purple">
+            <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link purple">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
         </div>
@@ -178,7 +179,8 @@
                         </span>
                         <span class="chart-legend-value"><?= $sv['total'] ?> (<?= $sv['persen'] ?>%)</span>
                     </li>
-                <?php $i++; endforeach; ?>
+                <?php $i++;
+                endforeach; ?>
             </ul>
         </div>
 
@@ -209,60 +211,72 @@
 
 <?= $this->section('scripts') ?>
 <script>
-// Donut Chart - Ringkasan Permohonan
-(function() {
-    const donutCtx = document.getElementById('donutChart');
-    if (!donutCtx) return;
+    // Donut Chart - Ringkasan Permohonan
+    (function() {
+        const donutCtx = document.getElementById('donutChart');
+        if (!donutCtx) return;
 
-    const statusData = <?= json_encode($status_verifikasi) ?>;
-    const colors = ['#34A853', '#FFC107', '#EA4335'];
-    const totalPermohonan = <?= (int)$total_permohonan_chart ?>;
+        const statusData = <?= json_encode($status_verifikasi) ?>;
+        const colors = ['#34A853', '#FFC107', '#EA4335'];
+        const totalPermohonan = <?= (int)$total_permohonan_chart ?>;
 
-    new Chart(donutCtx, {
-        type: 'doughnut',
-        data: {
-            labels: statusData.map(d => d.label),
-            datasets: [{
-                data: statusData.map(d => d.total),
-                backgroundColor: colors.slice(0, statusData.length),
-                borderWidth: 2,
-                borderColor: '#fff',
-                hoverOffset: 6,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '65%',
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1d2939',
-                    titleFont: { family: 'Inter', size: 13 },
-                    bodyFont: { family: 'Inter', size: 12 },
-                    padding: 10,
-                    cornerRadius: 8,
+        new Chart(donutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: statusData.map(d => d.label),
+                datasets: [{
+                    data: statusData.map(d => d.total),
+                    backgroundColor: colors.slice(0, statusData.length),
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                    hoverOffset: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#1d2939',
+                        titleFont: {
+                            family: 'Inter',
+                            size: 13
+                        },
+                        bodyFont: {
+                            family: 'Inter',
+                            size: 12
+                        },
+                        padding: 10,
+                        cornerRadius: 8,
+                    }
                 }
-            }
-        },
-        plugins: [{
-            id: 'centerText',
-            beforeDraw: function(chart) {
-                const {width, height, ctx} = chart;
-                ctx.restore();
-                const fontSize = (height / 6).toFixed(2);
-                ctx.font = 'bold ' + fontSize + 'px Inter';
-                ctx.textBaseline = 'middle';
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#1d2939';
-                ctx.fillText(totalPermohonan, width / 2, height / 2 - 10);
-                ctx.font = '11px Inter';
-                ctx.fillStyle = '#98a2b3';
-                ctx.fillText('Total Permohonan', width / 2, height / 2 + 14);
-                ctx.save();
-            }
-        }]
-    });
-})();
+            },
+            plugins: [{
+                id: 'centerText',
+                beforeDraw: function(chart) {
+                    const {
+                        width,
+                        height,
+                        ctx
+                    } = chart;
+                    ctx.restore();
+                    const fontSize = (height / 6).toFixed(2);
+                    ctx.font = 'bold ' + fontSize + 'px Inter';
+                    ctx.textBaseline = 'middle';
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#1d2939';
+                    ctx.fillText(totalPermohonan, width / 2, height / 2 - 10);
+                    ctx.font = '11px Inter';
+                    ctx.fillStyle = '#98a2b3';
+                    ctx.fillText('Total Permohonan', width / 2, height / 2 + 14);
+                    ctx.save();
+                }
+            }]
+        });
+    })();
 </script>
 <?= $this->endSection() ?>
