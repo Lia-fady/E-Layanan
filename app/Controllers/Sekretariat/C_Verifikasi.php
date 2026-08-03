@@ -170,7 +170,7 @@ class C_Verifikasi extends BaseController
                               ->get()->getRow();
                               
             if ($persetujuan) {
-                $disposisiModel = new \App\Models\Sekretariat\M_Disposisi();
+                $disposisiModel = new \App\Models\Sekretariat\M_DisposisiSekretariat();
                 $disposisiModel->simpanDisposisi($persetujuan->id_persetujuan_magang, [
                     'id_bidang'         => $id_bidang,
                     'updated_by'        => session('id_user_pegawai'),
@@ -204,3 +204,4 @@ class C_Verifikasi extends BaseController
         return redirect()->to(base_url('sekretariat/verifikasi'));
     }
 }
+

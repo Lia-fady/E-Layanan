@@ -8,7 +8,7 @@ class C_Dashboard_SuperAdmin extends BaseController
 {
     public function index()
     {
-        $mDashboard = new \App\Models\M_Dashboard();
+        $mDashboard = new \App\Models\SuperAdmin\M_DashboardSuperAdmin();
         $stats = $mDashboard->getSuperAdminStats();
         
         $totalPengguna = $stats['totalPengguna'];
@@ -32,3 +32,5 @@ class C_Dashboard_SuperAdmin extends BaseController
         return view('dashboard/superadmin/v_dashboard', $data);
     }
 }
+
+

@@ -21,14 +21,14 @@ class C_ManajemenMenu extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_Menu();
+            $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
             $data['menuList'] = $model->findAll();
             return $this->renderPage('dashboard/superadmin/v_manajemen_menu', 'Manajemen Menu', 'manajemen_menu', $data);
         }
 
     public function store()
     {
-        $model = new \App\Models\SuperAdmin\M_Menu();
+        $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
         try {
@@ -52,7 +52,7 @@ class C_ManajemenMenu extends BaseController
 
     public function update($id)
     {
-        $model = new \App\Models\SuperAdmin\M_Menu();
+        $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
         $data = $this->request->getPost();
         if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
         try {
@@ -73,7 +73,7 @@ class C_ManajemenMenu extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_Menu();
+            $model = new \App\Models\SuperAdmin\M_MenuSuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/manajemen-menu'))->with('success', 'Data berhasil dihapus.');
@@ -84,3 +84,4 @@ class C_ManajemenMenu extends BaseController
             }
         }
 }
+

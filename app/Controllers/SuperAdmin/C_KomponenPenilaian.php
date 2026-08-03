@@ -21,7 +21,7 @@ class C_KomponenPenilaian extends BaseController
 
     public function index()
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             $data['komponenPenilaianList'] = $model->findAll();
             return $this->renderPage('dashboard/superadmin/komponen_penilaian/v_index', 'Master Data Komponen Penilaian', 'komponen_penilaian', $data);
         }
@@ -33,21 +33,21 @@ class C_KomponenPenilaian extends BaseController
 
     public function edit($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             $data['komponenPenilaian'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/komponen_penilaian/v_edit', 'Edit Komponen Penilaian', 'komponen_penilaian', $data);
         }
 
     public function detail($id = null)
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             $data['komponenPenilaian'] = $model->find($id);
             return $this->renderPage('dashboard/superadmin/komponen_penilaian/v_detail', 'Detail Komponen Penilaian', 'komponen_penilaian', $data);
         }
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) {
                 return redirect()->back()->with('error', 'Data tidak boleh kosong.');
@@ -65,7 +65,7 @@ class C_KomponenPenilaian extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -81,7 +81,7 @@ class C_KomponenPenilaian extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_KomponenPenilaian();
+            $model = new \App\Models\SuperAdmin\M_KomponenPenilaianSuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/komponen-penilaian'))->with('success', 'Data berhasil dihapus.');
@@ -92,3 +92,4 @@ class C_KomponenPenilaian extends BaseController
             }
         }
 }
+

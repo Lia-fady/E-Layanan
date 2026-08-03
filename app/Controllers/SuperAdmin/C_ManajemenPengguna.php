@@ -21,7 +21,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function index()
     {
-        $model = new \App\Models\SuperAdmin\M_Pengguna();
+        $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
         $users = $model->getAllWithGroup();
 
         $db = \Config\Database::connect();
@@ -36,7 +36,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function store()
         {
-            $model = new \App\Models\SuperAdmin\M_Pengguna();
+            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -55,7 +55,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function update($id)
         {
-            $model = new \App\Models\SuperAdmin\M_Pengguna();
+            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
             $data = $this->request->getPost();
             if (empty($data)) return redirect()->back()->with('error', 'Data tidak boleh kosong.');
             try {
@@ -76,7 +76,7 @@ class C_ManajemenPengguna extends BaseController
 
     public function delete($id)
         {
-            $model = new \App\Models\SuperAdmin\M_Pengguna();
+            $model = new \App\Models\SuperAdmin\M_PenggunaSuperAdmin();
             try {
                 $model->delete($id);
                 return redirect()->to(base_url('superadmin/manajemen-pengguna'))->with('success', 'Data berhasil dihapus.');
@@ -87,3 +87,4 @@ class C_ManajemenPengguna extends BaseController
             }
         }
 }
+
