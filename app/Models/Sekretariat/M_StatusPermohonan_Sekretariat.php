@@ -69,7 +69,7 @@ class M_StatusPermohonan_Sekretariat extends Model
             'COALESCE(b.bidang, b2.bidang) AS bidang',
         ]);
 
-        $builder->join('M_Mahasiswa_Mahasiswa AS m', 'm.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan AS jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_persetujuan_magang AS ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         // JOIN penempatan melalui id_persetujuan_magang ATAU id_mahasiswa

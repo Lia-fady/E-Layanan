@@ -108,11 +108,11 @@ class C_Logbook_Mahasiswa extends C_Base_Mahasiswa
         $logbookDisetujui = $builder->orderBy('tgl_logbook', 'ASC')->findAll();
         
         $db = \Config\Database::connect();
-        $detailMhs = $db->table('M_Mahasiswa_Mahasiswa')
-            ->select('M_Mahasiswa_Mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan')
-            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = M_Mahasiswa_Mahasiswa.id_mahasiswa', 'left')
+        $detailMhs = $db->table('m_mahasiswa')
+            ->select('m_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
-            ->where('M_Mahasiswa_Mahasiswa.id_mahasiswa', $id_mahasiswa)
+            ->where('m_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
 
         $data = [

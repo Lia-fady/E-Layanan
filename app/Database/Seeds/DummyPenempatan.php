@@ -27,9 +27,9 @@ class DummyPenempatan extends Seeder
             echo "Membuat data dummy langsung ke tabel t_penempatan_magang...\n\n";
 
             // Ambil data mahasiswa yang tersedia
-            $mahasiswaList = $this->db->table('M_Mahasiswa_Mahasiswa')->limit(5)->get()->getResult();
+            $mahasiswaList = $this->db->table('m_mahasiswa')->limit(5)->get()->getResult();
             if (empty($mahasiswaList)) {
-                echo "Belum ada data mahasiswa di tabel M_Mahasiswa_Mahasiswa. Silakan isi master mahasiswa terlebih dahulu.\n";
+                echo "Belum ada data mahasiswa di tabel m_mahasiswa. Silakan isi master mahasiswa terlebih dahulu.\n";
                 return;
             }
 

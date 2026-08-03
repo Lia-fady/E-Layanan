@@ -85,12 +85,12 @@ class CreateMahasiswa extends Migration
         // Membuat Foreign Key ke tabel t_instansi_mahasiswa
         $this->forge->addForeignKey('id_instansi_mahasiswa', 't_instansi_mahasiswa', 'id_instansi_mahasiswa', 'CASCADE', 'CASCADE');
         
-        // Membuat tabel M_Mahasiswa_Mahasiswa
-        $this->forge->createTable('M_Mahasiswa_Mahasiswa');
+        // Membuat tabel m_mahasiswa
+        $this->forge->createTable('m_mahasiswa');
     }
 
     public function down()
     {
-        $this->forge->dropTable('M_Mahasiswa_Mahasiswa');
+        $this->forge->dropTable('m_mahasiswa');
     }
 }

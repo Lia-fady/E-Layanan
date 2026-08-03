@@ -50,7 +50,7 @@ class M_Disposisi_Sekretariat extends Model
             jp.jenis_permohonan
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
-        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->where('ps.status_persetujuan', 'DISETUJUI');
         $builder->groupStart();
@@ -94,7 +94,7 @@ class M_Disposisi_Sekretariat extends Model
             bd.bidang
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
-        $builder->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
@@ -184,16 +184,16 @@ class M_Disposisi_Sekretariat extends Model
             return false;
         }
 
-        // 3. Cek apakah id_mahasiswa sudah memiliki penempatan
+        // 3. Cek apakah id_persetujuan_magang sudah memiliki penempatan
         $existingPenempatan = $db->table('t_penempatan_magang')
-            ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+            ->where('id_persetujuan_magang', $id_persetujuan)
             ->get()
             ->getRow();
 
         if ($existingPenempatan) {
             // Jika sudah ada, lakukan UPDATE
             $db->table('t_penempatan_magang')
-                ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+                ->where('id_persetujuan_magang', $id_persetujuan)
                 ->update([
                     'id_bidang'             => $data['id_bidang'],
                     'id_persetujuan_magang' => $id_persetujuan,

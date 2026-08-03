@@ -130,7 +130,7 @@ class C_Auth extends BaseController
                 'errors' => ['required' => 'Jenjang pendidikan (D3/S1) wajib dipilih.']
             ],
             'nik' => [
-                'rules'  => 'required|numeric|exact_length[16]|is_unique[M_Mahasiswa_Mahasiswa.nik]',
+                'rules'  => 'required|numeric|exact_length[16]|is_unique[m_mahasiswa.nik]',
                 'errors' => [
                     'required'     => 'NIK KTP wajib diisi.',
                     'numeric'      => 'NIK harus berupa angka tanpa spasi/simbol.',
@@ -139,7 +139,7 @@ class C_Auth extends BaseController
                 ]
             ],
             'nim' => [
-                'rules'  => 'required|numeric|min_length[5]|max_length[25]|is_unique[M_Mahasiswa_Mahasiswa.nim]',
+                'rules'  => 'required|numeric|min_length[5]|max_length[25]|is_unique[m_mahasiswa.nim]',
                 'errors' => [
                     'required'      => 'Nomor Induk Mahasiswa (NIM) wajib diisi.',
                     'numeric'       => 'NIM hanya boleh berisi angka tanpa spasi atau karakter lainnya.',
@@ -158,7 +158,7 @@ class C_Auth extends BaseController
                 ]
             ],
             'email' => [
-                'rules'  => 'required|valid_email|is_unique[M_Mahasiswa_Mahasiswa.email]',
+                'rules'  => 'required|valid_email|is_unique[m_mahasiswa.email]',
                 'errors' => [
                     'required'    => 'Alamat email aktif wajib diisi.',
                     'valid_email' => 'Format email tidak valid (harus mengandung @, contoh: @gmail.com).',
@@ -282,7 +282,7 @@ class C_Auth extends BaseController
         $this->instansiMahasiswaModel->insert($dataAkademik);
         $idInstansiMahasiswaBaru = $this->instansiMahasiswaModel->getInsertID();
 
-        // STEP 2: Masukkan biodata ke M_Mahasiswa_Mahasiswa LANGSUNG bersama ID akademiknya
+        // STEP 2: Masukkan biodata ke m_mahasiswa LANGSUNG bersama ID akademiknya
         $dataMahasiswa = [
             'nik'                    => $this->request->getPost('nik'),
             'nim'                    => $this->request->getPost('nim'),

@@ -15,7 +15,7 @@ class C_Profil_Mahasiswa extends C_Base_Mahasiswa
         $db = \Config\Database::connect();
         
         // Data Pribadi Mahasiswa
-        $mahasiswa = $db->table('M_Mahasiswa_Mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $mahasiswa = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         
         // Data Akademik + join ke m_instansi_pendidikan, m_prodi, m_fakultas
         $instansi = $db->table('t_instansi_mahasiswa')
@@ -52,7 +52,7 @@ class C_Profil_Mahasiswa extends C_Base_Mahasiswa
 
         $db = \Config\Database::connect();
 
-        // 1. Data Pribadi & Domisili (Tabel M_Mahasiswa_Mahasiswa)
+        // 1. Data Pribadi & Domisili (Tabel m_mahasiswa)
         $dataMahasiswa = [
             'nik'           => $this->request->getPost('nik'),
             'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
@@ -67,7 +67,7 @@ class C_Profil_Mahasiswa extends C_Base_Mahasiswa
             'provinsi'      => $this->request->getPost('provinsi')
         ];
         
-        $db->table('M_Mahasiswa_Mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->update($dataMahasiswa);
+        $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->update($dataMahasiswa);
 
         // 2. Data Akademik (Tabel t_instansi_mahasiswa)
         $instansi = $db->table('t_instansi_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRow();

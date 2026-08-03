@@ -303,7 +303,7 @@ class CreateAllTables extends Migration
         $this->forge->createTable('m_komponen_penilaian', true);
 
         // =====================================================================
-        // 11. M_Mahasiswa_Mahasiswa
+        // 11. m_mahasiswa
         // =====================================================================
         $this->forge->addField([
             'id_mahasiswa' => [
@@ -380,7 +380,7 @@ class CreateAllTables extends Migration
             ],
         ]);
         $this->forge->addKey('id_mahasiswa', true);
-        $this->forge->createTable('M_Mahasiswa_Mahasiswa', true);
+        $this->forge->createTable('m_mahasiswa', true);
 
         // =====================================================================
         // 12. m_user_mahasiswa
@@ -919,7 +919,7 @@ class CreateAllTables extends Migration
         $this->forge->dropTable('t_instansi_mahasiswa', true);
         $this->forge->dropTable('c_user_pegawai', true);
         $this->forge->dropTable('m_user_mahasiswa', true);
-        $this->forge->dropTable('M_Mahasiswa_Mahasiswa', true);
+        $this->forge->dropTable('m_mahasiswa', true);
         $this->forge->dropTable('m_komponen_penilaian', true);
         $this->forge->dropTable('m_file', true);
         $this->forge->dropTable('m_jenis_permohonan', true);

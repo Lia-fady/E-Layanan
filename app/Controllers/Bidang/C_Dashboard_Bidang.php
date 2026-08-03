@@ -82,7 +82,7 @@ class C_Dashboard_Bidang extends BaseController
             ->join('t_penempatan_magang p', 'p.id_penempatan_magang = l.id_penempatan_magang')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
-            ->join('M_Mahasiswa_Mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
+            ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->where('p.id_bidang', $id_bidang)
             ->where('l.disetujui_oleh', null)
             ->orderBy('l.tgl_logbook', 'ASC') // yang terlama dulu

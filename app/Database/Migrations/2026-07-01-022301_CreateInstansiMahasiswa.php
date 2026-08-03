@@ -19,8 +19,8 @@ class CreateInstansiMahasiswa extends Migration
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
-                // Catatan: FK id_mahasiswa ke M_Mahasiswa_Mahasiswa sengaja tidak diikat di sini dulu 
-                // karena tabel M_Mahasiswa_Mahasiswa belum kita buat (menghindari error urutan migrasi).
+                // Catatan: FK id_mahasiswa ke m_mahasiswa sengaja tidak diikat di sini dulu 
+                // karena tabel m_mahasiswa belum kita buat (menghindari error urutan migrasi).
             ],
             'id_instansi_pendidikan' => [
                 'type'           => 'INT',

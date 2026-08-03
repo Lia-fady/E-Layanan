@@ -115,7 +115,7 @@ class C_Permohonan_Mahasiswa extends C_Base_Mahasiswa
         $deskripsi_keahlian  = $this->request->getPost('deskripsi_keahlian');
         $deskripsi    = $this->request->getPost('deskripsi');
 
-        $mhs = $db->table('M_Mahasiswa_Mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $id_instansi_mahasiswa = $mhs['id_instansi_mahasiswa'] ?? 1;
 
         $db->transStart();

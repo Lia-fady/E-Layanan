@@ -107,7 +107,7 @@ class M_Dashboard_SuperAdmin extends Model
                 (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) as total_berkas
             ')
             ->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
-            ->join('M_Mahasiswa_Mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->where('ps.status_persetujuan', 'MENUNGGU')
             ->orderBy('pm.created_at', 'DESC')
@@ -154,7 +154,7 @@ class M_Dashboard_SuperAdmin extends Model
             ->join('t_penempatan_magang p', 'p.id_penempatan_magang = l.id_penempatan_magang')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
-            ->join('M_Mahasiswa_Mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
+            ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->where('p.id_bidang', $id_bidang)
             ->where('l.disetujui_oleh', null)
             ->orderBy('l.tgl_logbook', 'ASC')
@@ -266,8 +266,8 @@ class M_Dashboard_SuperAdmin extends Model
 
         // Distribusi Peran
         $mahasiswaCount = 0;
-        if ($db->tableExists('M_Mahasiswa_Mahasiswa')) {
-            $mahasiswaCount = $db->table('M_Mahasiswa_Mahasiswa')->countAllResults();
+        if ($db->tableExists('m_mahasiswa')) {
+            $mahasiswaCount = $db->table('m_mahasiswa')->countAllResults();
         }
         
         $pegawaiCounts = [];
@@ -306,7 +306,7 @@ class M_Dashboard_SuperAdmin extends Model
             // Aktivitas Terbaru (mengambil 5 permohonan magang terbaru)
             $stats['aktivitasTerbaru'] = $db->table('t_permohonan_magang as p')
                 ->select('p.created_at, m.nama_mahasiswa, jp.jenis_permohonan')
-                ->join('M_Mahasiswa_Mahasiswa as m', 'm.id_mahasiswa = p.id_mahasiswa', 'left')
+                ->join('m_mahasiswa as m', 'm.id_mahasiswa = p.id_mahasiswa', 'left')
                 ->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = p.id_jenis_permohonan', 'left')
                 ->orderBy('p.created_at', 'DESC')
                 ->limit(5)

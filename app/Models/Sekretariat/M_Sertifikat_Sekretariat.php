@@ -51,7 +51,7 @@ class M_Sertifikat_Sekretariat extends Model
             'pm.tgl_selesai',
         ]);
 
-        $builder->join('M_Mahasiswa_Mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang AS b', 'b.id_bidang = pn.id_bidang', 'left');
         $builder->join('t_persetujuan_magang AS ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
         $builder->join('t_permohonan_magang AS pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
@@ -96,7 +96,7 @@ class M_Sertifikat_Sekretariat extends Model
             'pr.prodi',
         ]);
 
-        $builder->join('M_Mahasiswa_Mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
+        $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang AS b', 'b.id_bidang = pn.id_bidang', 'left');
         $builder->join('t_persetujuan_magang AS ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
         $builder->join('t_permohonan_magang AS pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
