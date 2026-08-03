@@ -212,7 +212,7 @@
 </button>
 <div class="mobile-nav-backdrop" id="mobile-nav-backdrop"></div>
 
-
+<?php
     $currentURL = uri_string();
     $stateInfo = $state ?? 1;
     $jenisInfo = $jenis_permohonan_aktif ?? (isset($jenis_permohonan) && is_scalar($jenis_permohonan) ? $jenis_permohonan : null);
