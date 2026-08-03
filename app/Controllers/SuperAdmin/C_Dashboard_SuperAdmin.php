@@ -4,7 +4,7 @@ namespace App\Controllers\SuperAdmin;
 
 use App\Controllers\BaseController;
 
-class C_Dashboard extends BaseController
+class C_Dashboard_SuperAdmin extends BaseController
 {
     public function index()
     {

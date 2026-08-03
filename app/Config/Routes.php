@@ -192,8 +192,7 @@ $routes->get('super-admin', static function () {
 });
 
 $routes->group('superadmin', ['filter' => 'authSekretariat'], static function ($routes) {
-    // Dashboard
-    $routes->get('dashboard', '\App\Controllers\SuperAdmin\C_Dashboard::index');
+    $routes->get('dashboard', '\App\Controllers\SuperAdmin\C_Dashboard_SuperAdmin::index');
 
     // Helper untuk mendaftarkan standard CRUD routes
     $setupStandardRoutes = function ($prefix, $controller) use ($routes) {
