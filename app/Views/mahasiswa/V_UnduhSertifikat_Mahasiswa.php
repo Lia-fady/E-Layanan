@@ -1,0 +1,339 @@
+<?= $this->extend('layout/V_Mahasiswa') ?>
+
+
+<?= $this->section('extra_css') ?>
+<style>
+    .card-flat {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        border-radius: 12px;
+        padding: 24px;
+    }
+    /* === PAGE HEADER === */
+    .page-header-top {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 20px;
+        margin-top: 5px;
+    }
+    .page-header-top h4 {
+        font-weight: 800;
+        color: #1a2b3c;
+        margin: 0;
+        font-size: 1.4rem;
+        letter-spacing: -0.3px;
+    }
+    .page-header-top .sub-text {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 4px 0 0;
+        line-height: 1.5;
+    }
+    .document-table-card .table tbody tr { transition: background 0.2s ease; }
+    .document-table-card .table tbody tr:hover { background: #f7fbfd; }
+    .document-table-card .table td, .document-table-card .table th { border-color: #e8eff3; }
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    .status-badge.available { background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .status-badge.waiting { background-color: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+    .btn-download {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #fff;
+        background-color: var(--primary-royal);
+        border: none;
+        transition: all 0.2s;
+    }
+    .btn-download:hover { background-color: #274b8c; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .btn-download.disabled { background-color: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; color: #f8fafc; }
+    .doc-icon {
+        width: 44px; height: 44px;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem;
+        margin-right: 12px;
+    }
+    @media (max-width: 767.98px) {
+        .page-header-stats { flex-direction: column; }
+        .page-header-top { flex-direction: column; align-items: flex-start; }
+    }
+</style>
+<?= $this->endSection() ?>
+
+<?= $this->section('breadcrumb') ?>
+<a href="<?= base_url('mahasiswa/dashboard') ?>" class="text-decoration-none text-primary">Dashboard</a> <span class="mx-2 text-muted">/</span> <span class="text-dark fw-medium">Unduh Dokumen</span>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+<?php $documentGroups = $documentGroups ?? []; ?>
+<?php $listJenis = $listJenis ?? []; ?>
+<div class="mb-4">
+    <?php $availableDocuments = 0; ?>
+    <?php foreach ($documentGroups as $group): ?>
+        <?php foreach ($group['docs'] as $doc): ?>
+            <?php if (!empty($doc)): ?>
+                <?php $availableDocuments++; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+
+    <div class="mb-4">
+        <h3 class="fw-semibold mb-1 text-dark">Unduh Dokumen</h3>
+        <p class="text-muted mb-0">Akses surat dan sertifikat resmi yang diterbitkan selama proses kegiatan akademik Anda.</p>
+    </div>
+</div>
+
+<div class="card-flat shadow-sm document-table-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-3 border-bottom gap-3">
+        <div class="d-flex align-items-center gap-2">
+            <span class="small text-muted fw-semibold"><i class="bi bi-list-ul me-1"></i>Daftar kegiatan</span>
+            <span class="badge rounded-pill text-bg-light border" id="count-docs"><?= count($documentGroups) ?> kegiatan</span>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 flex-grow-1 flex-md-grow-0">
+            <div class="input-group input-group-sm" style="width: 220px;">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" id="search-doc" class="form-control border-start-0 ps-0 shadow-none" placeholder="Cari kegiatan...">
+            </div>
+            <select id="filter-jenis" class="form-select form-select-sm fw-semibold text-secondary shadow-none" style="width: 190px;">
+                <option value="ALL">-- Semua Jenis --</option>
+                <?php foreach ($listJenis as $jenis): ?>
+                    <option value="<?= esc($jenis['jenis_permohonan']) ?>"><?= esc($jenis['jenis_permohonan']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-shell table-responsive">
+        <table class="table table-hover align-middle m-0" style="table-layout: fixed; width: 100%;">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 25%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 15%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <thead class="table-light">
+                <tr class="text-muted small text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.4px;">
+                    <th class="py-3 ps-4">No</th>
+                    <th class="py-3">Jenis Permohonan</th>
+                    <th class="py-3">Periode</th>
+                    <th class="py-3">Bidang</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($documentGroups)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 250px;">
+                                <div class="position-relative mb-3">
+                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="bi bi-folder-x text-secondary opacity-50" style="font-size: 2.5rem;"></i>
+                                    </div>
+                                    <div class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                        <i class="bi bi-exclamation-lg fw-bold"></i>
+                                    </div>
+                                </div>
+                                <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
+                                <p class="text-muted small mb-0" style="max-width: 350px;">
+                                    Belum ada dokumen yang diunggah oleh Sekretariat atau Bidang ke akun Anda.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($documentGroups as $idx => $group): ?>
+                        <?php $hasDocs = !empty(array_filter($group['docs'], fn($doc) => !empty($doc))); ?>
+                        <tr class="doc-row" data-jenis="<?= esc($group['jenis_permohonan']) ?>" data-search="<?= esc($group['jenis_permohonan'] . ' ' . ($group['bidang'] ?? '')) ?>">
+                            <td class="ps-4 py-3 fw-semibold text-muted"><?= $idx + 1 ?></td>
+                            <td class="py-3">
+                                <span class="fw-bold text-dark d-block"><?= esc($group['jenis_permohonan']) ?></span>
+                                <small class="text-muted">Kegiatan akademik</small>
+                            </td>
+                            <td class="py-3 text-muted fw-medium">
+                                <?= !empty($group['tgl_mulai']) ? date('d M Y', strtotime($group['tgl_mulai'])) : '-' ?>
+                                s/d
+                                <?= !empty($group['tgl_selesai']) ? date('d M Y', strtotime($group['tgl_selesai'])) : '-' ?>
+                            </td>
+                            <td class="py-3 text-muted fw-medium"><?= esc($group['bidang'] ?? '-') ?></td>
+                            <td class="py-3">
+                                <?php if ($group['status_penempatan'] === 'SELESAI'): ?>
+                                    <span class="status-badge available"><i class="bi bi-check-circle-fill"></i> Selesai</span>
+                                <?php elseif ($group['status_penempatan'] === 'BERJALAN'): ?>
+                                    <span class="status-badge waiting"><i class="bi bi-clock-fill"></i> Berjalan</span>
+                                <?php else: ?>
+                                    <span class="status-badge waiting"><i class="bi bi-clock-fill"></i> Menunggu</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="py-3 text-center">
+                                <button type="button"
+                                    class="btn btn-sm btn-primary px-3"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#docModal"
+                                    data-group-id="<?= esc($group['id_persetujuan_magang']) ?>"
+                                    data-docs='<?= json_encode($group['docs']) ?>'
+                                    title="Lihat Dokumen Kegiatan">
+                                    <i class="bi bi-folder2-open me-1"></i> Dokumen
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="docModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-sm">
+            <div class="modal-header border-0 pb-2">
+                <h5 class="modal-title fw-bold text-dark" id="docModalLabel">Dokumen Kegiatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-1" id="docModalBody"></div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('extra_js') ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-doc');
+    const filterSelect = document.getElementById('filter-jenis');
+    const rows = document.querySelectorAll('.doc-row');
+    const countBadge = document.getElementById('count-docs');
+
+    function filterDocs() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const jenisFilter = filterSelect.value;
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const jenis = row.getAttribute('data-jenis');
+            const searchText = row.getAttribute('data-search')?.toLowerCase() || '';
+            const matchSearch = searchText.includes(searchTerm);
+            const matchJenis = (jenisFilter === 'ALL' || jenis === jenisFilter);
+
+            if (matchSearch && matchJenis) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (countBadge) {
+            countBadge.textContent = visibleCount + ' kegiatan';
+        }
+    }
+
+    searchInput?.addEventListener('input', filterDocs);
+    filterSelect?.addEventListener('change', filterDocs);
+
+    const modal = document.getElementById('docModal');
+    const modalBody = document.getElementById('docModalBody');
+    const modalTitle = document.getElementById('docModalLabel');
+
+    document.querySelectorAll('[data-bs-target="#docModal"]').forEach(button => {
+        button.addEventListener('click', function () {
+            const docs = JSON.parse(this.getAttribute('data-docs') || '{}');
+            const baseUrl = '<?= base_url() ?>';
+            let html = '';
+
+            const renderDoc = (label, doc, iconClass) => {
+                if (!doc) {
+                    return '';
+                }
+
+                const urlPreview = baseUrl + 'mahasiswa/sertifikat/file/' + doc.id_file_selesai_magang;
+                const urlDownload = urlPreview + '?action=download';
+
+                return `
+                    <div class="border rounded-3 p-3 mb-3">
+                        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="doc-icon ${iconClass}"><i class="bi ${doc.id_file == 10 ? 'bi-award-fill' : (doc.id_file == 9 ? 'bi-file-earmark-check-fill' : 'bi-envelope-paper-fill')}"></i></div>
+                                <div>
+                                    <div class="fw-bold text-dark">${label}</div>
+                                    <small class="text-muted">${doc.nama_file || doc.nama_file_master || 'Dokumen'}</small>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="${urlPreview}" target="_blank" class="btn btn-sm btn-outline-danger px-3"><i class="bi bi-eye"></i></a>
+                                <a href="${urlDownload}" class="btn btn-sm btn-danger px-3"><i class="bi bi-download"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+
+            html += renderDoc('Surat Penerimaan', docs.surat_penerimaan, 'bg-primary bg-opacity-10 text-primary');
+            html += renderDoc('Surat Selesai Kegiatan', docs.surat_selesai, 'bg-success bg-opacity-10 text-success');
+            html += renderDoc('Sertifikat Piagam Kelulusan', docs.piagam, 'bg-warning bg-opacity-10 text-warning');
+
+            modalTitle.textContent = 'Dokumen Kegiatan';
+            modalBody.innerHTML = html || '<div class="text-center text-muted py-4">Belum ada dokumen yang diterbitkan untuk kegiatan ini.</div>';
+        });
+    });
+
+    filterDocs();
+});
+</script>
+<?= $this->endSection() ?>
+
+<?= $this->section('extra_js') ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-doc');
+    const filterSelect = document.getElementById('filter-jenis');
+    const rows = document.querySelectorAll('.doc-row');
+    const countBadge = document.getElementById('count-docs');
+    
+    function filterDocs() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const jenisFilter = filterSelect.value;
+        let visibleCount = 0;
+        
+        rows.forEach(row => {
+            const jenis = row.getAttribute('data-jenis');
+            const docName = row.querySelector('.fw-bold').textContent.toLowerCase();
+            
+            const matchSearch = docName.includes(searchTerm);
+            const matchJenis = (jenisFilter === 'ALL' || jenis === jenisFilter);
+            
+            if (matchSearch && matchJenis) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        if(countBadge) countBadge.textContent = visibleCount + ' tersedia';
+    }
+    
+    if(searchInput) searchInput.addEventListener('input', filterDocs);
+    if(filterSelect) filterSelect.addEventListener('change', filterDocs);
+});
+</script>
+<?= $this->endSection() ?>

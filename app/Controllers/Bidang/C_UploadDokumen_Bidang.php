@@ -1,0 +1,239 @@
+<?php
+namespace App\Controllers\Bidang;
+
+use App\Controllers\Shared\C_Base;
+use App\Models\Sekretariat\M_File_Sekretariat;
+use App\Models\Sekretariat\M_FileProsesMagang_Sekretariat;
+
+class C_UploadDokumen_Bidang extends C_Base
+{
+    protected $fileModel;
+    protected $fileProsesModel;
+
+    public function __construct()
+    {
+        $this->fileModel = new M_File_Sekretariat();
+        $this->fileProsesModel = new M_FileProsesMagang_Sekretariat();
+    }
+
+    public function index()
+    {
+        $db = \Config\Database::connect();
+        
+        $search = $this->request->getGet('search');
+        $jenis_permohonan = $this->request->getGet('jenis_permohonan');
+        $status_penempatan = $this->request->getGet('status_penempatan');
+        
+        $builder = $db->table('t_persetujuan_magang ps')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, jp.jenis_permohonan, pnm.status_penempatan')
+            ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
+            ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
+            ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('ps.status_persetujuan', 'DISETUJUI')
+            ->orderBy('ps.tgl_persetujuan', 'DESC');
+            
+        if (!empty($status_penempatan)) {
+            $builder->where('pnm.status_penempatan', $status_penempatan);
+        } else {
+            $builder->groupStart()
+                ->where('pnm.status_penempatan', 'BERJALAN')
+                ->orWhere('pnm.status_penempatan', 'SELESAI')
+            ->groupEnd();
+        }
+            
+        if (session()->has('id_bidang')) {
+             $builder->where('ps.id_bidang', session('id_bidang'));
+        }
+
+        if (!empty($search)) {
+            $builder->groupStart()
+                    ->like('mhs.nama_mahasiswa', $search)
+                    ->orLike('mhs.nim', $search)
+                    ->groupEnd();
+        }
+
+        if (!empty($jenis_permohonan)) {
+            $builder->where('pm.id_jenis_permohonan', $jenis_permohonan);
+        }
+
+        $persetujuan = $builder->get()->getResult();
+        $list_jenis = $db->table('m_jenis_permohonan')->get()->getResultArray();
+
+        $data = [
+            'title'       => 'Daftar Dokumen Kegiatan',
+            'active_menu' => 'upload_dokumen',
+            'persetujuan' => $persetujuan,
+            'list_jenis'  => $list_jenis,
+            'search'      => $search,
+            'jenis_permohonan' => $jenis_permohonan,
+            'status_penempatan' => $status_penempatan
+        ];
+
+        return view('bidang/V_UploadDokumenIndex_Bidang', $data);
+    }
+
+    private function getPersetujuanDetail($id_persetujuan)
+    {
+        $db = \Config\Database::connect();
+        return $db->table('t_persetujuan_magang ps')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, pnm.status_penempatan')
+            ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
+            ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
+            ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+            ->where('ps.id_persetujuan_magang', $id_persetujuan)
+            ->get()->getRow();
+    }
+
+    public function form($id_persetujuan)
+    {
+        $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
+        if (!$persetujuan) {
+            return redirect()->to(base_url('kabid/upload-dokumen'))->with('error', 'Data persetujuan tidak ditemukan.');
+        }
+
+        if (!in_array($persetujuan->status_penempatan, ['BERJALAN', 'SELESAI'])) {
+            return redirect()->to(base_url('kabid/upload-dokumen'))->with('error', 'Mahasiswa belum disetujui atau status belum aktif, belum dapat mengunggah dokumen.');
+        }
+
+        $data = [
+            'title'       => 'Upload Dokumen Kegiatan',
+            'active_menu' => 'upload_dokumen',
+            'persetujuan' => $persetujuan,
+            'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Keterangan Diterima', 'Surat Keterangan Selesai Kegiatan', 'Sertifikat / Bukti Kegiatan'])->where('status_aktif', '1')->findAll(),
+            'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
+        ];
+
+        return view('bidang/V_UploadDokumen_Bidang', $data);
+    }
+
+    public function store()
+    {
+        $validationRules = [
+            'id_persetujuan_magang' => 'required',
+            'id_file'               => 'required',
+            'file_surat'            => [
+                'rules'  => 'uploaded[file_surat]|max_size[file_surat,5120]|ext_in[file_surat,pdf,doc,docx]|mime_in[file_surat,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+                'errors' => [
+                    'uploaded' => 'File surat harus diunggah.',
+                    'max_size' => 'Ukuran file maksimal 5MB.',
+                    'ext_in'   => 'Format file hanya diperbolehkan PDF, DOC, atau DOCX.',
+                    'mime_in'  => 'Format file tidak valid.'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
+        
+        // Pengecekan apakah id_persetujuan_magang valid dan ada di tabel t_persetujuan_magang
+        $db = \Config\Database::connect();
+        $cekPersetujuan = $db->table('t_persetujuan_magang')
+                             ->where('id_persetujuan_magang', $id_persetujuan)
+                             ->get()->getRow();
+                             
+        if (!$cekPersetujuan) {
+            return redirect()->back()->with('error', 'Data persetujuan magang tidak valid atau tidak ditemukan.');
+        }
+
+        $id_file = $this->request->getPost('id_file');
+        $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan, $id_file);
+        if ($existing) {
+            return redirect()->back()->with('error', 'Dokumen jenis ini sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.');
+        }
+
+        $file = $this->request->getFile('file_surat');
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->store('surat_penerimaan_magang/', $newName);
+            
+            $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
+
+            $this->fileProsesModel->insert([
+                'id_persetujuan_magang' => $id_persetujuan,
+                'id_file'               => $this->request->getPost('id_file'),
+                'nama_file'             => $file->getClientName(),
+                'path_file'             => $path_file,
+                'proses_magang'         => 'SURAT_KETERANGAN_DITERIMA',
+                'created_by'            => session('id_user_pegawai')
+            ]);
+
+            return redirect()->back()->with('success', 'Surat keterangan diterima berhasil diunggah.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal mengunggah file.');
+    }
+
+    public function update($id_file_selesai)
+    {
+        $validationRules = [
+            'id_file'    => 'required',
+            'file_surat' => [
+                'rules'  => 'uploaded[file_surat]|max_size[file_surat,5120]|ext_in[file_surat,pdf,doc,docx]|mime_in[file_surat,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document]',
+                'errors' => [
+                    'uploaded' => 'File surat harus diunggah.',
+                    'max_size' => 'Ukuran file maksimal 5MB.',
+                    'ext_in'   => 'Format file hanya diperbolehkan PDF, DOC, atau DOCX.',
+                    'mime_in'  => 'Format file tidak valid.'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validationRules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $existing = $this->fileProsesModel->find($id_file_selesai);
+        if (!$existing) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+
+        $file = $this->request->getFile('file_surat');
+        if ($file->isValid() && !$file->hasMoved()) {
+            $newName = $file->getRandomName();
+            $file->store('surat_penerimaan_magang/', $newName);
+            $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
+
+            // Hapus file lama jika ada
+            $oldFilePath = WRITEPATH . $existing->path_file;
+            if (file_exists($oldFilePath) && is_file($oldFilePath)) {
+                unlink($oldFilePath);
+            }
+
+            $this->fileProsesModel->update($id_file_selesai, [
+                'id_file'    => $this->request->getPost('id_file'),
+                'nama_file'  => $file->getClientName(),
+                'path_file'  => $path_file,
+                'updated_by' => session('id_user_pegawai')
+            ]);
+
+            return redirect()->back()->with('success', 'Dokumen berhasil diganti.');
+        }
+
+        return redirect()->back()->with('error', 'Gagal mengunggah file.');
+    }
+
+    public function download($id_file_selesai)
+    {
+        $fileData = $this->fileProsesModel->find($id_file_selesai);
+        if (!$fileData) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+
+        $filePath = WRITEPATH . $fileData->path_file;
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File fisik tidak ditemukan di server.');
+        }
+
+        return $this->response->download($filePath, null)->setFileName($fileData->nama_file);
+    }
+}

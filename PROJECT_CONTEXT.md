@@ -56,7 +56,7 @@ Tugas Sekretariat:
 - Memberikan catatan revisi bila dokumen permohonan mhs ada yg salah
 - Menolak permohonan
 - Menentukan bidang tujuan berdasarkan kompetensi mahasiswa
-- Mengirim disposisi ke Kepala Bidang
+- Mengirim disposisi ke Bidang
 - hanya bisa Upload Surat Penerimaan Magang
 - Mengelola seluruh permohonan
 
@@ -73,7 +73,7 @@ Bidang dapat:
 - Melihat dokumen permohonan
 - Menyetujui disposisi dari sekretariat
 - Memberikan catatan
-- Melihat kuota bidang
+- kuota bidang
 - Menambah kuota untuk bidangnya masing2
 - Melihat mahasiswa aktif
 - Melihat riwayat magang
@@ -116,7 +116,7 @@ Setiap jenis permohonan memiliki:
 
 - Form berbeda
 - Dokumen berbeda
-
+- tergantung kebutuhannya seperti apa kira2
 ---
 
 
@@ -183,75 +183,10 @@ Kepala Bidang
 
 ---
 
-# Database
-
-Gunakan ERD terbaru sebagai acuan.
-
-Relasi utama meliputi:
-
-- c_menus
-- c_menus_privilages
-- c_user_group
-- c_user_pegawai
-- m_mahasiswa
-- m_user_mahasiswa
-- m_bidang
-- m_kuota
-- m_instansi_pendidikan
-- m_fakultas
-- m_prodi
-- m_file
-- m_file_permnohonan
-- m_jenis_permohonan
-- m_opd
-- t_instansi_mahasiswa
-- t_permohonan_magang
-- t_file_permohonan_magang
-- t_persetujuan_magang
-- t_penempatan_magang
-- t_logbook_magang
-- t_file_proses_magang
-
-
-Jangan mengubah struktur tabel tanpa instruksi.
-
 ---
 
-# Validasi
-
-Gunakan Validation bawaan CodeIgniter 4.
-
-Contoh:
-
-- Username tanpa spasi
-- NIK tepat 16 digit
-- Semester maksimal 14
-- RT hanya angka
-- RW hanya angka
-- Nomor Telepon hanya angka
-- CAPTCHA
-- Upload file tervalidasi
 
 ---
-
-# UI / UX
-
-Gunakan Bootstrap 5.
-
-Konsep UI:
-
-- Modern
-- Clean
-- Solid
-- Professional
-- Dashboard bergaya AdminLTE modern
-- Card tegas
-- Sidebar sedikit lebih tebal
-- Border radius sedang
-- Shadow ringan
-- Konsisten pada seluruh halaman
-
-Seluruh halaman antar aktor harus memiliki tampilan yang konsisten.
 
 ---
 
