@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * Kode    : L_sidebar.php
  * Path    : app/Views/layout/L_sidebar.php
@@ -45,7 +45,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- User Profile (Static Display) -->
+    <!-- User Profile -->
     <div class="sidebar-user-profile">
         <div class="sidebar-user-avatar">
             <i class="fas fa-user"></i>
