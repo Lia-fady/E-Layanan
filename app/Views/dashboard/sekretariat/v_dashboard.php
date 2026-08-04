@@ -169,7 +169,7 @@
                 <?php
                 $chartColors = ['#34A853', '#FFC107', '#EA4335'];
                 $i = 0;
-                foreach ($status_verifikasi as $sv) :
+                foreach ($status_verifikasi ?? [] as $sv) :
                     $color = $chartColors[$i % count($chartColors)];
                 ?>
                     <li>
@@ -216,7 +216,7 @@
         const donutCtx = document.getElementById('donutChart');
         if (!donutCtx) return;
 
-        const statusData = <?= json_encode($status_verifikasi) ?>;
+        const statusData = <?= json_encode($status_verifikasi ?? []) ?>;
         const colors = ['#34A853', '#FFC107', '#EA4335'];
         const totalPermohonan = <?= (int)$total_permohonan_chart ?>;
 

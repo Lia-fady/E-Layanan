@@ -34,23 +34,24 @@
                                 <label for="id_opd" class="form-label fw-bold">OPD <span class="text-danger">*</span></label>
                                 <select class="form-select" id="id_opd" name="id_opd" required>
                                     <option value="">-- Pilih OPD --</option>
-                                    <?php if(isset($opdList)): foreach($opdList as $opd): ?>
-                                    <option value="<?= $opd['id_opd'] ?>"><?= $opd['nama_opd'] ?></option>
-                                    <?php endforeach; endif; ?>
+                                    <?php if (isset($opdList)): foreach ($opdList as $opd): ?>
+                                            <option value="<?= $opd['id_opd'] ?>"><?= $opd['opd'] ?></option>
+                                    <?php endforeach;
+                                    endif; ?>
                                 </select>
                                 <div class="invalid-feedback d-block text-danger d-none">
                                     OPD wajib dipilih.
                                 </div>
                             </div>
-                              <div class="mb-3">
-                                  <label for="bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
-                                  <input type="text" class="form-control" id="bidang" name="bidang" placeholder="Masukkan Nama Bidang"  required>
-                                  <!-- Contoh validasi error -->
-                                  <div class="invalid-feedback d-block text-danger d-none">
-                                      Nama Bidang wajib diisi.
-                                  </div>
-                              </div>
-                            
+                            <div class="mb-3">
+                                <label for="bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="bidang" name="bidang" placeholder="Masukkan Nama Bidang" required>
+                                <!-- Contoh validasi error -->
+                                <div class="invalid-feedback d-block text-danger d-none">
+                                    Nama Bidang wajib diisi.
+                                </div>
+                            </div>
+
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch fs-5">
@@ -86,71 +87,71 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(function () {
-    $('#formTambah').on('submit', function(e) {
-        e.preventDefault();
-        
-        let form = $(this);
-        let url = form.attr('action');
-        let formData = new FormData(this);
-        
-        // Basic frontend validation for required fields
-        let isValid = true;
-        form.find('[required]').each(function() {
-            if($(this).val().trim() === '') {
-                isValid = false;
-                $(this).addClass('is-invalid');
-                $(this).siblings('.invalid-feedback').removeClass('d-none');
-            } else {
+    $(function() {
+        $('#formTambah').on('submit', function(e) {
+            e.preventDefault();
+
+            let form = $(this);
+            let url = form.attr('action');
+            let formData = new FormData(this);
+
+            // Basic frontend validation for required fields
+            let isValid = true;
+            form.find('[required]').each(function() {
+                if ($(this).val().trim() === '') {
+                    isValid = false;
+                    $(this).addClass('is-invalid');
+                    $(this).siblings('.invalid-feedback').removeClass('d-none');
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).siblings('.invalid-feedback').addClass('d-none');
+                }
+            });
+
+            if (!isValid) return;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.href = "<?= base_url('superadmin/bidang') ?>";
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan!',
+                        text: 'Tidak dapat terhubung ke server.'
+                    });
+                }
+            });
+        });
+
+        // Remove validation warning on input
+        $('#formTambah input, #formTambah select, #formTambah textarea').on('input change', function() {
+            if ($(this).val().trim() !== '') {
                 $(this).removeClass('is-invalid');
                 $(this).siblings('.invalid-feedback').addClass('d-none');
             }
         });
-        
-        if(!isValid) return;
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if(response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/bidang') ?>";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message
-                    });
-                }
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Tidak dapat terhubung ke server.'
-                });
-            }
-        });
     });
-
-    // Remove validation warning on input
-    $('#formTambah input, #formTambah select, #formTambah textarea').on('input change', function() {
-        if($(this).val().trim() !== '') {
-            $(this).removeClass('is-invalid');
-            $(this).siblings('.invalid-feedback').addClass('d-none');
-        }
-    });
-});
 </script>
 <?= $this->endSection() ?>
