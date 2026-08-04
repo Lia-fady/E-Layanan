@@ -45,14 +45,14 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- User Profile -->
+    <!-- User Profile (Static Display) -->
     <div class="sidebar-user-profile">
         <div class="sidebar-user-avatar">
             <i class="fas fa-user"></i>
         </div>
         <div class="sidebar-user-info">
             <div class="sidebar-user-name"><?= esc(!empty(session('nama_user')) ? session('nama_user') : (!empty(session('nama')) ? session('nama') : 'User')) ?></div>
-            <div class="sidebar-user-role"><?= esc(!empty(session('kode_unor')) ? session('kode_unor') : (!empty(session('role_name')) ? session('role_name') : (!empty(session('role')) ? session('role') : 'Sekretariat'))) ?></div>
+            <div class="sidebar-user-role"><?= esc(ucwords(!empty(session('kode_unor')) ? session('kode_unor') : (!empty(session('role_name')) ? session('role_name') : (!empty(session('role')) ? session('role') : 'Sekretariat')))) ?></div>
         </div>
     </div>
 

@@ -24,14 +24,20 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- User Profile -->
+    <!-- User Profile (Static Display) -->
     <div class="sidebar-user-profile">
         <div class="sidebar-user-avatar">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-building"></i>
         </div>
         <div class="sidebar-user-info">
-            <div class="sidebar-user-name"><?= esc(!empty(session('nama_user')) ? session('nama_user') : (!empty(session('nama')) ? session('nama') : 'User')) ?></div>
-            <div class="sidebar-user-role"><?= esc(!empty(session('kode_unor')) ? session('kode_unor') : (!empty(session('role_name')) ? session('role_name') : (!empty(session('role')) ? session('role') : 'Kepala Bidang'))) ?></div>
+            <?php
+                $namaBidang = session('nama_bidang') ?? session('nama') ?? 'Kepala Bidang';
+                $namaBidangShort = mb_strlen($namaBidang) > 20 ? mb_substr($namaBidang, 0, 20) . '...' : $namaBidang;
+            ?>
+            <div class="sidebar-user-name" title="<?= esc($namaBidang) ?>">
+                <?= esc($namaBidangShort) ?>
+            </div>
+            <div class="sidebar-user-role">Kepala Bidang</div>
         </div>
     </div>
 

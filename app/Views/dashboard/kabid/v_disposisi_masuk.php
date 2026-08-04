@@ -68,21 +68,17 @@
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0" id="dataTableCustom" width="100%" cellspacing="0" style="border-collapse: collapse;">
-                <thead style="background-color: #F8FAFC; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
+                <thead style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); color: #fff;">
                     <tr>
-                        <th class="text-uppercase border-0" style="font-size: 0.8rem; font-weight: 700; color: #475569; padding: 1rem 1.5rem;">NAMA PEMOHON</th>
-                        <th class="text-uppercase border-0" style="font-size: 0.8rem; font-weight: 700; color: #475569; padding: 1rem;">INSTANSI</th>
-                        <th class="text-uppercase border-0" style="font-size: 0.8rem; font-weight: 700; color: #475569; padding: 1rem;">JENIS</th>
-                        <th class="text-uppercase border-0" style="font-size: 0.8rem; font-weight: 700; color: #475569; padding: 1rem;">STATUS</th>
-                        <th class="text-uppercase text-center border-0" style="font-size: 0.8rem; font-weight: 700; color: #475569; padding: 1rem;">AKSI</th>
+                        <th class="text-uppercase border-0" style="font-size: 0.82rem; font-weight: 700; padding: 12px 14px; vertical-align: middle; letter-spacing: 0.04em;">NAMA PEMOHON</th>
+                        <th class="text-uppercase border-0" style="font-size: 0.82rem; font-weight: 700; padding: 12px 14px; vertical-align: middle; letter-spacing: 0.04em;">INSTANSI</th>
+                        <th class="text-uppercase border-0" style="font-size: 0.82rem; font-weight: 700; padding: 12px 14px; vertical-align: middle; letter-spacing: 0.04em;">JENIS</th>
+                        <th class="text-uppercase border-0" style="font-size: 0.82rem; font-weight: 700; padding: 12px 14px; vertical-align: middle; letter-spacing: 0.04em;">STATUS</th>
+                        <th class="text-uppercase text-center border-0" style="font-size: 0.82rem; font-weight: 700; padding: 12px 14px; vertical-align: middle; letter-spacing: 0.04em;">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($penempatan)): ?>
-                    <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">Belum ada data disposisi.</td>
-                    </tr>
-                    <?php else: ?>
+                    <?php if (!empty($penempatan)): ?>
                         <?php foreach ($penempatan as $row): 
                             // Extract initials
                             $nameParts = explode(' ', trim($row->nama_mahasiswa));
@@ -130,11 +126,11 @@
                                 <?= ucfirst(strtolower($row->status_penempatan)) ?>
                             </td>
                             <td class="text-center" style="padding: 1rem; border-top: none;">
-                                <button type="button" class="btn btn-link btn-sm btn-detail" 
-                                    style="color: #2563EB; font-weight: 500; text-decoration: none;"
+                                <button type="button" class="btn btn-sm btn-detail" 
+                                    style="background: linear-gradient(135deg, #6366f1, #818cf8); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-weight: 600; font-size: 0.8rem;"
                                     data-id="<?= $row->id_penempatan_magang ?>"
-                                    data-mhs="<?= htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') ?>">
-                                    <i class="far fa-eye mr-1"></i> Detail
+                                    data-mhs="<?= htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') ?>" title="Lihat Detail Permohonan">
+                                    <i class="fas fa-eye mr-1"></i> Detail
                                 </button>
                             </td>
                         </tr>
@@ -149,72 +145,125 @@
 <!-- Modal Detail & Aksi -->
 <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="modalDetailLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalDetailLabel"><i class="fas fa-user-graduate mr-2"></i> Detail Permohonan Magang</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
+            <div class="modal-header" style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%); color: #fff; border-bottom: none; padding: 1.25rem 1.5rem;">
+                <h5 class="modal-title font-weight-bold" id="modalDetailLabel" style="font-size: 1.1rem; letter-spacing: 0.02em;">
+                    <i class="fas fa-user-graduate mr-2" style="color: #93c5fd;"></i> Detail Permohonan Magang
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="opacity: 0.8; text-shadow: none;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body bg-light">
+            <div class="modal-body" style="background-color: #f8fafc; padding: 1.5rem;">
+                
+                <!-- Header Profil Eksekutif -->
+                <div class="d-flex align-items-center mb-4 p-3 rounded" style="background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border: 1px solid #f1f5f9;">
+                    <div class="mr-4" id="det_avatar" style="background: linear-gradient(135deg, #6366f1, #818cf8); color: #fff; width: 65px; height: 65px; border-radius: 50%; font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4); flex-shrink: 0;">A</div>
+                    <div>
+                        <h4 id="det_nama_header" class="mb-1" style="font-weight: 700; color: #1e3a5f;">Nama Mahasiswa</h4>
+                        <div class="text-muted" style="font-size: 0.95rem; font-weight: 500;">
+                            <span id="det_nim_header" style="color: #64748b;">NIM</span> &nbsp;|&nbsp; 
+                            <i class="fas fa-university mx-1" style="color: #94a3b8;"></i><span id="det_instansi_header" style="color: #64748b;">Instansi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlight Kotak Waktu Magang -->
+                <div class="mb-4 p-3 rounded" style="background-color: #fff1f2; border-left: 4px solid #f43f5e; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div style="background: #ffe4e6; padding: 12px; border-radius: 8px; margin-right: 15px;">
+                        <i class="fas fa-calendar-alt" style="color: #e11d48; font-size: 1.3rem;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; color: #9f1239; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Periode Pelaksanaan</div>
+                        <div id="det_waktu" style="font-size: 1.1rem; font-weight: 700; color: #be123c;">18 Juli 2026 s/d 31 Agustus 2026</div>
+                    </div>
+                </div>
                 
                 <div class="row">
                     <!-- Biodata Mahasiswa -->
                     <div class="col-md-6 mb-3">
-                        <div class="card h-100 shadow-sm border-0" style="border-radius: 12px; border: 1px solid #E2E8F0 !important;">
-                            <div class="card-header bg-white font-weight-bold text-primary" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;"><i class="fas fa-id-card mr-2"></i> Biodata Mahasiswa</div>
-                            <div class="card-body p-3">
-                                <table class="table table-sm table-borderless mb-0">
-                                    <tr><th width="40%" class="text-muted">Nama Lengkap</th><td id="det_nama" class="font-weight-bold text-dark"></td></tr>
-                                    <tr><th class="text-muted">NIK</th><td id="det_nik"></td></tr>
-                                    <tr><th class="text-muted">NIM / NIS</th><td id="det_nim"></td></tr>
-                                    <tr><th class="text-muted">Jenis Kelamin</th><td id="det_jk"></td></tr>
-                                    <tr><th class="text-muted">No. Telepon</th><td id="det_telp"></td></tr>
-                                    <tr><th class="text-muted">Email</th><td id="det_email"></td></tr>
-                                </table>
+                        <div class="card h-100 shadow-sm border-0" style="border-radius: 12px;">
+                            <div class="card-header bg-white font-weight-bold" style="border-bottom: 2px solid #f1f5f9; border-radius: 12px 12px 0 0; color: #1e3a5f; padding: 1rem 1.25rem;">
+                                <i class="fas fa-id-card mr-2" style="color: #6366f1;"></i> Biodata Mahasiswa
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">NIK</span>
+                                        <span id="det_nik" class="d-block" style="color: #0f172a; font-weight: 600; font-size: 0.95rem;">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Jenis Kelamin</span>
+                                        <span id="det_jk" class="badge" style="padding: 6px 10px; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">No. Telepon</span>
+                                        <span id="det_telp" class="d-block" style="color: #0f172a; font-weight: 600; font-size: 0.95rem;">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Email</span>
+                                        <span id="det_email" class="d-block text-truncate" style="color: #0f172a; font-weight: 600; font-size: 0.95rem;" title="-">-</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Informasi Akademik -->
                     <div class="col-md-6 mb-3">
-                        <div class="card h-100 shadow-sm border-0" style="border-radius: 12px; border: 1px solid #E2E8F0 !important;">
-                            <div class="card-header bg-white font-weight-bold text-primary" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;"><i class="fas fa-university mr-2"></i> Informasi Akademik & Magang</div>
-                            <div class="card-body p-3">
-                                <table class="table table-sm table-borderless mb-0">
-                                    <tr><th width="40%" class="text-muted">Instansi</th><td id="det_instansi" class="font-weight-bold text-dark"></td></tr>
-                                    <tr><th class="text-muted">Jurusan/Prodi</th><td id="det_prodi"></td></tr>
-                                    <tr><th class="text-muted">Semester</th><td id="det_semester"></td></tr>
-                                    <tr><th class="text-muted">Jenis Permohonan</th><td id="det_jenis"></td></tr>
-                                    <tr><th class="text-muted">Bidang Tujuan</th><td id="det_bidang"></td></tr>
-                                    <tr><th class="text-muted">Waktu Magang</th><td id="det_waktu" class="text-danger font-weight-bold"></td></tr>
-                                </table>
+                        <div class="card h-100 shadow-sm border-0" style="border-radius: 12px;">
+                            <div class="card-header bg-white font-weight-bold" style="border-bottom: 2px solid #f1f5f9; border-radius: 12px 12px 0 0; color: #1e3a5f; padding: 1rem 1.25rem;">
+                                <i class="fas fa-university mr-2" style="color: #6366f1;"></i> Akademik & Magang
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Jurusan/Prodi</span>
+                                        <span id="det_prodi" class="d-block text-truncate" style="color: #0f172a; font-weight: 600; font-size: 0.95rem;" title="-">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Semester</span>
+                                        <span id="det_semester" class="d-block" style="color: #0f172a; font-weight: 600; font-size: 0.95rem;">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Jenis Permohonan</span>
+                                        <span id="det_jenis" class="badge" style="background: #fef3c7; color: #d97706; padding: 6px 10px; border-radius: 6px; font-weight: 600; font-size: 0.85rem;">-</span>
+                                    </div>
+                                    <div class="col-6 mb-4">
+                                        <span class="d-block text-muted mb-1" style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Bidang Tujuan</span>
+                                        <span id="det_bidang" class="d-block" style="color: #0f172a; font-weight: 600; font-size: 0.95rem; line-height: 1.3;">-</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Keahlian & Deskripsi -->
-                <div class="card shadow-sm border-0 mb-3" style="border-radius: 12px; border: 1px solid #E2E8F0 !important;">
-                    <div class="card-header bg-white font-weight-bold text-primary" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;"><i class="fas fa-align-left mr-2"></i> Keahlian & Catatan Sekretariat</div>
-                    <div class="card-body p-3">
+                <div class="card shadow-sm border-0 mb-3" style="border-radius: 12px;">
+                    <div class="card-header bg-white font-weight-bold" style="border-bottom: 2px solid #f1f5f9; border-radius: 12px 12px 0 0; color: #1e3a5f; padding: 1rem 1.25rem;">
+                        <i class="fas fa-align-left mr-2" style="color: #6366f1;"></i> Keahlian & Catatan Sekretariat
+                    </div>
+                    <div class="card-body p-4">
                         <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <strong class="text-muted d-block mb-1">Deskripsi Keahlian:</strong>
-                                <div id="det_keahlian" class="p-3 bg-light rounded border" style="line-height: 1.5; font-size: 0.9rem;"></div>
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <strong class="text-muted d-block mb-2" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Deskripsi Keahlian:</strong>
+                                <div id="det_keahlian" class="p-3 bg-light rounded" style="line-height: 1.6; font-size: 0.95rem; color: #475569; border: 1px solid #e2e8f0; min-height: 80px;"></div>
                             </div>
-                            <div class="col-md-6 mb-2">
-                                <strong class="text-muted d-block mb-1">Catatan Disposisi (Sekretariat):</strong>
-                                <div id="det_catatan" class="p-3 bg-light rounded border text-danger" style="line-height: 1.5; font-size: 0.9rem;"></div>
+                            <div class="col-md-6">
+                                <strong class="text-muted d-block mb-2" style="font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Catatan Disposisi (Sekretariat):</strong>
+                                <div id="det_catatan" class="p-3 rounded" style="line-height: 1.6; font-size: 0.95rem; background-color: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; min-height: 80px;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Dokumen Pendukung -->
-                <div class="card shadow-sm border-0 mb-3" style="border-radius: 12px; border: 1px solid #E2E8F0 !important;">
-                    <div class="card-header bg-white font-weight-bold text-primary" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;"><i class="fas fa-folder-open mr-2"></i> Dokumen Pendukung</div>
-                    <div class="card-body p-3">
+                <div class="card shadow-sm border-0 mb-3" style="border-radius: 12px;">
+                    <div class="card-header bg-white font-weight-bold" style="border-bottom: 2px solid #f1f5f9; border-radius: 12px 12px 0 0; color: #1e3a5f; padding: 1rem 1.25rem;">
+                        <i class="fas fa-folder-open mr-2" style="color: #6366f1;"></i> Dokumen Pendukung
+                    </div>
+                    <div class="card-body p-4">
                         <div id="det_files" class="d-flex flex-wrap" style="gap:10px;">
                             <!-- File links will be injected here -->
                         </div>
@@ -302,9 +351,15 @@
 .dataTables_wrapper .pagination {
     margin: 0;
 }
+#dataTableCustom tbody tr:hover {
+    background-color: #f0f4ff !important;
+}
+#dataTableCustom tbody td {
+    vertical-align: middle;
+}
 .dataTables_wrapper .page-item.active .page-link {
-    background-color: #0F172A;
-    border-color: #0F172A;
+    background-color: #6366f1;
+    border-color: #6366f1;
     color: white;
 }
 .dataTables_wrapper .page-link {
@@ -341,7 +396,8 @@ $(document).ready(function() {
             "sInfoEmpty": "Menampilkan 0 dari 0 entri",
             "sInfoFiltered": "(disaring dari _MAX_ entri)",
             "sLengthMenu": "Tampilkan _MENU_ entri",
-            "sZeroRecords": "Belum ada data disposisi.",
+            "sZeroRecords": "Belum ada data disposisi untuk status ini.",
+            "emptyTable": "Belum ada data disposisi untuk status ini.",
             "oPaginate": {
                 "sFirst": "Pertama",
                 "sLast": "Terakhir",
@@ -350,7 +406,14 @@ $(document).ready(function() {
             }
         },
         "dom": 't<"d-flex justify-content-between align-items-center px-4 py-3" <"text-muted"i> <"pagination-sm"p> >',
-        "ordering": false
+        "ordering": false,
+        "columns": [
+            null,
+            null,
+            null,
+            null,
+            { "orderable": false, "searchable": false }
+        ]
     });
 
     // Custom Search
@@ -362,16 +425,37 @@ $(document).ready(function() {
     $('.btn-detail').on('click', function() {
         var mhs = $(this).data('mhs');
         
-        // Populate Data
-        $('#det_nama').text(mhs.nama_mahasiswa || '-');
-        $('#det_nik').text(mhs.nik || '-');
-        $('#det_nim').text(mhs.nim || '-');
-        $('#det_jk').text(mhs.jenis_kelamin == 'L' ? 'Laki-Laki' : (mhs.jenis_kelamin == 'P' ? 'Perempuan' : '-'));
-        $('#det_telp').text(mhs.no_telp || '-');
-        $('#det_email').text(mhs.email || '-');
+        // Populate Data for Header Profile
+        $('#det_nama_header').text(mhs.nama_mahasiswa || '-');
+        $('#det_nim_header').text(mhs.nim || '-');
+        $('#det_instansi_header').text(mhs.instansi_pendidikan || '-');
         
-        $('#det_instansi').text(mhs.instansi_pendidikan || '-');
-        $('#det_prodi').text(mhs.prodi || '-');
+        // Populate Avatar Initial
+        if(mhs.nama_mahasiswa) {
+            $('#det_avatar').text(mhs.nama_mahasiswa.substring(0, 1).toUpperCase());
+        } else {
+            $('#det_avatar').text('A');
+        }
+
+        // Populate Form Fields
+        $('#det_nik').text(mhs.nik || '-');
+        
+        // Jenis Kelamin Badge
+        if(mhs.jenis_kelamin == 'L') {
+            $('#det_jk').text('Laki-Laki').css({'background': '#e0e7ff', 'color': '#4338ca'});
+        } else if(mhs.jenis_kelamin == 'P') {
+            $('#det_jk').text('Perempuan').css({'background': '#fce7f3', 'color': '#be185d'});
+        } else {
+            $('#det_jk').text('-').css({'background': '#f1f5f9', 'color': '#475569'});
+        }
+        
+        $('#det_telp').text(mhs.no_telp || '-');
+        
+        // Tooltip fallback for long emails
+        $('#det_email').text(mhs.email || '-').attr('title', mhs.email || '-');
+        
+        // Akademik
+        $('#det_prodi').text(mhs.prodi || '-').attr('title', mhs.prodi || '-');
         $('#det_semester').text(mhs.semester || '-');
         $('#det_jenis').text(mhs.jenis_permohonan || '-');
         $('#det_bidang').text(mhs.bidang || '-');

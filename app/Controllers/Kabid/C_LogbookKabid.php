@@ -16,11 +16,13 @@ class C_LogbookKabid extends BaseController
     public function index()
     {
         $id_bidang = session('id_bidang');
-        
+        $db = \Config\Database::connect();
+
         $data = [
-            'title'       => 'Logbook Mahasiswa',
-            'active_menu' => 'logbook',
-            'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang)
+            'title'            => 'Logbook Mahasiswa',
+            'active_menu'      => 'logbook',
+            'mahasiswa'        => $this->logbookModel->getActiveMahasiswa($id_bidang),
+            'jenis_permohonan' => $db->table('m_jenis_permohonan')->get()->getResult(),
         ];
 
         return view('dashboard/kabid/v_logbook_mahasiswa', $data);

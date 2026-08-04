@@ -45,10 +45,8 @@ class C_Profile extends BaseController
         $db = \Config\Database::connect();
 
         $updateData = [
-            'nama_user' => $this->request->getPost('nama_user'),
-            'email'     => $this->request->getPost('email'),
-            'no_telp'   => $this->request->getPost('no_telp'),
-            'nip'       => $this->request->getPost('nip'),
+            'nama' => $this->request->getPost('nama'),
+            'nip'  => $this->request->getPost('nip'),
         ];
 
         $result = $db->table('c_user_pegawai')
@@ -57,7 +55,8 @@ class C_Profile extends BaseController
 
         if ($result) {
             // Update session nama
-            session()->set('nama_user', $updateData['nama_user']);
+            session()->set('nama', $updateData['nama']);
+            session()->set('nama_user', $updateData['nama']);
             session()->setFlashdata('success', 'Profil berhasil diperbarui.');
         } else {
             session()->setFlashdata('error', 'Gagal memperbarui profil.');

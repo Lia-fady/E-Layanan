@@ -88,7 +88,7 @@ Manajemen Kuota Bidang
                     <hr style="border-color: #E2E8F0; margin: 2rem 0;">
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary font-weight-bold px-4" style="border-radius: 8px; background-color: #1E40AF; border-color: #1E40AF;" onclick="return confirm('Apakah Anda yakin ingin memperbarui total kuota bidang ini?')">
+                        <button type="button" class="btn btn-primary font-weight-bold px-4" id="btnSimpanKuota" style="border-radius: 8px; background-color: #1E40AF; border-color: #1E40AF;">
                             <i class="fas fa-save mr-2"></i> Simpan Perubahan
                         </button>
                     </div>
@@ -122,7 +122,7 @@ Manajemen Kuota Bidang
                 </div>
                 <h4 style="font-weight: 800; color: #1E293B; margin-bottom: 5px;"><?= $sisa ?> Posisi</h4>
                 <div class="badge mb-3" style="background-color: <?= $statusBg ?>; color: <?= $statusColor ?>; padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 6px;">
-                    Status Slot: <?= $statusText ?>
+                    Sisa Kuota: <?= $statusText ?>
                 </div>
                 <p style="color: #64748B; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
                     Bidang Anda saat ini memiliki sisa ruang untuk <strong><?= $sisa ?> mahasiswa baru</strong>. Saat ada mahasiswa yang statusnya berubah menjadi selesai, sisa kuota ini akan otomatis bertambah kembali.
@@ -137,4 +137,50 @@ Manajemen Kuota Bidang
     </div>
 </div>
 
+<!-- Modal Konfirmasi Simpan Kuota -->
+<div class="modal fade" id="modalKonfirmasiKuota" tabindex="-1" role="dialog" aria-labelledby="modalKonfirmasiKuotaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 420px;">
+        <div class="modal-content" style="border-radius: 16px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.15);">
+            <div class="modal-body p-4 text-center">
+                <!-- Icon -->
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 64px; height: 64px; border-radius: 16px; background-color: #EFF6FF;">
+                    <i class="fas fa-save" style="font-size: 1.8rem; color: #1E40AF;"></i>
+                </div>
+                <!-- Title -->
+                <h5 class="font-weight-bold mb-2" style="color: #0F172A;">Simpan Perubahan Kuota?</h5>
+                <!-- Description -->
+                <p class="mb-4" style="color: #64748B; font-size: 0.9rem; line-height: 1.5;">
+                    Apakah Anda yakin ingin memperbarui total kuota bidang ini? Perubahan akan langsung berlaku.
+                </p>
+                <!-- Buttons -->
+                <div class="d-flex" style="gap: 10px;">
+                    <button type="button" class="btn btn-light flex-fill font-weight-600" data-dismiss="modal" style="border-radius: 10px; border: 1px solid #E2E8F0; color: #475569; padding: 0.6rem;">
+                        Batal
+                    </button>
+                    <button type="button" class="btn flex-fill font-weight-bold" id="btnKonfirmasiSimpan" style="border-radius: 10px; background-color: #1E40AF; border-color: #1E40AF; color: white; padding: 0.6rem;">
+                        <i class="fas fa-check mr-1"></i> Ya, Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts') ?>
+<script>
+$(document).ready(function() {
+    // Tombol Simpan → tampilkan modal konfirmasi
+    $('#btnSimpanKuota').on('click', function() {
+        $('#modalKonfirmasiKuota').modal('show');
+    });
+
+    // Tombol Ya, Simpan → submit form
+    $('#btnKonfirmasiSimpan').on('click', function() {
+        $('#modalKonfirmasiKuota').modal('hide');
+        $('form[action*="kuota/update"]').submit();
+    });
+});
+</script>
 <?= $this->endSection() ?>

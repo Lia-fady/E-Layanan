@@ -479,6 +479,14 @@ class AuthController extends BaseController
                 $group = $db->table('c_user_group')->where('id', $userPegawai['id_user_group'])->get()->getRowArray();
                 $sessionData['role'] = $group ? strtolower($group['group']) : 'pegawai';
 
+                // Ambil nama bidang dari m_bidang
+                if (!empty($userPegawai['id_bidang'])) {
+                    $bidangData = $db->table('m_bidang')->select('bidang')->where('id_bidang', $userPegawai['id_bidang'])->get()->getRowArray();
+                    $sessionData['nama_bidang'] = $bidangData ? $bidangData['bidang'] : null;
+                } else {
+                    $sessionData['nama_bidang'] = null;
+                }
+
                 session()->set($sessionData);
 
                 if ($sessionData['id_user_group'] == 1) {

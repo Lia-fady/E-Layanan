@@ -83,6 +83,18 @@ class C_DisposisiMasuk extends BaseController
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
         $is_log_book   = $this->request->getPost('is_log_book'); // 'Ya' atau 'Tidak'
 
+        // CEK KUOTA DULU
+        $detailPenempatan = $this->penempatanModel->getDetailPenempatan($id_penempatan);
+        if ($detailPenempatan && isset($detailPenempatan->id_bidang)) {
+            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $kuotaInfo = $kuotaModel->getSisaKuota($detailPenempatan->id_bidang);
+            
+            if ($kuotaInfo['sisa'] <= 0) {
+                session()->setFlashdata('error', 'Kuota penuh. Proses persetujuan tidak dapat dilanjutkan.');
+                return redirect()->to(base_url('kabid/disposisi'));
+            }
+        }
+
         $result = $this->penempatanModel->setujuiPenempatan(
             $id_penempatan,
             $is_log_book,

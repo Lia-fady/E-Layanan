@@ -50,17 +50,7 @@
                 <tr>
                     <td>Nama Lengkap</td>
                     <td>:</td>
-                    <td><?= esc($user->nama_user ?? '-') ?></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td>:</td>
-                    <td><?= esc($user->email ?? '-') ?></td>
-                </tr>
-                <tr>
-                    <td>No. Telepon</td>
-                    <td>:</td>
-                    <td><?= esc($user->no_telp ?? '-') ?></td>
+                    <td><?= esc($user->nama ?? '-') ?></td>
                 </tr>
                 <tr>
                     <td>NIP</td>
@@ -73,7 +63,7 @@
                     <td><?= esc($user->jabatan ?? 'Sekretariat') ?></td>
                 </tr>
                 <tr>
-                    <td>BidangBidang</td>
+                    <td>Bidang</td>
                     <td>:</td>
                     <td><?= esc($user->bidang ?? '-') ?></td>
                 </tr>
@@ -88,17 +78,7 @@
                     <tr>
                         <td>Nama Lengkap</td>
                         <td>:</td>
-                        <td><input type="text" name="nama_user" class="profile-edit-input" value="<?= esc($user->nama_user ?? '') ?>"></td>
-                    </tr>
-                    <tr>
-                        <td>Email</td>
-                        <td>:</td>
-                        <td><input type="email" name="email" class="profile-edit-input" value="<?= esc($user->email ?? '') ?>"></td>
-                    </tr>
-                    <tr>
-                        <td>No. Telepon</td>
-                        <td>:</td>
-                        <td><input type="text" name="no_telp" class="profile-edit-input" value="<?= esc($user->no_telp ?? '') ?>"></td>
+                        <td><input type="text" name="nama" class="profile-edit-input" value="<?= esc($user->nama ?? '') ?>"></td>
                     </tr>
                     <tr>
                         <td>NIP</td>
@@ -111,7 +91,7 @@
                         <td><?= esc($user->jabatan ?? 'Sekretariat') ?></td>
                     </tr>
                     <tr>
-                        <td>BidangBidang</td>
+                        <td>Bidang</td>
                         <td>:</td>
                         <td><?= esc($user->bidang ?? '-') ?></td>
                     </tr>

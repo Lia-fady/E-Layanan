@@ -172,6 +172,11 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('upload-dokumen/store', '\App\Controllers\Kabid\C_UploadDokumen::store');
     $routes->post('upload-dokumen/delete/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::delete/$1');
     $routes->get('upload-dokumen/download/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::download/$1');
+
+    // 6. Profil Bidang
+    $routes->get('profil-bidang', '\App\Controllers\Kabid\C_ProfilBidang::index');
+    $routes->post('profil-bidang/update', '\App\Controllers\Kabid\C_ProfilBidang::update');
+    $routes->post('profil-bidang/update-password', '\App\Controllers\Kabid\C_ProfilBidang::updatePassword');
 });
 
 // --- API ROUTES FOR DROPDOWNS ---

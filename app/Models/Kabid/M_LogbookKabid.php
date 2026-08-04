@@ -8,18 +8,20 @@ class M_LogbookKabid extends Model
     protected $table = 't_logbook_magang';
     protected $primaryKey = 'id_logbook_magang';
     protected $allowedFields = ['id_penempatan_magang', 'logbook_magang', 'tgl_logbook', 'created_at', 'updated_by', 'disetujui_oleh', 'file_tanda_tangan', 'tgl_disetujui'];
-    protected $useTimestamps = true;
+    protected $useTimestamps = false; // tabel hanya punya created_at, tidak ada updated_at
+    protected $createdField  = 'created_at';
 
     public function getActiveMahasiswa($id_bidang)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.prodi, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.prodi, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi')
+            ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->where('p.id_bidang', $id_bidang)
             ->where('p.status_penempatan', 'BERJALAN')
             ->get()->getResult();

@@ -72,9 +72,12 @@ html, body {
     padding: 0.8rem 1rem;
     display: flex;
     align-items: center;
+    flex-direction: row;
     gap: 0.7rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 0.5rem;
+    cursor: pointer;
+    color: inherit;
 }
 
 .sidebar-user-avatar {
@@ -94,6 +97,8 @@ html, body {
 }
 
 .sidebar-user-info {
+    flex: 1;
+    min-width: 0;
     overflow: hidden;
 }
 
@@ -110,6 +115,33 @@ html, body {
     color: rgba(255, 255, 255, 0.55);
     font-size: 0.7rem;
     white-space: nowrap;
+}
+
+/* Ikon gear di kanan profil */
+.sidebar-user-cog {
+    flex-shrink: 0;
+    margin-left: auto;
+    opacity: 0.45;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: opacity 0.15s;
+}
+
+/* Pastikan tag <a> tidak bergaya link */
+a.sidebar-user-profile {
+    text-decoration: none !important;
+    color: inherit;
+    transition: background 0.18s;
+}
+a.sidebar-user-profile:hover {
+    background: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+}
+a.sidebar-user-profile:hover .sidebar-user-cog {
+    opacity: 0.85;
+}
+a.sidebar-user-profile.sidebar-profile-active {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 /* Sidebar Heading */
