@@ -11,33 +11,32 @@ class C_Logbook extends C_BaseMahasiswa
             return redirect()->to(base_url('login'))->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $penempatan = $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
+        // Get all placements for dropdown context switcher
+        $semuaPenempatan = $this->logbookModel->getSemuaPenempatan($id_mahasiswa);
+        
+        $penempatan = null;
+        if (!empty($semuaPenempatan)) {
+            // Default to the first (latest) placement
+            $penempatan = $semuaPenempatan[0];
+            // Cek jika ada POST request untuk ganti penempatan (AJAX / JS)
+            $req_id_penempatan = $this->request->getPost('id_penempatan') ?? $this->request->getGet('id_penempatan');
+            if ($req_id_penempatan) {
+                foreach ($semuaPenempatan as $p) {
+                    if ($p['id_penempatan_magang'] == $req_id_penempatan) {
+                        $penempatan = $p;
+                        break;
+                    }
+                }
+            }
+        }
 
+        // Ambil SEMUA logbook tanpa filter server-side — biar client-side yang handle
         $riwayatLogbook = [];
         if ($penempatan) {
-            $id_penempatan = $penempatan['id_penempatan_magang'];
-
-            $filterPeriode = $this->request->getGet('filter_periode');
-            $filterStatus  = $this->request->getGet('filter_status');
-
-            $builder = $this->logbookModel
-                ->where('id_penempatan_magang', $id_penempatan);
-
-            if ($filterPeriode === 'bulan_ini') {
-                $builder->where('MONTH(tgl_logbook)', date('m'))
-                        ->where('YEAR(tgl_logbook)', date('Y'));
-            } elseif ($filterPeriode === 'minggu_ini') {
-                $builder->where('tgl_logbook >=', date('Y-m-d', strtotime('monday this week')))
-                        ->where('tgl_logbook <=', date('Y-m-d', strtotime('sunday this week')));
-            }
-
-            if ($filterStatus === 'pending') {
-                $builder->where('disetujui_oleh IS NULL', null, false);
-            } elseif ($filterStatus === 'disetujui') {
-                $builder->where('disetujui_oleh IS NOT NULL', null, false);
-            }
-
-            $riwayatLogbook = $builder->orderBy('tgl_logbook', 'DESC')->findAll();
+            $riwayatLogbook = $this->logbookModel
+                ->where('id_penempatan_magang', $penempatan['id_penempatan_magang'])
+                ->orderBy('tgl_logbook', 'DESC')
+                ->findAll();
         }
 
         $stateData = $this->_getMahasiswaState($id_mahasiswa);
@@ -46,9 +45,10 @@ class C_Logbook extends C_BaseMahasiswa
             'title'            => 'Logbook & Absensi Magang',
             'nama'             => session()->get('nama') ?? 'Mahasiswa',
             'penempatan'       => $penempatan, 
+            'semuaPenempatan'  => $semuaPenempatan,
             'logbook'          => $riwayatLogbook,
             'state'            => $stateData['state'],
-            'is_log_book'      => $stateData['is_log_book'],
+            'is_log_book'      => $penempatan ? ($penempatan['is_log_book'] ?? 'tidak') : $stateData['is_log_book'],
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
@@ -62,10 +62,9 @@ class C_Logbook extends C_BaseMahasiswa
             return redirect()->to(base_url('login'));
         }
 
-        $penempatan = $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
-
-        if (!$penempatan) {
-            return redirect()->back()->with('error', 'Gagal menyimpan! Anda belum dialokasikan ke bidang manapun.');
+        $id_penempatan_post = $this->request->getPost('id_penempatan_magang');
+        if (!$id_penempatan_post) {
+             return redirect()->back()->with('error', 'Gagal menyimpan! ID Penempatan tidak valid.');
         }
 
         $stateData = $this->_getMahasiswaState($id_mahasiswa);
@@ -73,16 +72,19 @@ class C_Logbook extends C_BaseMahasiswa
             return redirect()->back()->with('error', 'Gagal menyimpan! Kegiatan magang Anda tidak mewajibkan pengisian logbook.');
         }
 
-        if (isset($penempatan['status_penempatan']) && $penempatan['status_penempatan'] == 'SELESAI') {
-            return redirect()->back()->with('error', 'Gagal menyimpan! Masa kegiatan magang Anda telah berakhir.');
-        }
-
         $dataLogbook = [
-            'id_penempatan_magang' => $penempatan['id_penempatan_magang'], 
+            'id_penempatan_magang' => $id_penempatan_post, 
             'tgl_logbook'          => $this->request->getPost('tgl_logbook'),
             'logbook_magang'       => $this->request->getPost('logbook_magang'),
             'created_at'           => date('Y-m-d H:i:s')
         ];
+
+        $fileBukti = $this->request->getFile('bukti_kegiatan');
+        if ($fileBukti && $fileBukti->isValid() && !$fileBukti->hasMoved()) {
+            $newName = $fileBukti->getRandomName();
+            $fileBukti->move(ROOTPATH . 'public/uploads/logbook', $newName);
+            $dataLogbook['bukti_kegiatan'] = 'uploads/logbook/' . $newName;
+        }
 
         $this->logbookModel->insert($dataLogbook);
 

@@ -50,6 +50,88 @@ class C_Profil extends C_BaseMahasiswa
             return redirect()->to(base_url('login'));
         }
 
+        $rules = [
+            'nik' => [
+                'rules'  => "required|numeric|exact_length[16]|is_unique[m_mahasiswa.nik,id_mahasiswa,{$id_mahasiswa}]",
+                'errors' => [
+                    'required'     => 'NIK wajib diisi.',
+                    'numeric'      => 'NIK harus berupa angka.',
+                    'exact_length' => 'NIK wajib berjumlah 16 digit.',
+                    'is_unique'    => 'NIK ini sudah terdaftar oleh akun lain.'
+                ]
+            ],
+            'jenis_kelamin' => [
+                'rules'  => 'required|in_list[L,P]',
+                'errors' => ['required' => 'Jenis kelamin wajib dipilih.', 'in_list' => 'Pilihan jenis kelamin tidak valid.']
+            ],
+            'tgl_lahir' => [
+                'rules'  => 'required|valid_date',
+                'errors' => ['required' => 'Tanggal lahir wajib diisi.', 'valid_date' => 'Format tanggal tidak valid.']
+            ],
+            'email' => [
+                'rules'  => "required|valid_email|is_unique[m_mahasiswa.email,id_mahasiswa,{$id_mahasiswa}]",
+                'errors' => [
+                    'required'    => 'Email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.',
+                    'is_unique'   => 'Email ini sudah digunakan oleh akun lain.'
+                ]
+            ],
+            'no_telp' => [
+                'rules'  => 'required|numeric|min_length[10]|max_length[15]',
+                'errors' => [
+                    'required'   => 'Nomor telepon wajib diisi.',
+                    'numeric'    => 'Nomor telepon harus berupa angka.',
+                    'min_length' => 'Minimal 10 digit.',
+                    'max_length' => 'Maksimal 15 digit.'
+                ]
+            ],
+            'alamat' => [
+                'rules'  => 'required|max_length[255]',
+                'errors' => ['required' => 'Alamat wajib diisi.']
+            ],
+            'rt' => [
+                'rules'  => 'required|numeric|max_length[3]',
+                'errors' => ['required' => 'RT wajib diisi.', 'numeric' => 'RT harus angka.']
+            ],
+            'rw' => [
+                'rules'  => 'required|numeric|max_length[3]',
+                'errors' => ['required' => 'RW wajib diisi.', 'numeric' => 'RW harus angka.']
+            ],
+            'kelurahan' => [
+                'rules'  => 'required|min_length[3]|max_length[100]',
+                'errors' => ['required' => 'Kelurahan wajib diisi.']
+            ],
+            'kecamatan' => [
+                'rules'  => 'required|min_length[3]|max_length[100]',
+                'errors' => ['required' => 'Kecamatan wajib diisi.']
+            ],
+            'provinsi' => [
+                'rules'  => 'required|min_length[3]|max_length[100]',
+                'errors' => ['required' => 'Provinsi wajib diisi.']
+            ],
+            'jenjang_pendidikan' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Jenjang pendidikan wajib dipilih.']
+            ],
+            'angkatan_tahun' => [
+                'rules'  => 'required|numeric|exact_length[4]',
+                'errors' => ['required' => 'Tahun angkatan wajib diisi.', 'numeric' => 'Harus angka.', 'exact_length' => 'Tahun harus 4 digit.']
+            ],
+            'semester' => [
+                'rules'  => 'required|numeric|greater_than[0]|less_than_equal_to[14]',
+                'errors' => ['required' => 'Semester wajib diisi.', 'numeric' => 'Harus angka.', 'greater_than' => 'Minimal 1', 'less_than_equal_to' => 'Maksimal 14']
+            ],
+            'tahun_akademik' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Tahun akademik wajib diisi.']
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            session()->setFlashdata('error', 'Terdapat kesalahan pada isian profil Anda. Silakan periksa kembali!');
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         $db = \Config\Database::connect();
 
         // 1. Data Pribadi & Domisili (Tabel m_mahasiswa)

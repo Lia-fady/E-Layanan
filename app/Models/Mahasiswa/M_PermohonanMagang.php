@@ -11,7 +11,7 @@ class M_PermohonanMagang extends Model
     protected $returnType       = 'array';
     protected $allowedFields    = [
         'id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 
-        'deskripsi_keahlian', 'deskripsi_magang', 'tgl_mulai', 
+        'deskripsi_keahlian', 'deskripsi', 'tgl_mulai', 
         'tgl_selesai', 'posting_data', 'created_at', 'updated_at'
     ];
 
@@ -32,7 +32,7 @@ class M_PermohonanMagang extends Model
                 t_permohonan_magang.id_jenis_permohonan,
                 t_permohonan_magang.id_instansi_mahasiswa,
                 t_permohonan_magang.deskripsi_keahlian,
-                t_permohonan_magang.deskripsi_magang,
+                t_permohonan_magang.deskripsi,
                 t_permohonan_magang.tgl_mulai,
                 t_permohonan_magang.tgl_selesai,
                 t_permohonan_magang.posting_data,
@@ -43,16 +43,41 @@ class M_PermohonanMagang extends Model
                 t_persetujuan_magang.id_bidang,
                 t_persetujuan_magang.disposisi,
                 t_persetujuan_magang.catatan as catatan_sekretariat,
+                t_persetujuan_magang.tgl_persetujuan,
+                t_persetujuan_magang.updated_at as tgl_persetujuan_fallback,
                 m_bidang.bidang,
                 t_penempatan_magang.catatan,
                 t_penempatan_magang.status_penempatan,
+                t_penempatan_magang.updated_at as tgl_penempatan,
                 t_penempatan_magang.is_log_book,
-                m_mahasiswa.nim
+                m_mahasiswa.nim,
+                m_mahasiswa.nama_mahasiswa,
+                m_mahasiswa.nik,
+                m_mahasiswa.email,
+                m_mahasiswa.no_telp,
+                m_mahasiswa.jenis_kelamin,
+                m_mahasiswa.tgl_lahir,
+                m_mahasiswa.alamat,
+                m_mahasiswa.kelurahan,
+                m_mahasiswa.kecamatan,
+                m_mahasiswa.provinsi,
+                m_instansi_pendidikan.instansi_pendidikan as kampus,
+                m_prodi.prodi,
+                m_fakultas.fakultas,
+                t_instansi_mahasiswa.semester,
+                t_instansi_mahasiswa.jenjang_pendidikan,
+                t_instansi_mahasiswa.angkatan_tahun,
+                m_jenis_permohonan.jenis_permohonan
             ') 
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa') 
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('m_bidang', 'm_bidang.id_bidang = t_persetujuan_magang.id_bidang', 'left')
             ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_instansi_mahasiswa = t_permohonan_magang.id_instansi_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
+            ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
+            ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
+            ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
             ->groupBy('t_permohonan_magang.id_permohonan_magang')
             ->orderBy('t_permohonan_magang.created_at', 'DESC');

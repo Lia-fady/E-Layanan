@@ -5,18 +5,18 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('breadcrumb') ?>
-E-Kinerja Magang &raquo; <span class="text-uppercase" style="color: var(--primary-royal);">Form Permohonan</span>
+<a href="<?= base_url('mahasiswa/dashboard') ?>" class="text-decoration-none text-primary">Dashboard</a> <span class="mx-2 text-muted">/</span> <span class="text-dark fw-medium">Edit Permohonan</span>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <div class="mb-4">
-    <h4 class="fw-bold text-dark m-0" style="letter-spacing: -0.3px;">Edit Draft Permohonan</h4>
-    <p class="text-muted m-0 mt-1" style="font-size: 0.83rem;">Silakan lanjutkan atau perbarui data permohonan kegiatan akademik Anda.</p>
+    <h3 class="fw-semibold text-dark mb-1">Form Permohonan Layanan Akademik</h3>
+    <p class="text-muted m-0">Lengkapi data kegiatan dan dokumen pendukung Anda.</p>
 </div>
 
 <?php if(session()->getFlashdata('errors')) : ?>
     <div class="alert alert-danger p-3 mb-4" style="font-size: 0.84rem; border-radius: 10px; border: 1px solid #fca5a5; background: #fef2f2; color: #b91c1c;">
-        <div class="fw-bold mb-2"><i class="bi bi-exclamation-triangle-fill me-1"></i>Pengajuan Gagal:</div>
+        <div class="fw-bold mb-2"><i class="bi bi-exclamation-triangle-fill me-1"></i>Terdapat Kesalahan Input:</div>
         <ul class="mb-0 ps-3">
             <?php foreach(session()->getFlashdata('errors') as $error): ?>
                 <li><?= esc($error) ?></li>
@@ -124,38 +124,36 @@ if(session()->getFlashdata('permohonan_sent')):
 </div>
 
 <?php else: ?>
-<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3 - DITOLAK/PERLU REVISI) ============ -->
-<?php if($state == 6): ?>
-<div class="alert alert-warning p-4 mb-4 shadow-sm border-warning" style="border-radius: 12px; border-left: 5px solid #ffc107 !important;">
-    <div class="d-flex align-items-start">
-        <div style="font-size: 1.5rem; margin-right: 15px;">
-            <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-        </div>
-        <div>
-            <h6 class="fw-bold mb-2 text-dark">Instruksi Revisi dari Sekretariat:</h6>
-            <div class="bg-white p-3 rounded text-dark small border" style="line-height: 1.6;">
-                <?php 
-                    $catatanSekre = esc($draft['catatan_sekretariat'] ?? '');
-                    if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
-                        $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
-                        echo nl2br(trim($parts[0]));
-                    } else {
-                        echo !empty($catatanSekre) ? nl2br($catatanSekre) : 'Silakan perbaiki data atau dokumen Anda.';
-                    }
-                ?>
-            </div>
-        </div>
-    </div>
-</div>
-<?php elseif($state == 3): ?>
+<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3/6 - DITOLAK/PERLU REVISI) ============ -->
+<?php if($state == 3): ?>
 <div class="alert alert-danger p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
     <i class="bi bi-x-circle-fill text-danger me-2"></i>
     <strong>Permohonan Sebelumnya Ditolak:</strong> Anda dapat mengajukan permohonan ulang dengan data yang baru.
 </div>
+<?php elseif(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
+<div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
+    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+    <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan oleh Sekretariat. Silakan perbaiki data/file Anda dan ajukan kembali.
+    <?php if(!empty($draft['catatan_sekretariat'])): ?>
+        <hr class="my-2" style="border-color: #fde047;">
+        <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Revisi:</div>
+        <div style="font-style: italic; color: #a16207;">
+            <?php 
+                $catatanSekre = esc($draft['catatan_sekretariat']);
+                if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
+                    $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
+                    echo nl2br(trim($parts[0]));
+                } else {
+                    echo nl2br($catatanSekre);
+                }
+            ?>
+        </div>
+    <?php endif; ?>
+</div>
 <?php endif; ?>
 
 <!-- ============ FORM WRAPPER ============ -->
-<form action="<?= base_url('mahasiswa/permohonan/update/' . $draft['id_permohonan_magang']) ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
+<form action="<?= base_url('mahasiswa/permohonan/update') ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
     <?= csrf_field() ?>
 
     <!-- ============ STEP 1: DATA PERMOHONAN ============ -->
@@ -200,7 +198,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_mulai">Tanggal Mulai <span class="text-danger">*</span></label>
                 <?php $errMulai = session('errors.tgl_mulai'); ?>
-                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai', $draft['tgl_mulai']) ?>" required>
+                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai', $draft['tgl_mulai']) ?>" onkeydown="return false" required>
                 <?php if($errMulai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errMulai) ?></div>
                 <?php endif; ?>
@@ -210,7 +208,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_selesai">Tanggal Selesai <span class="text-danger">*</span></label>
                 <?php $errSelesai = session('errors.tgl_selesai'); ?>
-                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai', $draft['tgl_selesai']) ?>" required>
+                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai', $draft['tgl_selesai']) ?>" onkeydown="return false" required>
                 <?php if($errSelesai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errSelesai) ?></div>
                 <?php endif; ?>
@@ -239,7 +237,7 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Deskripsi Magang -->
         <div class="mb-4">
             <label class="wz-form-label" id="lbl-magang">Deskripsi Rencana Magang / Kegiatan <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi_magang" id="deskripsi_magang" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi_magang', $draft['deskripsi_magang']) ?></textarea>
+            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi', $draft['deskripsi']) ?></textarea>
             <div class="char-counter"><span id="cc-magang">0</span>/1000 karakter</div>
         </div>
 
@@ -265,43 +263,61 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Upload: Surat Pengantar -->
         <div class="mb-4">
             <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi Kampus <span class="text-muted fw-normal" style="font-size:0.75rem;">(Opsional)</span></label>
-            <div class="upload-zone" id="zone-surat">
-                <input type="file" name="surat_pengantar" id="input-surat" accept=".pdf">
-                <div id="ph-surat">
-                    <div class="upload-icon-wrap" style="background:#d1fae5;color:#059669;"><i class="bi bi-check-circle-fill"></i></div>
-                    <div class="fw-semibold text-dark" style="font-size:0.9rem;">File tersimpan: <?= esc($draft['surat_pengantar']) ?></div>
-                    <div class="text-muted mt-1" style="font-size:0.78rem;">Klik atau seret file PDF baru ke sini jika ingin mengganti.</div>
-                </div>
-                <div class="d-none" id="pv-surat">
-                    <div class="upload-icon-wrap"><i class="bi bi-file-earmark-pdf"></i></div>
-                    <div class="fw-bold text-dark" style="font-size:0.88rem;" id="nm-surat"></div>
-                    <div class="mt-1" style="font-size:0.78rem;color:#059669;"><i class="bi bi-check-circle-fill me-1"></i>File siap diunggah</div>
+            <div class="position-relative">
+                <input class="form-control" type="file" name="surat_pengantar" id="input-surat" accept=".pdf" style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-surat" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['surat_pengantar']) ? esc($draft['nama_surat_pengantar'] ?? basename($draft['surat_pengantar'])) : 'No file chosen' ?>
+                    </div>
                 </div>
             </div>
+            <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF | Maksimal ukuran: 2 MB</div>
+            <?php if(session()->getFlashdata('errors') || session()->getFlashdata('error')) : ?>
+                <div class="text-danger mt-1" style="font-size: 0.75rem; font-weight: 600;"><i class="bi bi-exclamation-triangle-fill"></i> Pastikan Anda memilih (browse) ulang file ini jika bermaksud merevisinya.</div>
+            <?php endif; ?>
         </div>
 
         <!-- Upload: CV / Proposal -->
         <div class="mb-4" id="wrapper-cv">
             <label class="wz-form-label" id="lbl-cv">Curriculum Vitae (CV) / Proposal <span class="text-muted fw-normal" style="font-size:0.75rem;">(Opsional)</span></label>
-            <div class="upload-zone" id="zone-cv">
-                <input type="file" name="cv" id="input-cv" accept=".pdf">
-                <div id="ph-cv">
-                    <div class="upload-icon-wrap" style="background:#d1fae5;color:#059669;"><i class="bi bi-check-circle-fill"></i></div>
-                    <div class="fw-semibold text-dark" style="font-size:0.9rem;">File tersimpan: <?= esc($draft['cv']) ?></div>
-                    <div class="text-muted mt-1" style="font-size:0.78rem;">Klik atau seret file PDF baru ke sini jika ingin mengganti.</div>
-                </div>
-                <div class="d-none" id="pv-cv">
-                    <div class="upload-icon-wrap"><i class="bi bi-file-earmark-pdf"></i></div>
-                    <div class="fw-bold text-dark" style="font-size:0.88rem;" id="nm-cv"></div>
-                    <div class="mt-1" style="font-size:0.78rem;color:#059669;"><i class="bi bi-check-circle-fill me-1"></i>File siap diunggah</div>
+            <div class="position-relative">
+                <input class="form-control" type="file" name="cv" id="input-cv" accept=".pdf" style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-cv" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['cv']) ? esc($draft['nama_cv'] ?? basename($draft['cv'])) : 'No file chosen' ?>
+                    </div>
                 </div>
             </div>
+            <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF | Maksimal ukuran: 2 MB</div>
+            <?php if(session()->getFlashdata('errors') || session()->getFlashdata('error')) : ?>
+                <div class="text-danger mt-1" style="font-size: 0.75rem; font-weight: 600;"><i class="bi bi-exclamation-triangle-fill"></i> Pastikan Anda memilih (browse) ulang file ini jika bermaksud merevisinya.</div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Upload: KTM -->
+        <div class="mb-4">
+            <label class="wz-form-label" id="lbl-ktm">Kartu Tanda Mahasiswa (KTM) <span class="text-muted fw-normal" style="font-size:0.75rem;">(Opsional jika tidak diganti)</span></label>
+            <div class="position-relative">
+                <input class="form-control" type="file" name="ktm" id="input-ktm" accept=".pdf,.jpg,.jpeg,.png" style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-ktm" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['ktm']) ? esc($draft['nama_ktm'] ?? basename($draft['ktm'])) : 'No file chosen' ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF, JPG, PNG | Maksimal ukuran: 2 MB</div>
+            <?php if(session()->getFlashdata('errors') || session()->getFlashdata('error')) : ?>
+                <div class="text-danger mt-1" style="font-size: 0.75rem; font-weight: 600;"><i class="bi bi-exclamation-triangle-fill"></i> Pastikan Anda memilih (browse) ulang file ini jika bermaksud merevisinya.</div>
+            <?php endif; ?>
         </div>
 
         <!-- Info Box -->
         <div class="info-box mb-4">
             <div class="fw-semibold text-dark mb-2" style="font-size:0.84rem;"><i class="bi bi-info-circle text-primary me-1"></i> Panduan Dokumen</div>
-            <ul class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
+            <ul id="info-panduan-list" class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
                 <li>Surat pengantar menggunakan kop resmi kampus dan ditandatangani pejabat berwenang</li>
                 <li>CV mencantumkan data diri, program studi, semester, dan keahlian teknis</li>
                 <li>Khusus <strong>Penelitian / TA</strong> — wajib lampirkan Proposal / Sinopsis</li>
@@ -328,19 +344,38 @@ if(session()->getFlashdata('permohonan_sent')):
             Periksa kembali seluruh data. Setelah terkirim, data <strong>tidak dapat diubah</strong>.
         </p>
 
-        <!-- Review: Data Permohonan -->
-        <div class="review-data-card">
-            <div class="rv-title"><i class="bi bi-card-list text-primary"></i> Data Permohonan</div>
-            <table class="rv-table">
-                <tr><td>Jenis Permohonan</td><td class="rv-sep">:</td><td id="rv-jenis">—</td></tr>
-                <tr><td>Tujuan / Kegiatan</td><td class="rv-sep">:</td><td id="rv-tujuan">—</td></tr>
-                <tr><td>Tanggal Mulai</td><td class="rv-sep">:</td><td id="rv-tgl-mulai">—</td></tr>
-                <tr><td>Tanggal Selesai</td><td class="rv-sep">:</td><td id="rv-tgl-selesai">—</td></tr>
-                <tr><td>Instansi / Universitas</td><td class="rv-sep">:</td><td><?= esc(session()->get('kampus') ?? '-') ?></td></tr>
-                <tr><td>Lokasi Kegiatan</td><td class="rv-sep">:</td><td>Dinas Kominfo Kota Tangerang</td></tr>
-                <tr><td>Deskripsi Keahlian</td><td class="rv-sep">:</td><td id="rv-keahlian" style="white-space:pre-wrap;">—</td></tr>
-                <tr><td>Deskripsi Permohonan</td><td class="rv-sep">:</td><td id="rv-magang" style="white-space:pre-wrap;">—</td></tr>
-            </table>
+        <div class="row g-4 mb-4">
+            <!-- Review: Identitas Pemohon -->
+            <div class="col-lg-6">
+                <div class="review-data-card h-100 mb-0">
+                    <div class="rv-title">Identitas Pemohon</div>
+                    <table class="rv-table">
+                        <tr><td style="width:140px;">Nama Lengkap</td><td class="rv-sep">:</td><td class="text-dark"><?= esc($mhs['nama_mahasiswa'] ?? '-') ?></td></tr>
+                        <tr><td>Nomor Induk (NIM)</td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
+                        <tr><td>NIK KTP</td><td class="rv-sep">:</td><td><?= esc($mhs['nik'] ?? '-') ?></td></tr>
+                        <tr><td>Nomor Telepon</td><td class="rv-sep">:</td><td><?= esc($mhs['no_telp'] ?? '-') ?></td></tr>
+                        <tr><td>Email</td><td class="rv-sep">:</td><td><?= esc($mhs['email'] ?? '-') ?></td></tr>
+                        <tr><td>Asal Kampus</td><td class="rv-sep">:</td><td><?= esc($instansi['instansi_pendidikan'] ?? '-') ?></td></tr>
+                        <tr><td>Program Studi</td><td class="rv-sep">:</td><td><?= esc($instansi['prodi'] ?? '-') ?></td></tr>
+                        <tr><td>Semester</td><td class="rv-sep">:</td><td><?= esc($instansi['semester'] ?? '-') ?></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Review: Data Permohonan -->
+            <div class="col-lg-6">
+                <div class="review-data-card h-100 mb-0">
+                    <div class="rv-title">Data Permohonan</div>
+                    <table class="rv-table">
+                        <tr><td style="width:140px;">Jenis Permohonan</td><td class="rv-sep">:</td><td id="rv-jenis" class="text-dark">—</td></tr>
+                        <tr><td>Tujuan / Kegiatan</td><td class="rv-sep">:</td><td id="rv-tujuan" class="text-dark">—</td></tr>
+                        <tr><td>Tanggal Pelaksanaan</td><td class="rv-sep">:</td><td><span id="rv-tgl-mulai" class="text-dark">—</span> <span class="text-muted mx-1">s.d.</span> <span id="rv-tgl-selesai" class="text-dark">—</span></td></tr>
+                        <tr><td>Lokasi Kegiatan</td><td class="rv-sep">:</td><td class="text-dark">Dinas Kominfo Kota Tangerang</td></tr>
+                        <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Deskripsi Keahlian</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
+                        <tr><td id="rv-magang-label" style="vertical-align:top; padding-top:10px;">Deskripsi Rencana Kegiatan</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-magang" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <!-- Review: Dokumen -->
@@ -416,23 +451,66 @@ window.addEventListener('load', function() {
             document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
             document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
             document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
-            document.getElementById('rv-magang').textContent = document.getElementById('deskripsi_magang').value || '—';
+            document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';
 
             var tb = document.getElementById('rv-doc-tbody');
             tb.innerHTML = '';
             
             var n = 1;
             var sr = document.getElementById('input-surat');
-            var txtSurat = (sr.files && sr.files[0]) ? sr.files[0].name : '<?= esc($draft['surat_pengantar']) ?>';
-            tb.innerHTML += '<tr><td class="text-muted">'+(n++)+'</td><td class="fw-semibold text-dark">Surat Pengantar</td><td class="text-end text-primary" style="font-size:0.8rem;">'+txtSurat+'</td></tr>';
+            var txtSurat = '';
+            if (sr.files && sr.files[0]) {
+                var sfUrl = URL.createObjectURL(sr.files[0]);
+                txtSurat = '<a href="' + sfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf"></i> ' + sr.files[0].name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+            } else {
+                var draftSurat = '<?= esc($draft['surat_pengantar'] ?? '') ?>';
+                var namaSurat = '<?= esc($draft['nama_surat_pengantar'] ?? '') ?>';
+                if (draftSurat) {
+                    var filename = namaSurat || draftSurat.split('/').pop();
+                    txtSurat = '<a href="<?= base_url() ?>' + draftSurat + '" target="_blank" class="file-chip text-decoration-none" title="Lihat dokumen tersimpan"><i class="bi bi-file-earmark-pdf"></i> ' + filename + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+                } else {
+                    txtSurat = '—';
+                }
+            }
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">'+(n++)+'</td><td class="fw-semibold text-dark">Surat Pengantar</td><td class="text-end">'+txtSurat+'</td></tr>';
 
             var wCv = document.getElementById('wrapper-cv');
             if (wCv.style.display !== 'none') {
                 var cv = document.getElementById('input-cv');
-                var txtCv = (cv.files && cv.files[0]) ? cv.files[0].name : '<?= esc($draft['cv']) ?>';
+                var txtCv = '';
+                if (cv.files && cv.files[0]) {
+                    var cvUrl = URL.createObjectURL(cv.files[0]);
+                    txtCv = '<a href="' + cvUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf"></i> ' + cv.files[0].name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+                } else {
+                    var draftCv = '<?= esc($draft['cv'] ?? '') ?>';
+                    var namaCv = '<?= esc($draft['nama_cv'] ?? '') ?>';
+                    if (draftCv) {
+                        var filenameCv = namaCv || draftCv.split('/').pop();
+                        txtCv = '<a href="<?= base_url() ?>' + draftCv + '" target="_blank" class="file-chip text-decoration-none" title="Lihat dokumen tersimpan"><i class="bi bi-file-earmark-pdf"></i> ' + filenameCv + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+                    } else {
+                        txtCv = '—';
+                    }
+                }
                 var nm = jVal == '1' || jVal == '4' ? 'Proposal' : 'Curriculum Vitae (CV)';
-                tb.innerHTML += '<tr><td class="text-muted">'+(n++)+'</td><td class="fw-semibold text-dark">'+nm+'</td><td class="text-end text-primary" style="font-size:0.8rem;">'+txtCv+'</td></tr>';
+                tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">'+(n++)+'</td><td class="fw-semibold text-dark">'+nm+'</td><td class="text-end">'+txtCv+'</td></tr>';
             }
+
+            var kt = document.getElementById('input-ktm');
+            var txtKtm = '';
+            if (kt && kt.files && kt.files[0]) {
+                var ktmUrl = URL.createObjectURL(kt.files[0]);
+                txtKtm = '<a href="' + ktmUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-check"></i> ' + kt.files[0].name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+            } else {
+                var draftKtm = '<?= esc($draft['ktm'] ?? '') ?>';
+                var namaKtm = '<?= esc($draft['nama_ktm'] ?? '') ?>';
+                if (draftKtm) {
+                    var filenameKtm = namaKtm || draftKtm.split('/').pop();
+                    txtKtm = '<a href="<?= base_url() ?>' + draftKtm + '" target="_blank" class="file-chip text-decoration-none" title="Lihat dokumen tersimpan"><i class="bi bi-file-earmark-check"></i> ' + filenameKtm + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a>';
+                } else {
+                    txtKtm = '—';
+                }
+            }
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">'+(n++)+'</td><td class="fw-semibold text-dark">Kartu Tanda Mahasiswa (KTM)</td><td class="text-end">'+txtKtm+'</td></tr>';
         };
     }
 });
@@ -445,7 +523,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var tglSelesai = document.getElementById('tgl_selesai');
 
     if (tglMulai && tglSelesai) {
-        // 1. Blokir Tanggal Masa Lalu untuk Tgl Mulai
         var today = new Date();
         var yyyy = today.getFullYear();
         var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -453,38 +530,104 @@ document.addEventListener('DOMContentLoaded', function() {
         var todayStr = yyyy + '-' + mm + '-' + dd;
         tglMulai.setAttribute('min', todayStr);
 
-        // 2. Tampilkan Error Otomatis jika < 60 hari
+        function parseInputDate(value) {
+            var p = value.split('-');
+            return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+        }
+
+        function addDays(date, days) {
+            var d = new Date(date);
+            d.setDate(d.getDate() + days);
+            return d;
+        }
+
+        function formatInputDate(date) {
+            var yyyy2 = date.getFullYear();
+            var mm2 = String(date.getMonth() + 1).padStart(2, '0');
+            var dd2 = String(date.getDate()).padStart(2, '0');
+            return yyyy2 + '-' + mm2 + '-' + dd2;
+        }
+
         function validateDurasi() {
-            if (tglMulai.value && tglSelesai.value) {
-                var dateMulai = new Date(tglMulai.value);
-                var dateSelesai = new Date(tglSelesai.value);
-                
-                var diffTime = dateSelesai - dateMulai;
-                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                var errDiv = document.getElementById('err-tgl-mulai-js');
-                
-                if (diffDays < 60) {
-                    tglMulai.classList.add('is-invalid');
-                    if (errDiv) {
-                        errDiv.classList.remove('d-none');
-                        errDiv.classList.add('d-block');
-                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
-                    }
-                } else {
-                    tglMulai.classList.remove('is-invalid');
-                    if (errDiv) {
-                        errDiv.classList.remove('d-block');
-                        errDiv.classList.add('d-none');
-                    }
+            var errDiv = document.getElementById('err-tgl-mulai-js');
+            if (!tglMulai.value || !tglSelesai.value) {
+                return;
+            }
+
+            var dateMulai = parseInputDate(tglMulai.value);
+            var dateSelesai = parseInputDate(tglSelesai.value);
+            var diffTime = dateSelesai - dateMulai;
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 60 || dateSelesai < dateMulai) {
+                tglMulai.classList.add('is-invalid');
+                tglSelesai.classList.add('is-invalid');
+                if (errDiv) {
+                    errDiv.classList.remove('d-none');
+                    errDiv.classList.add('d-block');
+                    errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan minimal adalah 2 bulan (60 hari).';
+                }
+            } else {
+                tglMulai.classList.remove('is-invalid');
+                tglSelesai.classList.remove('is-invalid');
+                if (errDiv) {
+                    errDiv.classList.remove('d-block');
+                    errDiv.classList.add('d-none');
                 }
             }
         }
 
-        // Jalankan saat diketik / dipilih
-        tglMulai.addEventListener('change', validateDurasi);
-        tglSelesai.addEventListener('change', validateDurasi);
+        tglMulai.addEventListener('change', function() {
+            if (tglMulai.value) {
+                var minSelesai = addDays(parseInputDate(tglMulai.value), 60);
+                var minSelesaiStr = formatInputDate(minSelesai);
+                tglSelesai.setAttribute('min', minSelesaiStr);
+
+                if (!tglSelesai.value || parseInputDate(tglSelesai.value) < minSelesai) {
+                    tglSelesai.value = minSelesaiStr;
+                }
+            }
+            validateDurasi();
+        });
+
+        tglSelesai.addEventListener('change', function() {
+            if (tglMulai.value && tglSelesai.value) {
+                var minSelesai = addDays(parseInputDate(tglMulai.value), 60);
+                var minSelesaiStr = formatInputDate(minSelesai);
+                tglSelesai.setAttribute('min', minSelesaiStr);
+                if (parseInputDate(tglSelesai.value) < minSelesai) {
+                    tglSelesai.value = minSelesaiStr;
+                }
+            }
+            validateDurasi();
+        });
     }
+    
+    // Handle visual feedback for file inputs during revision
+    document.querySelectorAll('input[type="file"]').forEach(function(input) {
+        // Simpan teks asli
+        var id = input.id.split('-')[1]; // surat, cv, ktm
+        var textSpan = document.getElementById('text-' + id);
+        if (textSpan) {
+            input.setAttribute('data-original-text', textSpan.innerHTML);
+        }
+
+        input.addEventListener('change', function() {
+            var id = this.id.split('-')[1];
+            var textSpan = document.getElementById('text-' + id);
+            
+            if (this.files && this.files.length > 0) {
+                textSpan.textContent = this.files[0].name;
+                textSpan.className = 'text-truncate';
+                textSpan.style.color = '#212529';
+            } else {
+                // Kembalikan ke aslinya
+                textSpan.innerHTML = this.getAttribute('data-original-text');
+                textSpan.className = 'text-truncate';
+                textSpan.style.color = '#212529';
+            }
+        });
+    });
 });
 </script>
 <?= $this->endSection() ?>

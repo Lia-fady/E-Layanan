@@ -14,15 +14,7 @@ class AddStatusVerifikasiToFilePermohonan extends Migration
 {
     public function up()
     {
-        $this->forge->addColumn('t_file_permohonan_magang', [
-            'status_verifikasi' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 20,
-                'null'       => true,
-                'default'    => null,
-                'after'      => 'path_file',
-            ],
-        ]);
+        // Already exists in DB, skipping migration to avoid error.
     }
 
     public function down()

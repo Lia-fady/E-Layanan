@@ -1,7 +1,3 @@
-<?= $this->extend('layout/L_master_kabid') ?>
-
-<?= $this->section('content') ?>
-
 <style>
     /* Custom Styling for Logbook Approval */
     .profile-card {
@@ -37,6 +33,24 @@
         font-size: 0.95rem;
         color: #1E293B;
         font-weight: 500;
+    }
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+    }
+    .status-badge.running {
+        background: #e0f2fe;
+        color: #0369a1;
+    }
+    .status-badge.done {
+        background: #dcfce7;
+        color: #15803d;
     }
     .logbook-card {
         border-radius: 16px;
@@ -94,12 +108,12 @@
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Detail & Approval Logbook</h5>
         <p style="color:#64748B; font-size:0.9rem; margin:0;">
-            Review aktivitas harian dan berikan persetujuan untuk mahasiswa magang.
+            Review aktivitas harian dan berikan persetujuan untuk mahasiswa.
         </p>
     </div>
-    <a href="<?= base_url('kabid/logbook') ?>" class="btn btn-light border shadow-sm" style="border-radius: 8px; font-weight: 500; color: #475569;">
+    <button type="button" id="btnKembaliList" class="btn btn-light border shadow-sm" style="border-radius: 8px; font-weight: 500; color: #475569;">
         <i class="fas fa-arrow-left mr-2"></i> Kembali
-    </a>
+    </button>
 </div>
 
 <?php if (session()->getFlashdata('success')) : ?>
@@ -170,10 +184,20 @@
                     <div class="info-label"><i class="fas fa-envelope mr-1"></i> Email</div>
                     <div class="info-value"><?= esc($mahasiswa->email ?? '-') ?></div>
                 </div>
-                <div class="col-12">
-                    <div class="info-label"><i class="fas fa-calendar-alt mr-1"></i> Periode Magang</div>
+                <div class="col-12 mb-3">
+                    <div class="info-label"><i class="fas fa-calendar-alt mr-1"></i> Periode Kegiatan</div>
                     <div class="info-value text-primary font-weight-bold">
                         <?= date('d M Y', strtotime($mahasiswa->tgl_mulai)) ?> <i class="fas fa-arrow-right mx-1" style="font-size:0.8rem;"></i> <?= date('d M Y', strtotime($mahasiswa->tgl_selesai)) ?>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="info-label"><i class="fas fa-flag mr-1"></i> Status Penempatan</div>
+                    <div class="mt-1">
+                        <?php if (($mahasiswa->status_penempatan ?? '') == 'SELESAI'): ?>
+                            <span class="status-badge done"><i class="fas fa-check-circle"></i> Selesai</span>
+                        <?php else: ?>
+                            <span class="status-badge running"><i class="fas fa-play-circle"></i> Berjalan</span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -204,10 +228,10 @@
                 </div>
                 
                 <?php if($pendingCount > 0): ?>
-                <form action="<?= base_url('kabid/logbook/bulkApprove') ?>" method="POST" class="m-0 p-0">
+                <form id="formBulkApproveLogbook" action="<?= base_url('kabid/logbook/bulkApprove') ?>" method="POST" class="m-0 p-0">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_penempatan_magang" value="<?= $mahasiswa->id_penempatan_magang ?>">
-                    <button type="submit" class="btn btn-success shadow-sm" style="border-radius: 8px; font-weight: 500;" onclick="return confirm('Anda yakin ingin menyetujui semua (<?= $pendingCount ?>) catatan yang tertunda sekaligus?')">
+                    <button type="submit" class="btn btn-success shadow-sm" style="border-radius: 8px; font-weight: 500;">
                         <i class="fas fa-check-double mr-1"></i> Setujui Semua
                     </button>
                 </form>
@@ -237,11 +261,11 @@
                                                 <i class="fas fa-check mr-1"></i> Disetujui
                                             </span>
                                         <?php else: ?>
-                                            <form action="<?= base_url('kabid/logbook/approve') ?>" method="post" class="d-inline">
+                                            <form action="<?= base_url('kabid/logbook/approve') ?>" method="post" class="d-inline formApproveLogbook">
                                                 <?= csrf_field() ?>
                                                 <input type="hidden" name="id_logbook_magang" value="<?= $log['id_logbook_magang'] ?>">
                                                 <input type="hidden" name="id_penempatan_magang" value="<?= $mahasiswa->id_penempatan_magang ?>">
-                                                <button type="submit" class="btn btn-sm btn-outline-warning" style="border-radius: 6px; font-weight: 500; font-size: 0.8rem;" title="Setujui Logbook ini saja" onclick="return confirm('Anda yakin ingin menyetujui aktivitas ini?')">
+                                                <button type="submit" class="btn btn-sm btn-outline-warning" style="border-radius: 6px; font-weight: 500; font-size: 0.8rem;" title="Setujui Logbook ini saja">
                                                     <i class="fas fa-check mr-1"></i> Approve
                                                 </button>
                                             </form>
@@ -252,6 +276,14 @@
                                 <div class="log-content">
                                     <?= nl2br(esc($log['logbook_magang'])) ?>
                                 </div>
+                                
+                                <?php if (!empty($log['bukti_kegiatan'])): ?>
+                                <div class="mt-3">
+                                    <a href="<?= base_url($log['bukti_kegiatan']) ?>" target="_blank" class="btn btn-sm btn-light border shadow-sm" style="border-radius: 6px; font-weight: 500; font-size: 0.8rem; color: #475569;">
+                                        <i class="fas fa-paperclip mr-1 text-primary"></i> Lihat Bukti Kegiatan
+                                    </a>
+                                </div>
+                                <?php endif; ?>
                                 
                                 <?php if ($isApproved): ?>
                                     <div class="mt-2 text-muted" style="font-size: 0.75rem;">
@@ -268,4 +300,72 @@
     </div>
 </div>
 
-<?= $this->endSection() ?>
+<script>
+$(document).ready(function() {
+    // Tangani Submit Form Approve via AJAX
+    $('.formApproveLogbook').on('submit', function(e) {
+        e.preventDefault();
+        if(!confirm('Anda yakin ingin menyetujui aktivitas ini?')) return;
+        
+        var form = $(this);
+        var btn = form.find('button[type="submit"]');
+        var originalBtnHtml = btn.html();
+        
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function(res) {
+                if(res.success) {
+                    Swal.fire('Berhasil!', res.message, 'success').then(() => {
+                        // Refresh detail view
+                        $('.btn-detail-logbook[data-id="<?= $mahasiswa->id_penempatan_magang ?>"]').click();
+                    });
+                } else {
+                    Swal.fire('Gagal!', res.message || 'Terjadi kesalahan', 'error');
+                    btn.prop('disabled', false).html(originalBtnHtml);
+                }
+            },
+            error: function() {
+                Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                btn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
+    });
+
+    // Tangani Submit Form Bulk Approve via AJAX
+    $('#formBulkApproveLogbook').on('submit', function(e) {
+        e.preventDefault();
+        if(!confirm('Anda yakin ingin menyetujui semua catatan yang tertunda sekaligus?')) return;
+        
+        var form = $(this);
+        var btn = form.find('button[type="submit"]');
+        var originalBtnHtml = btn.html();
+        
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Memproses...');
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            success: function(res) {
+                if(res.success) {
+                    Swal.fire('Berhasil!', res.message, 'success').then(() => {
+                        // Refresh detail view
+                        $('.btn-detail-logbook[data-id="<?= $mahasiswa->id_penempatan_magang ?>"]').click();
+                    });
+                } else {
+                    Swal.fire('Info!', res.message || 'Tidak ada logbook pending', 'info');
+                    btn.prop('disabled', false).html(originalBtnHtml);
+                }
+            },
+            error: function() {
+                Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                btn.prop('disabled', false).html(originalBtnHtml);
+            }
+        });
+    });
+});
+</script>

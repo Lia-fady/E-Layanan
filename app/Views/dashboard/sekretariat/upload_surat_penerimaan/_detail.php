@@ -6,12 +6,27 @@
  * Deskripsi : Partial view untuk form Upload Surat Penerimaan.
  * ============================================================
  */
+
+$jenisPermohonanText = strtolower(trim($persetujuan->jenis_permohonan ?? ''));
+if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermohonanText, 'skripsi') !== false || strpos($jenisPermohonanText, 'ta') !== false) {
+    $labelKeahlian = 'Deskripsi Judul Skripsi / TA';
+    $labelDeskripsi = 'Deskripsi Rencana Topik / Rumusan Masalah';
+} elseif (strpos($jenisPermohonanText, 'observasi') !== false || strpos($jenisPermohonanText, 'pengambilan data') !== false) {
+    $labelKeahlian = 'Deskripsi Latar Belakang Observasi';
+    $labelDeskripsi = 'Deskripsi Daftar Kebutuhan Data';
+} elseif (strpos($jenisPermohonanText, 'uji coba') !== false || strpos($jenisPermohonanText, 'prototype') !== false) {
+    $labelKeahlian = 'Deskripsi Profil Aplikasi / Sistem';
+    $labelDeskripsi = 'Deskripsi Skenario Uji Coba / Metode';
+} else {
+    $labelKeahlian = 'Deskripsi Keahlian / Skill';
+    $labelDeskripsi = 'Deskripsi Rencana Magang / Kegiatan';
+}
 ?>
 
 <div class="card shadow-sm border-0 mb-4">
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h5 class="m-0 font-weight-bold" style="color: #1B2559;">
-            <i class="fas fa-file-upload mr-2"></i> Detail & Upload Surat Penerimaan Magang
+            <i class="fas fa-file-upload mr-2"></i> Detail & Upload Surat Keterangan Diterima
         </h5>
         <button type="button" class="btn btn-outline-secondary btn-sm" id="btnKembali">
             <i class="fas fa-arrow-left mr-1"></i> Kembali
@@ -67,19 +82,19 @@
             </div>
             
             <div class="col-md-7">
-                <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Keahlian & Tujuan Magang</h6>
+                <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Data Permohonan</h6>
                 <div class="card bg-light border-0 mb-4">
                     <div class="card-body p-3">
                         <div class="mb-3">
-                            <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi Keahlian</span>
+                            <span class="text-muted d-block" style="font-size: 0.9rem;"><?= esc($labelKeahlian) ?></span>
                             <strong style="font-size: 0.95rem;">
                                 <?= !empty($persetujuan->deskripsi_keahlian) ? esc($persetujuan->deskripsi_keahlian) : 'Belum diisi' ?>
                             </strong>
                         </div>
                         <div>
-                            <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi / Tujuan Magang</span>
+                            <span class="text-muted d-block" style="font-size: 0.9rem;"><?= esc($labelDeskripsi) ?></span>
                             <strong style="font-size: 0.95rem;">
-                                <?= !empty($persetujuan->deskripsi_magang) ? esc($persetujuan->deskripsi_magang) : 'Belum diisi' ?>
+                                <?= !empty($persetujuan->deskripsi) ? esc($persetujuan->deskripsi) : 'Belum diisi' ?>
                             </strong>
                         </div>
                     </div>
@@ -101,13 +116,20 @@
                         <label for="id_file">Jenis Surat</label>
                         <select name="id_file" id="id_file" class="form-control" required style="pointer-events: none; background-color: #e9ecef;">
                             <!-- Hanya menampilkan Surat Penerimaan Magang (asumsi nama_file = 'Surat Penerimaan Magang') -->
-                            <?php foreach ($jenis_file as $jf) : ?>
-                                <?php if (stripos($jf->nama_file, 'Penerimaan') !== false) : ?>
+                            <?php 
+                            $found = false;
+                            foreach ($jenis_file as $jf) : ?>
+                                <?php if (stripos($jf->nama_file, 'Penerimaan') !== false || stripos($jf->nama_file, 'Diterima') !== false) : 
+                                    $found = true;
+                                ?>
                                     <option value="<?= $jf->id_file ?>" selected><?= esc($jf->nama_file) ?></option>
                                 <?php endif; ?>
-                            <?php endforeach; ?>
+                            <?php endforeach; 
+                            if (!$found) : ?>
+                                <option value="99" selected>Surat Penerimaan Magang</option>
+                            <?php endif; ?>
                         </select>
-                        <small class="text-muted">Terkunci untuk jenis Surat Penerimaan Magang.</small>
+                        <small class="text-muted">Terkunci untuk jenis Surat Penerimaan.</small>
                     </div>
 
                     <div class="form-group">

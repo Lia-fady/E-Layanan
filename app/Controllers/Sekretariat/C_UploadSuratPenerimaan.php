@@ -37,12 +37,14 @@ class C_UploadSuratPenerimaan extends BaseController
 
         $db = \Config\Database::connect();
         $persetujuan = $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, jp.jenis_permohonan, pn.status_penempatan, (SELECT COUNT(fpm.id_file_selesai_magang) FROM t_file_proses_magang fpm WHERE fpm.id_persetujuan_magang = ps.id_persetujuan_magang AND fpm.proses_magang = \'persetujuan\') as is_uploaded')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
+            ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.status_persetujuan', 'DISETUJUI')
             ->orderBy('ps.tgl_persetujuan', 'DESC')
             ->get()->getResult();
@@ -66,7 +68,7 @@ class C_UploadSuratPenerimaan extends BaseController
                 pm.tgl_selesai, 
                 pm.created_at,
                 pm.deskripsi_keahlian,
-                pm.deskripsi_magang,
+                pm.deskripsi,
                 mhs.nama_mahasiswa, 
                 mhs.nim, 
                 mhs.nik,
@@ -151,14 +153,15 @@ class C_UploadSuratPenerimaan extends BaseController
                     if ($existing) {
                         // Hapus file fisik lama
                         $oldPath = WRITEPATH . $existing->path_file;
-                        if (file_exists($oldPath) && is_file($oldPath)) {
+                        // Anti path-traversal
+                        if (strpos($existing->path_file, '..') === false && file_exists($oldPath) && is_file($oldPath)) {
                             unlink($oldPath);
                         }
 
                         // UPDATE
                         $this->fileProsesModel->update($existing->id_file_selesai_magang, [
                             'id_file'               => $this->request->getPost('id_file'),
-                            'nama_file'             => $file->getClientName(),
+                            'nama_file'             => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $file->getClientName()), // ANTI XSS
                             'path_file'             => $path_file,
                             'updated_by'            => session('id_user_pegawai')
                         ]);
@@ -171,7 +174,7 @@ class C_UploadSuratPenerimaan extends BaseController
                 $this->fileProsesModel->insert([
                     'id_persetujuan_magang' => $id_persetujuan,
                     'id_file'               => $this->request->getPost('id_file'),
-                    'nama_file'             => $file->getClientName(),
+                    'nama_file'             => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $file->getClientName()), // ANTI XSS
                     'path_file'             => $path_file,
                     'proses_magang'         => $prosesMagang, // Dinamis
                     'created_by'            => session('id_user_pegawai')
@@ -219,7 +222,8 @@ class C_UploadSuratPenerimaan extends BaseController
 
         // Hapus file fisik lama
         $oldPath = WRITEPATH . $existing->path_file;
-        if (file_exists($oldPath) && is_file($oldPath)) {
+        // Anti path-traversal
+        if (strpos($existing->path_file, '..') === false && file_exists($oldPath) && is_file($oldPath)) {
             unlink($oldPath);
         }
 
@@ -229,7 +233,7 @@ class C_UploadSuratPenerimaan extends BaseController
         $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
 
         $this->fileProsesModel->update($id_file_selesai, [
-            'nama_file'  => $file->getClientName(),
+            'nama_file'  => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $file->getClientName()), // ANTI XSS
             'path_file'  => $path_file,
             'updated_by' => session('id_user_pegawai')
         ]);
@@ -249,7 +253,8 @@ class C_UploadSuratPenerimaan extends BaseController
         }
 
         $oldFilePath = WRITEPATH . $existing->path_file;
-        if (file_exists($oldFilePath) && is_file($oldFilePath)) {
+        // Anti path-traversal
+        if (strpos($existing->path_file, '..') === false && file_exists($oldFilePath) && is_file($oldFilePath)) {
             unlink($oldFilePath);
         }
 

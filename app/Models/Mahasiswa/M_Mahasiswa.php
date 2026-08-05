@@ -26,9 +26,7 @@ class M_Mahasiswa extends Model
         'alamat', 
         'rt', 
         'rw', 
-        'kelurahan', 
-        'kecamatan', 
-        'provinsi', 
+        'id_kelurahan',
         'no_telp', 
         'id_instansi_mahasiswa', 
         'email'

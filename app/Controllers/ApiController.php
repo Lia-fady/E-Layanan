@@ -33,4 +33,30 @@ class ApiController extends Controller
         
         return $this->response->setJSON($prodi);
     }
+    public function getKabupatenByProvinsi($id_provinsi)
+    {
+        $db = \Config\Database::connect();
+        $kabupaten = $db->table('m_kabupaten')
+                        ->where('id_provinsi', $id_provinsi)
+                        ->get()->getResultArray();
+        return $this->response->setJSON($kabupaten);
+    }
+
+    public function getKecamatanByKabupaten($id_kabupaten)
+    {
+        $db = \Config\Database::connect();
+        $kecamatan = $db->table('m_kecamatan')
+                        ->where('id_kabupaten', $id_kabupaten)
+                        ->get()->getResultArray();
+        return $this->response->setJSON($kecamatan);
+    }
+
+    public function getKelurahanByKecamatan($id_kecamatan)
+    {
+        $db = \Config\Database::connect();
+        $kelurahan = $db->table('m_kelurahan')
+                        ->where('id_kecamatan', $id_kecamatan)
+                        ->get()->getResultArray();
+        return $this->response->setJSON($kelurahan);
+    }
 }

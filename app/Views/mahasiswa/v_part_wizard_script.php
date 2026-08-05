@@ -15,7 +15,12 @@ const JENIS_CFG = {
         surat: 'Surat Izin Penelitian Resmi Kampus',
         cv: 'Proposal / Sinopsis Penelitian Skripsi',
         tujuan: 'Penelitian / Riset Akademik',
-        showCv: true
+        showCv: true,
+        panduan: [
+            'Surat izin penelitian menggunakan kop resmi kampus dan ditandatangani pejabat berwenang',
+            'Wajib melampirkan <strong>Proposal / Sinopsis Penelitian</strong> pada kolom yang disediakan',
+            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+        ]
     },
     '2': {
         keahlian: 'Deskripsi Latar Belakang Observasi',
@@ -25,7 +30,11 @@ const JENIS_CFG = {
         surat: 'Surat Pengantar Kebutuhan Data Kampus',
         cv: null,
         tujuan: 'Observasi Lapangan / Survei',
-        showCv: false
+        showCv: false,
+        panduan: [
+            'Surat pengantar observasi/pengambilan data resmi dari kampus',
+            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+        ]
     },
     '3': {
         keahlian: 'Deskripsi Keahlian / Skill',
@@ -35,7 +44,12 @@ const JENIS_CFG = {
         surat: 'Surat Pengantar Resmi Kampus',
         cv: 'Curriculum Vitae (CV) Terbaru',
         tujuan: 'Praktik Kerja Lapangan',
-        showCv: true
+        showCv: true,
+        panduan: [
+            'Surat pengantar magang menggunakan kop resmi kampus dan ditandatangani pejabat berwenang',
+            'CV mencantumkan data diri, program studi, semester, dan keahlian teknis',
+            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+        ]
     },
     '4': {
         keahlian: 'Deskripsi Profil Aplikasi / Sistem',
@@ -45,7 +59,12 @@ const JENIS_CFG = {
         surat: 'Surat Pengantar Uji Coba Produk Kampus',
         cv: 'Dokumen Profil / Panduan Singkat Produk',
         tujuan: 'Uji Coba / Testing Sistem',
-        showCv: true
+        showCv: true,
+        panduan: [
+            'Surat pengantar uji coba produk resmi dari kampus',
+            'Wajib melampirkan <strong>Dokumen Profil / Panduan Singkat Produk</strong>',
+            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+        ]
     }
 };
 
@@ -53,7 +72,7 @@ const JENIS_CFG = {
 function countChars(el, sid) {
     document.getElementById(sid).textContent = el.value.length;
 }
-['deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+['deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el && el.value) el.dispatchEvent(new Event('input'));
 });
@@ -61,70 +80,113 @@ function countChars(el, sid) {
 /* ============ Jenis Config ============ */
 function applyJenisCfg(val) {
     var cfg = JENIS_CFG[val];
-    if (!cfg) return;
-    document.getElementById('lbl-keahlian').innerHTML = cfg.keahlian + ' <span class="text-danger">*</span>';
-    document.getElementById('deskripsi_keahlian').placeholder = cfg.phK;
-    document.getElementById('lbl-magang').innerHTML = cfg.magang + ' <span class="text-danger">*</span>';
-    document.getElementById('deskripsi_magang').placeholder = cfg.phM;
-    document.getElementById('lbl-surat').innerHTML = cfg.surat + ' <span class="text-danger">*</span>';
+    
+    // Default fallback jika tidak ada yang dipilih (opsi default)
+    if (!cfg) {
+        cfg = {
+            keahlian: 'Keahlian / Skill',
+            phK: 'Jelaskan keahlian atau kompetensi yang Anda miliki saat ini...',
+            magang: 'Deskripsi Rencana Magang',
+            phM: 'Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan...',
+            surat: 'Surat Pengantar Resmi',
+            cv: '',
+            showCv: false
+        };
+    }
+
+    var lblKeahlian = document.getElementById('lbl-keahlian');
+    if(lblKeahlian) lblKeahlian.innerHTML = cfg.keahlian + ' <span class="text-danger">*</span>';
+    
+    var rvLblKeahlian = document.getElementById('rv-keahlian-label');
+    if(rvLblKeahlian) rvLblKeahlian.innerHTML = cfg.keahlian;
+    
+    var txtKeahlian = document.getElementById('deskripsi_keahlian');
+    if(txtKeahlian) txtKeahlian.placeholder = cfg.phK;
+    
+    var lblMagang = document.getElementById('lbl-magang');
+    if(lblMagang) lblMagang.innerHTML = cfg.magang + ' <span class="text-danger">*</span>';
+    
+    var rvLblMagang = document.getElementById('rv-magang-label');
+    if(rvLblMagang) rvLblMagang.innerHTML = cfg.magang;
+    
+    var txtMagang = document.getElementById('deskripsi');
+    if(txtMagang) txtMagang.placeholder = cfg.phM;
+    
+    var lblSurat = document.getElementById('lbl-surat');
+    if(lblSurat) lblSurat.innerHTML = cfg.surat + ' <span class="text-danger">*</span>';
 
     var wCv = document.getElementById('wrapper-cv');
     var iCv = document.getElementById('input-cv');
-    if (cfg.showCv) {
-        wCv.style.display = 'block';
-        iCv.required = true;
-        document.getElementById('lbl-cv').innerHTML = cfg.cv + ' <span class="text-danger">*</span>';
-    } else {
-        wCv.style.display = 'none';
-        iCv.required = false;
-        iCv.value = '';
-        resetZone('zone-cv', 'ph-cv', 'pv-cv');
+    var lblCv = document.getElementById('lbl-cv');
+    
+    if (wCv && iCv) {
+        if (cfg.showCv) {
+            wCv.style.display = 'block';
+            iCv.required = true;
+            if (lblCv) lblCv.innerHTML = cfg.cv + ' <span class="text-danger">*</span>';
+        } else {
+            wCv.style.display = 'none';
+            iCv.required = false;
+            iCv.value = '';
+            // Reset zone UI if function exists
+            if (typeof resetZone === 'function') resetZone('zone-cv', 'ph-cv', 'pv-cv');
+        }
+    }
+
+    var infoBoxList = document.getElementById('info-panduan-list');
+    if (infoBoxList && cfg.panduan) {
+        infoBoxList.innerHTML = '';
+        cfg.panduan.forEach(function(item) {
+            var li = document.createElement('li');
+            li.innerHTML = item;
+            infoBoxList.appendChild(li);
+        });
     }
 }
 
+// Fungsi untuk mengosongkan isian saat jenis permohonan diganti
+function clearInputsOnChange() {
+    var tM = document.getElementById('tgl_mulai');
+    var tS = document.getElementById('tgl_selesai');
+    var k = document.getElementById('deskripsi_keahlian');
+    var mg = document.getElementById('deskripsi');
+    var errTgl = document.getElementById('err-tgl-mulai-js');
+    
+    if (tM) { tM.value = ''; tM.classList.remove('is-invalid'); }
+    if (tS) { tS.value = ''; tS.classList.remove('is-invalid'); }
+    if (k) { k.value = ''; countChars(k, 'cc-keahlian'); }
+    if (mg) { mg.value = ''; countChars(mg, 'cc-magang'); }
+    if (errTgl) { errTgl.classList.add('d-none'); errTgl.classList.remove('d-block'); }
+    
+    if (typeof saveToLocal === 'function') saveToLocal(); // Timpa localstorage langsung
+}
+
 document.querySelectorAll('input[name="id_jenis_permohonan"]').forEach(function(r) {
-    r.addEventListener('change', function() {
+    r.addEventListener('change', function(e) {
         applyJenisCfg(this.value);
         document.getElementById('err-jenis').classList.add('d-none');
+        // Hanya kosongkan form jika perubahan dilakukan manual oleh user (bukan script)
+        if (e.isTrusted) {
+            clearInputsOnChange();
+        }
     });
 });
+
+var selJenis = document.getElementById('sel-jenis');
+if (selJenis) {
+    selJenis.addEventListener('change', function(e) {
+        // onchange inline di HTML sudah menangani checked dan applyJenisCfg
+        if (this.value && e.isTrusted) {
+            clearInputsOnChange();
+        }
+    });
+}
 
 var oldJenis = document.querySelector('input[name="id_jenis_permohonan"]:checked');
 if (oldJenis) applyJenisCfg(oldJenis.value);
 
 /* ============ Upload Zone ============ */
-function setupZone(inputId, zoneId, phId, pvId, nmId) {
-    var inp = document.getElementById(inputId);
-    var z = document.getElementById(zoneId);
-    function showFile(f) {
-        document.getElementById(nmId).textContent = f.name;
-        document.getElementById(phId).classList.add('d-none');
-        document.getElementById(pvId).classList.remove('d-none');
-        z.classList.add('is-filled');
-    }
-    inp.addEventListener('change', function() {
-        if (this.files && this.files[0]) showFile(this.files[0]);
-    });
-    z.addEventListener('dragover', function(e) { e.preventDefault(); z.classList.add('is-dragging'); });
-    z.addEventListener('dragleave', function() { z.classList.remove('is-dragging'); });
-    z.addEventListener('drop', function(e) {
-        e.preventDefault();
-        z.classList.remove('is-dragging');
-        if (e.dataTransfer.files[0]) {
-            inp.files = e.dataTransfer.files;
-            showFile(e.dataTransfer.files[0]);
-        }
-    });
-}
-
-function resetZone(zId, phId, pvId) {
-    document.getElementById(zId).classList.remove('is-filled');
-    document.getElementById(phId).classList.remove('d-none');
-    document.getElementById(pvId).classList.add('d-none');
-}
-
-setupZone('input-surat', 'zone-surat', 'ph-surat', 'pv-surat', 'nm-surat');
-setupZone('input-cv', 'zone-cv', 'ph-cv', 'pv-cv', 'nm-cv');
+// Upload elements are now standard inputs, so custom drag-and-drop logic is no longer needed.
 
 /* ============ Stepper State ============ */
 var currentStep = 1;
@@ -175,7 +237,7 @@ function vStep1() {
     var tM = document.getElementById('tgl_mulai').value;
     var tS = document.getElementById('tgl_selesai').value;
     var k = document.getElementById('deskripsi_keahlian').value.trim();
-    var mg = document.getElementById('deskripsi_magang').value.trim();
+    var mg = document.getElementById('deskripsi').value.trim();
     if (!tM) { sAlert('Tanggal mulai wajib diisi.'); return false; }
     if (!tS) { sAlert('Tanggal selesai wajib diisi.'); return false; }
     
@@ -183,7 +245,9 @@ function vStep1() {
     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     if (diffDays <= 0) { sAlert('Tanggal selesai harus setelah tanggal mulai.'); return false; }
-    if (diffDays < 60) {
+    
+    // Validasi minimal 60 hari HANYA untuk Magang (ID = 3)
+    if (j.value === '3' && diffDays < 60) {
         document.getElementById('tgl_mulai').classList.add('is-invalid');
         var errDiv = document.getElementById('err-tgl-mulai-js');
         if(errDiv){
@@ -212,6 +276,15 @@ function vStep2() {
         if (cv.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran CV / Proposal maksimal 2 MB.'); return false; }
         if (!cv.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('CV / Proposal harus berformat PDF.'); return false; }
     }
+    
+    var kt = document.getElementById('input-ktm');
+    if (kt && (!kt.files || !kt.files[0])) { sAlert('Kartu Tanda Mahasiswa (KTM) wajib diunggah.'); return false; }
+    if (kt && kt.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran KTM maksimal 2 MB.'); return false; }
+    if (kt && kt.files[0]) {
+        var ktExt = kt.files[0].name.toLowerCase();
+        if (!ktExt.endsWith('.pdf') && !ktExt.endsWith('.jpg') && !ktExt.endsWith('.jpeg') && !ktExt.endsWith('.png')) { sAlert('KTM harus berformat PDF atau JPG/PNG.'); return false; }
+    }
+
     return true;
 }
 
@@ -224,12 +297,15 @@ function fmtDate(v) {
 function fillReview() {
     var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
     var jVal = j ? j.value : null;
+    var cfg = jVal ? JENIS_CFG[jVal] : null;
+
     document.getElementById('rv-jenis').textContent = j ? JENIS_LABELS[jVal] : '—';
     document.getElementById('rv-tujuan').textContent = j ? JENIS_CFG[jVal].tujuan : '—';
     document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
     document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
     document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
-    document.getElementById('rv-magang').textContent = document.getElementById('deskripsi_magang').value || '—';
+    document.getElementById('rv-magang-label').textContent = cfg ? cfg.magang : 'Deskripsi Rencana Kegiatan';
+    document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';
 
     var tb = document.getElementById('rv-doc-tbody');
     tb.innerHTML = '';
@@ -246,6 +322,12 @@ function fillReview() {
         var cfUrl = URL.createObjectURL(cf);
         var lc = document.getElementById('lbl-cv').textContent.replace('*', '').trim();
         tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><a href="' + cfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)" style="cursor: pointer; display: inline-block; transition: all 0.2s;"><i class="bi bi-file-earmark-pdf"></i> ' + cf.name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a></td></tr>';
+    }
+    
+    var ktf = document.getElementById('input-ktm') ? document.getElementById('input-ktm').files[0] : null;
+    if (ktf) {
+        var ktfUrl = URL.createObjectURL(ktf);
+        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">Kartu Tanda Mahasiswa (KTM)</td><td class="text-end"><a href="' + ktfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)" style="cursor: pointer; display: inline-block; transition: all 0.2s;"><i class="bi bi-file-earmark-check"></i> ' + ktf.name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a></td></tr>';
     }
     if (!tb.innerHTML) {
         tb.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3" style="font-size:0.83rem;">Tidak ada dokumen terlampir.</td></tr>';
@@ -357,10 +439,8 @@ function resetFormCustom() {
             var td = document.getElementById('tujuan-display');
             if(td) { td.value = 'Pilih jenis permohonan terlebih dahulu'; td.style.color = '#94a3b8'; }
             
-            // Reset upload zones
-            resetZone('zone-surat', 'ph-surat', 'pv-surat');
-            resetZone('zone-cv', 'ph-cv', 'pv-cv');
-            
+            // Upload zones are standard inputs, form.reset() clears them automatically.
+
             // Reset char counters
             var ccKeahlian = document.getElementById('cc-keahlian');
             if(ccKeahlian) ccKeahlian.innerText = '0';
@@ -393,7 +473,7 @@ function resetFormCustom() {
 }
 /* ============ LocalStorage Auto-Save ============ */
 var LS_KEY = 'form_permohonan_<?= session()->get("id_mahasiswa") ?? "guest" ?>';
-var LS_FIELDS = ['id_jenis_permohonan', 'tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'];
+var LS_FIELDS = ['id_jenis_permohonan', 'tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'];
 
 function saveToLocal() {
     try {
@@ -402,7 +482,7 @@ function saveToLocal() {
         var jRadio = document.querySelector('input[name="id_jenis_permohonan"]:checked');
         data['id_jenis_permohonan'] = jRadio ? jRadio.value : '';
         // Ambil value field lainnya
-        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             data[id] = el ? el.value : '';
         });
@@ -427,13 +507,13 @@ function loadFromLocal() {
         }
 
         // Isi field teks lainnya
-        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el && data[id]) { el.value = data[id]; hasData = true; }
         });
 
         // Update character counters
-        ['deskripsi_keahlian', 'deskripsi_magang'].forEach(function(id) {
+        ['deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
             if (el && el.value) el.dispatchEvent(new Event('input'));
         });

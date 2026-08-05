@@ -11,6 +11,7 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         * {
             margin: 0;
@@ -241,6 +242,13 @@
             color: #a0aec0;
             font-weight: 500;
         }
+        
+        /* reCAPTCHA */
+        .recaptcha-box { margin-bottom: 1.2rem; overflow: hidden; display: flex; justify-content: center; }
+        .recaptcha-box .g-recaptcha {
+            transform: scale(0.95);
+            transform-origin: center center;
+        }
     </style>
 </head>
 <body>
@@ -292,7 +300,9 @@
                     </button>
                 </div>
 
-
+                <div class="recaptcha-box">
+                    <div class="g-recaptcha" data-sitekey="<?= getenv('RECAPTCHA_SITE_KEY') ?>"></div>
+                </div>
 
                 <button type="submit" class="btn-submit">
                     <i class="bi bi-lock-fill"></i> Masuk Sistem

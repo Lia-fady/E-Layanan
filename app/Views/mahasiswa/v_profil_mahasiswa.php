@@ -1,7 +1,7 @@
 <?= $this->extend('layout/mahasiswa') ?>
 
 <?= $this->section('breadcrumb') ?>
-    <i class="bi bi-person-bounding-box me-1 text-primary"></i> Profil Mahasiswa
+<a href="<?= base_url('mahasiswa/dashboard') ?>" class="text-decoration-none text-primary">Dashboard</a> <span class="mx-2 text-muted">/</span> <span class="text-dark fw-medium">Profil Saya</span>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -201,6 +201,19 @@
             
             <form action="<?= base_url('mahasiswa/profil/update') ?>" method="POST" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Perubahan?', text: 'Data profil Anda akan diperbarui di sistem.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi'}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
                 <div class="modal-body p-0 bg-white">
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <div class="alert alert-danger mx-4 mt-3 mb-0" style="font-size: 0.85rem; border-radius: 10px;">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> <strong>Peringatan!</strong> <?= session()->getFlashdata('error') ?>
+                            <?php if(session()->getFlashdata('errors')): ?>
+                                <ul class="mt-2 mb-0 ps-3">
+                                    <?php foreach(session()->getFlashdata('errors') as $err): ?>
+                                        <li><?= esc($err) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+
                     <!-- Nav tabs (Custom Pills) -->
                     <div class="px-4 pb-3 border-bottom" style="background: #ffffff;">
                         <ul class="nav nav-pills gap-2" id="profilTabs" role="tablist">
@@ -236,7 +249,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted mb-2">TANGGAL LAHIR</label>
-                                    <input type="date" name="tgl_lahir" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= $m['tgl_lahir'] ?? '' ?>">
+                                    <input type="date" name="tgl_lahir" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= $m['tgl_lahir'] ?? '' ?>" onkeydown="return false" onclick="this.showPicker()">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted mb-2">ALAMAT EMAIL</label>
@@ -350,5 +363,15 @@
         </div>
     </div>
 </div>
+
+<!-- Auto Open Modal on Validation Error -->
+<?php if (session()->getFlashdata('error')) : ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var myModal = new bootstrap.Modal(document.getElementById('modalEditProfil'));
+        myModal.show();
+    });
+</script>
+<?php endif; ?>
 
 <?= $this->endSection() ?>

@@ -62,13 +62,14 @@ class M_Penempatan extends Model
             im.semester,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
             jp.jenis_permohonan,
             ip.instansi_pendidikan,
-            pr.prodi
+            pr.prodi,
+            ps.catatan as catatan_sekretariat
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
@@ -108,11 +109,12 @@ class M_Penempatan extends Model
             mhs.no_telp,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             jp.jenis_permohonan,
-            ip.instansi_pendidikan
+            ip.instansi_pendidikan,
+            ps.catatan as catatan_sekretariat
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
@@ -134,7 +136,7 @@ class M_Penempatan extends Model
      * @param int $updated_by
      * @return bool
      */
-    public function setujuiPenempatan($id_penempatan, $is_log_book, $updated_by)
+    public function setujuiPenempatan($id_penempatan, $is_log_book, $catatan, $updated_by)
     {
         $db = \Config\Database::connect();
 
@@ -143,6 +145,7 @@ class M_Penempatan extends Model
             ->update([
                 'status_penempatan' => 'BERJALAN',
                 'is_log_book'       => $is_log_book,
+                'catatan'           => $catatan,
                 'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
@@ -166,6 +169,7 @@ class M_Penempatan extends Model
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
                 'status_penempatan' => 'DIBATALKAN',
+                'catatan'           => $catatan,
                 'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);

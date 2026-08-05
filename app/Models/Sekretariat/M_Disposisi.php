@@ -41,7 +41,7 @@ class M_Disposisi extends Model
             ps.id_bidang,
             ps.tgl_persetujuan,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -77,7 +77,7 @@ class M_Disposisi extends Model
             ps.*,
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -184,26 +184,28 @@ class M_Disposisi extends Model
             return false;
         }
 
-        // 3. Cek apakah id_mahasiswa sudah memiliki penempatan
+        // 3. Cek apakah sudah ada record penempatan untuk approval ini.
+        // Jangan pakai id_mahasiswa saja karena satu mahasiswa bisa punya banyak riwayat permohonan.
         $existingPenempatan = $db->table('t_penempatan_magang')
-            ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+            ->where('id_persetujuan_magang', $id_persetujuan)
             ->get()
             ->getRow();
 
         if ($existingPenempatan) {
-            // Jika sudah ada, lakukan UPDATE
+            // Jika record untuk approval ini sudah ada, update record itu saja.
             $db->table('t_penempatan_magang')
-                ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+                ->where('id_persetujuan_magang', $id_persetujuan)
                 ->update([
                     'id_bidang'             => $data['id_bidang'],
-                    'id_persetujuan_magang' => $id_persetujuan,
+                    'id_mahasiswa'          => $permohonan->id_mahasiswa,
                     'catatan'               => $data['catatan_disposisi'] ?? null,
                     'status_penempatan'     => 'MENUNGGU',
                     'updated_by'            => $data['updated_by'],
                     'updated_at'            => date('Y-m-d H:i:s'),
                 ]);
         } else {
-            // Jika belum ada, lakukan INSERT
+            // Jika belum ada, lakukan INSERT baru untuk approval ini.
+            // Ini menjaga riwayat penempatan lama tetap utuh dan tidak ikut reset.
             $db->table('t_penempatan_magang')->insert([
                 'id_bidang'             => $data['id_bidang'],
                 'id_persetujuan_magang' => $id_persetujuan,

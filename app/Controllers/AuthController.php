@@ -24,11 +24,14 @@ class AuthController extends BaseController
         $this->instansiPendidikanModel = new InstansiPendidikanModel();
     }
 
-    // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
     public function register()
     {
         // Mengambil data master kampus aktif untuk dropdown utama sesuai string 'aktif'
         $data['kampus'] = $this->instansiPendidikanModel->where('status', 'aktif')->findAll();
+        
+        $db = \Config\Database::connect();
+        $data['provinsi'] = $db->table('m_provinsi')->get()->getResultArray();
+
         $data['title']  = "Registrasi Akun Mahasiswa";
 
         return view('auth/register', $data);
@@ -211,31 +214,28 @@ class AuthController extends BaseController
                     'max_length' => 'RW maksimal 3 digit angka.'
                 ]
             ],
-            'kelurahan' => [
-                'rules'  => 'required|alpha_numeric_space|min_length[3]|max_length[100]',
+            'id_kelurahan' => [
+                'rules'  => 'required',
                 'errors' => [
-                    'required'            => 'Kelurahan/Desa wajib diisi.',
-                    'alpha_numeric_space' => 'Kelurahan hanya boleh berisi huruf, angka, dan spasi.',
-                    'min_length'          => 'Kelurahan minimal 3 karakter.',
-                    'max_length'          => 'Kelurahan maksimal 100 karakter.'
+                    'required'            => 'Kelurahan/Desa wajib dipilih.'
                 ]
             ],
             'kecamatan' => [
-                'rules'  => 'required|alpha_numeric_space|min_length[3]|max_length[100]',
+                'rules'  => 'required',
                 'errors' => [
-                    'required'            => 'Kecamatan wajib diisi.',
-                    'alpha_numeric_space' => 'Kecamatan hanya boleh berisi huruf, angka, dan spasi.',
-                    'min_length'          => 'Kecamatan minimal 3 karakter.',
-                    'max_length'          => 'Kecamatan maksimal 100 karakter.'
+                    'required'            => 'Kecamatan wajib dipilih.'
+                ]
+            ],
+            'kabupaten' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required'            => 'Kota/Kabupaten wajib dipilih.'
                 ]
             ],
             'provinsi' => [
-                'rules'  => 'required|alpha_numeric_space|min_length[3]|max_length[100]',
+                'rules'  => 'required',
                 'errors' => [
-                    'required'            => 'Provinsi wajib diisi.',
-                    'alpha_numeric_space' => 'Provinsi hanya boleh berisi huruf, angka, dan spasi.',
-                    'min_length'          => 'Provinsi minimal 3 karakter.',
-                    'max_length'          => 'Provinsi maksimal 100 karakter.'
+                    'required'            => 'Provinsi wajib dipilih.'
                 ]
             ]
         ];
@@ -273,9 +273,7 @@ class AuthController extends BaseController
             'alamat'                 => $this->request->getPost('alamat'),
             'rt'                     => $this->request->getPost('rt'),
             'rw'                     => $this->request->getPost('rw'),
-            'kelurahan'              => $this->request->getPost('kelurahan'),
-            'kecamatan'              => $this->request->getPost('kecamatan'),
-            'provinsi'               => $this->request->getPost('provinsi'),
+            'id_kelurahan'           => $this->request->getPost('id_kelurahan'),
             'no_telp'                => $this->request->getPost('no_telp'),
             'email'                  => $this->request->getPost('email'),
             'id_instansi_mahasiswa'  => $idInstansiMahasiswaBaru
@@ -434,7 +432,25 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        // 1.5 VERIFIKASI GOOGLE RECAPTCHA v2 (Bypass if local/no key)
+        $recaptchaResponse = trim((string)$this->request->getPost('g-recaptcha-response'));
+        $recaptchaSecret   = getenv('RECAPTCHA_SECRET_KEY');
 
+        if (!empty($recaptchaSecret)) {
+            if (empty($recaptchaResponse)) {
+                return redirect()->back()->withInput()->with('error', 'Peringatan Keamanan: Silakan centang kotak "I\'m not a robot" (reCAPTCHA) terlebih dahulu.');
+            }
+
+            // Gunakan file_get_contents atau cURL untuk validasi ke server Google
+            $verifyUrl      = "https://www.google.com/recaptcha/api/siteverify?secret={$recaptchaSecret}&response={$recaptchaResponse}";
+            $verifyResponse = @file_get_contents($verifyUrl);
+            if ($verifyResponse) {
+                $responseData   = json_decode($verifyResponse);
+                if (!$responseData->success) {
+                    return redirect()->back()->withInput()->with('error', 'Verifikasi reCAPTCHA gagal (Sistem mendeteksi aktivitas mencurigakan). Silakan coba lagi.');
+                }
+            }
+        }
 
         $inputData = $this->request->getPost('nip');
         $password  = $this->request->getPost('password');

@@ -45,13 +45,7 @@ class C_DisposisiMasuk extends BaseController
         
         $penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang);
         
-        // Filter penempatan based on requested status
-        if ($status_filter && $status_filter != 'all') {
-            $penempatan = array_filter($penempatan, function($p) use ($status_filter) {
-                if ($status_filter == 'MENUNGGU') return $p->status_penempatan == '0' || $p->status_penempatan == 'MENUNGGU';
-                return $p->status_penempatan == $status_filter;
-            });
-        }
+        // Remove server-side filtering to allow DataTables client-side filtering
         
         // Ambil data file untuk masing-masing permohonan
         foreach ($penempatan as $p) {
@@ -82,15 +76,30 @@ class C_DisposisiMasuk extends BaseController
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
         $is_log_book   = $this->request->getPost('is_log_book'); // 'Ya' atau 'Tidak'
+        $catatan       = $this->request->getPost('catatan_setuju') ?? 'Permohonan magang disetujui';
 
         $result = $this->penempatanModel->setujuiPenempatan(
             $id_penempatan,
             $is_log_book,
+            $catatan,
             session('id_user_pegawai')
         );
 
         if ($result) {
-            session()->setFlashdata('success', 'Penempatan berhasil disetujui. Mahasiswa sekarang aktif magang.');
+            $db = \Config\Database::connect();
+            $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
+            $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
+            
+            $permohonan = $db->table('t_permohonan_magang')
+                             ->select('m_jenis_permohonan.jenis_permohonan')
+                             ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
+                             ->where('t_permohonan_magang.id_permohonan_magang', $persetujuan->id_permohonan_magang)
+                             ->get()->getRow();
+            $jenisText = $permohonan ? strtoupper($permohonan->jenis_permohonan) : 'MAGANG';
+            
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Penempatan Disetujui', "Mahasiswa telah disetujui dan berstatus AKTIF {$jenisText}.");
+            
+            session()->setFlashdata('success', 'Penempatan berhasil disetujui. Mahasiswa sekarang aktif kegiatan.');
         } else {
             session()->setFlashdata('error', 'Gagal menyetujui penempatan.');
         }
@@ -116,6 +125,11 @@ class C_DisposisiMasuk extends BaseController
         );
 
         if ($result) {
+            $db = \Config\Database::connect();
+            $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
+            $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Penempatan Ditolak/Dibatalkan', 'Catatan: ' . $catatan);
+            
             session()->setFlashdata('success', 'Penempatan dibatalkan.');
         } else {
             session()->setFlashdata('error', 'Gagal menolak penempatan.');
@@ -140,7 +154,20 @@ class C_DisposisiMasuk extends BaseController
         );
 
         if ($result) {
-            session()->setFlashdata('success', 'Masa magang mahasiswa berhasil diselesaikan.');
+            $db = \Config\Database::connect();
+            $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
+            $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
+            
+            $permohonan = $db->table('t_permohonan_magang')
+                             ->select('m_jenis_permohonan.jenis_permohonan')
+                             ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
+                             ->where('t_permohonan_magang.id_permohonan_magang', $persetujuan->id_permohonan_magang)
+                             ->get()->getRow();
+            $jenisText = $permohonan ? $permohonan->jenis_permohonan : 'Magang';
+            
+            catat_log($persetujuan->id_permohonan_magang, 'Sistem / Kepala Bidang', "Kegiatan {$jenisText} Selesai", "Masa kegiatan {$jenisText} telah diselesaikan.");
+            
+            session()->setFlashdata('success', 'Masa kegiatan mahasiswa berhasil diselesaikan.');
         } else {
             session()->setFlashdata('error', 'Gagal menyelesaikan magang mahasiswa.');
         }

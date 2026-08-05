@@ -180,7 +180,7 @@
                     <form action="<?= base_url('register/process') ?>" method="POST" id="registerForm" novalidate>
                         <?= csrf_field() ?>
 
-                        <div class="section-title" style="margin-top: 0;"><i class="bi bi-shield-lock me-1"></i> Kredensial Akun (Data Login)</div>
+                        <div class="section-title" style="margin-top: 0;"><i class="bi bi-shield-lock me-1"></i> Kredensial Akun</div>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">Username Akun <span class="text-danger">*</span></label>
@@ -262,7 +262,7 @@
                                     <?php endif; ?>
                             </div>
                             <div class="col-md-3">
-                                <label class="form-label">Tahun Akademik berjalan <span class="text-danger">*</span></label>
+                                <label class="form-label">Tahun Akademik <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control <?= isset($validationErrors['tahun_akademik']) ? 'is-invalid' : '' ?>" name="tahun_akademik" placeholder="Contoh: 2023/2024" value="<?= old('tahun_akademik') ?>" required>
                                     <?php if(isset($validationErrors['tahun_akademik'])): ?>
                                         <div class="invalid-feedback d-block mt-1"><?= $validationErrors['tahun_akademik'] ?></div>
@@ -282,7 +282,7 @@
                             </div>
                         </div>
 
-                        <div class="section-title"><i class="bi bi-file-earmark-person me-1"></i> Profil Pribadi (Sesuai KTM/KTP)</div>
+                        <div class="section-title"><i class="bi bi-file-earmark-person me-1"></i> Data Pribadi</div>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
@@ -340,7 +340,7 @@
                         </div>
 
                       <!-- SEKSI 4: ALAMAT -->
-<div class="section-title"><i class="bi bi-geo-alt me-1"></i> Alamat Rumah / Domisili</div>
+<div class="section-title"><i class="bi bi-geo-alt me-1"></i> Alamat / Domisili</div>
 <div class="mb-3">
     <label class="form-label">Alamat Jalan & Nomor Rumah <span class="text-danger">*</span></label>
     <textarea class="form-control <?= isset($validationErrors['alamat']) ? 'is-invalid' : '' ?>" rows="2" name="alamat" placeholder="Nama jalan, nomor rumah, Dusun..." required maxlength="255"><?= old('alamat') ?></textarea>
@@ -352,41 +352,80 @@
                                     <?php endif; ?>
 </div>
 <div class="row g-3">
-    <!-- INPUT RT & RW YANG SEMPAT HILANG -->
-    <div class="col-md-2">
-        <label class="form-label">RT <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rt']) ? 'is-invalid' : '' ?>" name="rt" placeholder="001" value="<?= old('rt') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['rt'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rt'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label">RW <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rw']) ? 'is-invalid' : '' ?>" name="rw" placeholder="002" value="<?= old('rw') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['rw'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rw'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-4">
-        <label class="form-label">Kelurahan / Desa <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['kelurahan']) ? 'is-invalid' : '' ?>" name="kelurahan" placeholder="Masukkan kelurahan" value="<?= old('kelurahan') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['kelurahan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kelurahan'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-4">
-        <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['kecamatan']) ? 'is-invalid' : '' ?>" name="kecamatan" placeholder="Masukkan kecamatan" value="<?= old('kecamatan') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['kecamatan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kecamatan'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-12 mb-4">
+    <div class="col-md-6 mb-2">
         <label class="form-label">Provinsi <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['provinsi']) ? 'is-invalid' : '' ?>" name="provinsi" placeholder="Masukkan nama provinsi" value="<?= old('provinsi') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['provinsi'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['provinsi'] ?></div>
-                                    <?php endif; ?>
+        <select class="form-select <?= isset($validationErrors['provinsi']) ? 'is-invalid' : '' ?>" name="provinsi" id="provinsi_select" required data-old="<?= old('provinsi') ?>">
+            <option value="">-- Pilih Provinsi --</option>
+            <?php if(!empty($provinsi)): ?>
+                <?php foreach($provinsi as $p): ?>
+                    <option value="<?= $p['id_provinsi'] ?>" <?= old('provinsi') == $p['id_provinsi'] ? 'selected' : '' ?>>
+                        <?= esc($p['nama_provinsi']) ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </select>
+        <?php if(isset($validationErrors['provinsi'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['provinsi'] ?></div>
+        <?php endif; ?>
+    </div>
+
+    <div class="col-md-6 mb-2">
+        <label class="form-label">Kota / Kabupaten <span class="text-danger">*</span></label>
+        <select class="form-select <?= isset($validationErrors['kabupaten']) ? 'is-invalid' : '' ?>" name="kabupaten" id="kabupaten_select" required disabled data-old="<?= old('kabupaten') ?>">
+            <option value="">-- Pilih Provinsi Dulu --</option>
+        </select>
+        <?php if(isset($validationErrors['kabupaten'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kabupaten'] ?></div>
+        <?php endif; ?>
+    </div>
+
+    <div class="col-md-6 mb-2">
+        <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
+        <select class="form-select <?= isset($validationErrors['kecamatan']) ? 'is-invalid' : '' ?>" name="kecamatan" id="kecamatan_select" required disabled data-old="<?= old('kecamatan') ?>">
+            <option value="">-- Pilih Kota/Kabupaten Dulu --</option>
+        </select>
+        <?php if(isset($validationErrors['kecamatan'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kecamatan'] ?></div>
+        <?php endif; ?>
+    </div>
+
+    <div class="col-md-6 mb-2">
+        <label class="form-label">Kelurahan / Desa <span class="text-danger">*</span></label>
+        <select class="form-select <?= isset($validationErrors['id_kelurahan']) ? 'is-invalid' : '' ?>" name="id_kelurahan" id="kelurahan_select" required disabled data-old="<?= old('id_kelurahan') ?>">
+            <option value="">-- Pilih Kecamatan Dulu --</option>
+        </select>
+        <?php if(isset($validationErrors['id_kelurahan'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['id_kelurahan'] ?></div>
+        <?php endif; ?>
+    </div>
+
+    <!-- INPUT RT & RW -->
+    <div class="col-md-3 mb-4">
+        <label class="form-label">RT <span class="text-danger">*</span></label>
+        <select class="form-select <?= isset($validationErrors['rt']) ? 'is-invalid' : '' ?>" name="rt" required>
+            <option value="">-- Pilih RT --</option>
+            <?php for($i=1; $i<=999; $i++): ?>
+                <?php $val = str_pad($i, 3, '0', STR_PAD_LEFT); ?>
+                <option value="<?= $val ?>" <?= old('rt') == $val ? 'selected' : '' ?>><?= $val ?></option>
+            <?php endfor; ?>
+        </select>
+        <?php if(isset($validationErrors['rt'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rt'] ?></div>
+        <?php endif; ?>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <label class="form-label">RW <span class="text-danger">*</span></label>
+        <select class="form-select <?= isset($validationErrors['rw']) ? 'is-invalid' : '' ?>" name="rw" required>
+            <option value="">-- Pilih RW --</option>
+            <?php for($i=1; $i<=999; $i++): ?>
+                <?php $val = str_pad($i, 3, '0', STR_PAD_LEFT); ?>
+                <option value="<?= $val ?>" <?= old('rw') == $val ? 'selected' : '' ?>><?= $val ?></option>
+            <?php endfor; ?>
+        </select>
+        <?php if(isset($validationErrors['rw'])): ?>
+            <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rw'] ?></div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -492,6 +531,118 @@ $(document).ready(function() {
     if ($('#kampus_select').val()) {
         $('#kampus_select').trigger('change');
     }
+
+    // --- CASCADING ALAMAT ---
+    
+    // 4. EVENT PROVINSI DIUBAH
+    $('#provinsi_select').on('change', function() {
+        var idProvinsi = $(this).val();
+        var kabupatenSelect = $('#kabupaten_select');
+        var kecamatanSelect = $('#kecamatan_select');
+        var kelurahanSelect = $('#kelurahan_select');
+
+        kabupatenSelect.html('<option value="">-- Pilih Provinsi Dulu --</option>').prop('disabled', true);
+        kecamatanSelect.html('<option value="">-- Pilih Kota/Kabupaten Dulu --</option>').prop('disabled', true);
+        kelurahanSelect.html('<option value="">-- Pilih Kecamatan Dulu --</option>').prop('disabled', true);
+
+        if (idProvinsi) {
+            kabupatenSelect.html('<option value="">Sedang memuat...</option>');
+            $.ajax({
+                url: baseUrl + 'api/kabupaten/' + idProvinsi,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    kabupatenSelect.html('<option value="">-- Pilih Kota/Kabupaten --</option>').prop('disabled', false);
+                    if (data.length > 0) {
+                        $.each(data, function(key, value) {
+                            var isSelected = (value.id_kabupaten == kabupatenSelect.data('old')) ? 'selected' : '';
+                            kabupatenSelect.append('<option value="' + value.id_kabupaten + '" ' + isSelected + '>' + value.nama_kabupaten + '</option>');
+                        });
+                        if (kabupatenSelect.data('old')) {
+                            kabupatenSelect.trigger('change');
+                        }
+                    } else {
+                        kabupatenSelect.append('<option value="">Tidak ada data</option>');
+                    }
+                },
+                error: function() {
+                    kabupatenSelect.html('<option value="">Gagal memuat data</option>');
+                }
+            });
+        }
+    });
+
+    // 5. EVENT KABUPATEN DIUBAH
+    $('#kabupaten_select').on('change', function() {
+        var idKabupaten = $(this).val();
+        var kecamatanSelect = $('#kecamatan_select');
+        var kelurahanSelect = $('#kelurahan_select');
+
+        kecamatanSelect.html('<option value="">-- Pilih Kota/Kabupaten Dulu --</option>').prop('disabled', true);
+        kelurahanSelect.html('<option value="">-- Pilih Kecamatan Dulu --</option>').prop('disabled', true);
+
+        if (idKabupaten) {
+            kecamatanSelect.html('<option value="">Sedang memuat...</option>');
+            $.ajax({
+                url: baseUrl + 'api/kecamatan/' + idKabupaten,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    kecamatanSelect.html('<option value="">-- Pilih Kecamatan --</option>').prop('disabled', false);
+                    if (data.length > 0) {
+                        $.each(data, function(key, value) {
+                            var isSelected = (value.id_kecamatan == kecamatanSelect.data('old')) ? 'selected' : '';
+                            kecamatanSelect.append('<option value="' + value.id_kecamatan + '" ' + isSelected + '>' + value.nama_kecamatan + '</option>');
+                        });
+                        if (kecamatanSelect.data('old')) {
+                            kecamatanSelect.trigger('change');
+                        }
+                    } else {
+                        kecamatanSelect.append('<option value="">Tidak ada data</option>');
+                    }
+                },
+                error: function() {
+                    kecamatanSelect.html('<option value="">Gagal memuat data</option>');
+                }
+            });
+        }
+    });
+
+    // 6. EVENT KECAMATAN DIUBAH
+    $('#kecamatan_select').on('change', function() {
+        var idKecamatan = $(this).val();
+        var kelurahanSelect = $('#kelurahan_select');
+
+        kelurahanSelect.html('<option value="">-- Pilih Kecamatan Dulu --</option>').prop('disabled', true);
+
+        if (idKecamatan) {
+            kelurahanSelect.html('<option value="">Sedang memuat...</option>');
+            $.ajax({
+                url: baseUrl + 'api/kelurahan/' + idKecamatan,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    kelurahanSelect.html('<option value="">-- Pilih Kelurahan/Desa --</option>').prop('disabled', false);
+                    if (data.length > 0) {
+                        $.each(data, function(key, value) {
+                            var isSelected = (value.id_kelurahan == kelurahanSelect.data('old')) ? 'selected' : '';
+                            kelurahanSelect.append('<option value="' + value.id_kelurahan + '" ' + isSelected + '>' + value.nama_kelurahan + '</option>');
+                        });
+                    } else {
+                        kelurahanSelect.append('<option value="">Tidak ada data</option>');
+                    }
+                },
+                error: function() {
+                    kelurahanSelect.html('<option value="">Gagal memuat data</option>');
+                }
+            });
+        }
+    });
+
+    // 7. AUTO-TRIGGER PROVINSI
+    if ($('#provinsi_select').val()) {
+        $('#provinsi_select').trigger('change');
+    }
 });
 
 function togglePassword() {
@@ -596,10 +747,6 @@ $(document).ready(function() {
             }
             if (inputName === 'username' && !/^[a-zA-Z0-9]+$/.test(val)) {
                 showError(element, fieldName + ' hanya boleh berisi huruf dan angka tanpa spasi/simbol.');
-                return false;
-            }
-            if ((inputName === 'kelurahan' || inputName === 'kecamatan' || inputName === 'provinsi') && !/^[a-zA-Z0-9\s]+$/.test(val)) {
-                showError(element, fieldName + ' hanya boleh berisi huruf, angka, dan spasi.');
                 return false;
             }
             if (inputName === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) {

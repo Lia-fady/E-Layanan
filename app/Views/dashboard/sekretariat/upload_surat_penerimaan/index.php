@@ -48,6 +48,26 @@
 $(document).ready(function() {
     var table = $('#dataTable').DataTable();
 
+    // Filter Jenis Permohonan
+    $('#filterJenisPermohonan').on('change', function() {
+        table.column(2).search(this.value).draw();
+    });
+
+    // Filter Status Penempatan
+    $('#filterStatusPermohonan').on('change', function() {
+        var val = $(this).val();
+        if (val === 'BERJALAN') {
+            table.column(3).search('DITERIMA').draw();
+        } else {
+            table.column(3).search(val).draw();
+        }
+    });
+
+    // Filter Status Surat
+    $('#filterStatusSurat').on('change', function() {
+        table.column(4).search(this.value).draw();
+    });
+
     // Transisi Buka Detail
     $(document).on('click', '.btn-upload-surat', function(e) {
         e.preventDefault();

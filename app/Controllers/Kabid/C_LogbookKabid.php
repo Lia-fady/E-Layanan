@@ -15,33 +15,33 @@ class C_LogbookKabid extends BaseController
 
     public function index()
     {
+        if ($this->request->isAJAX() && $this->request->getPost('action') === 'get_detail') {
+            $id_penempatan = $this->request->getPost('id');
+            $mahasiswaInfo = $this->logbookModel->getMahasiswaInfo($id_penempatan);
+            
+            if (!$mahasiswaInfo) {
+                return "Data mahasiswa tidak ditemukan.";
+            }
+
+            $data = [
+                'mahasiswa' => $mahasiswaInfo,
+                'logbooks'  => $this->logbookModel->getLogbooks($id_penempatan)
+            ];
+
+            return view('dashboard/kabid/v_logbook_detail_approval', $data);
+        }
+
         $id_bidang = session('id_bidang');
+        $db = \Config\Database::connect();
         
         $data = [
             'title'       => 'Logbook Mahasiswa',
             'active_menu' => 'logbook',
-            'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang)
+            'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang, null, null, null),
+            'list_jenis'  => $db->table('m_jenis_permohonan')->get()->getResultArray()
         ];
 
         return view('dashboard/kabid/v_logbook_mahasiswa', $data);
-    }
-
-    public function detail($id_penempatan)
-    {
-        $mahasiswaInfo = $this->logbookModel->getMahasiswaInfo($id_penempatan);
-        
-        if (!$mahasiswaInfo) {
-            return redirect()->to(base_url('kabid/logbook'))->with('error', 'Data mahasiswa tidak ditemukan.');
-        }
-
-        $data = [
-            'title'         => 'Detail Logbook Mahasiswa',
-            'active_menu'   => 'logbook',
-            'mahasiswa'     => $mahasiswaInfo,
-            'logbooks'      => $this->logbookModel->getLogbooks($id_penempatan)
-        ];
-
-        return view('dashboard/kabid/v_logbook_detail_approval', $data);
     }
 
     public function approve()
@@ -55,6 +55,7 @@ class C_LogbookKabid extends BaseController
         $ttd = $userPegawai ? $userPegawai->file_tanda_tangan : null;
 
         $updateData = [
+            'status_logbook'    => 'disetujui',
             'disetujui_oleh'    => session('id_user_pegawai'),
             'tgl_disetujui'     => date('Y-m-d H:i:s'),
             'file_tanda_tangan' => $ttd,
@@ -63,7 +64,7 @@ class C_LogbookKabid extends BaseController
 
         $this->logbookModel->update($id_logbook, $updateData);
 
-        return redirect()->to(base_url('kabid/logbook/detail/' . $id_penempatan))->with('success', 'Logbook berhasil disetujui.');
+        return $this->response->setJSON(['success' => true, 'message' => 'Logbook berhasil disetujui.']);
     }
 
     public function bulkApprove()
@@ -76,6 +77,7 @@ class C_LogbookKabid extends BaseController
         $ttd = $userPegawai ? $userPegawai->file_tanda_tangan : null;
 
         $updateData = [
+            'status_logbook'    => 'disetujui',
             'disetujui_oleh'    => session('id_user_pegawai'),
             'tgl_disetujui'     => date('Y-m-d H:i:s'),
             'file_tanda_tangan' => $ttd,
@@ -85,9 +87,9 @@ class C_LogbookKabid extends BaseController
         $affectedRows = $this->logbookModel->bulkApprovePending($id_penempatan, $updateData);
 
         if ($affectedRows > 0) {
-            return redirect()->to(base_url('kabid/logbook/detail/' . $id_penempatan))->with('success', $affectedRows . ' catatan logbook berhasil disetujui sekaligus.');
-        } else {
-            return redirect()->to(base_url('kabid/logbook/detail/' . $id_penempatan))->with('error', 'Tidak ada logbook pending yang bisa disetujui.');
+            return $this->response->setJSON(['success' => true, 'message' => $affectedRows . ' catatan logbook berhasil disetujui sekaligus.']);
         }
+
+        return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada logbook dengan status Menunggu.']);
     }
 }

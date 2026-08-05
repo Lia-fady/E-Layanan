@@ -11,7 +11,7 @@ class PermohonanMagangModel extends Model
     protected $returnType       = 'array';
     protected $allowedFields    = [
         'id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 
-        'deskripsi_keahlian', 'deskripsi_magang', 'tgl_mulai', 
+        'deskripsi_keahlian', 'deskripsi', 'tgl_mulai', 
         'tgl_selesai', 'posting_data', 'created_at', 'updated_at'
     ];
 
@@ -32,7 +32,7 @@ class PermohonanMagangModel extends Model
                 t_permohonan_magang.id_jenis_permohonan,
                 t_permohonan_magang.id_instansi_mahasiswa,
                 t_permohonan_magang.deskripsi_keahlian,
-                t_permohonan_magang.deskripsi_magang,
+                t_permohonan_magang.deskripsi,
                 t_permohonan_magang.tgl_mulai,
                 t_permohonan_magang.tgl_selesai,
                 t_permohonan_magang.posting_data,
@@ -42,13 +42,31 @@ class PermohonanMagangModel extends Model
                 t_persetujuan_magang.id_bidang,
                 t_persetujuan_magang.disposisi,
                 t_persetujuan_magang.catatan as catatan_sekretariat,
+                t_persetujuan_magang.updated_at as waktu_sekretariat,
+                t_persetujuan_magang.created_at as waktu_sekretariat_fallback,
                 m_bidang.bidang,
                 t_penempatan_magang.catatan,
                 t_penempatan_magang.status_penempatan,
                 t_penempatan_magang.is_log_book,
-                m_mahasiswa.nim
+                t_penempatan_magang.updated_at as waktu_kabid,
+                t_penempatan_magang.created_at as waktu_kabid_fallback,
+                m_mahasiswa.nim,
+                m_mahasiswa.nama_mahasiswa,
+                m_mahasiswa.nik,
+                m_mahasiswa.jenis_kelamin,
+                m_mahasiswa.no_telp,
+                m_mahasiswa.email,
+                m_instansi_pendidikan.instansi_pendidikan as kampus,
+                m_prodi.prodi,
+                t_instansi_mahasiswa.jenjang_pendidikan,
+                t_instansi_mahasiswa.semester,
+                m_jenis_permohonan.jenis_permohonan
             ') 
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa') 
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
+            ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
+            ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('m_bidang', 'm_bidang.id_bidang = t_persetujuan_magang.id_bidang', 'left')
             ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
@@ -58,7 +76,26 @@ class PermohonanMagangModel extends Model
             // Hapus filter 'kirim' agar Mahasiswa juga bisa melihat permohonan berstatus 'draft'
 
         if (!empty($filterStatus)) {
-            $builder->where('t_persetujuan_magang.status_persetujuan', $filterStatus);
+            if ($filterStatus == 'MENUNGGU') {
+                $builder->where('t_permohonan_magang.posting_data', 'kirim');
+                $builder->groupStart()
+                    ->where('t_persetujuan_magang.status_persetujuan IS NULL')
+                    ->orWhere('t_persetujuan_magang.status_persetujuan', 'MENUNGGU')
+                    ->orWhere('t_persetujuan_magang.status_persetujuan', 'DISETUJUI')
+                ->groupEnd();
+                $builder->where('t_penempatan_magang.id_penempatan_magang IS NULL');
+            } elseif ($filterStatus == 'DISETUJUI') {
+                $builder->where('t_penempatan_magang.id_penempatan_magang IS NOT NULL');
+                $builder->where('t_penempatan_magang.status_penempatan !=', 'SELESAI');
+            } elseif ($filterStatus == 'SELESAI') {
+                $builder->where('t_penempatan_magang.status_penempatan', 'SELESAI');
+            } elseif ($filterStatus == 'DITOLAK') {
+                $builder->where('t_persetujuan_magang.status_persetujuan', 'DITOLAK');
+            } elseif ($filterStatus == 'DRAFT') {
+                $builder->where('t_permohonan_magang.posting_data', 'draft');
+            } elseif ($filterStatus == 'PERBAIKAN_BERKAS') {
+                $builder->where('t_persetujuan_magang.status_persetujuan', 'PERBAIKAN_BERKAS');
+            }
         }
 
         return $builder;
