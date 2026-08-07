@@ -18,19 +18,15 @@ class M_StatusPermohonan extends Model
     protected $primaryKey       = 'id_permohonan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = [
-        'id_mahasiswa',
-        'id_instansi_mahasiswa',
-        'id_jenis_permohonan',
-        'deskripsi_keahlian',
-        'deskripsi',
-        'tgl_mulai',
-        'tgl_selesai',
-        'posting_data',
-    ];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'];
+    protected $useSoftDeletes   = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    
+    
 
     /**
      * Mengambil semua data permohonan yang sudah dikirim (posting_data='kirim')
@@ -47,7 +43,7 @@ class M_StatusPermohonan extends Model
             'pm.id_permohonan_magang',
             'pm.id_mahasiswa',
             'pm.deskripsi_keahlian',
-            'pm.deskripsi',
+            'pm.rencana_kegiatan',
             'pm.tgl_mulai',
             'pm.tgl_selesai',
             'pm.posting_data',
@@ -63,7 +59,7 @@ class M_StatusPermohonan extends Model
             'ps.catatan AS catatan_persetujuan',
             'ps.disposisi',
             'ps.id_bidang',
-            'ps.tgl_persetujuan',
+            'ps.tanggal_persetujuan',
             'pn.id_penempatan_magang',
             'pn.status_penempatan',
             'COALESCE(b.bidang, b2.bidang) AS bidang',

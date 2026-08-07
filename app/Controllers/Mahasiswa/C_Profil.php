@@ -21,9 +21,9 @@ class C_Profil extends C_BaseMahasiswa
         $instansi = $db->table('t_instansi_mahasiswa')
             ->select('
                 t_instansi_mahasiswa.*,
-                m_instansi_pendidikan.instansi_pendidikan as nama_instansi,
-                m_prodi.prodi,
-                m_fakultas.fakultas
+                m_instansi_pendidikan.instansi_pendidikan as instansi_pendidikan,
+                m_prodi.nama_prodi,
+                m_fakultas.nama_fakultas
             ')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
@@ -109,7 +109,7 @@ class C_Profil extends C_BaseMahasiswa
                 'rules'  => 'required|min_length[3]|max_length[100]',
                 'errors' => ['required' => 'Provinsi wajib diisi.']
             ],
-            'jenjang_pendidikan' => [
+            'id_jenjang_pendidikan' => [
                 'rules'  => 'required',
                 'errors' => ['required' => 'Jenjang pendidikan wajib dipilih.']
             ],
@@ -155,7 +155,7 @@ class C_Profil extends C_BaseMahasiswa
         $instansi = $db->table('t_instansi_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRow();
         
         $dataAkademik = [
-            'jenjang_pendidikan' => $this->request->getPost('jenjang_pendidikan'),
+            'id_jenjang_pendidikan' => $this->request->getPost('jenjang_pendidikan'),
             'angkatan_tahun'     => $this->request->getPost('angkatan_tahun'),
             'semester'           => $this->request->getPost('semester'),
             'tahun_akademik'     => $this->request->getPost('tahun_akademik'),

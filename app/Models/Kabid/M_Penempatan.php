@@ -19,18 +19,14 @@ class M_Penempatan extends Model
     protected $primaryKey       = 'id_penempatan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = [
-        'id_bidang',
-        'id_persetujuan_magang',
-        'id_mahasiswa',
-        'catatan',
-        'status_penempatan',
-        'created_by',
-        'updated_by',
-    ];
+    protected $allowedFields    = ['id_persetujuan_magang', 'id_mahasiswa', 'id_bidang', 'tanggal_mulai', 'tanggal_selesai', 'tanggal_persetujuan', 'status_penempatan', 'is_log_book', 'catatan', 'created_at', 'updated_at'];
+    protected $useSoftDeletes   = false;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    
+    
 
     /**
      * Ambil daftar semua penempatan untuk bidang tertentu.
@@ -62,13 +58,13 @@ class M_Penempatan extends Model
             im.semester,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.deskripsi,
+            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
             jp.jenis_permohonan,
             ip.instansi_pendidikan,
-            pr.prodi,
+            pr.nama_prodi,
             ps.catatan as catatan_sekretariat
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
@@ -109,7 +105,7 @@ class M_Penempatan extends Model
             mhs.no_telp,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.deskripsi,
+            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             jp.jenis_permohonan,

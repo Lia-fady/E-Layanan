@@ -132,13 +132,6 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted py-5">
-                                        <i class="bi bi-inbox display-6 d-block mb-2 text-secondary"></i>
-                                        Belum ada dokumen pengajuan magang yang masuk.
-                                    </td>
-                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>

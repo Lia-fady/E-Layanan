@@ -19,18 +19,14 @@ class M_Sertifikat extends Model
     protected $primaryKey       = 'id_penempatan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = [
-        'id_bidang',
-        'id_persetujuan_magang',
-        'id_mahasiswa',
-        'catatan',
-        'status_penempatan',
-        'created_by',
-        'updated_by',
-    ];
+    protected $allowedFields    = ['id_persetujuan_magang', 'id_mahasiswa', 'id_bidang', 'tanggal_mulai', 'tanggal_selesai', 'tanggal_persetujuan', 'status_penempatan', 'is_log_book', 'catatan', 'created_at', 'updated_at'];
+    protected $useSoftDeletes   = false;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    
+    
 
     /**
      * Mengambil data penempatan magang yang sudah selesai
@@ -85,15 +81,15 @@ class M_Sertifikat extends Model
             'm.no_telp',
             'b.bidang',
             'ps.status_persetujuan',
-            'ps.tgl_persetujuan',
+            'ps.tanggal_persetujuan',
             'pm.id_permohonan_magang',
             'pm.tgl_mulai',
             'pm.tgl_selesai',
             'pm.deskripsi_keahlian',
-            'pm.deskripsi',
+            'pm.rencana_kegiatan',
             'ip.instansi_pendidikan',
             'ip.jenis_instansi',
-            'pr.prodi',
+            'pr.nama_prodi',
         ]);
 
         $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');

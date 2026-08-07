@@ -16,13 +16,13 @@ class C_Sertifikat extends C_BaseMahasiswa
         $db = \Config\Database::connect();
 
         $approvals = $db->table('t_persetujuan_magang ps')
-            ->select('ps.id_persetujuan_magang, ps.tgl_persetujuan, ps.status_persetujuan, pm.tgl_mulai, pm.tgl_selesai, pm.id_jenis_permohonan, jp.jenis_permohonan, pnm.status_penempatan, bidang.bidang')
+            ->select('ps.id_persetujuan_magang, ps.tanggal_persetujuan, ps.status_persetujuan, pm.tgl_mulai, pm.tgl_selesai, pm.id_jenis_permohonan, jp.jenis_permohonan, pnm.status_penempatan, bidang.bidang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->join('m_bidang bidang', 'bidang.id_bidang = ps.id_bidang', 'left')
             ->where('pm.id_mahasiswa', $id_mahasiswa)
-            ->orderBy('ps.tgl_persetujuan', 'DESC')
+            ->orderBy('ps.tanggal_persetujuan', 'DESC')
             ->get()->getResultArray();
 
         $listJenis = $db->table('m_jenis_permohonan')
@@ -84,7 +84,7 @@ class C_Sertifikat extends C_BaseMahasiswa
         return view('mahasiswa/v_unduh_sertifikat', $data);
     }
 
-    public function serveFile($id_file_selesai)
+    public function serveFile($id_file_proses)
     {
         $id_mahasiswa = session()->get('id_mahasiswa'); 
         if (!$id_mahasiswa) {
@@ -93,7 +93,7 @@ class C_Sertifikat extends C_BaseMahasiswa
 
         $db = \Config\Database::connect();
         $file = $db->table('t_file_proses_magang')
-                   ->where('id_file_selesai_magang', $id_file_selesai)
+                   ->where('id_file_proses_magang', $id_file_proses)
                    ->get()->getRowArray();
                    
         if (!$file) {

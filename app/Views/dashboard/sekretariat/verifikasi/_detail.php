@@ -195,10 +195,6 @@ if (($permohonan->status_persetujuan ?? '') === 'DITOLAK') {
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
-                                <?php else : ?>
-                                    <tr>
-                                        <td colspan="4" class="text-center">Tidak ada dokumen yang diunggah.</td>
-                                    </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>

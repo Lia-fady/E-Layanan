@@ -12,18 +12,12 @@ class M_PenempatanMagang extends Model
     protected $returnType       = 'array';
     
     // Mempertahankan fields asli bawaan kelompokmu untuk insert/update
-    protected $allowedFields    = [
-        'id_bidang',
-        'id_persetujuan_magang',
-        'id_mahasiswa',
-        'catatan',
-        'status_penempatan', // BERJALAN, SELESAI, DIBATALKAN
-        'created_by',
-        'created_at',
-        'updated_by',
-        'updated_at',
-        'is_log_book'
-    ];
+    protected $allowedFields    = ['id_persetujuan_magang', 'id_mahasiswa', 'id_bidang', 'tanggal_mulai', 'tanggal_selesai', 'tanggal_persetujuan', 'status_penempatan', 'is_log_book', 'catatan', 'created_at', 'updated_at'];
+    protected $useSoftDeletes   = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
 
     /**
      * TAMBAHAN FITUR: Mengambil detail penempatan beserta nama bidang untuk modul sertifikat

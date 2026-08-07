@@ -12,23 +12,15 @@ class M_Mahasiswa extends Model
     protected $returnType       = 'array';
     
     // Fitur otomatis untuk mencatat created_at dan updated_at
-    protected $useTimestamps    = true;
-    protected $createdField     = 'created_at';
-    protected $updatedField     = 'updated_at';
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    
+    
 
     // Kolom-kolom yang wajib didaftarkan agar bisa diisi lewat kodingan
-    protected $allowedFields    = [
-        'nik',
-        'nim', 
-        'nama_mahasiswa', 
-        'jenis_kelamin', 
-        'tgl_lahir', 
-        'alamat', 
-        'rt', 
-        'rw', 
-        'id_kelurahan',
-        'no_telp', 
-        'id_instansi_mahasiswa', 
-        'email'
-    ];
+    protected $allowedFields    = ['nik', 'nim', 'nama_mahasiswa', 'jenis_kelamin', 'tgl_lahir', 'alamat', 'rt', 'rw', 'id_kelurahan', 'no_telp', 'id_instansi_mahasiswa', 'email', 'created_at', 'updated_at', 'deleted_at'];
+    protected $useSoftDeletes   = true;
 }

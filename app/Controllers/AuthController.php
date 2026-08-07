@@ -128,7 +128,7 @@ class AuthController extends BaseController
                 'rules'  => 'required',
                 'errors' => ['required' => 'Tahun akademik berjalan wajib diisi.']
             ],
-            'jenjang_pendidikan' => [
+            'id_jenjang_pendidikan' => [
                 'rules'  => 'required',
                 'errors' => ['required' => 'Jenjang pendidikan (D3/S1) wajib dipilih.']
             ],

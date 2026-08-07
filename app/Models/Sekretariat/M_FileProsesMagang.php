@@ -6,22 +6,18 @@ use CodeIgniter\Model;
 class M_FileProsesMagang extends Model
 {
     protected $table            = 't_file_proses_magang';
-    protected $primaryKey       = 'id_file_selesai_magang';
+    protected $primaryKey       = 'id_file_proses_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useTimestamps    = true;
-    protected $createdField     = 'created_at';
-    protected $updatedField     = 'updated_at';
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
     
-    protected $allowedFields    = [
-        'id_persetujuan_magang',
-        'id_file',
-        'nama_file',
-        'path_file',
-        'proses_magang',
-        'created_by',
-        'updated_by'
-    ];
+    
+    
+    protected $allowedFields    = ['id_persetujuan_magang', 'id_file', 'nama_file', 'path_file', 'proses_magang', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $useSoftDeletes   = false;
 
     public function getSuratByPersetujuan($id_persetujuan)
     {

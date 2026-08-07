@@ -20,7 +20,7 @@ class C_Permohonan extends C_BaseMahasiswa
         // Fetch data pribadi dan instansi untuk Review
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas, m_prodi.prodi')
+            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.nama_fakultas, m_prodi.nama_prodi')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
@@ -67,7 +67,7 @@ class C_Permohonan extends C_BaseMahasiswa
                     'min_length' => 'Deskripsi keahlian minimal harus 10 karakter.'
                 ]
             ],
-            'deskripsi' => [
+            'rencana_kegiatan' => [
                 'rules'  => 'required|min_length[20]',
                 'errors' => [
                     'required'   => 'Maksud dan tujuan magang wajib diisi.',
@@ -321,7 +321,7 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas, m_prodi.prodi')
+            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.nama_fakultas, m_prodi.nama_prodi')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')

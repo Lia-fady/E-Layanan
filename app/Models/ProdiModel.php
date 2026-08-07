@@ -10,13 +10,17 @@ class ProdiModel extends Model
     protected $primaryKey       = 'id_prodi';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_fakultas', 'prodi', 'status', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['id_fakultas', 'nama_prodi', 'jenjang', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     // Dates
     protected $useTimestamps = true;
-    protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    protected $dateFormat    = 'datetime';
+    
+    
 }

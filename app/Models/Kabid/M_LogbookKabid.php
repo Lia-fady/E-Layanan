@@ -6,14 +6,19 @@ use CodeIgniter\Model;
 class M_LogbookKabid extends Model
 {
     protected $table = 't_logbook_magang';
-    protected $primaryKey = 'id_logbook_magang';
-    protected $allowedFields = ['id_penempatan_magang', 'logbook_magang', 'tgl_logbook', 'status_logbook', 'created_at', 'updated_by', 'disetujui_oleh', 'file_tanda_tangan', 'tgl_disetujui'];
-    protected $useTimestamps = false;
+    protected $primaryKey       = 'id_logbook_magang';
+    protected $allowedFields    = ['id_penempatan_magang', 'logbook_magang', 'bukti_kegiatan', 'tgl_logbook', 'jam_logbook', 'status_logbook', 'catatan_revisi', 'disetujui_oleh', 'file_tanda_tangan', 'tgl_disetujui', 'created_at', 'updated_at', 'deleted_at'];
+    protected $useSoftDeletes   = true;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
 
     public function getActiveMahasiswa($id_bidang, $search = null, $jenis_permohonan = null, $status_filter = null)
     {
         $builder = $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.prodi, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
+            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
@@ -54,7 +59,7 @@ class M_LogbookKabid extends Model
     public function getMahasiswaInfo($id_penempatan)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.prodi, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.nama_prodi, pm.tgl_mulai, pm.tgl_selesai')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')

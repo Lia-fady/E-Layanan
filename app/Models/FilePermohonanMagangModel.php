@@ -12,7 +12,7 @@ class FilePermohonanMagangModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_permohonan_magang', 'id_file_permohonan', 'nama_file', 'path_file'];
+    protected $allowedFields    = ['id_permohonan_magang', 'id_file_permohonan', 'nama_file', 'path_file', 'status_verifikasi', 'catatan_verifikasi', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,11 +21,14 @@ class FilePermohonanMagangModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+
+    protected $dateFormat    = 'datetime';
+    
+    
+    
 
     // Validation
     protected $validationRules      = [];

@@ -409,7 +409,7 @@ class C_Sertifikat extends BaseController
                 <tr>
                     <td>Program Studi</td>
                     <td>:</td>
-                    <td>' . esc($data['prodi'] ?? '-') . '</td>
+                    <td>' . esc($data['nama_prodi'] ?? '-') . '</td>
                 </tr>
                 <tr>
                     <td>Bidang Penempatan</td>

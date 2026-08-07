@@ -11,7 +11,12 @@ class FilePermohonanModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_file', 'id_jenis_permohonan', 'status_aktif'];
+    protected $allowedFields    = ['id_jenis_permohonan', 'id_file', 'urutan', 'wajib', 'created_at', 'updated_at'];
+    protected $useSoftDeletes   = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

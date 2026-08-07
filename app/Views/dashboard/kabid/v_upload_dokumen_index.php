@@ -128,12 +128,6 @@
                             </td>
                         </tr>
                         <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="8" class="text-center text-muted py-4">
-                                Tidak ada data permohonan yang sesuai.
-                            </td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>

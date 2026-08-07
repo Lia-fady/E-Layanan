@@ -20,7 +20,13 @@ class M_Verifikasi extends Model
     protected $primaryKey       = 'id_permohonan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'];
+    protected $useSoftDeletes   = true;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
 
     /**
      * Ambil semua permohonan masuk yang sudah dikirim
@@ -34,7 +40,7 @@ class M_Verifikasi extends Model
         $builder->select('
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi,
+            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.posting_data,
@@ -138,8 +144,8 @@ class M_Verifikasi extends Model
             jp.jenis_permohonan,
             im.jenjang_pendidikan,
             ip.instansi_pendidikan,
-            pr.prodi,
-            fk.fakultas,
+            pr.nama_prodi,
+            fk.nama_fakultas,
             COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
             ps.catatan,
             ps.id_persetujuan_magang,
@@ -243,7 +249,7 @@ class M_Verifikasi extends Model
                 'catatan'             => $data['catatan'],
                 'status_persetujuan'  => $data['status_persetujuan'],
                 'updated_by'          => $data['updated_by'],
-                'tgl_persetujuan'     => date('Y-m-d H:i:s'),
+                'tanggal_persetujuan'     => date('Y-m-d H:i:s'),
             ];
 
             if ($data['status_persetujuan'] === 'PERBAIKAN_BERKAS' || $data['status_persetujuan'] === 'MENUNGGU') {
@@ -263,7 +269,7 @@ class M_Verifikasi extends Model
                     'created_by'           => $data['created_by'],
                     'updated_by'           => $data['updated_by'],
                     'disposisi'            => '0',
-                    'tgl_persetujuan'      => date('Y-m-d H:i:s'),
+                    'tanggal_persetujuan'      => date('Y-m-d H:i:s'),
                 ]);
         }
     }
@@ -288,7 +294,7 @@ class M_Verifikasi extends Model
                     'catatan'            => 'Berkas dikembalikan',
                     'disposisi'          => '0',
                     'id_bidang'          => null,
-                    'tgl_persetujuan'    => date('Y-m-d H:i:s'),
+                    'tanggal_persetujuan'    => date('Y-m-d H:i:s'),
                 ]);
         } else {
             return $db->table('t_persetujuan_magang')
@@ -297,7 +303,7 @@ class M_Verifikasi extends Model
                     'status_persetujuan'   => 'PERBAIKAN_BERKAS',
                     'catatan'              => 'Berkas dikembalikan',
                     'disposisi'            => '0',
-                    'tgl_persetujuan'      => date('Y-m-d H:i:s'),
+                    'tanggal_persetujuan'      => date('Y-m-d H:i:s'),
                 ]);
         }
     }

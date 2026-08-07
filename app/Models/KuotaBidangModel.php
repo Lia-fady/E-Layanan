@@ -12,7 +12,12 @@ class KuotaBidangModel extends Model
     protected $returnType       = 'array';
     
     // Field yang diizinkan untuk proses update kuota oleh sekretariat
-    protected $allowedFields    = ['id_bidang', 'kuota', 'status_aktif'];
+    protected $allowedFields    = ['id_bidang', 'tahun', 'bulan', 'kuota', 'status', 'created_at', 'updated_at'];
+    protected $useSoftDeletes   = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
 
     /**
      * Mengambil daftar master kuota beserta nama bidangnya untuk tabel sekretariat

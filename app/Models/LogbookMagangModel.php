@@ -9,12 +9,13 @@ class LogbookMagangModel extends Model
     protected $table            = 't_logbook_magang';
     protected $primaryKey       = 'id_logbook_magang'; // sesuaikan dengan ERD-mu
     protected $returnType       = 'array';
-    protected $allowedFields    = [
-        'id_penempatan_magang', 'tgl_logbook', 'logbook_magang', 'bukti_kegiatan',
-        'disetujui_oleh', 'file_tanda_tangan', 'tgl_disetujui', 
-        'status_logbook', 'catatan_revisi',
-        'updated_by', 'created_at'
-    ];
+    protected $allowedFields    = ['id_penempatan_magang', 'logbook_magang', 'bukti_kegiatan', 'tgl_logbook', 'jam_logbook', 'status_logbook', 'catatan_revisi', 'disetujui_oleh', 'file_tanda_tangan', 'tgl_disetujui', 'created_at', 'updated_at', 'deleted_at'];
+    protected $useSoftDeletes   = true;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
 
     /**
      * Mengambil penempatan kerja mahasiswa yang berstatus DISETUJUI

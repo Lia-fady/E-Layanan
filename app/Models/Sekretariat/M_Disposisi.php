@@ -20,7 +20,12 @@ class M_Disposisi extends Model
     protected $primaryKey       = 'id_persetujuan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['id_permohonan_magang', 'id_bidang', 'catatan', 'status_persetujuan', 'disposisi', 'tanggal_disposisi', 'tanggal_persetujuan', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $useSoftDeletes   = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
 
     /**
      * Ambil semua permohonan yang sudah disetujui verifikasinya
@@ -39,9 +44,9 @@ class M_Disposisi extends Model
             ps.status_persetujuan,
             ps.disposisi,
             ps.id_bidang,
-            ps.tgl_persetujuan,
+            ps.tanggal_persetujuan,
             pm.deskripsi_keahlian,
-            pm.deskripsi,
+            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -57,7 +62,7 @@ class M_Disposisi extends Model
             $builder->where('ps.disposisi', '0');
             $builder->orWhere('ps.disposisi IS NULL');
         $builder->groupEnd();
-        $builder->orderBy('ps.tgl_persetujuan', 'DESC');
+        $builder->orderBy('ps.tanggal_persetujuan', 'DESC');
 
         return $builder->get()->getResult();
     }
@@ -77,7 +82,7 @@ class M_Disposisi extends Model
             ps.*,
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi,
+            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -89,8 +94,8 @@ class M_Disposisi extends Model
             jp.jenis_permohonan,
             im.jenjang_pendidikan,
             ip.instansi_pendidikan,
-            pr.prodi,
-            fk.fakultas,
+            pr.nama_prodi,
+            fk.nama_fakultas,
             bd.bidang
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
@@ -158,7 +163,7 @@ class M_Disposisi extends Model
                 'id_bidang'       => $data['id_bidang'],
                 'updated_by'      => $data['updated_by'],
                 'updated_at'      => date('Y-m-d H:i:s'),
-                'tgl_persetujuan' => date('Y-m-d H:i:s'),
+                'tanggal_persetujuan' => date('Y-m-d H:i:s'),
             ]);
 
         if (!$result) {

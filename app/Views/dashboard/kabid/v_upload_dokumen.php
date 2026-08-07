@@ -120,13 +120,6 @@
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
-                            <?php else : ?>
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">
-                                        <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
-                                        Belum ada surat yang diunggah.
-                                    </td>
-                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>

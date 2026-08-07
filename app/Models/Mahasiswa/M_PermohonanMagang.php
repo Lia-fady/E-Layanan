@@ -9,11 +9,13 @@ class M_PermohonanMagang extends Model
     protected $table            = 't_permohonan_magang';
     protected $primaryKey       = 'id_permohonan_magang';
     protected $returnType       = 'array';
-    protected $allowedFields    = [
-        'id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 
-        'deskripsi_keahlian', 'deskripsi', 'tgl_mulai', 
-        'tgl_selesai', 'posting_data', 'created_at', 'updated_at'
-    ];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'];
+    protected $useSoftDeletes   = true;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
 
     /**
      * Kueri untuk mengambil status tracking permohonan mahasiswa beserta join-nya
@@ -43,8 +45,8 @@ class M_PermohonanMagang extends Model
                 t_persetujuan_magang.id_bidang,
                 t_persetujuan_magang.disposisi,
                 t_persetujuan_magang.catatan as catatan_sekretariat,
-                t_persetujuan_magang.tgl_persetujuan,
-                t_persetujuan_magang.updated_at as tgl_persetujuan_fallback,
+                t_persetujuan_magang.tanggal_persetujuan,
+                t_persetujuan_magang.updated_at as tanggal_persetujuan_fallback,
                 m_bidang.bidang,
                 t_penempatan_magang.catatan,
                 t_penempatan_magang.status_penempatan,
@@ -62,8 +64,8 @@ class M_PermohonanMagang extends Model
                 m_mahasiswa.kecamatan,
                 m_mahasiswa.provinsi,
                 m_instansi_pendidikan.instansi_pendidikan as kampus,
-                m_prodi.prodi,
-                m_fakultas.fakultas,
+                m_prodi.nama_prodi,
+                m_fakultas.nama_fakultas,
                 t_instansi_mahasiswa.semester,
                 t_instansi_mahasiswa.jenjang_pendidikan,
                 t_instansi_mahasiswa.angkatan_tahun,
@@ -97,7 +99,7 @@ class M_PermohonanMagang extends Model
      */
     public function getAntreanSekretariat()
     {
-        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, m_mahasiswa.nama_mahasiswa, m_prodi.prodi')
+        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, m_mahasiswa.nama_mahasiswa, m_prodi.nama_prodi')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
@@ -113,7 +115,7 @@ class M_PermohonanMagang extends Model
      */
     public function getDetailPermohonan($id_permohonan)
     {
-        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, m_prodi.prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
+        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.nama_fakultas, m_prodi.nama_prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
@@ -136,10 +138,10 @@ class M_PermohonanMagang extends Model
                 t_permohonan_magang.id_mahasiswa,
                 t_persetujuan_magang.status_persetujuan,
                 t_persetujuan_magang.catatan,
-                t_persetujuan_magang.tgl_persetujuan,
+                t_persetujuan_magang.tanggal_persetujuan,
                 t_persetujuan_magang.disposisi,
                 m_mahasiswa.nama_mahasiswa,
-                m_prodi.prodi,
+                m_prodi.nama_prodi,
                 m_instansi_pendidikan.instansi_pendidikan as universitas
             ')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
@@ -149,7 +151,7 @@ class M_PermohonanMagang extends Model
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             // KUNCI FIX: Arsip menampilkan yang sudah diteruskan ke kabid (1), selesai diplot kabid (2), ATAU yang sah DITOLAK
             ->where("(t_persetujuan_magang.disposisi IN ('1', '2') OR t_persetujuan_magang.status_persetujuan = 'DITOLAK')")
-            ->orderBy('t_persetujuan_magang.tgl_persetujuan', 'DESC')
+            ->orderBy('t_persetujuan_magang.tanggal_persetujuan', 'DESC')
             ->get()
             ->getResultArray();
     }
@@ -159,7 +161,7 @@ class M_PermohonanMagang extends Model
      */
     public function getAntreanDisposisi()
     {
-        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, m_mahasiswa.nama_mahasiswa, m_prodi.prodi')
+        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, m_mahasiswa.nama_mahasiswa, m_prodi.nama_prodi')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')

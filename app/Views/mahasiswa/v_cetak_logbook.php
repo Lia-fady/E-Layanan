@@ -194,12 +194,6 @@
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px;">
-                            <i>Belum ada catatan logbook yang disetujui.</i>
-                        </td>
-                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>

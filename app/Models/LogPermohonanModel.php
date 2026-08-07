@@ -12,14 +12,10 @@ class LogPermohonanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_permohonan_magang',
-        'aktor',
-        'aksi',
-        'catatan',
-        'created_at'
-    ];
+    protected $allowedFields    = ['id_permohonan_magang', 'aktor', 'aksi', 'catatan', 'created_at'];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+
 }

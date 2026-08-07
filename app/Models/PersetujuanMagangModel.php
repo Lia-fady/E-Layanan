@@ -12,16 +12,11 @@ class PersetujuanMagangModel extends Model
     protected $returnType       = 'array';
     
     // Mempertahankan fields asli kelompokmu sesuai ERD
-    protected $allowedFields    = [
-        'id_permohonan_magang',
-        'catatan',
-        'status_persetujuan', // MENUNGGU, DISETUJUI, DITOLAK
-        'created_by',
-        'updated_by',
-        'disposisi',          // enum(0,1,2)
-        'id_bidang',
-        'tgl_persetujuan'
-    ];
+    protected $allowedFields    = ['id_permohonan_magang', 'id_bidang', 'catatan', 'status_persetujuan', 'disposisi', 'tanggal_disposisi', 'tanggal_persetujuan', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $useSoftDeletes   = false;
 
-    protected $useTimestamps = false; // Diisi manual di controller biar aman
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+ // Diisi manual di controller biar aman
 }

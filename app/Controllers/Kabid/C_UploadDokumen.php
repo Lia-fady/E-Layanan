@@ -42,7 +42,7 @@ class C_UploadDokumen extends BaseController
         $db = \Config\Database::connect();
         
         $builder = $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, jp.jenis_permohonan, pnm.status_penempatan')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi, jp.jenis_permohonan, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -51,7 +51,7 @@ class C_UploadDokumen extends BaseController
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.status_persetujuan', 'DISETUJUI')
-            ->orderBy('ps.tgl_persetujuan', 'DESC');
+            ->orderBy('ps.tanggal_persetujuan', 'DESC');
             
         $builder->groupStart()
             ->where('pnm.status_penempatan', 'BERJALAN')
@@ -82,7 +82,7 @@ class C_UploadDokumen extends BaseController
     {
         $db = \Config\Database::connect();
         return $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, pnm.status_penempatan')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -155,7 +155,7 @@ class C_UploadDokumen extends BaseController
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
-    public function update($id_file_selesai)
+    public function update($id_file_proses)
     {
         $validationRules = [
             'id_file'    => 'required',
@@ -174,7 +174,7 @@ class C_UploadDokumen extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => implode('<br>', $this->validator->getErrors())]);
         }
 
-        $existing = $this->fileProsesModel->find($id_file_selesai);
+        $existing = $this->fileProsesModel->find($id_file_proses);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -191,7 +191,7 @@ class C_UploadDokumen extends BaseController
                 unlink($oldFilePath);
             }
 
-            $this->fileProsesModel->update($id_file_selesai, [
+            $this->fileProsesModel->update($id_file_proses, [
                 'id_file'    => $this->request->getPost('id_file'),
                 'nama_file'  => $file->getClientName(),
                 'path_file'  => $path_file,
@@ -204,9 +204,9 @@ class C_UploadDokumen extends BaseController
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
-    public function download($id_file_selesai)
+    public function download($id_file_proses)
     {
-        $fileData = $this->fileProsesModel->find($id_file_selesai);
+        $fileData = $this->fileProsesModel->find($id_file_proses);
         if (!$fileData) {
             return redirect()->back()->with('error', 'File tidak ditemukan.');
         }
@@ -219,9 +219,9 @@ class C_UploadDokumen extends BaseController
         return $this->response->download($filePath, null)->setFileName($fileData->nama_file);
     }
 
-    public function delete($id_file_selesai)
+    public function delete($id_file_proses)
     {
-        $existing = $this->fileProsesModel->find($id_file_selesai);
+        $existing = $this->fileProsesModel->find($id_file_proses);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -231,7 +231,7 @@ class C_UploadDokumen extends BaseController
             unlink($filePath);
         }
 
-        $this->fileProsesModel->delete($id_file_selesai);
+        $this->fileProsesModel->delete($id_file_proses);
         return $this->response->setJSON(['success' => true, 'message' => 'Dokumen berhasil dihapus.']);
     }
 }

@@ -12,16 +12,15 @@ class InstansiPendidikanModel extends Model
     protected $returnType       = 'array';
     
     // Kolom yang diizinkan untuk dimanipulasi sesuai ERD
-    protected $allowedFields    = [
-        'instansi_pendidikan', 
-        'jenis_instansi', 
-        'status', 
-        'created_at', 
-        'updated_at'
-    ];
+    protected $allowedFields    = ['id_jenjang_pendidikan', 'instansi_pendidikan', 'jenis_instansi', 'alamat', 'email', 'no_telepon', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $useSoftDeletes   = true;
 
     // Aktifkan pencatatan waktu otomatis bawaan CI4
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+
+    
+    
 }

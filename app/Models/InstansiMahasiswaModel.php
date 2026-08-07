@@ -12,19 +12,13 @@ class InstansiMahasiswaModel extends Model
     protected $returnType       = 'array';
     
     // Kolom yang wajib diisi untuk jembatan data akademik sesuai ERD
-    protected $allowedFields    = [
-        'id_mahasiswa', 
-        'id_instansi_pendidikan', 
-        'id_fakultas',
-        'id_prodi', 
-        'jenjang_pendidikan', 
-        'angkatan_tahun', 
-        'semester', 
-        'tahun_akademik', 
-        'created_by', 
-        'updated_at'
-    ];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_pendidikan', 'id_fakultas', 'id_prodi', 'id_jenjang_pendidikan', 'jurusan', 'angkatan_tahun', 'semester', 'tahun_akademik', 'created_by', 'updated_by', 'created_at', 'updated_at', 'deleted_at'];
+    protected $useSoftDeletes   = true;
 
     // Menggunakan timestamps campuran sesuai kolom ERD kamu
-    protected $useTimestamps = false; 
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
+ 
 }

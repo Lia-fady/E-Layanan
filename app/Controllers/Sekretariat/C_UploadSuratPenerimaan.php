@@ -37,7 +37,7 @@ class C_UploadSuratPenerimaan extends BaseController
 
         $db = \Config\Database::connect();
         $persetujuan = $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi, jp.jenis_permohonan, pn.status_penempatan, (SELECT COUNT(fpm.id_file_selesai_magang) FROM t_file_proses_magang fpm WHERE fpm.id_persetujuan_magang = ps.id_persetujuan_magang AND fpm.proses_magang = \'persetujuan\') as is_uploaded')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi, jp.jenis_permohonan, pn.status_penempatan, (SELECT COUNT(fpm.id_file_proses_magang) FROM t_file_proses_magang fpm WHERE fpm.id_persetujuan_magang = ps.id_persetujuan_magang AND fpm.proses_magang = \'persetujuan\') as is_uploaded')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -46,7 +46,7 @@ class C_UploadSuratPenerimaan extends BaseController
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.status_persetujuan', 'DISETUJUI')
-            ->orderBy('ps.tgl_persetujuan', 'DESC')
+            ->orderBy('ps.tanggal_persetujuan', 'DESC')
             ->get()->getResult();
 
         $data = [
@@ -68,14 +68,14 @@ class C_UploadSuratPenerimaan extends BaseController
                 pm.tgl_selesai, 
                 pm.created_at,
                 pm.deskripsi_keahlian,
-                pm.deskripsi,
+                pm.rencana_kegiatan,
                 mhs.nama_mahasiswa, 
                 mhs.nim, 
                 mhs.nik,
                 mhs.no_telp,
                 ip.instansi_pendidikan, 
-                pr.prodi,
-                fk.fakultas
+                pr.nama_prodi,
+                fk.nama_fakultas
             ')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
@@ -159,7 +159,7 @@ class C_UploadSuratPenerimaan extends BaseController
                         }
 
                         // UPDATE
-                        $this->fileProsesModel->update($existing->id_file_selesai_magang, [
+                        $this->fileProsesModel->update($existing->id_file_proses_magang, [
                             'id_file'               => $this->request->getPost('id_file'),
                             'nama_file'             => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $file->getClientName()), // ANTI XSS
                             'path_file'             => $path_file,
@@ -195,13 +195,13 @@ class C_UploadSuratPenerimaan extends BaseController
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file. Pastikan format dan ukuran sesuai.']);
     }
 
-    public function updateFile($id_file_selesai)
+    public function updateFile($id_file_proses)
     {
         if (!$this->request->isAJAX()) {
             return redirect()->to(base_url('sekretariat/riwayat'));
         }
 
-        $existing = $this->fileProsesModel->find($id_file_selesai);
+        $existing = $this->fileProsesModel->find($id_file_proses);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -232,7 +232,7 @@ class C_UploadSuratPenerimaan extends BaseController
         $file->store('surat_penerimaan_magang/', $newName);
         $path_file = 'uploads/surat_penerimaan_magang/' . $newName;
 
-        $this->fileProsesModel->update($id_file_selesai, [
+        $this->fileProsesModel->update($id_file_proses, [
             'nama_file'  => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $file->getClientName()), // ANTI XSS
             'path_file'  => $path_file,
             'updated_by' => session('id_user_pegawai')
@@ -241,13 +241,13 @@ class C_UploadSuratPenerimaan extends BaseController
         return $this->response->setJSON(['success' => true, 'message' => 'File berhasil diganti.']);
     }
 
-    public function delete($id_file_selesai)
+    public function delete($id_file_proses)
     {
         if (!$this->request->isAJAX()) {
             return redirect()->to(base_url('sekretariat/riwayat'));
         }
 
-        $existing = $this->fileProsesModel->find($id_file_selesai);
+        $existing = $this->fileProsesModel->find($id_file_proses);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -258,14 +258,14 @@ class C_UploadSuratPenerimaan extends BaseController
             unlink($oldFilePath);
         }
 
-        $this->fileProsesModel->delete($id_file_selesai);
+        $this->fileProsesModel->delete($id_file_proses);
 
         return $this->response->setJSON(['success' => true, 'message' => 'Surat penerimaan berhasil dihapus.']);
     }
 
-    public function download($id_file_selesai)
+    public function download($id_file_proses)
     {
-        $fileData = $this->fileProsesModel->find($id_file_selesai);
+        $fileData = $this->fileProsesModel->find($id_file_proses);
         if (!$fileData) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Data file tidak ditemukan di database.');
         }

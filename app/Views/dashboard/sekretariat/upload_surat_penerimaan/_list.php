@@ -91,12 +91,6 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                Tidak ada data permohonan yang disetujui.
-                            </td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
