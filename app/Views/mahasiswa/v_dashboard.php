@@ -1,7 +1,7 @@
 <?= $this->extend('layout/mahasiswa') ?>
 
 <?= $this->section('breadcrumb') ?>
-E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--primary-royal);">Dashboard</span>
+<span class="text-dark fw-medium">Dashboard</span>
 <?= $this->endSection() ?>
 
 <?= $this->section('extra_css') ?>
@@ -351,7 +351,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         $statusClass = 'st-menunggu';
         $statusIcon  = 'bi-hourglass-split';
     } elseif ($state == 3) {
-        $statusText  = 'Ditolak / Dikembalikan';
+        $statusText  = 'Ditolak';
         $statusClass = 'st-ditolak';
         $statusIcon  = 'bi-x-circle-fill';
     } elseif ($state == 4) {
@@ -370,10 +370,11 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
 
     // Jenis permohonan label
     $jenisLabel = 'Belum Dipilih';
-    if (isset($jenis_permohonan)) {
+    if (isset($jenis_permohonan) && $state != 1) {
         if ($jenis_permohonan == 1) $jenisLabel = 'Penelitian Skripsi / TA';
-        elseif ($jenis_permohonan == 2) $jenisLabel = 'Observasi / Pengambilan Data';
-        elseif ($jenis_permohonan == 3) $jenisLabel = 'Magang / PKL';
+        elseif ($jenis_permohonan == 2) $jenisLabel = 'Observasi / Ambil Data';
+        elseif ($jenis_permohonan == 3) $jenisLabel = 'Magang';
+        elseif ($jenis_permohonan == 5) $jenisLabel = 'Praktik Kerja Lapangan (PKL)';
         elseif ($jenis_permohonan == 4) $jenisLabel = 'Uji Coba Produk (Prototype)';
     }
 ?>
@@ -381,33 +382,14 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
 <!-- ============================================
      SECTION 1: WELCOME BANNER (SELALU TAMPIL)
      ============================================ -->
-<div class="welcome-banner mb-4">
-    <div class="position-relative" style="z-index:1;">
-        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-            <div>
-                <div class="welcome-kicker"><i class="bi bi-stars"></i> Portal Peserta Akademik</div>
-                <div class="welcome-greeting">Halo, Selamat Datang</div>
-                <div class="welcome-name"><?= esc($nama) ?></div>
-                <div class="welcome-meta">
-                     <?= esc($nim ?? '-') ?> &bull; <?= esc($kampus ?? '-') ?>
-                </div>
-            </div>
-            <div class="text-end">
-                <div class="status-badge <?= $statusClass ?>">
-                    <i class="bi <?= $statusIcon ?>"></i> <?= $statusText ?>
-                </div>
-                <?php if ($state >= 2 && isset($jenis_permohonan)): ?>
-                    <div class="mt-2" style="font-size:0.76rem; color:rgba(255,255,255,0.45);"><?= $jenisLabel ?></div>
-                <?php endif; ?>
-                <div class="welcome-side-note">Pantau setiap tahapan layanan akademik Anda dari satu tempat.</div>
-            </div>
-        </div>
-    </div>
+<div class="mb-4">
+    <h3 class="fw-semibold mb-1 text-dark">Halo, <?= esc($nama) ?>!</h3>
+    <p class="text-muted mb-0">Selamat datang di Portal Peserta Akademik. Pantau tahapan layanan Anda dari sini.</p>
 </div>
 
 <?php
     $documentCount = (!empty($file_penerimaan) ? 1 : 0) + (!empty($file_sertifikat) ? 1 : 0) + (!empty($file_piagam) ? 1 : 0);
-    $summaryLogbook = ($state >= 4) ? ($total_logbook . ' entri') : 'Belum dimulai';
+    $summaryLogbook = (in_array($state, [4, 5])) ? ($total_logbook . ' entri') : 'Belum dimulai';
 ?>
 <div class="dashboard-summary" aria-label="Ringkasan aktivitas mahasiswa">
     <div class="summary-tile">
@@ -439,7 +421,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action primary"><i class="bi bi-file-earmark-plus"></i> Mulai Pengajuan</a>
     </div>
 
-<?php elseif ($state == 4 && $jenis_permohonan == 3 && $is_log_book == 'ya'): ?>
+<?php elseif ($state == 4 && in_array($jenis_permohonan, [3, 5]) && $is_log_book == 'ya'): ?>
     <div class="next-action-card success">
         <span class="next-action-icon"><i class="bi bi-journal-check"></i></span>
         <div class="flex-grow-1"><div class="next-action-title">Catat aktivitas hari ini</div><div class="next-action-copy">Logbook kegiatan Anda aktif. Pastikan aktivitas harian dicatat secara berkala.</div></div>
@@ -460,29 +442,53 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
     <div class="card-label"><i class="bi bi-signpost-split me-1"></i> Tahapan Alur Permohonan</div>
     <ul class="stepper-h">
         <!-- Step 1: Pengajuan -->
-        <li class="step-item <?= ($state >= 2 && $state != 6) ? 'completed' : (($state == 1 || $state == 6) ? 'current' : '') ?>">
-            <div class="step-circle"><?= ($state >= 2 && $state != 6) ? '<i class="bi bi-check-lg"></i>' : '1' ?></div>
+        <li class="step-item <?= ($state >= 2) ? 'completed' : (($state == 1) ? 'current' : '') ?>">
+            <div class="step-circle"><?= ($state >= 2) ? '<i class="bi bi-check-lg"></i>' : '1' ?></div>
             <span class="step-label">Pengajuan<br>Permohonan</span>
         </li>
+        
         <!-- Step 2: Verifikasi Sekretariat -->
-        <li class="step-item <?= ($state >= 4 || $state == 3 || $state == 6 || (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1')) ? (($state == 3 || $state == 6) ? 'rejected' : 'completed') : (($state == 2 && (!isset($permohonan_aktif['disposisi']) || in_array($permohonan_aktif['disposisi'], [null, '0']))) ? 'current' : '') ?>">
-            <div class="step-circle">
-                <?php if ($state == 3 || $state == 6): ?><i class="bi bi-x-lg"></i>
-                <?php elseif ($state >= 4 || (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1')): ?><i class="bi bi-check-lg"></i>
-                <?php else: ?>2<?php endif; ?>
-            </div>
-            <span class="step-label">Verifikasi<br>Sekretariat</span>
+        <?php
+            $step2_class = ''; $step2_icon = '2';
+            if ($state == 6) { 
+                $step2_class = 'rejected'; $step2_icon = '<i class="bi bi-pencil-square"></i>'; 
+            } elseif (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
+                $step2_class = 'completed'; $step2_icon = '<i class="bi bi-check-lg"></i>';
+            } elseif (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DITOLAK') {
+                $step2_class = 'rejected'; $step2_icon = '<i class="bi bi-x-lg"></i>';
+            } elseif ($state == 2) {
+                $step2_class = 'current';
+            } elseif ($state >= 4) {
+                $step2_class = 'completed'; $step2_icon = '<i class="bi bi-check-lg"></i>';
+            }
+        ?>
+        <li class="step-item <?= $step2_class ?>">
+            <div class="step-circle"><?= $step2_icon ?></div>
+            <span class="step-label">Verifikasi<br>Berkas</span>
         </li>
+        
         <!-- Step 3: Persetujuan Kabid -->
-        <li class="step-item <?= (in_array($state, [4, 5])) ? 'completed' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? 'current' : '') ?>">
-            <div class="step-circle"><?= (in_array($state, [4, 5])) ? '<i class="bi bi-check-lg"></i>' : (($state == 2 && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1') ? '<i class="bi bi-diagram-3-fill"></i>' : '3') ?></div>
-            <span class="step-label">Persetujuan<br>Bidang</span>
+        <?php
+            $step3_class = ''; $step3_icon = '3';
+            if ($state >= 4 && $state != 6) {
+                $step3_class = 'completed'; $step3_icon = '<i class="bi bi-check-lg"></i>';
+            } elseif ($state == 2 && isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
+                $step3_class = 'current'; $step3_icon = '<i class="bi bi-diagram-3-fill"></i>';
+            } elseif ($state == 3 && isset($permohonan_aktif['status_penempatan']) && $permohonan_aktif['status_penempatan'] == 'DIBATALKAN') {
+                $step3_class = 'rejected'; $step3_icon = '<i class="bi bi-x-lg"></i>';
+            }
+        ?>
+        <li class="step-item <?= $step3_class ?>">
+            <div class="step-circle"><?= $step3_icon ?></div>
+            <span class="step-label">Persetujuan</span>
         </li>
+        
         <!-- Step 4: Pelaksanaan -->
         <li class="step-item <?= ($state == 5) ? 'completed' : (($state == 4) ? 'current' : '') ?>">
             <div class="step-circle"><?= ($state == 5) ? '<i class="bi bi-check-lg"></i>' : (($state == 4) ? '<i class="bi bi-play-fill"></i>' : '4') ?></div>
             <span class="step-label">Pelaksanaan<br>Kegiatan</span>
         </li>
+        
         <!-- Step 5: Selesai -->
         <li class="step-item <?= ($state == 5) ? 'completed' : '' ?>">
             <div class="step-circle"><?= ($state == 5) ? '<i class="bi bi-check-lg"></i>' : '5' ?></div>
@@ -557,13 +563,14 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                     <span class="info-label">Jenis Permohonan</span>
                     <span class="info-value"><?= $jenisLabel ?></span>
                 </div>
+
                 <div class="info-row">
                     <span class="info-label">Tanggal Mulai</span>
-                    <span class="info-value"><?= date('d M Y', strtotime($permohonan_aktif['tgl_mulai'])) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Selesai</span>
-                    <span class="info-value"><?= date('d M Y', strtotime($permohonan_aktif['tgl_selesai'])) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Pengajuan</span>
@@ -571,7 +578,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 </div>
                 <div class="mt-3">
                     <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
-                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi_magang'] ?? '-') ?></p>
+                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? '-') ?></p>
                 </div>
             <?php endif; ?>
         </div>
@@ -616,17 +623,27 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
         <div class="alert-card alert-danger">
             <i class="bi bi-exclamation-triangle-fill alert-icon"></i>
             <div>
-                <strong>Permohonan Anda Dikembalikan</strong><br>
-                Terdapat kekurangan atau kesalahan pada dokumen yang Anda kirimkan. Silakan perbaiki sesuai catatan di bawah ini dan ajukan kembali.
+                <strong>Permohonan Anda Ditolak</strong><br>
+                <?php
+                    $jenisLabel = 'permohonan';
+                    if (isset($jenis_permohonan) && $jenis_permohonan == 1) {
+                        $jenisLabel = 'penelitian / skripsi';
+                    } elseif (isset($jenis_permohonan) && $jenis_permohonan == 2) {
+                        $jenisLabel = 'observasi / pengambilan data';
+                    } elseif (isset($jenis_permohonan) && in_array($jenis_permohonan, [3, 5])) {
+                        $jenisLabel = 'magang / PKL';
+                    }
+                ?>
+                Mohon maaf, permohonan <?= esc($jenisLabel) ?> Anda tidak dapat disetujui saat ini. Silakan lihat catatan evaluasi dari Sekretariat di bawah ini.
             </div>
         </div>
     </div>
     <div class="col-12 col-lg-7">
         <div class="card-flat h-100">
-            <div class="card-label"><i class="bi bi-chat-square-text me-1"></i> Catatan Evaluasi dari Verifikator</div>
+            <div class="card-label"><i class="bi bi-chat-square-text me-1"></i> Catatan Evaluasi dari Sekretariat</div>
             <div style="background:#fef2f2; border-radius:10px; padding:16px 20px; font-size:0.9rem; line-height:1.7; color:#991b1b;">
                 <i class="bi bi-quote" style="font-size:1.2rem; opacity:0.3;"></i><br>
-                <?= esc($catatan_tolak ?? 'Tidak ada catatan spesifik. Harap periksa kembali kelengkapan dan kebenaran seluruh dokumen.') ?>
+                <?= esc($catatan_tolak ?? 'Tidak ada catatan spesifik. Harap periksa kembali persyaratan untuk pengajuan magang.') ?>
             </div>
         </div>
     </div>
@@ -635,11 +652,11 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
             <div class="card-label"><i class="bi bi-arrow-repeat me-1"></i> Langkah Selanjutnya</div>
             <div class="alert-card alert-info mb-3">
                 <i class="bi bi-info-circle alert-icon"></i>
-                <div>Perbaiki dokumen sesuai catatan, kemudian ajukan ulang permohonan Anda melalui tombol di bawah.</div>
+                <div>Siklus permohonan ini telah ditutup. Anda dapat membuat pengajuan permohonan baru dari awal jika ingin mencoba kembali.</div>
             </div>
             <div class="mt-auto d-flex flex-column gap-2">
                 <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action warning w-100 justify-content-center">
-                    <i class="bi bi-pencil-square"></i> Ajukan Ulang Permohonan
+                    <i class="bi bi-plus-circle"></i> Buat Permohonan Baru
                 </a>
                 <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action outline w-100 justify-content-center">
                     <i class="bi bi-clock-history"></i> Lihat Riwayat Status
@@ -679,7 +696,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 <div>Perbaiki dokumen sesuai catatan melalui form perbaikan.</div>
             </div>
             <div class="mt-auto d-flex flex-column gap-2">
-                <a href="<?= base_url('mahasiswa/permohonan/edit/' . ($permohonan_aktif['id_permohonan_magang'] ?? '')) ?>" class="btn-action warning w-100 justify-content-center">
+                <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action warning w-100 justify-content-center">
                     <i class="bi bi-pencil-square"></i> Revisi Dokumen Sekarang
                 </a>
             </div>
@@ -707,15 +724,15 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 </div>
                 <div class="info-row">
                     <span class="info-label">Periode Kegiatan</span>
-                    <span class="info-value"><?= date('d M Y', strtotime($permohonan_aktif['tgl_mulai'])) ?> — <?= date('d M Y', strtotime($permohonan_aktif['tgl_selesai'])) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="mt-3">
                     <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
-                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi_magang'] ?? '-') ?></p>
+                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? '-') ?></p>
                 </div>
             <?php endif; ?>
 
-            <?php if ($jenis_permohonan == 3 && $is_log_book == 'ya'): ?>
+            <?php if (in_array($jenis_permohonan, [3, 5]) && $is_log_book == 'ya'): ?>
                 <!-- Progress Logbook (Khusus Magang) -->
                 <hr class="my-3" style="border-color:#f1f5f9;">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -741,7 +758,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
             </div>
 
             <div class="mt-auto d-flex flex-column gap-2">
-                <?php if ($jenis_permohonan == 3 && $is_log_book == 'ya'): ?>
+                <?php if (in_array($jenis_permohonan, [3, 5]) && $is_log_book == 'ya'): ?>
                     <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn-action primary w-100 justify-content-center">
                         <i class="bi bi-pencil-square"></i> Isi Logbook Hari Ini
                     </a>
@@ -784,9 +801,9 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                 </div>
                 <div class="info-row">
                     <span class="info-label">Periode</span>
-                    <span class="info-value"><?= date('d M Y', strtotime($permohonan_aktif['tgl_mulai'])) ?> — <?= date('d M Y', strtotime($permohonan_aktif['tgl_selesai'])) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
-                <?php if ($jenis_permohonan == 3): ?>
+                <?php if (in_array($jenis_permohonan, [3, 5])): ?>
                 <div class="info-row">
                     <span class="info-label">Total Logbook</span>
                     <span class="info-value"><?= $total_logbook ?? 0 ?> entri</span>
@@ -809,7 +826,7 @@ E-Layanan Akademik &raquo; <span class="text-uppercase" style="color: var(--prim
                     <i class="bi bi-award-fill"></i> Sertifikat Belum Tersedia
                 </button>
                 <?php endif; ?>
-                <?php if ($jenis_permohonan == 3): ?>
+                <?php if (in_array($jenis_permohonan, [3, 5])): ?>
                 <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn-action outline w-100 justify-content-center">
                     <i class="bi bi-journal-check"></i> Lihat Riwayat Logbook
                 </a>

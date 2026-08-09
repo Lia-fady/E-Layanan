@@ -3,629 +3,897 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi Akun Mahasiswa</title>
-
+    <title>Pendaftaran Akun — E-Layanan Akademik</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css">
     <style>
-        /* --- TEMA CORPORATE ENTERPRISE & CLEAN BACKGROUND --- */
-        :root {
-            --primary-navy: #0A1D37;       /* Midnight Navy Super Gelap & Solid */
-            --primary-royal: #13325B;      /* Royal Navy Sekunder */
-            --bg-auth: #F3F4F6;            /* Off-White Soft Premium */
-            --accent-gold: #EAB308;        /* Kuning Emas Tua */
-            --accent-blue-soft: #0EA5E9;   /* Biru Soft / Cyan Premium */
-            --text-dark: #0A1D37;          /* Warna teks utama */
-            --text-muted: #6B7280;         /* Warna teks sekunder */
-            --card-white: #FFFFFF;         /* Putih bersih container */
-        }
-
         body {
-            background-color: var(--bg-auth) !important;
+            background: #f7f8fa;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--text-dark);
             min-height: 100vh;
+            padding: 40px 16px;
+        }
+
+        .form-wrap {
+            max-width: 640px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 36px 40px 32px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        /* Header */
+        .form-header { text-align: center; margin-bottom: 28px; }
+        .form-header h1 { font-size: 1.3rem; font-weight: 700; color: #1a1a2e; margin: 0; }
+        .form-header p { font-size: 0.84rem; color: #888; margin-top: 6px; }
+
+        /* Stepper — minimal dots */
+        .stepper-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 0;
+            gap: 0;
+            margin-bottom: 32px;
         }
-
-        .register-card {
-            background: var(--card-white);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(10, 29, 55, 0.04);
+        .s-dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.78rem; font-weight: 700;
+            background: #eee; color: #aaa;
+            transition: all 0.3s;
+            flex-shrink: 0;
         }
-
-        .logo-box {
-            width: 65px;
-            height: 65px;
-            border-radius: 14px;
-            background-color: var(--primary-navy);
-            color: var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 20px auto;
-            box-shadow: 0 8px 16px rgba(10, 29, 55, 0.15);
+        .s-dot.active { background: #1a1a2e; color: #fff; }
+        .s-dot.done { background: #1a1a2e; color: #fff; }
+        .s-line {
+            flex: 1; height: 2px;
+            background: #eee; max-width: 60px;
+            transition: background 0.3s;
         }
+        .s-line.done { background: #1a1a2e; }
 
-        .title {
-            font-size: 1.35rem;
+        /* Section label */
+        .sec-label {
+            font-size: 0.82rem;
             font-weight: 700;
-            color: var(--text-dark);
-            letter-spacing: -0.3px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        .sec-desc {
+            font-size: 0.78rem;
+            color: #999;
+            margin-bottom: 22px;
         }
 
-        .subtitle {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .section-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--primary-royal);
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 6px;
-            margin-top: 25px;
-            margin-bottom: 18px;
-        }
-
-        .form-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+        /* Form fields */
+        .field { margin-bottom: 20px; }
+        .field label {
+            display: block;
+            font-size: 0.82rem;
             font-weight: 600;
-            color: var(--text-muted);
+            color: #333;
             margin-bottom: 6px;
         }
+        .field label .req { color: #e53e3e; margin-left: 2px; }
 
-        .input-group-text {
-            background-color: #fbfbfb;
-            border: 1px solid #e2e8f0;
-            color: var(--text-muted);
-            border-radius: 8px 0 0 8px;
-        }
-
-        .form-control, .form-select {
-            border: 1px solid #e2e8f0;
+        .field input[type="text"],
+        .field input[type="email"],
+        .field input[type="number"],
+        .field input[type="password"],
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 10px 14px;
             font-size: 0.88rem;
-            color: var(--text-dark);
-            background-color: #fbfbfb;
-            transition: all 0.2s ease;
+            color: #222;
+            background: #fff;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: #1a1a2e;
+        }
+        .field input.err, .field select.err, .field textarea.err {
+            border-color: #e53e3e;
+        }
+        .field .err-msg {
+            font-size: 0.75rem;
+            color: #e53e3e;
+            margin-top: 4px;
+        }
+        .field .hint {
+            font-size: 0.72rem;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .field textarea { resize: none; }
+
+        /* Radio Buttons */
+        .radio-group {
+            display: flex; gap: 16px;
+            padding: 11px 14px;
+        }
+        .radio-opt {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.88rem; color: #333; cursor: pointer;
+        }
+        .radio-opt input {
+            accent-color: #1a1a2e;
+            width: 16px; height: 16px;
+            cursor: pointer; margin: 0;
         }
 
-        .form-control:focus, .form-select:focus {
-            background-color: #ffffff;
-            border-color: var(--accent-blue-soft);
-            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        /* Password wrapper */
+        .pw-wrap { position: relative; }
+        .pw-wrap input { padding-right: 42px; }
+        .pw-toggle {
+            position: absolute;
+            right: 12px; top: 50%; transform: translateY(-50%);
+            background: none; border: none;
+            color: #999; cursor: pointer; font-size: 1rem;
+            padding: 0;
         }
+        .pw-toggle:hover { color: #555; }
 
-        textarea.form-control { resize: none; }
-
-        .btn-outline-secondary {
-            border: 1px solid #e2e8f0;
-            background-color: #fbfbfb;
-            color: var(--text-muted);
-            border-radius: 0 8px 8px 0;
+        /* Jenis selector */
+        .jenis-row {
+            display: flex; gap: 12px;
+            margin-bottom: 24px;
         }
+        .jenis-opt {
+            flex: 1;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .jenis-opt:hover { border-color: #999; }
+        .jenis-opt.sel {
+            border-color: #1a1a2e;
+            background: #f5f6fa;
+        }
+        .jenis-opt .jt { font-size: 0.88rem; font-weight: 600; color: #333; }
+        .jenis-opt .jd { font-size: 0.72rem; color: #999; margin-top: 2px; }
 
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .btn-back {
+            background: none; border: 1px solid #ddd; color: #666;
+            padding: 10px 22px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-back:hover { background: #f5f5f5; }
+        .btn-next {
+            background: #1a1a2e; color: #fff; border: none;
+            padding: 10px 28px; border-radius: 8px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-next:hover { background: #2d2d4e; }
         .btn-register {
-            background-color: var(--primary-navy) !important;
-            border-color: var(--primary-navy) !important;
-            color: #ffffff !important;
-            font-weight: 500;
-            font-size: 0.9rem;
-            border-radius: 8px;
-            padding: 12px 24px;
-            transition: all 0.2s ease;
+            background: #1a1a2e; color: #fff; border: none;
+            padding: 12px 32px; border-radius: 8px;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-register:hover { background: #2d2d4e; }
+
+        /* Review */
+        .review-box {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .review-title {
+            font-size: 0.8rem; font-weight: 700; color: #94a3b8;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            margin-bottom: 20px;
+        }
+        .rv-row { display: flex; padding: 8px 0; font-size: 0.85rem; align-items: flex-start; }
+        .rv-row .rv-l { width: 45%; color: #64748b; font-weight: 500; position: relative; padding-right: 15px; }
+        .rv-row .rv-l::after { content: ':'; position: absolute; right: 8px; color: #94a3b8; }
+        .rv-row .rv-v { flex: 1; color: #1e293b; font-weight: 600; }
+
+        /* Step panels */
+        .step-panel { display: none; }
+        .step-panel.on { display: block; animation: fadeUp 0.25s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .login-footer {
+            text-align: center; margin-top: 20px;
+            font-size: 0.84rem; color: #888;
+        }
+        .login-footer a { color: #1a1a2e; font-weight: 600; text-decoration: none; }
+        .login-footer a:hover { text-decoration: underline; }
+
+        /* Server errors */
+        .server-err {
+            background: #fef2f2; color: #c53030;
+            padding: 12px 16px; border-radius: 8px;
+            font-size: 0.82rem; font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .btn-register:hover {
-            background-color: var(--primary-royal) !important;
-            border-color: var(--primary-royal) !important;
-            transform: translateY(-1px);
-        }
-
-        .login-link {
-            color: var(--accent-blue-soft);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .alert-danger {
-            font-size: 0.82rem;
-            border-radius: 8px;
-            border: none;
-            background-color: #fef2f2;
-            color: #dc2626;
+        @media (max-width: 576px) {
+            .form-wrap { padding: 24px 20px 20px; }
+            .jenis-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-11 col-lg-9">
+<div class="form-wrap">
+    <!-- Header -->
+    <div class="form-header">
+        <h1>Pendaftaran Akun</h1>
+        <p>Lengkapi data berikut untuk mendaftar pada sistem E-Layanan.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper-bar" id="stepperBar">
+        <div class="s-dot active" data-s="1">1</div>
+        <div class="s-line"></div>
+        <div class="s-dot" data-s="2">2</div>
+        <div class="s-line"></div>
+        <div class="s-dot" data-s="3">3</div>
+        <div class="s-line"></div>
+        <div class="s-dot" data-s="4">4</div>
+    </div>
+
+    <!-- Server errors -->
+    <?php $ve = session()->getFlashdata('errors') ?? []; ?>
+    <?php if(!empty($ve)): ?>
+        <div class="server-err">Pendaftaran gagal. Periksa kembali isian yang ditandai merah.</div>
+    <?php endif; ?>
+
+    <form action="<?= base_url('register/process') ?>" method="POST" id="regForm" novalidate>
+        <?= csrf_field() ?>
+
+        <!-- =============================== -->
+        <!-- STEP 1: IDENTITAS DIRI          -->
+        <!-- =============================== -->
+        <div class="step-panel on" id="step1">
+            <div class="sec-label">Identitas Diri</div>
+            <div class="sec-desc">Lengkapi biodata diri Anda sesuai dengan identitas resmi.</div>
+
+
+
+            <div class="field">
+                <label>Nomor Induk Kependudukan (NIK) <span class="req">*</span></label>
+                <input type="text" name="nik" id="nik" placeholder="16 digit NIK" value="<?= old('nik') ?>" required minlength="16" maxlength="16" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['nik']) ? 'err' : '' ?>">
+                <?php if(isset($ve['nik'])): ?><div class="err-msg"><?= $ve['nik'] ?></div><?php endif; ?>
+            </div>
+
+            <div class="field">
+                <label>Nama Lengkap <span class="req">*</span></label>
+                <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" placeholder="Nama lengkap Anda" value="<?= old('nama_mahasiswa') ?>" required minlength="3" maxlength="100" class="<?= isset($ve['nama_mahasiswa']) ? 'err' : '' ?>">
+                <?php if(isset($ve['nama_mahasiswa'])): ?><div class="err-msg"><?= $ve['nama_mahasiswa'] ?></div><?php endif; ?>
+            </div>
+
+            <div class="field">
+                <label>Jenis Kelamin <span class="req">*</span></label>
+                <div class="radio-group <?= isset($ve['jenis_kelamin']) ? 'err' : '' ?>">
+                    <label class="radio-opt">
+                        <input type="radio" name="jenis_kelamin" value="L" <?= old('jenis_kelamin')=='L'?'checked':'' ?> required> Laki-laki
+                    </label>
+                    <label class="radio-opt">
+                        <input type="radio" name="jenis_kelamin" value="P" <?= old('jenis_kelamin')=='P'?'checked':'' ?> required> Perempuan
+                    </label>
+                </div>
+                <?php if(isset($ve['jenis_kelamin'])): ?><div class="err-msg"><?= $ve['jenis_kelamin'] ?></div><?php endif; ?>
+            </div>
             
-            <div class="card register-card">
-                <div class="card-body p-0">
-                    
-                    <div class="text-center mb-4">
-                        <div class="logo-box">
-                            <i class="bi bi-person-plus-fill"></i>
-                        </div>
-                        <h2 class="title">Registrasi Akun Mahasiswa</h2>
-                        <p class="subtitle m-0">Silakan lengkapi identitas akademik & personal Anda untuk membuat akun pendaftaran.</p>
-                    </div>
+            <div class="field">
+                <label>Tanggal Lahir <span class="req">*</span></label>
+                <input type="date" name="tgl_lahir" id="tgl_lahir" class="<?= isset($ve['tgl_lahir']) ? 'err' : '' ?>" value="<?= old('tgl_lahir') ?>" required onkeydown="return false" style="background-color: #fff; width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 11px 14px; font-family: inherit; color: #222;">
+                <?php if(isset($ve['tgl_lahir'])): ?><div class="err-msg"><?= $ve['tgl_lahir'] ?></div><?php endif; ?>
+            </div>
 
-                    <?php $validationErrors = session()->getFlashdata('errors') ?? []; ?>
-                    <?php if(!empty($validationErrors)) : ?>
-                        <div class="alert alert-danger p-3 mb-4" role="alert">
-                            <div class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-1"></i> Pendaftaran gagal, silakan periksa isian yang berwarna merah di bawah.</div>
-                        </div>
-                    <?php endif; ?>
+            <div class="field">
+                <label>Email <span class="req">*</span></label>
+                <input type="email" name="email" id="email" placeholder="contoh@email.com" value="<?= old('email') ?>" required maxlength="100" class="<?= isset($ve['email']) ? 'err' : '' ?>">
+                <?php if(isset($ve['email'])): ?><div class="err-msg"><?= $ve['email'] ?></div><?php endif; ?>
+            </div>
+            
+            <div class="field">
+                <label>Nomor WhatsApp Aktif <span class="req">*</span></label>
+                <input type="text" name="no_telp" id="no_telp" placeholder="Contoh: 081234567890" value="<?= old('no_telp') ?>" required minlength="10" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['no_telp']) ? 'err' : '' ?>">
+                <?php if(isset($ve['no_telp'])): ?><div class="err-msg"><?= $ve['no_telp'] ?></div><?php endif; ?>
+            </div>
+
+            <div class="btn-row">
+                <div></div>
+                <button type="button" class="btn-next" onclick="go(2)">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- =============================== -->
+        <!-- STEP 2: DATA PENDIDIKAN         -->
+        <!-- =============================== -->
+        <div class="step-panel" id="step2">
+            <div class="sec-label">Data Pendidikan</div>
+            <div class="sec-desc">Masukkan informasi mengenai institusi pendidikan Anda saat ini.</div>
+
+            <!-- Jenis Pendaftar -->
 
 
-                    <form action="<?= base_url('register/process') ?>" method="POST" id="registerForm" novalidate>
-                        <?= csrf_field() ?>
+            <!-- Panel Mahasiswa -->
+                        <div id="panelPendidikan">
+                <div class="field">
+                    <label>Jenjang Pendidikan <span class="req">*</span></label>
+                    <select name="id_jenjang_pendidikan" id="jenjang_pendidikan" required class="<?= isset($ve['id_jenjang_pendidikan']) ? 'err' : '' ?>">
+                        <option value="">-- Pilih Jenjang --</option>
+                        <?php if(!empty($jenjang)): foreach($jenjang as $j): ?>
+                            <option value="<?= $j['id_jenjang_pendidikan'] ?>" data-nama="<?= strtolower($j['nama_jenjang']) ?>" <?= old('id_jenjang_pendidikan')==$j['id_jenjang_pendidikan']?'selected':'' ?>><?= esc($j['nama_jenjang']) ?></option>
+                        <?php endforeach; endif; ?>
+                    </select>
+                    <?php if(isset($ve['id_jenjang_pendidikan'])): ?><div class="err-msg"><?= $ve['id_jenjang_pendidikan'] ?></div><?php endif; ?>
+                </div>
 
-                        <div class="section-title" style="margin-top: 0;"><i class="bi bi-shield-lock me-1"></i> Kredensial Akun (Data Login)</div>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label">Username Akun <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control <?= isset($validationErrors['username']) ? 'is-invalid' : '' ?>" name="username" placeholder="Masukan Username" value="<?= old('username') ?>" required minlength="5" maxlength="30">
-                                </div>
-                                    <?php if(isset($validationErrors['username'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['username'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Kata Sandi <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" id="password" class="form-control <?= isset($validationErrors['password']) ? 'is-invalid' : '' ?>" name="password" placeholder="Masukan Password" value="<?= old('password') ?>" required>
-                                    <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePassword()">
-                                        <i class="bi bi-eye" id="eyeIcon"></i>
-                                    </button>
-                                </div>
-                                    <?php if(isset($validationErrors['password'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['password'] ?></div>
-                                    <?php endif; ?>
-                                    <div class="form-text mt-1" style="font-size: 0.72rem; color: #8e9bb0;"><i class="bi bi-info-circle"></i> Min. 8 karakter, wajib mengandung huruf besar, kecil, angka & simbol (@$!%*?&).</div>
-                            </div>
-                        </div>
+                <div class="field">
+                    <label id="lbl_kampus">Instansi Pendidikan <span class="req">*</span></label>
+                    <!-- Input untuk Instansi (Sekolah / Kampus) -->
+                    <input type="text" name="nama_sekolah" id="nama_sekolah" style="display:none;" placeholder="Contoh: SMKN 1 Tangerang" value="<?= old('nama_sekolah') ?>" maxlength="150" disabled>
+                    <select name="id_instansi_pendidikan" id="kampus_select" required class="<?= isset($ve['id_instansi_pendidikan']) ? 'err' : '' ?>">
+                        <option value="" data-jenjang="">-- Pilih Instansi --</option>
+                        <?php if(!empty($kampus)): foreach($kampus as $k): ?>
+                            <option value="<?= $k['id_instansi_pendidikan'] ?>" data-jenjang="<?= $k['id_jenjang_pendidikan'] ?>" <?= old('id_instansi_pendidikan')==$k['id_instansi_pendidikan']?'selected':'' ?>><?= esc($k['instansi_pendidikan']) ?></option>
+                        <?php endforeach; endif; ?>
+                    </select>
+                    <?php if(isset($ve['id_instansi_pendidikan'])): ?><div class="err-msg"><?= $ve['id_instansi_pendidikan'] ?></div><?php endif; ?>
+                </div>
 
-                        <div class="section-title"><i class="bi bi-mortarboard me-1"></i> Data Pendidikan </div>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-12">
-                                <label class="form-label">Nama Instansi Pendidikan <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['id_instansi_pendidikan']) ? 'is-invalid' : '' ?>" name="id_instansi_pendidikan" id="kampus_select" required>
-                                    <option value="">-- Pilih Instansi Pendidikan  --</option>
-                                    <?php if(!empty($kampus)): ?>
-                                        <?php foreach($kampus as $k): ?>
-                                            <option value="<?= $k['id_instansi_pendidikan'] ?>" <?= old('id_instansi_pendidikan') == $k['id_instansi_pendidikan'] ? 'selected' : '' ?>>
-                                                <?= esc($k['instansi_pendidikan']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                                    <?php if(isset($validationErrors['id_instansi_pendidikan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['id_instansi_pendidikan'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label">Fakultas <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['id_fakultas']) ? 'is-invalid' : '' ?>" name="id_fakultas" id="fakultas_select" required disabled data-old="<?= old('id_fakultas') ?>">
-                                    <option value="">-- Pilih Kampus Dulu --</option>
-                                </select>
-                                    <?php if(isset($validationErrors['id_fakultas'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['id_fakultas'] ?></div>
-                                    <?php endif; ?>
-                            </div>
+                <div class="field" id="grp_fakultas">
+                    <label>Fakultas <span class="req">*</span></label>
+                    <select name="id_fakultas" id="fakultas_select" required disabled data-old="<?= old('id_fakultas') ?>" class="<?= isset($ve['id_fakultas']) ? 'err' : '' ?>">
+                        <option value="">-- Pilih Fakultas --</option>
+                    </select>
+                    <?php if(isset($ve['id_fakultas'])): ?><div class="err-msg"><?= $ve['id_fakultas'] ?></div><?php endif; ?>
+                </div>
+                
+                <div class="field">
+                    <label id="lbl_jurusan">Jurusan <span class="req">*</span></label>
+                    <select name="id_prodi" id="prodi_select" required disabled data-old="<?= old('id_prodi') ?>" class="<?= isset($ve['id_prodi']) ? 'err' : '' ?>">
+                        <option value="">-- Pilih Prodi --</option>
+                    </select>
+                    <input type="text" name="jurusan_smk" id="jurusan_smk" style="display:none;" placeholder="Contoh: Rekayasa Perangkat Lunak" value="<?= old('jurusan_smk') ?>" maxlength="150" disabled>
+                    <?php if(isset($ve['id_prodi'])): ?><div class="err-msg"><?= $ve['id_prodi'] ?></div><?php endif; ?>
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">Program Studi <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['id_prodi']) ? 'is-invalid' : '' ?>" name="id_prodi" id="prodi_select" required disabled data-old="<?= old('id_prodi') ?>">
-                                    <option value="">-- Pilih Fakultas Dulu --</option>
-                                </select>
-                                    <?php if(isset($validationErrors['id_prodi'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['id_prodi'] ?></div>
-                                    <?php endif; ?>
-                            </div>
+                <div class="field">
+                    <label id="lbl_nim">Nomor Induk Mahasiswa (NIM) <span class="req">*</span></label>
+                    <input type="text" name="nim" id="nim" required placeholder="Contoh: 12345678" value="<?= old('nim') ?>" class="<?= isset($ve['nim']) ? 'err' : '' ?>" maxlength="50">
+                    <?php if(isset($ve['nim'])): ?><div class="err-msg"><?= $ve['nim'] ?></div><?php endif; ?>
+                </div>
 
-                            <div class="col-md-3">
-                                <label class="form-label">Semester Saat Ini <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control <?= isset($validationErrors['semester']) ? 'is-invalid' : '' ?>" name="semester" placeholder="Contoh: 7" value="<?= old('semester') ?>" required min="1" max="14">
-                                    <?php if(isset($validationErrors['semester'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['semester'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Angkatan Tahun <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['angkatan_tahun']) ? 'is-invalid' : '' ?>" name="angkatan_tahun" placeholder="Contoh: 2021" value="<?= old('angkatan_tahun') ?>" required minlength="4" maxlength="4" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['angkatan_tahun'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['angkatan_tahun'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Tahun Akademik berjalan <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['tahun_akademik']) ? 'is-invalid' : '' ?>" name="tahun_akademik" placeholder="Contoh: 2023/2024" value="<?= old('tahun_akademik') ?>" required>
-                                    <?php if(isset($validationErrors['tahun_akademik'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['tahun_akademik'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Jenjang Studi <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['jenjang_pendidikan']) ? 'is-invalid' : '' ?>" name="jenjang_pendidikan" required>
-                                    <option value="">-- Pilih --</option>
-                                    <option value="D3" <?= old('jenjang_pendidikan') == 'D3' ? 'selected' : '' ?>>D3</option>
-                                    <option value="D4" <?= old('jenjang_pendidikan') == 'D4' ? 'selected' : '' ?>>D4</option>
-                                    <option value="S1" <?= old('jenjang_pendidikan') == 'S1' ? 'selected' : '' ?>>S1</option>
-                                </select>
-                                    <?php if(isset($validationErrors['jenjang_pendidikan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['jenjang_pendidikan'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                        </div>
+                <div class="field" id="grp_angkatan_tahun">
+                    <label>Tahun Angkatan <span class="req">*</span></label>
+                    <input type="number" name="angkatan_tahun" id="angkatan_tahun" required placeholder="Contoh: 2021" value="<?= old('angkatan_tahun') ?>" class="<?= isset($ve['angkatan_tahun']) ? 'err' : '' ?>" min="2000" max="2100">
+                    <?php if(isset($ve['angkatan_tahun'])): ?><div class="err-msg"><?= $ve['angkatan_tahun'] ?></div><?php endif; ?>
+                </div>
 
-                        <div class="section-title"><i class="bi bi-file-earmark-person me-1"></i> Profil Pribadi (Sesuai KTM/KTP)</div>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label">Nomor Induk Kependudukan (NIK) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['nik']) ? 'is-invalid' : '' ?>" name="nik" placeholder="Masukkan NIK 16 digit" value="<?= old('nik') ?>" required minlength="16" maxlength="16" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['nik'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['nik'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nomor Induk Mahasiswa (NIM) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['nim']) ? 'is-invalid' : '' ?>" name="nim" placeholder="Masukkan NIM Anda" value="<?= old('nim') ?>" required minlength="5" maxlength="25" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['nim'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['nim'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nama Lengkap Mahasiswa <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['nama_mahasiswa']) ? 'is-invalid' : '' ?>" name="nama_mahasiswa" placeholder="Masukkan nama lengkap" value="<?= old('nama_mahasiswa') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['nama_mahasiswa'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['nama_mahasiswa'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Alamat Email Aktif <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control <?= isset($validationErrors['email']) ? 'is-invalid' : '' ?>" name="email" placeholder="Masukan Email" value="<?= old('email') ?>" required maxlength="100">
-                                    <?php if(isset($validationErrors['email'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['email'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Nomor Telepon Aktif <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control <?= isset($validationErrors['no_telp']) ? 'is-invalid' : '' ?>" name="no_telp" placeholder="Masukan nomor telepon"  value="<?= old('no_telp') ?>" required minlength="10" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['no_telp'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['no_telp'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['jenis_kelamin']) ? 'is-invalid' : '' ?>" name="jenis_kelamin" required>
-                                    <option value="">-- Pilih --</option>
-                                    <option value="L" <?= old('jenis_kelamin') == 'L' ? 'selected' : '' ?>>Laki-laki</option>
-                                    <option value="P" <?= old('jenis_kelamin') == 'P' ? 'selected' : '' ?>>Perempuan</option>
-                                </select>
-                                    <?php if(isset($validationErrors['jenis_kelamin'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['jenis_kelamin'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control <?= isset($validationErrors['tgl_lahir']) ? 'is-invalid' : '' ?>" name="tgl_lahir" value="<?= old('tgl_lahir') ?>" required>
-                                    <?php if(isset($validationErrors['tgl_lahir'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['tgl_lahir'] ?></div>
-                                    <?php endif; ?>
-                            </div>
-                        </div>
+                <div class="field">
+                    <label id="lbl_semester">Semester Saat Ini <span class="req">*</span></label>
+                    <input type="number" name="semester" id="semester" required placeholder="Contoh: 5" value="<?= old('semester') ?>" class="<?= isset($ve['semester']) ? 'err' : '' ?>" min="1" max="14">
+                    <?php if(isset($ve['semester'])): ?><div class="err-msg"><?= $ve['semester'] ?></div><?php endif; ?>
+                </div>
 
-                      <!-- SEKSI 4: ALAMAT -->
-<div class="section-title"><i class="bi bi-geo-alt me-1"></i> Alamat Rumah / Domisili</div>
-<div class="mb-3">
-    <label class="form-label">Alamat Jalan & Nomor Rumah <span class="text-danger">*</span></label>
-    <textarea class="form-control <?= isset($validationErrors['alamat']) ? 'is-invalid' : '' ?>" rows="2" name="alamat" placeholder="Nama jalan, nomor rumah, Dusun..." required maxlength="255"><?= old('alamat') ?></textarea>
-                                    <?php if(isset($validationErrors['alamat'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['alamat'] ?></div>
-                                    <?php endif; ?>
-                                    <?php if(isset($validationErrors['alamat'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['alamat'] ?></div>
-                                    <?php endif; ?>
-</div>
-<div class="row g-3">
-    <!-- INPUT RT & RW YANG SEMPAT HILANG -->
-    <div class="col-md-2">
-        <label class="form-label">RT <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rt']) ? 'is-invalid' : '' ?>" name="rt" placeholder="001" value="<?= old('rt') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['rt'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rt'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-2">
-        <label class="form-label">RW <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['rw']) ? 'is-invalid' : '' ?>" name="rw" placeholder="002" value="<?= old('rw') ?>" required maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                    <?php if(isset($validationErrors['rw'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['rw'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-4">
-        <label class="form-label">Kelurahan / Desa <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['kelurahan']) ? 'is-invalid' : '' ?>" name="kelurahan" placeholder="Masukkan kelurahan" value="<?= old('kelurahan') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['kelurahan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kelurahan'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-4">
-        <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['kecamatan']) ? 'is-invalid' : '' ?>" name="kecamatan" placeholder="Masukkan kecamatan" value="<?= old('kecamatan') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['kecamatan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['kecamatan'] ?></div>
-                                    <?php endif; ?>
-    </div>
-    <div class="col-md-12 mb-4">
-        <label class="form-label">Provinsi <span class="text-danger">*</span></label>
-        <input type="text" class="form-control <?= isset($validationErrors['provinsi']) ? 'is-invalid' : '' ?>" name="provinsi" placeholder="Masukkan nama provinsi" value="<?= old('provinsi') ?>" required minlength="3" maxlength="100">
-                                    <?php if(isset($validationErrors['provinsi'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['provinsi'] ?></div>
-                                    <?php endif; ?>
-    </div>
-</div>
-
-                        <div class="d-grid mt-4 mb-4">
-                            <button type="submit" class="btn btn-register shadow-sm">
-                                <i class="bi bi-person-check-fill me-2"></i>Daftarkan Akun Baru
-                            </button>
-                        </div>
-
-                        <div class="text-center small text-muted" style="font-size: 0.85rem;">
-                            Sudah melengkapi pendaftaran? <a href="<?= base_url('login') ?>" class="login-link">Login di sini</a>
-                        </div>
-                    </form>
-
+                <div class="field" id="grp_tahun_akademik">
+                    <label>Tahun Akademik <span class="req">*</span></label>
+                    <input type="text" name="tahun_akademik" id="tahun_akademik" required placeholder="Contoh: 2023/2024" value="<?= old('tahun_akademik') ?>" class="<?= isset($ve['tahun_akademik']) ? 'err' : '' ?>" maxlength="20">
+                    <?php if(isset($ve['tahun_akademik'])): ?><div class="err-msg"><?= $ve['tahun_akademik'] ?></div><?php endif; ?>
                 </div>
             </div>
             
+            <!-- Panel Siswa Dihapus karena digabung ke atas -->
+            <div class="btn-row">
+                <button type="button" class="btn-back" onclick="go(1)">Kembali</button>
+                <button type="button" class="btn-next" onclick="go(3)">Lanjutkan</button>
+            </div>
         </div>
-    </div>
+
+        <!-- =============================== -->
+        <!-- STEP 3: ALAMAT DOMISILI         -->
+        <!-- =============================== -->
+        <div class="step-panel" id="step3">
+            <div class="sec-label">Alamat Domisili</div>
+            <div class="sec-desc">Lengkapi alamat tempat tinggal Anda saat ini dengan mendetail.</div>
+
+            <div class="field">
+                <label>Provinsi <span class="req">*</span></label>
+                <select name="provinsi" id="provinsi" required class="<?= isset($ve['provinsi']) ? 'err' : '' ?>" onchange="loadKabupaten(this.value)">
+                    <option value="">— Pilih Provinsi —</option>
+                    <?php if(!empty($provinsi)): foreach($provinsi as $pv): ?>
+                        <option value="<?= $pv['id_provinsi'] ?>"><?= ucwords(strtolower(esc($pv['nama_provinsi']))) ?></option>
+                    <?php endforeach; endif; ?>
+                </select>
+                <?php if(isset($ve['provinsi'])): ?><div class="err-msg"><?= $ve['provinsi'] ?></div><?php endif; ?>
+            </div>
+            
+            <div class="field">
+                <label>Kabupaten / Kota <span class="req">*</span></label>
+                <select name="kab_kota" id="kab_kota" required disabled class="<?= isset($ve['kab_kota']) ? 'err' : '' ?>" onchange="loadKecamatan(this.value)">
+                    <option value="">— Pilih Kabupaten/Kota —</option>
+                </select>
+                <?php if(isset($ve['kab_kota'])): ?><div class="err-msg"><?= $ve['kab_kota'] ?></div><?php endif; ?>
+            </div>
+
+            <div class="field">
+                <label>Kecamatan <span class="req">*</span></label>
+                <select name="kecamatan" id="kecamatan" required disabled class="<?= isset($ve['kecamatan']) ? 'err' : '' ?>" onchange="loadKelurahan(this.value)">
+                    <option value="">— Pilih Kecamatan —</option>
+                </select>
+                <?php if(isset($ve['kecamatan'])): ?><div class="err-msg"><?= $ve['kecamatan'] ?></div><?php endif; ?>
+            </div>
+            
+            <div class="field">
+                <label>Kelurahan / Desa <span class="req">*</span></label>
+                <select name="id_kelurahan" id="kelurahan" required disabled class="<?= isset($ve['id_kelurahan']) ? 'err' : '' ?>">
+                    <option value="">— Pilih Kelurahan —</option>
+                </select>
+                <?php if(isset($ve['id_kelurahan'])): ?><div class="err-msg"><?= $ve['id_kelurahan'] ?></div><?php endif; ?>
+            </div>
+
+            <div class="field-row">
+                <div class="field" style="max-width:120px;">
+                    <label>RT <span class="req">*</span></label>
+                    <input type="text" name="rt" id="rt" placeholder="Contoh: 001" value="<?= old('rt') ?>" required maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['rt']) ? 'err' : '' ?>">
+                    <?php if(isset($ve['rt'])): ?><div class="err-msg"><?= $ve['rt'] ?></div><?php endif; ?>
+                </div>
+                <div class="field" style="max-width:120px;">
+                    <label>RW <span class="req">*</span></label>
+                    <input type="text" name="rw" id="rw" placeholder="Contoh: 002" value="<?= old('rw') ?>" required maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['rw']) ? 'err' : '' ?>">
+                    <?php if(isset($ve['rw'])): ?><div class="err-msg"><?= $ve['rw'] ?></div><?php endif; ?>
+                </div>
+                <div class="field" style="flex:3;">
+                    <label>Detail Alamat (Nama Jalan, Blok, No. Rumah) <span class="req">*</span></label>
+                    <input type="text" name="alamat" id="alamat" placeholder="Contoh: Jl. Merdeka No. 10, Blok A" value="<?= old('alamat') ?>" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>">
+                    <?php if(isset($ve['alamat'])): ?><div class="err-msg"><?= $ve['alamat'] ?></div><?php endif; ?>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button type="button" class="btn-back" onclick="go(2)">Kembali</button>
+                <button type="button" class="btn-next" onclick="go(4)">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- =============================== -->
+        <!-- STEP 4: RINGKASAN & AKUN        -->
+        <!-- =============================== -->
+        <div class="step-panel" id="step4">
+            
+            <!-- Review -->
+            <div class="review-box mb-4">
+                <div class="review-title">Ringkasan Data</div>
+                <div id="reviewContent"></div>
+            </div>
+
+            <div class="sec-label">Informasi Akun</div>
+            <div class="sec-desc">Buat username dan kata sandi untuk keamanan akun Anda.</div>
+
+            <div class="field">
+                <label>Username <span class="req">*</span></label>
+                <input type="text" name="username" id="username" placeholder="Masukkan username" value="<?= old('username') ?>" required minlength="5" maxlength="30" class="<?= isset($ve['username']) ? 'err' : '' ?>">
+                <div class="hint">Min. 5 karakter, hanya huruf dan angka tanpa spasi.</div>
+                <?php if(isset($ve['username'])): ?><div class="err-msg"><?= $ve['username'] ?></div><?php endif; ?>
+            </div>
+            
+            <div class="field">
+                <label>Kata Sandi <span class="req">*</span></label>
+                <div class="pw-wrap">
+                    <input type="password" name="password" id="password" placeholder="Masukkan kata sandi" value="<?= old('password') ?>" required class="<?= isset($ve['password']) ? 'err' : '' ?>">
+                    <button type="button" class="pw-toggle" onclick="togPw('password','eyeIc')"><i class="bi bi-eye" id="eyeIc"></i></button>
+                </div>
+                <div class="hint">Min. 8 karakter (huruf besar, kecil, angka, simbol).</div>
+                <?php if(isset($ve['password'])): ?><div class="err-msg"><?= $ve['password'] ?></div><?php endif; ?>
+            </div>
+            
+            <div class="field">
+                <label>Konfirmasi Kata Sandi <span class="req">*</span></label>
+                <div class="pw-wrap">
+                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Masukkan ulang kata sandi" required>
+                    <button type="button" class="pw-toggle" onclick="togPw('confirm_password','eyeIcConfirm')"><i class="bi bi-eye" id="eyeIcConfirm"></i></button>
+                </div>
+            </div>
+
+
+            <button type="button" class="btn-register" id="btnDaftar" onclick="submitReg()">DAFTARKAN AKUN</button>
+
+            <div class="btn-row" style="border:none; margin-top:12px; padding-top:0;">
+                <button type="button" class="btn-back" onclick="go(3)">Kembali</button>
+                <div></div>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="login-footer">Sudah punya akun? <a href="<?= base_url('login') ?>">Masuk di sini</a></div>
 </div>
 
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-$(document).ready(function() {
-    // Membaca basis URL dari CodeIgniter
-    var baseUrl = '<?= base_url() ?>';
+var cur = 1;
 
-    // 1. EVENT KAMPUS DIUBAH
-    $('#kampus_select').on('change', function() {
-        var idKampus = $(this).val(); // PERBAIKAN: Menggunakan .val() milik jQuery
-        var fakultasSelect = $('#fakultas_select');
-        var prodiSelect = $('#prodi_select');
-
-        // Kembalikan ke posisi semula & kunci gemboknya
-        fakultasSelect.html('<option value="">-- Pilih Fakultas --</option>').prop('disabled', true);
-        prodiSelect.html('<option value="">-- Pilih Fakultas Dulu --</option>').prop('disabled', true);
-
-        if (idKampus) {
-            fakultasSelect.html('<option value="">Sedang memuat...</option>');
-            
-            // Tembak AJAX ke AuthController
-            $.ajax({
-                url: baseUrl + 'api/fakultas/' + idKampus,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    fakultasSelect.html('<option value="">-- Pilih Fakultas --</option>').prop('disabled', false); // Gembok dibuka
-                    if (data.length > 0) {
-                        $.each(data, function(key, value) {
-                            var isSelected = (value.id_fakultas == fakultasSelect.data('old')) ? 'selected' : '';
-                            fakultasSelect.append('<option value="' + value.id_fakultas + '" ' + isSelected + '>' + value.fakultas + '</option>');
-                        });
-
-                        // Jika ada old value, trigger change otomatis untuk muat Prodi
-                        if (fakultasSelect.data('old')) {
-                            fakultasSelect.trigger('change');
-                        }
-                    } else {
-                        fakultasSelect.append('<option value="">Tidak ada fakultas aktif</option>');
-                    }
-                },
-                error: function() {
-                    fakultasSelect.html('<option value="">Gagal memuat data</option>');
-                }
-            });
-        }
-    });
-
-    // 2. EVENT FAKULTAS DIUBAH
-    $('#fakultas_select').on('change', function() {
-        var idFakultas = $(this).val(); // PERBAIKAN: Menggunakan .val() milik jQuery
-        var prodiSelect = $('#prodi_select');
-
-        prodiSelect.html('<option value="">-- Pilih Program Studi --</option>').prop('disabled', true);
-
-        if (idFakultas) {
-            prodiSelect.html('<option value="">Sedang memuat...</option>');
-
-            $.ajax({
-                url: baseUrl + 'api/prodi/' + idFakultas,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    prodiSelect.html('<option value="">-- Pilih Program Studi --</option>').prop('disabled', false); // Gembok dibuka
-                    if (data.length > 0) {
-                        $.each(data, function(key, value) {
-                            var isSelected = (value.id_prodi == prodiSelect.data('old')) ? 'selected' : '';
-                            prodiSelect.append('<option value="' + value.id_prodi + '" ' + isSelected + '>' + value.prodi + '</option>');
-                        });
-                    } else {
-                        prodiSelect.append('<option value="">Tidak ada prodi aktif</option>');
-                    }
-                },
-                error: function() {
-                    prodiSelect.html('<option value="">Gagal memuat data</option>');
-                }
-            });
-        }
-    });
-
-    // 3. AUTO-TRIGGER JIKA KAMPUS SUDAH TERPILIH (Akibat kembali dari Validasi Error)
-    if ($('#kampus_select').val()) {
-        $('#kampus_select').trigger('change');
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    triggerJenjang();
 });
 
-function togglePassword() {
-    const password = document.getElementById("password");
-    const icon = document.getElementById("eyeIcon");
+$('#jenjang_pendidikan').on('change', function() {
+    triggerJenjang();
+});
 
-    if (password.type === "password") {
-        password.type = "text";
-        icon.classList.replace("bi-eye", "bi-eye-slash");
+function triggerJenjang() {
+    var siswa = isSiswa();
+    var jVal = $('#jenjang_pendidikan').val();
+    
+    // Filter instansi dropdown based on jenjang
+    $('#kampus_select option').each(function() {
+        var dj = $(this).attr('data-jenjang');
+        if (!dj || dj === jVal) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+    // Reset to default if currently selected option is now hidden
+    if ($('#kampus_select option:selected').css('display') === 'none') {
+        $('#kampus_select').val('');
+        $('#fakultas_select').html('<option value="">-- Pilih Fakultas --</option>').val('');
+        $('#prodi_select').html('<option value="">-- Pilih Prodi --</option>').val('');
+    }
+    
+    if (siswa) {
+        $('#lbl_kampus').html('Instansi Pendidikan <span class="req">*</span>');
+        $('#kampus_select').hide().prop('disabled', true).prop('required', false);
+        $('#nama_sekolah').show().prop('disabled', false).prop('required', true);
+        
+        $('#grp_fakultas').hide();
+        $('#fakultas_select').prop('required', false);
+        
+        $('#lbl_jurusan').html('Jurusan <span class="req">*</span>');
+        $('#prodi_select').hide().prop('disabled', true).prop('required', false);
+        $('#jurusan_smk').show().prop('disabled', false).prop('required', true);
+        
+        $('#lbl_nim').html('NISN <span class="req">*</span>');
+        $('#lbl_semester').html('Kelas <span class="req">*</span>');
+        
+        $('#grp_tahun_akademik').hide();
+        $('#tahun_akademik').prop('required', false);
+
+        $('#grp_angkatan_tahun').hide();
+        $('#angkatan_tahun').prop('required', false);
     } else {
-        password.type = "password";
-        icon.classList.replace("bi-eye-slash", "bi-eye");
+        $('#lbl_kampus').html('Instansi Pendidikan <span class="req">*</span>');
+        $('#nama_sekolah').hide().prop('disabled', true).prop('required', false);
+        $('#kampus_select').show().prop('disabled', false).prop('required', true);
+        
+        $('#grp_fakultas').show();
+        $('#fakultas_select').prop('required', true);
+        
+        $('#lbl_jurusan').html('Jurusan <span class="req">*</span>');
+        $('#jurusan_smk').hide().prop('disabled', true).prop('required', false);
+        $('#prodi_select').show().prop('disabled', false).prop('required', true);
+        
+        $('#lbl_nim').html('NIM <span class="req">*</span>');
+        $('#lbl_semester').html('Semester <span class="req">*</span>');
+        
+        $('#grp_tahun_akademik').show();
+        $('#tahun_akademik').prop('required', true);
+
+        $('#grp_angkatan_tahun').show();
+        $('#angkatan_tahun').prop('required', true);
     }
 }
 
-// === REAL-TIME FRONTEND VALIDATION (ON BLUR & INPUT) ===
-$(document).ready(function() {
-    var requiredFields = $('#registerForm input[required], #registerForm select[required], #registerForm textarea[required]');
-
-    // Saat user mengetik atau mengubah pilihan, hilangkan error
-    requiredFields.on('input change', function() {
-        $(this).removeClass('is-invalid');
-        var formGroup = $(this).closest('.col-md-12, .col-md-6, .col-md-4, .col-md-3, .col-md-2, .mb-3, .mb-4');
-        formGroup.find('.invalid-feedback.frontend-error').remove();
+// Stepper Flow
+function go(t) {
+    if (t > cur && !vStep(cur)) return;
+    document.querySelectorAll('.step-panel').forEach(function(p){ p.classList.remove('on'); });
+    document.getElementById('step'+t).classList.add('on');
+    // Update dots
+    document.querySelectorAll('.s-dot').forEach(function(d){
+        var s = parseInt(d.dataset.s);
+        d.classList.remove('active','done');
+        if (s===t) d.classList.add('active');
+        else if (s<t) d.classList.add('done');
     });
-
-    // Saat user meninggalkan kolom (blur), lakukan validasi
-    requiredFields.on('blur', function() {
-        validateField($(this));
+    document.querySelectorAll('.s-line').forEach(function(l,i){
+        l.classList.toggle('done', (i+1)<t);
     });
+    cur = t;
+    if (t===4) review_data();
+    window.scrollTo({top:0, behavior:'smooth'});
+}
 
-    // Validasi massal sebelum submit form
-    $('#registerForm').on('submit', function(e) {
-        var isValid = true;
-        requiredFields.each(function() {
-            if (!validateField($(this))) {
-                isValid = false;
-            }
-        });
-        
-        if (!isValid) {
-            e.preventDefault(); // Cegah submit jika ada yang kosong/salah
-            
-            // Scroll otomatis ke kolom error pertama
-            $('html, body').animate({
-                scrollTop: $('.is-invalid:first').offset().top - 100
-            }, 300);
+// Validation per Step
+function vStep(s) {
+    var panel = document.getElementById('step'+s);
+    var ok = true;
+    panel.querySelectorAll('.fe-err').forEach(function(e){ e.remove(); });
+
+    var fields;
+    if (s===2) {
+        fields = document.getElementById('panelPendidikan').querySelectorAll('input:not([disabled]), select:not([disabled]), textarea:not([disabled])');
+    } else if (s===1) {
+        // Validate radios too
+        var radios = panel.querySelectorAll('input[type="radio"][name="jenis_kelamin"]');
+        var rChecked = Array.from(radios).some(r => r.checked);
+        if(!rChecked && radios.length > 0) {
+            var rWrap = panel.querySelector('.radio-group');
+            mErr(rWrap, 'Jenis Kelamin wajib dipilih.');
+            ok = false;
         }
-    });
-
-    function validateField(element) {
-        var val = element.val();
-        if(val) val = val.trim();
-        else val = '';
-        
-        // Ambil nama label dengan mencari ke parent teratas (grid column)
-        var formGroup = element.closest('.col-md-12, .col-md-6, .col-md-4, .col-md-3, .col-md-2, .mb-3, .mb-4');
-        var label = formGroup.find('.form-label').first();
-        var fieldName = label.length ? label.text().replace('*', '').trim() : "Kolom ini";
-        
-        // Bersihkan error lama buatan JS
-        element.removeClass('is-invalid');
-        formGroup.find('.invalid-feedback.frontend-error').remove();
-
-        // 1. Cek Kosong
-        if (val === '') {
-            showError(element, fieldName + ' wajib diisi.');
-            return false;
-        }
-
-        // 2. Cek Minimal Karakter (jika ada minlength)
-        var minlength = element.attr('minlength');
-        if (minlength && val.length < parseInt(minlength)) {
-            showError(element, fieldName + ' minimal ' + minlength + ' karakter.');
-            return false;
-        }
-        
-        // 3. Cek Tepat Karakter (jika maxlength sama dengan minlength, contoh NIK 16 digit)
-        var maxlength = element.attr('maxlength');
-        if (minlength && maxlength && minlength === maxlength && val.length !== parseInt(minlength)) {
-            showError(element, fieldName + ' harus tepat ' + minlength + ' karakter.');
-            return false;
-        }
-
-        // 4. Validasi Format Spesifik (Regex)
-        var inputName = element.attr('name');
-        if (val !== '') {
-            if (inputName === 'nama_mahasiswa' && !/^[a-zA-Z\s]+$/.test(val)) {
-                showError(element, fieldName + ' hanya boleh berisi huruf dan spasi.');
-                return false;
-            }
-            if ((inputName === 'nik' || inputName === 'nim' || inputName === 'no_telp' || inputName === 'rt' || inputName === 'rw' || inputName === 'angkatan_tahun' || inputName === 'semester') && !/^[0-9]+$/.test(val)) {
-                showError(element, fieldName + ' hanya boleh berisi angka.');
-                return false;
-            }
-            if (inputName === 'semester') {
-                var semVal = parseInt(val, 10);
-                if (semVal < 1 || semVal > 14) {
-                    showError(element, 'Semester maksimal adalah 14 (Batas DO).');
-                    return false;
-                }
-            }
-            if (inputName === 'username' && !/^[a-zA-Z0-9]+$/.test(val)) {
-                showError(element, fieldName + ' hanya boleh berisi huruf dan angka tanpa spasi/simbol.');
-                return false;
-            }
-            if ((inputName === 'kelurahan' || inputName === 'kecamatan' || inputName === 'provinsi') && !/^[a-zA-Z0-9\s]+$/.test(val)) {
-                showError(element, fieldName + ' hanya boleh berisi huruf, angka, dan spasi.');
-                return false;
-            }
-            if (inputName === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val)) {
-                showError(element, 'Format ' + fieldName + ' tidak valid.');
-                return false;
-            }
-            if (inputName === 'password' && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(val)) {
-                showError(element, fieldName + ' tidak memenuhi syarat (Wajib ada huruf besar, kecil, angka, dan simbol).');
-                return false;
-            }
-        }
-
-        return true;
+        fields = panel.querySelectorAll('input:not([type="radio"])[required], select[required], textarea[required]');
+    } else {
+        fields = panel.querySelectorAll('input[required], select[required], textarea[required]');
     }
 
-    function showError(element, message) {
-        element.addClass('is-invalid');
-        // Jika form-group pakai input-group (seperti username/password dengan ikon), taruh error setelah input-group
-        if (element.parent('.input-group').length || element.parent('.input-pw-wrap').length) {
-            element.parent().after('<div class="invalid-feedback frontend-error d-block mt-1">' + message + '</div>');
-        } else {
-            element.after('<div class="invalid-feedback frontend-error d-block mt-1">' + message + '</div>');
-        }
+    fields.forEach(function(f){
+        f.classList.remove('err');
+        if (f.offsetParent===null && f.type!=='hidden') return;
+        if (f.disabled) return;
+        var v = (f.value||'').trim();
+        var lb = getLbl(f);
+        if (!v) { mErr(f, lb+' wajib diisi.'); ok=false; return; }
+        var n = f.name;
+        if (n==='nama_mahasiswa' && !/^[a-zA-Z\s'.]+$/.test(v)) { mErr(f,'Nama hanya boleh huruf dan spasi.'); ok=false; }
+        if (n==='nik' && v.length!==16) { mErr(f,'NIK harus tepat 16 digit.'); ok=false; }
+        if (['nik','nim_mhs','nim_siswa','no_telp','rt','rw','angkatan_tahun','angkatan_tahun_smk'].includes(n) && !/^\d+$/.test(v)) { mErr(f,lb+' hanya boleh angka.'); ok=false; }
+        if (n==='email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { mErr(f,'Format email tidak valid.'); ok=false; }
+        if (n==='semester') { var sv=parseInt(v); if(sv<1||sv>14){ mErr(f,'Semester 1-14.'); ok=false; } }
+    });
+    if (!ok) { var fe=panel.querySelector('.err, .radio-group.err'); if(fe) fe.scrollIntoView({behavior:'smooth',block:'center'}); }
+    return ok;
+}
+function getLbl(f){ var c=f.closest('.field'); if(c){var l=c.querySelector('label'); if(l) return l.textContent.split('<')[0].trim();} return 'Kolom ini'; }
+function mErr(f,m){ 
+    f.classList.add('err'); 
+    var d=document.createElement('div'); d.className='err-msg fe-err'; d.textContent=m; 
+    if(f.parentElement.classList.contains('pw-wrap')){ f.parentElement.after(d); }
+    else if(f.classList.contains('radio-group')){ f.after(d); }
+    else { f.after(d); } 
+}
+
+// Clear errors on input
+document.addEventListener('input', function(e){ if(e.target.matches('input,select,textarea')){ e.target.classList.remove('err'); var c=e.target.closest('.field'); if(c) c.querySelectorAll('.fe-err').forEach(function(x){x.remove();}); }});
+document.addEventListener('change', function(e){ 
+    if(e.target.matches('select, input[type="radio"]')){ 
+        e.target.classList.remove('err'); 
+        if(e.target.type === 'radio') e.target.closest('.radio-group').classList.remove('err');
+        var c=e.target.closest('.field'); if(c) c.querySelectorAll('.fe-err').forEach(function(x){x.remove();}); 
     }
 });
-</script>
 
+// Provinsi manual
+document.getElementById('provinsi').addEventListener('change', function(){ document.getElementById('wrapProvManual').style.display = this.value==='Lainnya'?'block':'none'; });
+
+// Build Review
+function isSiswa() {
+    var j = document.getElementById('jenjang_pendidikan');
+    if(!j || !j.options || !j.options[j.selectedIndex]) return false;
+    var n = j.options[j.selectedIndex].dataset.nama || '';
+    return n.indexOf('sma') !== -1 || n.indexOf('smk') !== -1;
+}
+function review_data() {
+    var g=function(id){var e=document.getElementById(id); return e?(e.value||'-'):'-';};
+    var gt=function(id){var e=document.getElementById(id); if(!e)return'-'; if(e.tagName==='SELECT'){return e.options[e.selectedIndex]?e.options[e.selectedIndex].text:'-';} return e.value||'-';};
+    
+    var nimV = g('nim');
+    var h = '';
+    
+    // Helper for table rows
+    var tr = function(label, value) {
+        return '<tr><td style="width:35%; padding:10px 0; color:#64748b; border-bottom:1px solid #f1f5f9;">'+label+'</td><td style="width:5%; border-bottom:1px solid #f1f5f9;">:</td><td style="padding:10px 0; color:#1e293b; border-bottom:1px solid #f1f5f9;">'+value+'</td></tr>';
+    };
+
+    // Title 1
+    h += '<div style="font-weight:700; font-size:1.05rem; margin-bottom:12px; color:#1e293b;">Biodata Diri</div>';
+    h += '<table style="width:100%; font-size:0.9rem; margin-bottom:28px; border-collapse:collapse;">';
+    h += tr('NIK', g('nik'));
+    h += tr('Nama Lengkap', g('nama_mahasiswa'));
+    
+    var jkr = document.querySelector('input[name="jenis_kelamin"]:checked');
+    var jkv = jkr ? (jkr.value==='L'?'Laki-laki':'Perempuan') : '-';
+    h += tr('Jenis Kelamin', jkv);
+    var rawDate = g('tgl_lahir');
+    var formattedDate = rawDate;
+    if (rawDate !== '-' && rawDate.indexOf('-') !== -1) {
+        var parts = rawDate.split('-');
+        if (parts.length === 3) {
+            var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var mIdx = parseInt(parts[1], 10) - 1;
+            var mName = (mIdx >= 0 && mIdx < 12) ? months[mIdx] : parts[1];
+            formattedDate = parts[2] + ' ' + mName + ' ' + parts[0];
+        }
+    }
+    h += tr('Tanggal Lahir', formattedDate);
+    
+    var p = gt('provinsi'), kb = gt('kab_kota'), kc = gt('kecamatan'), kl = gt('kelurahan');
+    var al = g('alamat') + ' RT '+g('rt')+'/RW '+g('rw')+', Kel. '+kl+', Kec. '+kc+', '+kb+', '+p;
+    h += tr('Alamat', al);
+    h += '</table>';
+
+    // Title 2
+    h += '<div style="font-weight:700; font-size:1.05rem; margin-bottom:12px; color:#1e293b;">Data Pendidikan</div>';
+    h += '<table style="width:100%; font-size:0.9rem; margin-bottom:20px; border-collapse:collapse;">';
+    
+    var siswa = isSiswa();
+    if (!siswa) {
+        h += tr('Jenjang Pendidikan', gt('jenjang_pendidikan'));
+        h += tr('Instansi Pendidikan', gt('kampus_select'));
+        h += tr('Fakultas', gt('fakultas_select'));
+        h += tr('Jurusan', gt('prodi_select'));
+        h += tr('NIM', nimV);
+        h += tr('Tahun Angkatan', g('angkatan_tahun'));
+        h += tr('Semester', g('semester'));
+        h += tr('Tahun Akademik', g('tahun_akademik'));
+    } else {
+        h += tr('Jenjang Pendidikan', gt('jenjang_pendidikan'));
+        h += tr('Instansi Pendidikan', g('nama_sekolah'));
+        h += tr('Jurusan', g('jurusan_smk'));
+        h += tr('Kelas', g('semester'));
+        h += tr('NISN', nimV);
+    }
+    h += '</table>';
+    
+    document.getElementById('reviewContent').innerHTML = h;
+}
+// Final Submit
+function submitReg() {
+    var panel=document.getElementById('step4'); var ok=true;
+    panel.querySelectorAll('.fe-err').forEach(function(e){e.remove();});
+    
+    var pw = document.getElementById('password');
+    var cpw = document.getElementById('confirm_password');
+    var user = document.getElementById('username');
+
+    // Basic required check
+    [user, pw, cpw].forEach(function(f){
+        f.classList.remove('err'); var v=(f.value||'').trim(); var lb=getLbl(f);
+        if(!v){mErr(f,lb+' wajib diisi.');ok=false;return;}
+    });
+
+    if(ok) {
+        var v = user.value.trim();
+        if(!/^[a-zA-Z0-9]+$/.test(v)){mErr(user,'Hanya huruf dan angka tanpa spasi.');ok=false;}
+        if(v.length<5){mErr(user,'Minimal 5 karakter.');ok=false;}
+        
+        var pv = pw.value.trim();
+        if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pv)){mErr(pw,'Min. 8 karakter, huruf besar, kecil, angka & simbol.');ok=false;}
+        
+        if(pv !== cpw.value.trim()){ mErr(cpw, 'Konfirmasi kata sandi tidak cocok.'); ok = false; }
+    }
+
+    if(!ok){var fe=panel.querySelector('.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'});return;}
+
+    Swal.fire({
+        title:'Konfirmasi Pendaftaran',
+        text:'Apakah data yang Anda masukkan sudah benar?',
+        icon:'question',
+        showCancelButton:true,
+        confirmButtonColor:'#1a1a2e',
+        cancelButtonColor:'#999',
+        confirmButtonText:'Ya, Daftarkan',
+        cancelButtonText:'Cek Kembali',
+        reverseButtons:true
+    }).then(function(r){
+        if(r.isConfirmed){
+            var b=document.getElementById('btnDaftar');
+            b.textContent='Mendaftarkan...'; b.disabled=true;
+            document.getElementById('regForm').submit();
+        }
+    });
+}
+
+// Title case helper
+function tc(str) {
+    if(!str) return '';
+    return str.toLowerCase().replace(/\b\w/g, function(l) { return l.toUpperCase(); });
+}
+
+function loadKabupaten(id_prov) {
+    let kab = document.getElementById('kab_kota');
+    let kec = document.getElementById('kecamatan');
+    let kel = document.getElementById('kelurahan');
+    kab.innerHTML = '<option value="">— Pilih Kabupaten/Kota —</option>';
+    kec.innerHTML = '<option value="">— Pilih Kecamatan —</option>';
+    kel.innerHTML = '<option value="">— Pilih Kelurahan —</option>';
+    kab.disabled = true; kec.disabled = true; kel.disabled = true;
+    if(!id_prov) return;
+    
+    fetch('<?= base_url("api/kabupaten") ?>/'+id_prov)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kab.innerHTML += `<option value="${k.id_kabupaten}">${tc(k.nama_kabupaten)}</option>`);
+        kab.disabled = false;
+    });
+}
+
+function loadKecamatan(id_kab) {
+    let kec = document.getElementById('kecamatan');
+    let kel = document.getElementById('kelurahan');
+    kec.innerHTML = '<option value="">— Pilih Kecamatan —</option>';
+    kel.innerHTML = '<option value="">— Pilih Kelurahan —</option>';
+    kec.disabled = true; kel.disabled = true;
+    if(!id_kab) return;
+    
+    fetch('<?= base_url("api/kecamatan") ?>/'+id_kab)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kec.innerHTML += `<option value="${k.id_kecamatan}">${tc(k.nama_kecamatan)}</option>`);
+        kec.disabled = false;
+    });
+}
+
+function loadKelurahan(id_kec) {
+    let kel = document.getElementById('kelurahan');
+    kel.innerHTML = '<option value="">— Pilih Kelurahan —</option>';
+    kel.disabled = true;
+    if(!id_kec) return;
+    
+    fetch('<?= base_url("api/kelurahan") ?>/'+id_kec)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kel.innerHTML += `<option value="${k.id_kelurahan}">${tc(k.nama_kelurahan)}</option>`);
+        kel.disabled = false;
+    });
+}
+
+// Password toggle
+function togPw(inputId, iconId) { 
+    var p = document.getElementById(inputId), i = document.getElementById(iconId); 
+    if(p.type==='password'){ p.type='text'; i.classList.replace('bi-eye','bi-eye-slash'); }
+    else { p.type='password'; i.classList.replace('bi-eye-slash','bi-eye'); } 
+}
+
+// AJAX cascading Kampus -> Fakultas -> Prodi
+$(document).ready(function(){
+    var bu='<?= base_url() ?>';
+    $('#kampus_select').on('change',function(){
+        var id=$(this).val(), f=$('#fakultas_select'), p=$('#prodi_select');
+        f.html('<option value="">— Pilih Fakultas —</option>').prop('disabled',true);
+        p.html('<option value="">— Pilih Jurusan —</option>').prop('disabled',true);
+        if(id){
+            f.html('<option value="">Memuat...</option>');
+            $.getJSON(bu+'api/fakultas/'+id,function(d){
+                f.html('<option value="">— Pilih Fakultas —</option>').prop('disabled',false);
+                $.each(d,function(k,v){var s=v.id_fakultas==f.data('old')?'selected':'';f.append('<option value="'+v.id_fakultas+'" '+s+'>'+v.fakultas+'</option>');});
+                if(f.data('old'))f.trigger('change');
+            });
+        }
+    });
+    $('#fakultas_select').on('change',function(){
+        var id=$(this).val(), p=$('#prodi_select');
+        p.html('<option value="">— Pilih Jurusan —</option>').prop('disabled',true);
+        if(id){
+            p.html('<option value="">Memuat...</option>');
+            $.getJSON(bu+'api/prodi/'+id,function(d){
+                p.html('<option value="">— Pilih Jurusan —</option>').prop('disabled',false);
+                $.each(d,function(k,v){var s=v.id_prodi==p.data('old')?'selected':'';p.append('<option value="'+v.id_prodi+'" '+s+'>'+v.nama_prodi+'</option>');});
+            });
+        }
+    });
+    if($('#kampus_select').val())$('#kampus_select').trigger('change');
+});
+</script>
 </body>
 </html>
