@@ -158,26 +158,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (empty($documentGroups)): ?>
-                    <tr>
-                        <td colspan="6" class="text-center py-5">
-                            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 250px;">
-                                <div class="position-relative mb-3">
-                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                                        <i class="bi bi-folder-x text-secondary opacity-50" style="font-size: 2.5rem;"></i>
-                                    </div>
-                                    <div class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
-                                        <i class="bi bi-exclamation-lg fw-bold"></i>
-                                    </div>
-                                </div>
-                                <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
-                                <p class="text-muted small mb-0" style="max-width: 350px;">
-                                    Belum ada dokumen yang diunggah oleh Sekretariat atau Bidang ke akun Anda.
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                <?php else: ?>
+                <?php if (!empty($documentGroups)): ?>
                     <?php foreach ($documentGroups as $idx => $group): ?>
                         <?php $hasDocs = !empty(array_filter($group['docs'], fn($doc) => !empty($doc))); ?>
                         <tr class="doc-row">
@@ -252,7 +233,23 @@ $(document).ready(function() {
         info: false, autoWidth: false, pageLength: 10,
         order: [[0, 'asc']],
         dom: 'rt',
-        language: { emptyTable: 'Belum ada dokumen yang diunggah.', zeroRecords: 'Tidak ditemukan data yang sesuai.' },
+        language: { 
+            emptyTable: `<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 250px;">
+                            <div class="position-relative mb-3">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-folder-x text-secondary opacity-50" style="font-size: 2.5rem;"></i>
+                                </div>
+                                <div class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                    <i class="bi bi-exclamation-lg fw-bold"></i>
+                                </div>
+                            </div>
+                            <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
+                            <p class="text-muted small mb-0" style="max-width: 350px;">
+                                Belum ada dokumen yang diunggah oleh Sekretariat atau Bidang ke akun Anda.
+                            </p>
+                        </div>`, 
+            zeroRecords: 'Tidak ditemukan data yang sesuai.' 
+        },
         columnDefs: [{ orderable: false, targets: [5] }]
     });
 

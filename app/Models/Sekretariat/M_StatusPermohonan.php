@@ -18,11 +18,11 @@ class M_StatusPermohonan extends Model
     protected $primaryKey       = 'id_permohonan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_by', 'deleted_at'];
     protected $useSoftDeletes   = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
+    protected $updatedField  = '';
     protected $deletedField  = 'deleted_at';
 
     

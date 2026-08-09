@@ -208,7 +208,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                 </tr>
                 <tr>
                     <th><?= $labelDeskripsi ?></th>
-                    <td style="white-space: pre-wrap;"><?= esc($p['deskripsi'] ?? '-') ?></td>
+                    <td style="white-space: pre-wrap;"><?= esc($p['rencana_kegiatan'] ?? '-') ?></td>
                 </tr>
                 <?php if (!empty($p['files'])): ?>
                 <tr>

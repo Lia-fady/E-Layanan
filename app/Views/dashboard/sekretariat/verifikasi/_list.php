@@ -17,9 +17,6 @@
     <select id="filterStatus">
         <option value="">Semua Status</option>
         <option value="MENUNGGU">Menunggu</option>
-        <option value="PERBAIKAN_BERKAS">Perbaikan Berkas</option>
-        <option value="DISETUJUI">Disetujui</option>
-        <option value="DITOLAK">Ditolak</option>
     </select>
 </div>
 
@@ -34,7 +31,6 @@
                 <th>Instansi</th>
                 <th>Tanggal Pengajuan</th>
                 <th class="text-center">Status Persetujuan</th>
-                <th class="text-center">Status Penempatan dan Bidang</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
@@ -63,23 +59,26 @@
                     <td><strong><?= esc($row->nama_mahasiswa ?? '-') ?></strong></td>
                     <td><?= esc($row->nim ?? '-') ?></td>
                     <td><?= esc($row->instansi_pendidikan ?? '-') ?></td>
-                    <td><?= !empty($row->tgl_pengajuan) ? date('d M Y', strtotime($row->tgl_pengajuan)) : '-' ?></td>
+                    <td><?= tgl_indo($row->tgl_pengajuan) ?></td>
                     <td class="text-center">
                         <span class="status-badge <?= $badgeClass ?>"><?= $statusText ?></span>
                     </td>
-                    <td class="text-center align-middle">
-                        <span class="<?= esc($row->badge_penempatan) ?> mb-1"><?= esc($row->label_penempatan) ?></span><br>
-                        <small class="text-muted"><i class="fas fa-building mr-1"></i> <?= esc($row->bidang_display) ?></small>
-                    </td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center" style="gap:4px;">
-                            <!-- Ikon Pensil (Edit/Verifikasi) - CLASS DIUBAH KE btn-verifikasi-detail -->
                             <button type="button" 
                                     class="riwayat-action-btn btn-verifikasi-detail" 
                                     title="Verifikasi Permohonan"
                                     style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; background:#EFF6FF; color:#2563EB; border-radius:6px;"
                                     data-id="<?= $row->id_permohonan_magang ?>">
                                 <i class="fas fa-edit"></i>
+                            </button>
+                            <!-- Ikon Tolak Cepat -->
+                            <button type="button" 
+                                    class="riwayat-action-btn btn-tolak-cepat" 
+                                    title="Tolak Permohonan"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; background:#FEF2F2; color:#DC2626; border-radius:6px;"
+                                    data-id="<?= $row->id_permohonan_magang ?>">
+                                <i class="fas fa-times"></i>
                             </button>
                             <!-- Ikon History/Log -->
                             <button type="button" 

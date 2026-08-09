@@ -98,7 +98,7 @@ $(document).ready(function() {
         var allValid = true;
         // Cari semua input hidden yang menyimpan status file
         $('input[name^="file_status"]').each(function() {
-            if ($(this).val() !== 'VALID') {
+            if ($(this).val() !== 'SESUAI') {
                 allValid = false;
             }
         });
@@ -149,6 +149,41 @@ $(document).ready(function() {
             }
         });
     });
+
+    <?php if (session()->getFlashdata('auto_open_detail_id')): ?>
+        // Trigger klik otomatis untuk memuat detail yang diinginkan
+        setTimeout(function() {
+            var detailId = '<?= session()->getFlashdata('auto_open_detail_id') ?>';
+            
+            $('#detailContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat detail permohonan...</div>');
+            $('#sectionList').hide();
+            $('#sectionDetail').show();
+            
+            $.ajax({
+                url: "<?= base_url('sekretariat/verifikasi') ?>",
+                type: "POST",
+                data: {
+                    action: 'get_detail',
+                    id: detailId
+                },
+                success: function(response) {
+                    $('#detailContainer').html(response);
+                    if ($('#id_bidang').is(':disabled')) {
+                        $('#id_bidang').data('locked', true);
+                    } else {
+                        $('#id_bidang').data('locked', false);
+                    }
+                    checkValidasiBerkas();
+                },
+                error: function() {
+                    $('#detailContainer').html('');
+                    $('#sectionDetail').hide();
+                    $('#sectionList').show();
+                    Swal.fire('Error!', 'Gagal memuat detail permohonan.', 'error');
+                }
+            });
+        }, 500); // Sedikit delay agar DOM siap dan animasi transisi smooth
+    <?php endif; ?>
 
     // Transisi Kembali ke Daftar
     $(document).on('click', '#btnKembali', function() {
@@ -215,43 +250,86 @@ $(document).ready(function() {
         $('#formVerifikasiDetail').submit();
     });
 
-    // Set file validitas toggle button classes in detail
-    $(document).on('click', '.btn-validasi-file', function() {
-        var btn = $(this);
-        var inputHidden = btn.siblings('input[type="hidden"]');
-        var value = btn.data('value');
+    // Set file validitas toggle checkbox classes in detail
+    $(document).on('change', '.cb-sesuai, .cb-tidak-sesuai', function() {
+        var checkbox = $(this);
+        var id = checkbox.data('id');
+        var isSesuai = checkbox.hasClass('cb-sesuai');
+        var isChecked = checkbox.is(':checked');
         
-        // Cek jika sudah pada status yang sama, abaikan
-        if (inputHidden.val() === value) return;
+        var hiddenInput = $('input[name="file_status[' + id + ']"]');
+        var cbSesuai = $('#cb_sesuai_' + id);
+        var cbTidakSesuai = $('#cb_tdk_sesuai_' + id);
+        var labelSesuai = $('label[for="cb_sesuai_' + id + '"]');
+        var labelTidakSesuai = $('label[for="cb_tdk_sesuai_' + id + '"]');
 
-        var msgText = value === 'VALID' ? "Apakah Anda yakin dokumen ini dinyatakan Valid?" : "Apakah Anda yakin dokumen ini dinyatakan Tidak Valid?";
-        var iconType = value === 'VALID' ? 'question' : 'warning';
-        var confirmColor = value === 'VALID' ? '#28a745' : '#dc3545';
+        if (!isChecked) {
+            // Prevent unchecking if the other is not checked (must pick one)
+            // Or allow unchecking to reset? Let's allow reset to empty string
+            hiddenInput.val('');
+            labelSesuai.css('color', '#6c757d');
+            labelTidakSesuai.css('color', '#6c757d');
+        } else {
+            if (isSesuai) {
+                hiddenInput.val('SESUAI');
+                cbTidakSesuai.prop('checked', false);
+                labelSesuai.css('color', '#28a745');
+                labelTidakSesuai.css('color', '#6c757d');
+            } else {
+                hiddenInput.val('TIDAK_SESUAI');
+                cbSesuai.prop('checked', false);
+                labelTidakSesuai.css('color', '#dc3545');
+                labelSesuai.css('color', '#6c757d');
+            }
+        }
+        
+        checkValidasiBerkas();
+    });
 
+    // Handle Tolak Cepat dari tabel
+    $(document).on('click', '.btn-tolak-cepat', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        
         Swal.fire({
-            title: 'Konfirmasi',
-            text: msgText,
-            icon: iconType,
+            title: 'Tolak Permohonan?',
+            text: 'Masukkan alasan penolakan untuk dikirim ke mahasiswa:',
+            input: 'textarea',
+            inputPlaceholder: 'Tuliskan alasan penolakan di sini...',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: confirmColor,
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak'
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'Tolak',
+            cancelButtonText: 'Batal',
+            inputValidator: (value) => {
+                if (!value || value.trim() === '') {
+                    return 'Alasan penolakan wajib diisi!'
+                }
+            }
         }).then((result) => {
             if (result.isConfirmed) {
-                inputHidden.val(value);
-                
-                btn.siblings().removeClass('btn-success btn-danger').addClass('btn-outline-secondary');
-                btn.removeClass('btn-outline-secondary');
-                
-                if (value === 'VALID') {
-                    btn.addClass('btn-success');
-                } else {
-                    btn.addClass('btn-danger');
-                }
-                
-                // Panggil fungsi cek
-                checkValidasiBerkas();
+                $.ajax({
+                    url: "<?= base_url('sekretariat/verifikasi/tolakCepat') ?>",
+                    type: "POST",
+                    data: {
+                        id_permohonan_magang: id,
+                        catatan: result.value,
+                        '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Gagal!', response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Terjadi kesalahan saat memproses data.', 'error');
+                    }
+                });
             }
         });
     });

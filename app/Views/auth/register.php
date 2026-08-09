@@ -270,14 +270,18 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Jenjang Studi <span class="text-danger">*</span></label>
-                                <select class="form-select <?= isset($validationErrors['jenjang_pendidikan']) ? 'is-invalid' : '' ?>" name="jenjang_pendidikan" required>
+                                <select class="form-select <?= isset($validationErrors['id_jenjang_pendidikan']) ? 'is-invalid' : '' ?>" name="id_jenjang_pendidikan" required>
                                     <option value="">-- Pilih --</option>
-                                    <option value="D3" <?= old('jenjang_pendidikan') == 'D3' ? 'selected' : '' ?>>D3</option>
-                                    <option value="D4" <?= old('jenjang_pendidikan') == 'D4' ? 'selected' : '' ?>>D4</option>
-                                    <option value="S1" <?= old('jenjang_pendidikan') == 'S1' ? 'selected' : '' ?>>S1</option>
+                                    <?php if(!empty($jenjang)): ?>
+                                        <?php foreach($jenjang as $j): ?>
+                                            <option value="<?= $j['id_jenjang_pendidikan'] ?>" <?= old('id_jenjang_pendidikan') == $j['id_jenjang_pendidikan'] ? 'selected' : '' ?>>
+                                                <?= esc($j['nama_jenjang']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
-                                    <?php if(isset($validationErrors['jenjang_pendidikan'])): ?>
-                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['jenjang_pendidikan'] ?></div>
+                                    <?php if(isset($validationErrors['id_jenjang_pendidikan'])): ?>
+                                        <div class="invalid-feedback d-block mt-1"><?= $validationErrors['id_jenjang_pendidikan'] ?></div>
                                     <?php endif; ?>
                             </div>
                         </div>
@@ -514,7 +518,7 @@ $(document).ready(function() {
                     if (data.length > 0) {
                         $.each(data, function(key, value) {
                             var isSelected = (value.id_prodi == prodiSelect.data('old')) ? 'selected' : '';
-                            prodiSelect.append('<option value="' + value.id_prodi + '" ' + isSelected + '>' + value.prodi + '</option>');
+                            prodiSelect.append('<option value="' + value.id_prodi + '" ' + isSelected + '>' + value.nama_prodi + '</option>');
                         });
                     } else {
                         prodiSelect.append('<option value="">Tidak ada prodi aktif</option>');

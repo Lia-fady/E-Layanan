@@ -54,7 +54,7 @@ class C_Riwayat extends BaseController
         $builder->join('m_bidang as bd', 'bd.id_bidang = ps.id_bidang', 'left');
         $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
-        $builder->where('pn.status_penempatan', 'SELESAI');
+        $builder->whereIn('ps.status_persetujuan', ['DISETUJUI', 'DITOLAK', 'PERBAIKAN_BERKAS']);
         $builder->groupBy('pm.id_permohonan_magang');
         $builder->orderBy('pm.created_at', 'DESC');
 
@@ -161,7 +161,6 @@ class C_Riwayat extends BaseController
                 ->where('id_persetujuan_magang', $id_persetujuan)
                 ->update([
                     'id_bidang'  => $id_bidang_baru,
-                    'updated_by' => session('id_user_pegawai'),
                     'updated_at' => date('Y-m-d H:i:s'),
                 ]);
         }
@@ -176,54 +175,141 @@ class C_Riwayat extends BaseController
     }
 
     /**
-     * Hapus data riwayat (permohonan magang dan relasinya)
+     * Hapus data riwayat permohonan magang beserta seluruh relasinya.
+     * 
+     * Urutan FK CASCADE yang sudah ada di database:
+     * 1. DELETE t_permohonan_magang → CASCADE ke:
+     *    - t_file_permohonan_magang (ON DELETE CASCADE)
+     *    - t_log_permohonan (ON DELETE CASCADE)
+     *    - t_persetujuan_magang (ON DELETE CASCADE) → CASCADE ke:
+     *      - t_penempatan_magang (ON DELETE CASCADE) → CASCADE ke:
+     *        - t_logbook_magang (ON DELETE CASCADE)
+     *      - t_file_proses_magang (ON DELETE CASCADE)
+     *
+     * Yang TIDAK memiliki FK CASCADE:
+     * - t_penilaian_magang (harus dihapus manual sebelum cascade)
      */
     public function delete()
     {
-        if ($this->request->isAJAX()) {
-            $id_permohonan = $this->request->getPost('id_permohonan_magang');
-            $db = \Config\Database::connect();
-            
-            $db->transStart();
-            
-            // Note: Since we have many tables, we delete manually or rely on FK cascade.
-            // If no FK cascade, we delete from dependent tables first.
-            $db->table('t_logbook_magang')
-               ->whereIn('id_penempatan_magang', function($builder) use ($id_permohonan) {
-                   return $builder->select('id_penempatan_magang')->from('t_penempatan_magang')->where('id_mahasiswa', function($b2) use ($id_permohonan) {
-                       return $b2->select('id_mahasiswa')->from('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan);
-                   });
-               })->delete();
+        // Validasi: Hanya terima request AJAX
+        if (!$this->request->isAJAX()) {
+            return redirect()->to(base_url('sekretariat/riwayat'));
+        }
 
-            $db->table('t_penilaian_magang')
-               ->whereIn('id_penempatan_magang', function($builder) use ($id_permohonan) {
-                   return $builder->select('id_penempatan_magang')->from('t_penempatan_magang')->where('id_mahasiswa', function($b2) use ($id_permohonan) {
-                       return $b2->select('id_mahasiswa')->from('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan);
-                   });
-               })->delete();
+        // Validasi: ID harus ada dan valid
+        $id_permohonan = $this->request->getPost('id_permohonan_magang');
+        if (empty($id_permohonan) || !is_numeric($id_permohonan)) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'ID permohonan tidak valid.'
+            ]);
+        }
 
-            $db->table('t_penempatan_magang')->where('id_persetujuan_magang', function($builder) use ($id_permohonan) {
-                return $builder->select('id_persetujuan_magang')->from('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan);
-            })->delete();
+        // Validasi: User Sekretariat harus login
+        if (empty(session('id_user_pegawai'))) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Anda tidak memiliki hak akses untuk menghapus data.'
+            ]);
+        }
 
-            // Delete files records
-            $db->table('t_file_proses_magang')->where('id_persetujuan_magang', function($builder) use ($id_permohonan) {
-                return $builder->select('id_persetujuan_magang')->from('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan);
-            })->delete();
+        $db = \Config\Database::connect();
 
-            $db->table('t_persetujuan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
-            $db->table('t_file_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
-            $db->table('t_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->delete();
+        // Validasi: Data permohonan harus ada di database
+        $permohonan = $db->table('t_permohonan_magang')
+            ->where('id_permohonan_magang', $id_permohonan)
+            ->get()
+            ->getRow();
 
-            $db->transComplete();
+        if (!$permohonan) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Data permohonan tidak ditemukan di database.'
+            ]);
+        }
 
-            if ($db->transStatus() === false) {
-                return $this->response->setJSON(['success' => false, 'message' => 'Gagal menghapus data riwayat.']);
+        // Kumpulkan path file fisik yang perlu dihapus SEBELUM transaksi
+        $filesToDelete = [];
+
+        // File permohonan (uploads/dokumen)
+        $filePermohonan = $db->table('t_file_permohonan_magang')
+            ->where('id_permohonan_magang', $id_permohonan)
+            ->get()->getResult();
+        foreach ($filePermohonan as $f) {
+            if (!empty($f->path_file)) {
+                $filesToDelete[] = FCPATH . $f->path_file;
+            }
+        }
+
+        // File proses magang (surat penerimaan, dll)
+        $persetujuan = $db->table('t_persetujuan_magang')
+            ->where('id_permohonan_magang', $id_permohonan)
+            ->get()->getRow();
+
+        if ($persetujuan) {
+            $fileProses = $db->table('t_file_proses_magang')
+                ->where('id_persetujuan_magang', $persetujuan->id_persetujuan_magang)
+                ->get()->getResult();
+            foreach ($fileProses as $fp) {
+                if (!empty($fp->path_file)) {
+                    $filesToDelete[] = FCPATH . $fp->path_file;
+                }
             }
 
-            return $this->response->setJSON(['success' => true, 'message' => 'Data riwayat berhasil dihapus.']);
+            // Hapus t_penilaian_magang (TIDAK ada FK CASCADE)
+            $penempatan = $db->table('t_penempatan_magang')
+                ->where('id_persetujuan_magang', $persetujuan->id_persetujuan_magang)
+                ->get()->getResult();
+            
+            $penempatanIds = array_map(function($p) { return $p->id_penempatan_magang; }, $penempatan);
         }
-        
-        return redirect()->to(base_url('sekretariat/riwayat'));
+
+        // Mulai transaksi database
+        $db->transStart();
+
+        try {
+            // 1. Hapus t_penilaian_magang secara manual (tidak ada FK)
+            if (!empty($penempatanIds)) {
+                $db->table('t_penilaian_magang')
+                    ->whereIn('id_penempatan_magang', $penempatanIds)
+                    ->delete();
+            }
+
+            // 2. Hapus t_permohonan_magang — FK CASCADE akan otomatis menghapus:
+            //    t_file_permohonan_magang, t_log_permohonan,
+            //    t_persetujuan_magang → t_penempatan_magang → t_logbook_magang, t_file_proses_magang
+            $db->table('t_permohonan_magang')
+                ->where('id_permohonan_magang', $id_permohonan)
+                ->delete();
+
+        } catch (\Exception $e) {
+            $db->transRollback();
+            log_message('error', 'Gagal menghapus riwayat permohonan ID ' . $id_permohonan . ': ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Terjadi kesalahan database saat menghapus data: ' . $e->getMessage()
+            ]);
+        }
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return $this->response->setJSON([
+                'success' => false, 
+                'message' => 'Gagal menghapus data riwayat. Transaksi database dibatalkan.'
+            ]);
+        }
+
+        // Hapus file fisik setelah transaksi database berhasil
+        foreach ($filesToDelete as $filePath) {
+            if (file_exists($filePath)) {
+                @unlink($filePath);
+            }
+        }
+
+        return $this->response->setJSON([
+            'success' => true, 
+            'message' => 'Data riwayat permohonan berhasil dihapus beserta seluruh data terkait.'
+        ]);
     }
 }

@@ -17,5 +17,5 @@ class LogPermohonanModel extends Model
     // Dates
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-
+    protected $updatedField  = '';
 }

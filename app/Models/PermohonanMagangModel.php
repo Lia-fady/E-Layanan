@@ -9,21 +9,21 @@ class PermohonanMagangModel extends Model
     protected $table            = 't_permohonan_magang';
     protected $primaryKey       = 'id_permohonan_magang';
     protected $returnType       = 'array';
-    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at'];
+    protected $allowedFields    = ['id_mahasiswa', 'id_instansi_mahasiswa', 'id_jenis_permohonan', 'tujuan', 'deskripsi_keahlian', 'rencana_kegiatan', 'tgl_mulai', 'tgl_selesai', 'posting_data', 'created_at', 'created_by', 'deleted_at'];
     protected $useSoftDeletes   = true;
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
+    protected $updatedField  = '';
     protected $deletedField  = 'deleted_at';
 
 
     /**
      * Kueri untuk mengambil status tracking permohonan mahasiswa beserta join-nya
      */
-   /**
+    /**
      * Kueri untuk mengambil status tracking permohonan mahasiswa beserta join-nya
      */
-   /**
+    /**
      * Kueri untuk mengambil status tracking permohonan mahasiswa beserta join-nya
      */
     public function getStatusPermohonan($id_mahasiswa, $filterStatus = null)
@@ -34,7 +34,7 @@ class PermohonanMagangModel extends Model
                 t_permohonan_magang.id_jenis_permohonan,
                 t_permohonan_magang.id_instansi_mahasiswa,
                 t_permohonan_magang.deskripsi_keahlian,
-                t_permohonan_magang.deskripsi,
+                t_permohonan_magang.rencana_kegiatan,
                 t_permohonan_magang.tgl_mulai,
                 t_permohonan_magang.tgl_selesai,
                 t_permohonan_magang.posting_data,
@@ -60,11 +60,11 @@ class PermohonanMagangModel extends Model
                 m_mahasiswa.email,
                 m_instansi_pendidikan.instansi_pendidikan as kampus,
                 m_prodi.nama_prodi,
-                t_instansi_mahasiswa.jenjang_pendidikan,
+                t_instansi_mahasiswa.id_jenjang_pendidikan,
                 t_instansi_mahasiswa.semester,
                 m_jenis_permohonan.jenis_permohonan
-            ') 
-            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa') 
+            ')
+            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
@@ -75,7 +75,7 @@ class PermohonanMagangModel extends Model
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
             ->groupBy('t_permohonan_magang.id_permohonan_magang')
             ->orderBy('t_permohonan_magang.created_at', 'DESC');
-            // Hapus filter 'kirim' agar Mahasiswa juga bisa melihat permohonan berstatus 'draft'
+        // Hapus filter 'kirim' agar Mahasiswa juga bisa melihat permohonan berstatus 'draft'
 
         if (!empty($filterStatus)) {
             if ($filterStatus == 'MENUNGGU') {
@@ -84,7 +84,7 @@ class PermohonanMagangModel extends Model
                     ->where('t_persetujuan_magang.status_persetujuan IS NULL')
                     ->orWhere('t_persetujuan_magang.status_persetujuan', 'MENUNGGU')
                     ->orWhere('t_persetujuan_magang.status_persetujuan', 'DISETUJUI')
-                ->groupEnd();
+                    ->groupEnd();
                 $builder->where('t_penempatan_magang.id_penempatan_magang IS NULL');
             } elseif ($filterStatus == 'DISETUJUI') {
                 $builder->where('t_penempatan_magang.id_penempatan_magang IS NOT NULL');
@@ -126,12 +126,13 @@ class PermohonanMagangModel extends Model
      */
     public function getDetailPermohonan($id_permohonan)
     {
-        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.nama_fakultas, m_prodi.nama_prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
+        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas AS nama_fakultas, m_prodi.nama_prodi, m_jenjang_pendidikan.nama_jenjang AS jenjang_pendidikan, t_instansi_mahasiswa.semester')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = t_instansi_mahasiswa.id_fakultas', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
+            ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = t_instansi_mahasiswa.id_jenjang_pendidikan', 'left')
             ->where('t_permohonan_magang.id_permohonan_magang', $id_permohonan)
             ->first();
     }
@@ -184,7 +185,7 @@ class PermohonanMagangModel extends Model
             ->findAll();
     }
 
-/**
+    /**
      * Kueri khusus untuk mengambil antrean data mahasiswa yang siap di-plot oleh Kabid
      * (Hanya mengambil data dengan status MENUNGGU dan disposisi = 1)
      */
@@ -212,12 +213,11 @@ class PermohonanMagangModel extends Model
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
             ->where('t_persetujuan_magang.disposisi', '1'); // Menangkap operan dari sekretariat (mengabaikan status_persetujuan demi kompatibilitas data lama)
-            
+
         if ($id_bidang) {
             $builder->where('t_persetujuan_magang.id_bidang', $id_bidang);
         }
 
         return $builder->orderBy('t_permohonan_magang.created_at', 'ASC')->get()->getResultArray();
     }
-
 }

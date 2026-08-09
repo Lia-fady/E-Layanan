@@ -20,7 +20,7 @@ class C_Permohonan extends C_BaseMahasiswa
         // Fetch data pribadi dan instansi untuk Review
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.nama_fakultas, m_prodi.nama_prodi')
+            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas AS nama_fakultas, m_prodi.nama_prodi')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
@@ -67,7 +67,7 @@ class C_Permohonan extends C_BaseMahasiswa
                     'min_length' => 'Deskripsi keahlian minimal harus 10 karakter.'
                 ]
             ],
-            'rencana_kegiatan' => [
+            'deskripsi' => [
                 'rules'  => 'required|min_length[20]',
                 'errors' => [
                     'required'   => 'Maksud dan tujuan magang wajib diisi.',
@@ -152,16 +152,83 @@ class C_Permohonan extends C_BaseMahasiswa
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $id_instansi_mahasiswa = $mhs['id_instansi_mahasiswa'] ?? 1;
 
-        $db->transStart();
-
         $action_type = $this->request->getPost('action_type') === 'draft' ? 'draft' : 'kirim';
+
+        // 1. Persiapan Folder Upload
+        $uploadPath = FCPATH . 'uploads/dokumen/';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+
+        // 2. Eksekusi Upload Semua File Terlebih Dahulu
+        $uploadedFiles = [];
+        $filesToProcess = [
+            'surat_pengantar' => $this->request->getFile('surat_pengantar'),
+            'cv'              => ($id_jenis_permohonan !== '2') ? $this->request->getFile('cv') : null,
+            'ktm'             => $this->request->getFile('ktm')
+        ];
+
+        try {
+            foreach ($filesToProcess as $fileKey => $fileObj) {
+                if ($fileObj && $fileObj->isValid() && !$fileObj->hasMoved()) {
+                    $newName = $fileObj->getRandomName();
+                    $fileObj->move($uploadPath, $newName);
+
+                    // Tentukan ID File Master berdasarkan jenis file dan permohonan
+                    $id_file_master = null;
+                    if ($fileKey === 'surat_pengantar') {
+                        $id_file_master = 2; 
+                        if ($id_jenis_permohonan == '1') $id_file_master = 1; 
+                        if ($id_jenis_permohonan == '2') $id_file_master = 5; 
+                        if ($id_jenis_permohonan == '4') $id_file_master = 6; 
+                    } elseif ($fileKey === 'cv') {
+                        $id_file_master = 3; 
+                        if ($id_jenis_permohonan == '1') $id_file_master = 4; 
+                        if ($id_jenis_permohonan == '4') $id_file_master = 7;
+                    } elseif ($fileKey === 'ktm') {
+                        $id_file_master = 11;
+                    }
+
+                    if ($id_file_master) {
+                        $pivot = $db->table('m_file_permohonan')
+                                    ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                                    ->where('id_file', $id_file_master)
+                                    ->get()->getRowArray();
+                        
+                        if ($pivot) {
+                            $uploadedFiles[] = [
+                                'id_file_permohonan' => $pivot['id_file_permohonan'],
+                                'nama_file'          => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileObj->getClientName()), // ANTI XSS
+                                'path_file'          => 'uploads/dokumen/' . $newName,
+                                'created_at'         => date('Y-m-d H:i:s')
+                            ];
+                        } else {
+                            throw new \Exception("Master data m_file_permohonan tidak ditemukan untuk jenis permohonan ini.");
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            // Jika ada salah satu file gagal pindah, hapus file yang terlanjur terupload
+            foreach ($uploadedFiles as $uf) {
+                if (file_exists(FCPATH . $uf['path_file'])) {
+                    unlink(FCPATH . $uf['path_file']);
+                }
+            }
+            log_message('error', 'Gagal upload file permohonan magang: ' . $e->getMessage());
+            session()->setFlashdata('error', 'Gagal memindahkan berkas fisik ke server. ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+
+        // 3. Insert ke Database setelah semua file fisik aman
+        $db->transStart();
 
         $dataPermohonan = [
             'id_mahasiswa'          => $id_mahasiswa,
             'id_instansi_mahasiswa' => $id_instansi_mahasiswa,
             'id_jenis_permohonan'   => $id_jenis_permohonan,
             'deskripsi_keahlian'    => esc($deskripsi_keahlian), // ANTI XSS
-            'deskripsi'             => esc($deskripsi),          // ANTI XSS
+            'rencana_kegiatan'      => esc($deskripsi),          // ANTI XSS
             'tgl_mulai'             => $tgl_mulai,
             'tgl_selesai'           => $tgl_selesai,
             'posting_data'          => $action_type,
@@ -171,81 +238,10 @@ class C_Permohonan extends C_BaseMahasiswa
         $this->permohonanModel->insert($dataPermohonan);
         $id_permohonan_baru = $this->permohonanModel->getInsertID(); 
 
-        $fileSurat = $this->request->getFile('surat_pengantar'); 
-        if ($fileSurat && $fileSurat->isValid() && !$fileSurat->hasMoved()) {
-            $namaSuratBaru = $fileSurat->getRandomName();
-            $fileSurat->move(FCPATH . 'uploads/dokumen', $namaSuratBaru);
-
-            $id_file_master = 2; 
-            if ($id_jenis_permohonan == '1') $id_file_master = 1; 
-            if ($id_jenis_permohonan == '2') $id_file_master = 5; 
-            if ($id_jenis_permohonan == '4') $id_file_master = 6; 
-
-            $pivot = $db->table('m_file_permohonan')
-                        ->where('id_jenis_permohonan', $id_jenis_permohonan)
-                        ->where('id_file', $id_file_master)
-                        ->get()->getRowArray();
-
-            if ($pivot) {
-                $db->table('t_file_permohonan_magang')->insert([
-                    'id_permohonan_magang' => $id_permohonan_baru,
-                    'id_file_permohonan'   => $pivot['id_file_permohonan'], 
-                    'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileSurat->getClientName()), // ANTI XSS
-                    'path_file'            => 'uploads/dokumen/' . $namaSuratBaru,
-                    'created_at'           => date('Y-m-d H:i:s')
-                ]);
-            }
-        }
-
-        if ($id_jenis_permohonan !== '2') {
-            $fileKedua = $this->request->getFile('cv'); 
-            if ($fileKedua && $fileKedua->isValid() && !$fileKedua->hasMoved()) {
-                $namaFileKeduaBaru = $fileKedua->getRandomName();
-                $fileKedua->move(FCPATH . 'uploads/dokumen', $namaFileKeduaBaru);
-
-                $id_file_kedua_master = 3; 
-                if ($id_jenis_permohonan == '1') $id_file_kedua_master = 4; 
-                if ($id_jenis_permohonan == '4') $id_file_kedua_master = 7; 
-
-                $pivotKedua = $db->table('m_file_permohonan')
-                            ->where('id_jenis_permohonan', $id_jenis_permohonan)
-                            ->where('id_file', $id_file_kedua_master)
-                            ->get()->getRowArray();
-
-                if ($pivotKedua) {
-                    $db->table('t_file_permohonan_magang')->insert([
-                        'id_permohonan_magang' => $id_permohonan_baru,
-                        'id_file_permohonan'   => $pivotKedua['id_file_permohonan'], 
-                        'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileKedua->getClientName()), // ANTI XSS
-                        'path_file'            => 'uploads/dokumen/' . $namaFileKeduaBaru,
-                        'created_at'           => date('Y-m-d H:i:s')
-                    ]);
-                }
-            }
-        }
-
-        // Upload KTM (mandatory for all types)
-        $fileKtm = $this->request->getFile('ktm'); 
-        if ($fileKtm && $fileKtm->isValid() && !$fileKtm->hasMoved()) {
-            $namaKtmBaru = $fileKtm->getRandomName();
-            $fileKtm->move(FCPATH . 'uploads/dokumen', $namaKtmBaru);
-
-            $id_file_ktm_master = 11; // KTM
-
-            $pivotKtm = $db->table('m_file_permohonan')
-                        ->where('id_jenis_permohonan', $id_jenis_permohonan)
-                        ->where('id_file', $id_file_ktm_master)
-                        ->get()->getRowArray();
-
-            if ($pivotKtm) {
-                $db->table('t_file_permohonan_magang')->insert([
-                    'id_permohonan_magang' => $id_permohonan_baru,
-                    'id_file_permohonan'   => $pivotKtm['id_file_permohonan'], 
-                    'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileKtm->getClientName()), // ANTI XSS
-                    'path_file'            => 'uploads/dokumen/' . $namaKtmBaru,
-                    'created_at'           => date('Y-m-d H:i:s')
-                ]);
-            }
+        // Insert pivot file
+        foreach ($uploadedFiles as $ufData) {
+            $ufData['id_permohonan_magang'] = $id_permohonan_baru;
+            $db->table('t_file_permohonan_magang')->insert($ufData);
         }
 
         if ($action_type === 'kirim') {
@@ -259,8 +255,14 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $db->transComplete();
 
+        // 4. Jika transaksi database gagal, bersihkan file fisiknya juga
         if ($db->transStatus() === false) {
-            session()->setFlashdata('error', 'Gagal memproses pengajuan permohonan magang Anda.');
+            foreach ($uploadedFiles as $uf) {
+                if (file_exists(FCPATH . $uf['path_file'])) {
+                    unlink(FCPATH . $uf['path_file']);
+                }
+            }
+            session()->setFlashdata('error', 'Gagal memproses pengajuan permohonan magang Anda ke database.');
             return redirect()->back()->withInput();
         }
 
@@ -321,7 +323,7 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.nama_fakultas, m_prodi.nama_prodi')
+            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas AS nama_fakultas, m_prodi.nama_prodi')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
@@ -423,22 +425,86 @@ class C_Permohonan extends C_BaseMahasiswa
             }
         }
 
-        $db->transStart();
-
         $action_type = $this->request->getPost('action_type') === 'draft' ? 'draft' : 'kirim';
         $id_jenis_permohonan = $this->request->getPost('id_jenis_permohonan');
+
+        // 1. Persiapan Folder Upload
+        $uploadPath = FCPATH . 'uploads/dokumen/';
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0755, true);
+        }
+
+        // 2. Eksekusi Upload File Baru Terlebih Dahulu
+        $uploadedFiles = [];
+        $filesToProcess = [
+            'surat_pengantar' => $this->request->getFile('surat_pengantar'),
+            'cv'              => ($id_jenis_permohonan !== '2') ? $this->request->getFile('cv') : null,
+            'ktm'             => $this->request->getFile('ktm')
+        ];
+
+        try {
+            foreach ($filesToProcess as $fileKey => $fileObj) {
+                if ($fileObj && $fileObj->isValid() && !$fileObj->hasMoved()) {
+                    $newName = $fileObj->getRandomName();
+                    $fileObj->move($uploadPath, $newName);
+
+                    $id_file_master = null;
+                    if ($fileKey === 'surat_pengantar') {
+                        $id_file_master = 2; 
+                        if ($id_jenis_permohonan == '1') $id_file_master = 1;
+                        if ($id_jenis_permohonan == '2') $id_file_master = 5;
+                        if ($id_jenis_permohonan == '4') $id_file_master = 6;
+                    } elseif ($fileKey === 'cv') {
+                        $id_file_master = 3; 
+                        if ($id_jenis_permohonan == '1') $id_file_master = 4;
+                        if ($id_jenis_permohonan == '4') $id_file_master = 7;
+                    } elseif ($fileKey === 'ktm') {
+                        $id_file_master = 11;
+                    }
+
+                    if ($id_file_master) {
+                        $pivot = $db->table('m_file_permohonan')
+                                    ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                                    ->where('id_file', $id_file_master)
+                                    ->get()->getRowArray();
+                        if ($pivot) {
+                            $uploadedFiles[] = [
+                                'id_file_permohonan' => $pivot['id_file_permohonan'],
+                                'nama_file'          => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileObj->getClientName()), // ANTI XSS
+                                'path_file'          => 'uploads/dokumen/' . $newName,
+                                'created_at'         => date('Y-m-d H:i:s')
+                            ];
+                        } else {
+                            throw new \Exception("Master data m_file_permohonan tidak ditemukan untuk jenis permohonan ini.");
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            foreach ($uploadedFiles as $uf) {
+                if (file_exists(FCPATH . $uf['path_file'])) {
+                    unlink(FCPATH . $uf['path_file']);
+                }
+            }
+            log_message('error', 'Gagal upload file permohonan magang (edit): ' . $e->getMessage());
+            session()->setFlashdata('error', 'Gagal memindahkan berkas fisik ke server saat proses edit. ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+
+        // 3. Database Transaction
+        $db->transStart();
 
         $dataPermohonan = [
             'id_jenis_permohonan' => $id_jenis_permohonan,
             'deskripsi_keahlian'  => esc($this->request->getPost('deskripsi_keahlian')), // ANTI XSS
-            'deskripsi'           => esc($this->request->getPost('deskripsi')),          // ANTI XSS
+            'rencana_kegiatan'    => esc($this->request->getPost('deskripsi')),          // ANTI XSS
             'tgl_mulai'           => $this->request->getPost('tgl_mulai'),
             'tgl_selesai'         => $this->request->getPost('tgl_selesai'),
-            'posting_data'        => $action_type,
-            'updated_at'          => date('Y-m-d H:i:s')
+            'posting_data'        => $action_type
         ];
         $this->permohonanModel->update($id_permohonan, $dataPermohonan);
 
+        // Update Pivot tanpa mengubah file fisik (bila jenis permohonan diganti)
         if ($draft['id_jenis_permohonan'] != $id_jenis_permohonan) {
             $oldSurat = $db->table('t_file_permohonan_magang')
                            ->join('m_file_permohonan', 'm_file_permohonan.id_file_permohonan = t_file_permohonan_magang.id_file_permohonan')
@@ -472,68 +538,27 @@ class C_Permohonan extends C_BaseMahasiswa
             }
         }
 
-        $fileSurat = $this->request->getFile('surat_pengantar'); 
-        if ($fileSurat && $fileSurat->isValid() && !$fileSurat->hasMoved()) {
-            $namaSuratBaru = $fileSurat->getRandomName();
-            $fileSurat->move(FCPATH . 'uploads/dokumen', $namaSuratBaru);
-            $id_file_master = 2; 
-            if ($id_jenis_permohonan == '1') $id_file_master = 1;
-            if ($id_jenis_permohonan == '2') $id_file_master = 5;
-            if ($id_jenis_permohonan == '4') $id_file_master = 6;
+        $filesToDeletePhysically = [];
 
-            $pivot = $db->table('m_file_permohonan')->where('id_jenis_permohonan', $id_jenis_permohonan)->where('id_file', $id_file_master)->get()->getRowArray();
-            if ($pivot) {
-                $oldSurats = $db->table('t_file_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->where('id_file_permohonan', $pivot['id_file_permohonan'])->get()->getResultArray();
-                if($oldSurats) {
-                    foreach($oldSurats as $os) {
-                        if(file_exists(FCPATH . $os['path_file'])) {
-                            unlink(FCPATH . $os['path_file']);
-                        }
-                        $db->table('t_file_permohonan_magang')->where('id_file_permohonan_magang', $os['id_file_permohonan_magang'])->delete();
-                    }
+        // Insert new records and track old records to delete
+        foreach ($uploadedFiles as $uf) {
+            $oldFilesQuery = $db->table('t_file_permohonan_magang')
+                                ->where('id_permohonan_magang', $id_permohonan)
+                                ->where('id_file_permohonan', $uf['id_file_permohonan'])
+                                ->get()->getResultArray();
+            if ($oldFilesQuery) {
+                foreach($oldFilesQuery as $of) {
+                    $filesToDeletePhysically[] = FCPATH . $of['path_file'];
+                    $db->table('t_file_permohonan_magang')->where('id_file_permohonan_magang', $of['id_file_permohonan_magang'])->delete();
                 }
-
-                $db->table('t_file_permohonan_magang')->insert([
-                    'id_permohonan_magang' => $id_permohonan,
-                    'id_file_permohonan'   => $pivot['id_file_permohonan'], 
-                    'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileSurat->getClientName()), // ANTI XSS
-                    'path_file'            => 'uploads/dokumen/' . $namaSuratBaru,
-                    'created_at'           => date('Y-m-d H:i:s')
-                ]);
             }
+
+            $uf['id_permohonan_magang'] = $id_permohonan;
+            $db->table('t_file_permohonan_magang')->insert($uf);
         }
 
-        if ($id_jenis_permohonan !== '2') {
-            $fileKedua = $this->request->getFile('cv'); 
-            if ($fileKedua && $fileKedua->isValid() && !$fileKedua->hasMoved()) {
-                $namaFileKeduaBaru = $fileKedua->getRandomName();
-                $fileKedua->move(FCPATH . 'uploads/dokumen', $namaFileKeduaBaru);
-                $id_file_kedua_master = 3; 
-                if ($id_jenis_permohonan == '1') $id_file_kedua_master = 4;
-                if ($id_jenis_permohonan == '4') $id_file_kedua_master = 7;
-
-                $pivotKedua = $db->table('m_file_permohonan')->where('id_jenis_permohonan', $id_jenis_permohonan)->where('id_file', $id_file_kedua_master)->get()->getRowArray();
-                if ($pivotKedua) {
-                    $oldCvs = $db->table('t_file_permohonan_magang')->where('id_permohonan_magang', $id_permohonan)->where('id_file_permohonan', $pivotKedua['id_file_permohonan'])->get()->getResultArray();
-                    if($oldCvs) {
-                        foreach($oldCvs as $oc) {
-                            if(file_exists(FCPATH . $oc['path_file'])) {
-                                unlink(FCPATH . $oc['path_file']);
-                            }
-                            $db->table('t_file_permohonan_magang')->where('id_file_permohonan_magang', $oc['id_file_permohonan_magang'])->delete();
-                        }
-                    }
-
-                    $db->table('t_file_permohonan_magang')->insert([
-                        'id_permohonan_magang' => $id_permohonan,
-                        'id_file_permohonan'   => $pivotKedua['id_file_permohonan'], 
-                        'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileKedua->getClientName()), // ANTI XSS
-                        'path_file'            => 'uploads/dokumen/' . $namaFileKeduaBaru,
-                        'created_at'           => date('Y-m-d H:i:s')
-                    ]);
-                }
-            }
-        } elseif ($id_jenis_permohonan == '2') {
+        // Hapus CV jika jenis permohonan diubah ke Observasi (2)
+        if ($id_jenis_permohonan == '2') {
             $oldCvObsArr = $db->table('t_file_permohonan_magang')
                            ->join('m_file_permohonan', 'm_file_permohonan.id_file_permohonan = t_file_permohonan_magang.id_file_permohonan')
                            ->where('t_file_permohonan_magang.id_permohonan_magang', $id_permohonan)
@@ -542,47 +567,9 @@ class C_Permohonan extends C_BaseMahasiswa
                            ->get()->getResultArray();
             if ($oldCvObsArr) {
                 foreach($oldCvObsArr as $cvObs) {
-                    if(file_exists(FCPATH . $cvObs['path_file'])) unlink(FCPATH . $cvObs['path_file']);
+                    $filesToDeletePhysically[] = FCPATH . $cvObs['path_file'];
                     $db->table('t_file_permohonan_magang')->where('id_file_permohonan_magang', $cvObs['id_file_permohonan_magang'])->delete();
                 }
-            }
-        }
-
-        // 3. Upload File KTM (if any replacement)
-        $fileKtm = $this->request->getFile('ktm'); 
-        if ($fileKtm && $fileKtm->isValid() && !$fileKtm->hasMoved()) {
-            $namaKtmBaru = $fileKtm->getRandomName();
-            $fileKtm->move(FCPATH . 'uploads/dokumen', $namaKtmBaru);
-
-            $id_file_ktm_master = 11; // KTM
-
-            $pivotKtm = $db->table('m_file_permohonan')
-                        ->where('id_jenis_permohonan', $id_jenis_permohonan)
-                        ->where('id_file', $id_file_ktm_master)
-                        ->get()->getRowArray();
-
-            if ($pivotKtm) {
-                // Delete old KTM if exists
-                $oldKtm = $db->table('t_file_permohonan_magang')
-                            ->where('id_permohonan_magang', $id_permohonan)
-                            ->where('id_file_permohonan', $pivotKtm['id_file_permohonan'])
-                            ->get()->getResultArray();
-                if($oldKtm) {
-                    foreach($oldKtm as $ok) {
-                        if(file_exists(FCPATH . $ok['path_file'])) {
-                            unlink(FCPATH . $ok['path_file']);
-                        }
-                        $db->table('t_file_permohonan_magang')->where('id_file_permohonan_magang', $ok['id_file_permohonan_magang'])->delete();
-                    }
-                }
-
-                $db->table('t_file_permohonan_magang')->insert([
-                    'id_permohonan_magang' => $id_permohonan,
-                    'id_file_permohonan'   => $pivotKtm['id_file_permohonan'], 
-                    'nama_file'            => preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $fileKtm->getClientName()), // ANTI XSS
-                    'path_file'            => 'uploads/dokumen/' . $namaKtmBaru,
-                    'created_at'           => date('Y-m-d H:i:s')
-                ]);
             }
         }
 
@@ -597,8 +584,21 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $db->transComplete();
 
+        // 4. Jika transaksi database gagal, bersihkan file baru dan batalkan
         if ($db->transStatus() === false) {
+            foreach ($uploadedFiles as $uf) {
+                if (file_exists(FCPATH . $uf['path_file'])) {
+                    unlink(FCPATH . $uf['path_file']);
+                }
+            }
             return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan sistem saat menyimpan permohonan. Coba lagi.');
+        }
+
+        // 5. Jika sukses, hapus fisik file lama yang sudah digantikan
+        foreach ($filesToDeletePhysically as $oldFilePath) {
+            if (file_exists($oldFilePath)) {
+                unlink($oldFilePath);
+            }
         }
 
         if ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') {

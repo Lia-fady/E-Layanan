@@ -31,6 +31,7 @@ class AuthController extends BaseController
         
         $db = \Config\Database::connect();
         $data['provinsi'] = $db->table('m_provinsi')->get()->getResultArray();
+        $data['jenjang'] = $db->table('m_jenjang_pendidikan')->get()->getResultArray();
 
         $data['title']  = "Registrasi Akun Mahasiswa";
 
@@ -246,14 +247,18 @@ class AuthController extends BaseController
 
         // 2. Mulai Database Transaction agar data aman berantai (LOGIKA UTUH PUNYA KELOMPOKMU)
         $db = \Config\Database::connect();
+        
+        // Disable foreign key checks to break the circular dependency between m_mahasiswa and t_instansi_mahasiswa
+        $db->query('SET foreign_key_checks = 0');
         $db->transStart();
 
         // STEP 1: Buat data akademik di t_instansi_mahasiswa terlebih dahulu
         $dataAkademik = [
+            'id_mahasiswa'           => 0, // Bypass NOT NULL constraint sementara
             'id_instansi_pendidikan' => $this->request->getPost('id_instansi_pendidikan'),
             'id_fakultas'            => $this->request->getPost('id_fakultas'),
             'id_prodi'               => $this->request->getPost('id_prodi'),
-            'jenjang_pendidikan'     => $this->request->getPost('jenjang_pendidikan'),
+            'id_jenjang_pendidikan'  => $this->request->getPost('id_jenjang_pendidikan'),
             'angkatan_tahun'         => $this->request->getPost('angkatan_tahun'),
             'semester'               => $this->request->getPost('semester'),
             'tahun_akademik'         => $this->request->getPost('tahun_akademik'),
@@ -299,6 +304,9 @@ class AuthController extends BaseController
 
         // Selesaikan transaksi database
         $db->transComplete();
+        
+        // Re-enable foreign key checks
+        $db->query('SET foreign_key_checks = 1');
 
         if ($db->transStatus() === false) {
             return redirect()->back()->withInput()->with('error', 'Gagal memproses pendaftaran data akademik Anda.');

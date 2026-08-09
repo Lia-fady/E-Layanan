@@ -22,6 +22,6 @@ class M_File extends Model
      */
     public function getActiveFiles()
     {
-        return $this->where('status_aktif', '1')->findAll();
+        return $this->where('status', 'AKTIF')->findAll();
     }
 }

@@ -90,6 +90,16 @@ class C_Verifikasi extends BaseController
     }
 
     /**
+     * Handler untuk link detail standalone dari dashboard/riwayat.
+     * Akan redirect ke index dan membuka detail otomatis via JS.
+     */
+    public function detailStandalone($id)
+    {
+        session()->setFlashdata('auto_open_detail_id', $id);
+        return redirect()->to(base_url('sekretariat/verifikasi'));
+    }
+
+    /**
      * Proses verifikasi via AJAX Modal.
      */
     public function prosesModal()
@@ -100,23 +110,19 @@ class C_Verifikasi extends BaseController
 
         $id_permohonan = $this->request->getPost('id_permohonan_magang');
 
-        // Guard: Cek apakah status sudah final
+        // Guard: Cek apakah keputusan sudah pernah disimpan (status bukan MENUNGGU)
+        // Jika sudah final, tolak perubahan di level backend
         $db = \Config\Database::connect();
-        $existing = $db->table('t_persetujuan_magang as ps')
-            ->select('ps.status_persetujuan, pn.status_penempatan')
-            ->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
-            ->where('ps.id_permohonan_magang', $id_permohonan)
+        $existing = $db->table('t_persetujuan_magang')
+            ->where('id_permohonan_magang', $id_permohonan)
             ->get()
             ->getRow();
 
-        if ($existing && $existing->status_persetujuan === 'DISETUJUI') {
-            $statusPenempatan = $existing->status_penempatan ?? 'MENUNGGU';
-            if ($statusPenempatan !== 'MENUNGGU') {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Verifikasi tidak dapat diubah karena penempatan sudah berstatus ' . $statusPenempatan . '.'
-                ]);
-            }
+        if ($existing && $existing->status_persetujuan !== 'MENUNGGU') {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Keputusan verifikasi sudah final dan tidak dapat diubah. Status saat ini: ' . $existing->status_persetujuan
+            ]);
         }
 
         $fileStatuses = $this->request->getPost('file_status') ?? [];
@@ -136,8 +142,8 @@ class C_Verifikasi extends BaseController
             $allValid = true;
             $anyInvalid = false;
             foreach ($fileStatuses as $status) {
-                if ($status !== 'VALID') $allValid = false;
-                if ($status === 'TIDAK_VALID') $anyInvalid = true;
+                if ($status !== 'SESUAI') $allValid = false;
+                if ($status === 'TIDAK_SESUAI') $anyInvalid = true;
             }
 
             $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
@@ -222,5 +228,42 @@ class C_Verifikasi extends BaseController
         }
 
         return redirect()->to(base_url('sekretariat/verifikasi'));
+    }
+
+    /**
+     * Tolak permohonan langsung dari tabel (AJAX).
+     */
+    public function tolakCepat()
+    {
+        if (!$this->request->isAJAX()) {
+            return redirect()->to(base_url('sekretariat/verifikasi'));
+        }
+
+        $id_permohonan = $this->request->getPost('id_permohonan_magang');
+        $catatan = trim($this->request->getPost('catatan') ?? '');
+
+        if (empty($catatan)) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Catatan penolakan wajib diisi.'
+            ]);
+        }
+
+        $data = [
+            'id_permohonan_magang' => $id_permohonan,
+            'catatan'              => $catatan,
+            'status_persetujuan'   => 'DITOLAK',
+            'created_by'           => session('id_user_pegawai'),
+            'updated_by'           => session('id_user_pegawai'),
+        ];
+
+        $result = $this->verifikasiModel->simpanVerifikasi($data);
+
+        if ($result) {
+            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan ditolak. Catatan: ' . $catatan);
+            return $this->response->setJSON(['success' => true, 'message' => 'Permohonan berhasil ditolak.']);
+        }
+
+        return $this->response->setJSON(['success' => false, 'message' => 'Gagal menolak permohonan.']);
     }
 }

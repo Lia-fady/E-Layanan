@@ -12,7 +12,7 @@ class FakultasModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_fakultas', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['fakultas', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     // Dates
     protected $useTimestamps = true;

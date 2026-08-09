@@ -23,7 +23,7 @@ class C_Profil extends C_BaseMahasiswa
                 t_instansi_mahasiswa.*,
                 m_instansi_pendidikan.instansi_pendidikan as instansi_pendidikan,
                 m_prodi.nama_prodi,
-                m_fakultas.nama_fakultas
+                m_fakultas.fakultas AS nama_fakultas
             ')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')

@@ -75,7 +75,7 @@ class C_UploadSuratPenerimaan extends BaseController
                 mhs.no_telp,
                 ip.instansi_pendidikan, 
                 pr.nama_prodi,
-                fk.nama_fakultas
+                fk.fakultas AS nama_fakultas
             ')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')

@@ -237,7 +237,7 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Deskripsi Magang -->
         <div class="mb-4">
             <label class="wz-form-label" id="lbl-magang">Deskripsi Rencana Magang / Kegiatan <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi', $draft['deskripsi']) ?></textarea>
+            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi', $draft['rencana_kegiatan']) ?></textarea>
             <div class="char-counter"><span id="cc-magang">0</span>/1000 karakter</div>
         </div>
 

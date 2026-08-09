@@ -59,7 +59,7 @@ class M_Disposisi extends Model
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->where('ps.status_persetujuan', 'DISETUJUI');
         $builder->groupStart();
-            $builder->where('ps.disposisi', '0');
+            $builder->where('ps.disposisi', 'BELUM');
             $builder->orWhere('ps.disposisi IS NULL');
         $builder->groupEnd();
         $builder->orderBy('ps.tanggal_persetujuan', 'DESC');
@@ -92,10 +92,10 @@ class M_Disposisi extends Model
             mhs.email,
             mhs.no_telp,
             jp.jenis_permohonan,
-            im.jenjang_pendidikan,
+            jn.nama_jenjang AS jenjang_pendidikan,
             ip.instansi_pendidikan,
             pr.nama_prodi,
-            fk.nama_fakultas,
+            fk.fakultas AS nama_fakultas,
             bd.bidang
         ');
         $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
@@ -105,6 +105,7 @@ class M_Disposisi extends Model
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
         $builder->join('m_fakultas as fk', 'fk.id_fakultas = pr.id_fakultas', 'left');
+        $builder->join('m_jenjang_pendidikan as jn', 'jn.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = ps.id_bidang', 'left');
         $builder->where('ps.id_persetujuan_magang', $id_persetujuan);
 
@@ -138,7 +139,7 @@ class M_Disposisi extends Model
 
         return $db->table('m_kuota')
             ->where('id_bidang', $id_bidang)
-            ->where('status_aktif', '1')
+            ->where('status', 'AKTIF')
             ->get()
             ->getRow();
     }
@@ -159,7 +160,7 @@ class M_Disposisi extends Model
         $result = $db->table('t_persetujuan_magang')
             ->where('id_persetujuan_magang', $id_persetujuan)
             ->update([
-                'disposisi'       => '1',
+                'disposisi'       => 'DIKIRIM',
                 'id_bidang'       => $data['id_bidang'],
                 'updated_by'      => $data['updated_by'],
                 'updated_at'      => date('Y-m-d H:i:s'),
@@ -216,8 +217,9 @@ class M_Disposisi extends Model
                 'id_persetujuan_magang' => $id_persetujuan,
                 'id_mahasiswa'          => $permohonan->id_mahasiswa,
                 'catatan'               => $data['catatan_disposisi'] ?? null,
+                'tanggal_mulai'         => $permohonan->tgl_mulai,
+                'tanggal_selesai'       => $permohonan->tgl_selesai,
                 'status_penempatan'     => 'MENUNGGU',
-                'created_by'            => $data['updated_by'],
                 'created_at'            => date('Y-m-d H:i:s'),
             ]);
         }
