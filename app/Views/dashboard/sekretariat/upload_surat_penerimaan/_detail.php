@@ -165,7 +165,7 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                                         <td class="text-center align-middle"><?= $no++ ?></td>
                                         <td class="align-middle"><?= esc($f->nama_file_master ?? 'Surat Penerimaan') ?></td>
                                         <td class="align-middle">
-                                            <a href="<?= base_url('sekretariat/upload-surat-penerimaan/download/' . $f->id_file_selesai_magang) ?>" target="_blank">
+                                            <a href="<?= base_url('sekretariat/upload-surat-penerimaan/download/' . $f->id_file_proses_magang) ?>" target="_blank">
                                                 <?= esc($f->nama_file) ?>
                                             </a>
                                         </td>
@@ -176,10 +176,10 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                                             <small><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></small>
                                         </td>
                                         <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-sm btn-warning btn-ganti-surat mb-1" data-id="<?= $f->id_file_selesai_magang ?>" title="Ganti File">
+                                            <button type="button" class="btn btn-sm btn-warning btn-ganti-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Ganti File">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete-surat mb-1" data-id="<?= $f->id_file_selesai_magang ?>" title="Hapus File">
+                                            <button type="button" class="btn btn-sm btn-danger btn-delete-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Hapus File">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>

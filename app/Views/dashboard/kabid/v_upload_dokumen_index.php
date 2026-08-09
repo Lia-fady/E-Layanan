@@ -13,21 +13,7 @@
 
 <div id="sectionList">
 
-<!-- Flash Messages -->
-<?php if (session()->getFlashdata('success')) : ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle mr-2"></i>
-    <?= session()->getFlashdata('success') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
-<?php if (session()->getFlashdata('error')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    <?= session()->getFlashdata('error') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
+
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -185,6 +171,7 @@ $(document).ready(function() {
             url: "<?= base_url('kabid/upload-dokumen') ?>",
             type: "POST",
             data: {
+                <?= csrf_token() ?>: "<?= csrf_hash() ?>",
                 action: 'get_detail',
                 id: idPersetujuan
             },

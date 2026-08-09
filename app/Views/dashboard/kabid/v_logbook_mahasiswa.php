@@ -13,17 +13,7 @@
     </div>
 </div>
 
-<?php if (session()->getFlashdata('error')) : ?>
-    <div class="alert alert-danger">
-        <?= session()->getFlashdata('error'); ?>
-    </div>
-<?php endif; ?>
 
-<?php if (session()->getFlashdata('success')) : ?>
-    <div class="alert alert-success">
-        <?= session()->getFlashdata('success'); ?>
-    </div>
-<?php endif; ?>
 
 <div class="card shadow mb-4">
     <div class="card-body">
@@ -53,8 +43,9 @@
 
                 <select id="filterStatus" class="form-control form-control-sm custom-select custom-select-sm" style="width: 140px;">
                     <option value="">Semua Status</option>
-                    <option value="Berjalan">Berjalan</option>
-                    <option value="Selesai">Selesai</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Sedang Berjalan">Sedang Berjalan</option>
+                    <option value="Dibatalkan">Dibatalkan</option>
                 </select>
                 
                 <div class="input-group input-group-sm" style="width: 200px;">
@@ -80,11 +71,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($mahasiswa)): ?>
-                    <tr>
-                        <td colspan="7" class="text-center">Belum ada data mahasiswa yang sesuai.</td>
-                    </tr>
-                    <?php else: ?>
+                    <?php if (!empty($mahasiswa)): ?>
                         <?php $no = 1; foreach ($mahasiswa as $mhs): ?>
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
@@ -104,10 +91,14 @@
                                 <?= date('d M Y', strtotime($mhs->tgl_selesai)) ?>
                             </td>
                             <td>
-                                <?php if (($mhs->status_penempatan ?? '') == 'SELESAI'): ?>
-                                    <span class="badge badge-success">Selesai</span>
+                                <?php if (($mhs->status_penempatan ?? '') == 'DIBATALKAN'): ?>
+                                    <span class="badge badge-danger">Dibatalkan</span>
+                                <?php elseif (($mhs->status_penempatan ?? '') == 'SELESAI'): ?>
+                                    <span class="badge badge-success">Disetujui</span>
+                                <?php elseif (($mhs->status_penempatan ?? '') == 'BERJALAN'): ?>
+                                    <span class="badge badge-primary">Sedang Berjalan</span>
                                 <?php else: ?>
-                                    <span class="badge badge-primary">Berjalan</span>
+                                    <span class="badge badge-secondary"><?= esc($mhs->status_penempatan ?? 'Tidak Diketahui') ?></span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">

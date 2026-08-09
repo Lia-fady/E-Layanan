@@ -20,7 +20,7 @@ class C_FileProsesMagangKabid extends BaseController
     {
         $db = \Config\Database::connect();
         return $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -108,7 +108,7 @@ class C_FileProsesMagangKabid extends BaseController
         return redirect()->back()->with('error', 'Gagal mengunggah file.');
     }
 
-    public function update($id_file_proses)
+    public function update($id_file_selesai)
     {
         $validationRules = [
             'id_file'    => 'required',
@@ -127,7 +127,7 @@ class C_FileProsesMagangKabid extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $existing = $this->fileProsesModel->find($id_file_proses);
+        $existing = $this->fileProsesModel->find($id_file_selesai);
         if (!$existing) {
             return redirect()->back()->with('error', 'File tidak ditemukan.');
         }
@@ -144,7 +144,7 @@ class C_FileProsesMagangKabid extends BaseController
                 unlink($oldFilePath);
             }
 
-            $this->fileProsesModel->update($id_file_proses, [
+            $this->fileProsesModel->update($id_file_selesai, [
                 'id_file'    => $this->request->getPost('id_file'),
                 'nama_file'  => $file->getClientName(),
                 'path_file'  => $path_file,
@@ -157,9 +157,9 @@ class C_FileProsesMagangKabid extends BaseController
         return redirect()->back()->with('error', 'Gagal mengunggah file.');
     }
 
-    public function download($id_file_proses)
+    public function download($id_file_selesai)
     {
-        $fileData = $this->fileProsesModel->find($id_file_proses);
+        $fileData = $this->fileProsesModel->find($id_file_selesai);
         if (!$fileData) {
             return redirect()->back()->with('error', 'File tidak ditemukan.');
         }

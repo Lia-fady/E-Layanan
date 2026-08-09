@@ -166,8 +166,8 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('logbook/approve', '\App\Controllers\Kabid\C_LogbookKabid::approve');
     $routes->post('logbook/bulkApprove', '\App\Controllers\Kabid\C_LogbookKabid::bulkApprove');
 
-    // 3. (Menu Riwayat Magang dihapus dan digabung ke Disposisi Masuk)
-
+    // 3. Riwayat Selesai Magang
+    $routes->get('riwayat-selesai', '\App\Controllers\Kabid\C_LogbookKabid::riwayatSelesai');
     // 4. Kuota Bidang
     $routes->get('kuota', '\App\Controllers\Kabid\C_KuotaBidang::index');
     $routes->post('kuota/update', '\App\Controllers\Kabid\C_KuotaBidang::update');

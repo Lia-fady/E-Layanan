@@ -81,6 +81,7 @@ $(document).ready(function() {
             url: "<?= base_url('sekretariat/upload-surat-penerimaan') ?>",
             type: "POST",
             data: {
+                <?= csrf_token() ?>: "<?= csrf_hash() ?>",
                 action: 'get_detail',
                 id: idPersetujuan
             },

@@ -11,7 +11,7 @@ class C_KuotaBidang extends BaseController
         $db = \Config\Database::connect();
 
         $kuota = $db->table('m_kuota k')
-            ->select('k.id_kuota, k.kuota, k.status_aktif, b.bidang')
+            ->select('k.id_kuota, k.kuota, k.status as status_aktif, b.bidang')
             ->join('m_bidang b', 'b.id_bidang = k.id_bidang')
             ->where('k.id_bidang', $id_bidang)
             ->get()->getRow();
@@ -21,11 +21,13 @@ class C_KuotaBidang extends BaseController
             $db->table('m_kuota')->insert([
                 'id_bidang' => $id_bidang,
                 'kuota' => 0,
-                'status_aktif' => 1
+                'tahun' => date('Y'),
+                'bulan' => date('m'),
+                'status' => 'AKTIF'
             ]);
             // Re-fetch after insert
             $kuota = $db->table('m_kuota k')
-                ->select('k.id_kuota, k.kuota, k.status_aktif, b.bidang')
+                ->select('k.id_kuota, k.kuota, k.status as status_aktif, b.bidang')
                 ->join('m_bidang b', 'b.id_bidang = k.id_bidang')
                 ->where('k.id_bidang', $id_bidang)
                 ->get()->getRow();

@@ -6,21 +6,7 @@
 
 <?= $this->section('content') ?>
 
-<!-- Flash Messages -->
-<?php if (session()->getFlashdata('success')) : ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle mr-2"></i>
-    <?= session()->getFlashdata('success') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
-<?php if (session()->getFlashdata('error')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    <?= session()->getFlashdata('error') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
+
 
 <!-- Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -77,11 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($penempatan)): ?>
-                    <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">Belum ada data disposisi.</td>
-                    </tr>
-                    <?php else: ?>
+                    <?php if (!empty($penempatan)): ?>
                         <?php $no = 1; foreach ($penempatan as $row): ?>
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
@@ -148,93 +130,99 @@
             <!-- Body -->
             <div class="modal-body p-0" style="background: #fff;">
                 <div style="padding: 1.75rem;">
-
-                    <div class="row">
-                        <!-- Kolom Kiri: Informasi Pemohon & Permohonan -->
-                        <div class="col-md-6">
-                            <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Informasi Pemohon</h6>
-                            <table class="table table-sm table-borderless mb-4">
-                                <tr>
-                                    <td width="35%" class="text-muted">Nama Pemohon</td>
-                                    <td width="2%">:</td>
-                                    <td><strong id="det_nama">-</strong></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">NIM / NIS</td>
-                                    <td>:</td>
-                                    <td id="det_nim">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">NIK</td>
-                                    <td>:</td>
-                                    <td id="det_nik">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Jenis Kelamin</td>
-                                    <td>:</td>
-                                    <td id="det_jk">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">No. Telepon</td>
-                                    <td>:</td>
-                                    <td id="det_telp">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Email</td>
-                                    <td>:</td>
-                                    <td id="det_email">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Universitas / Instansi</td>
-                                    <td>:</td>
-                                    <td id="det_instansi">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Prodi / Fakultas</td>
-                                    <td>:</td>
-                                    <td id="det_prodi">-</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">Semester</td>
-                                    <td>:</td>
-                                    <td id="det_semester">-</td>
-                                </tr>
-                            </table>
-
-                            <h6 class="mb-3 font-weight-bold" style="color: #1B2559; border-top: 1px solid #eee; padding-top: 15px;">Data Permohonan</h6>
-                            <div class="card bg-light border-0 mb-4">
-                                <div class="card-body p-3">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <span class="text-muted d-block" style="font-size: 0.9rem;">Jenis Kegiatan</span>
-                                            <strong style="font-size: 0.95rem;" id="det_jenis">-</strong>
+                    <div class="mb-4">
+                        <div class="card border-0 shadow-sm" style="border-radius: 16px; background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);">
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div id="det_avatar" class="rounded-circle d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; background: #dbeafe; color: #1d4ed8; font-weight: 700; font-size: 1rem;">
+                                            -
                                         </div>
-                                        <div class="col-md-6">
-                                            <span class="text-muted d-block" style="font-size: 0.9rem;">Bidang Tujuan</span>
-                                            <strong style="font-size: 0.95rem;" id="det_bidang">-</strong>
+                                        <div>
+                                            <h6 class="mb-1 font-weight-bold" style="color: #0f172a;">Informasi Pemohon</h6>
+                                            <p class="mb-0 text-muted" style="font-size: 0.85rem;">Data identitas serta latar belakang pemohon magang.</p>
                                         </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <span class="text-muted d-block" style="font-size: 0.9rem;">Periode Pelaksanaan</span>
-                                        <strong style="font-size: 0.95rem;" id="det_waktu">-</strong>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-user mr-2"></i> Nama Pemohon</div>
+                                        <div class="font-weight-bold text-dark" id="det_nama">-</div>
                                     </div>
-                                    <div class="mb-3">
-                                        <span class="text-muted d-block" style="font-size: 0.9rem;" id="det_keahlian_label">Deskripsi Keahlian</span>
-                                        <strong style="font-size: 0.95rem;" id="det_keahlian">-</strong>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-id-card mr-2"></i> NIM / NIS</div>
+                                        <div class="text-dark" id="det_nim">-</div>
                                     </div>
-                                    <div>
-                                        <span class="text-muted d-block" style="font-size: 0.9rem;">Catatan dari Sekretariat</span>
-                                        <div id="det_catatan" class="mt-1" style="font-size: 0.9rem; color: #92400e; background: #fffbeb; border-left: 3px solid #f59e0b; padding: 0.5rem 0.75rem; border-radius: 4px;">-</div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-passport mr-2"></i> NIK</div>
+                                        <div class="text-dark" id="det_nik">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-venus-mars mr-2"></i> Jenis Kelamin</div>
+                                        <div class="text-dark" id="det_jk">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-phone mr-2"></i> No. Telepon</div>
+                                        <div class="text-dark" id="det_telp">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-envelope mr-2"></i> Email</div>
+                                        <div class="text-dark" id="det_email">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-university mr-2"></i> Universitas / Instansi</div>
+                                        <div class="text-dark" id="det_instansi">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-graduation-cap mr-2"></i> Prodi / Fakultas</div>
+                                        <div class="text-dark" id="det_prodi">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1"><i class="fas fa-calendar-alt mr-2"></i> Semester</div>
+                                        <div class="text-dark" id="det_semester">-</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Kolom Kanan: Dokumen Terlampir -->
-                        <div class="col-md-6">
-                            <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Dokumen Terlampir</h6>
-                            <div id="det_files" class="d-flex flex-wrap" style="gap: 8px;">
-                                <!-- injected via JS -->
+                    <div class="mb-4">
+                        <div class="card border-0 shadow-sm" style="border-radius: 16px; background: #fff;">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0 font-weight-bold" style="color: #1B2559;">Dokumen Terlampir</h6>
+                                    <span class="badge badge-light text-muted">Lampiran pemohon</span>
+                                </div>
+                                <div id="det_files" class="d-flex flex-wrap" style="gap: 10px;">
+                                    <!-- injected via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="card border-0 shadow-sm" style="border-radius: 16px; background: #fff;">
+                            <div class="card-body p-4">
+                                <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Data Permohonan</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1">Jenis Kegiatan</div>
+                                        <div class="font-weight-bold text-dark" id="det_jenis">-</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="text-muted small mb-1">Bidang Tujuan</div>
+                                        <div class="font-weight-bold text-dark" id="det_bidang">-</div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <div class="text-muted small mb-1">Periode Pelaksanaan</div>
+                                        <div class="font-weight-bold text-dark" id="det_waktu">-</div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <div class="text-muted small mb-1" id="det_keahlian_label">Deskripsi Keahlian</div>
+                                        <div class="font-weight-bold text-dark" id="det_keahlian">-</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -247,35 +235,30 @@
                         <?= csrf_field() ?>
                         <input type="hidden" name="id_penempatan_magang" id="input_id_penempatan">
 
-                        <div id="logbook_decision_group" class="mb-3">
-                            <p class="font-weight-bold mb-2" style="font-size: 0.88rem; color: #1e293b;">Wajibkan pengisian logbook harian?</p>
-                            <div class="d-flex" style="gap: 24px;">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="logbook_ya" name="is_log_book" class="custom-control-input" value="Ya" checked>
-                                    <label class="custom-control-label" for="logbook_ya" style="cursor: pointer; font-size: 0.88rem; color: #475569;">Ya, wajib</label>
+                        <div class="card border-0 shadow-sm mb-3" style="border-radius: 14px;">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <label class="font-weight-bold" style="color: #1e293b; font-size: 0.88rem;">Status Keputusan</label>
+                                    <select id="decision_status" name="decision_status" class="form-control mt-1" style="border-radius: 8px; border-color: #e2e8f0; font-size: 0.88rem;">
+                                        <option value="">Pilih Keputusan</option>
+                                        <option value="setujui">Setujui</option>
+                                        <option value="perbaikan">Perbaikan</option>
+                                        <option value="tolak">Tolak</option>
+                                    </select>
                                 </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="logbook_tidak" name="is_log_book" class="custom-control-input" value="Tidak">
-                                    <label class="custom-control-label" for="logbook_tidak" style="cursor: pointer; font-size: 0.88rem; color: #475569;">Tidak perlu</label>
+
+                                <div id="decision_note_group" class="mb-3" style="display:none;">
+                                    <label id="decision_note_label" class="font-weight-bold" style="color: #1e293b; font-size: 0.88rem;">Catatan Keputusan (Opsional)</label>
+                                    <textarea name="catatan_keputusan" id="catatan_keputusan" class="form-control mt-1" rows="3" placeholder="Tambahkan catatan jika diperlukan..." style="border-radius: 8px; border-color: #e2e8f0; font-size: 0.88rem;"></textarea>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="setuju_reason_group" class="mb-3">
-                            <label class="font-weight-bold" style="color: #1e293b; font-size: 0.88rem;">Catatan Persetujuan (Opsional)</label>
-                            <textarea name="catatan_setuju" id="catatan_setuju" class="form-control mt-1" rows="2" placeholder="Tulis catatan untuk mahasiswa..." style="border-radius: 8px; border-color: #e2e8f0; font-size: 0.88rem;"></textarea>
-                        </div>
-
-                        <div id="tolak_reason_group" class="mb-3" style="display:none;">
-                            <label class="font-weight-bold" style="color: #dc2626; font-size: 0.88rem;">Alasan Penolakan</label>
-                            <textarea name="catatan_tolak" id="catatan_tolak" class="form-control mt-1" rows="3" placeholder="Tuliskan alasan penolakan..." style="border-radius: 8px; border-color: #e2e8f0; font-size: 0.88rem;"></textarea>
-                        </div>
+                        <input type="hidden" name="is_log_book" value="Ya">
 
                         <div class="d-flex justify-content-end" style="gap: 8px;">
                             <button type="button" class="btn btn-sm" data-dismiss="modal" style="border-radius: 6px; font-weight: 500; color: #64748b; background: #fff; border: 1px solid #e2e8f0; padding: 0.4rem 1rem;">Tutup</button>
-                            <button type="button" class="btn btn-sm" id="btn-show-tolak" style="border-radius: 6px; font-weight: 500; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 0.4rem 1rem;">Tolak</button>
-                            <button type="button" class="btn btn-sm" id="btn-submit-tolak" style="display:none; border-radius: 6px; font-weight: 500; color: #fff; background: #dc2626; border: none; padding: 0.4rem 1rem;">Konfirmasi Tolak</button>
-                            <button type="button" class="btn btn-sm" id="btn-submit-setuju" style="border-radius: 6px; font-weight: 500; color: #fff; background: #2563eb; border: none; padding: 0.4rem 1rem;">Setujui</button>
+                            <button type="button" class="btn btn-sm" id="btn-submit-keputusan" style="border-radius: 6px; font-weight: 500; color: #fff; background: #2563eb; border: none; padding: 0.4rem 1rem;">Simpan Keputusan</button>
                         </div>
                     </form>
                 </div>
@@ -291,7 +274,7 @@
                         </div>
                         <div class="d-flex" style="gap: 8px;">
                             <button type="button" class="btn btn-sm" data-dismiss="modal" style="border-radius: 6px; font-weight: 500; color: #64748b; background: #fff; border: 1px solid #e2e8f0; padding: 0.4rem 1rem;">Batal</button>
-                            <button type="submit" class="btn btn-sm" id="btn-submit-selesai" onclick="return confirm('Yakin ingin menyelesaikan kegiatan mahasiswa ini?');" style="border-radius: 6px; font-weight: 500; color: #fff; background: #16a34a; border: none; padding: 0.4rem 1rem;">Tandai Selesai</button>
+                            <button type="button" class="btn btn-sm" id="btn-submit-selesai" style="border-radius: 6px; font-weight: 500; color: #fff; background: #16a34a; border: none; padding: 0.4rem 1rem;">Tandai Selesai</button>
                         </div>
                     </form>
                 </div>
@@ -340,6 +323,8 @@
 }
 </style>
 <script>
+
+
 $(document).ready(function() {
     // Initialize DataTable Custom
     var tableCustom = $('#dataTableCustom').DataTable({
@@ -377,10 +362,8 @@ $(document).ready(function() {
         tableCustom.column(4).search(this.value).draw();
     });
 
-    // Jalankan filter otomatis saat pertama dimuat (jika ada param status)
-    if ($('#filterStatusCustom').val() !== '') {
-        tableCustom.column(4).search($('#filterStatusCustom').val()).draw();
-    }
+    // Jalankan filter otomatis saat pertama dimuat agar halaman hanya menampilkan status Menunggu
+    $('#filterStatusCustom').val('Menunggu').trigger('change');
 
     // Fungsi menampilkan detail
     $('.btn-detail').on('click', function() {
@@ -431,7 +414,10 @@ $(document).ready(function() {
         var fileHtml = '';
         if (mhs.files && mhs.files.length > 0) {
             mhs.files.forEach(function(f) {
-                fileHtml += '<a href="<?= base_url() ?>/' + f.file_path + '" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;color:#334155;font-size:0.82rem;font-weight:500;text-decoration:none;"><i class="fas fa-file-alt" style="color:#94a3b8;font-size:0.75rem;"></i>' + f.jenis_file + '</a>';
+                fileHtml += '<a href="<?= base_url() ?>/' + f.file_path + '" target="_blank" class="d-flex align-items-center gap-2 text-decoration-none" style="padding: 10px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; min-width: 180px; color: #334155;">' +
+                    '<span class="rounded-circle d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background: #dbeafe; color: #1d4ed8;"><i class="fas fa-file-alt"></i></span>' +
+                    '<span class="font-weight-bold text-truncate" style="font-size: 0.85rem; max-width: 180px;">' + (f.jenis_file || 'Dokumen') + '</span>' +
+                    '</a>';
             });
         } else {
             fileHtml = '<span class="text-muted" style="font-size:0.85rem;">Tidak ada dokumen.</span>';
@@ -439,12 +425,10 @@ $(document).ready(function() {
         $('#det_files').html(fileHtml);
 
         // Reset UI form
-        $('#tolak_reason_group').hide();
-        $('#setuju_reason_group').show();
-        $('#btn-submit-tolak').hide();
-        $('#btn-show-tolak').show();
-        $('#btn-submit-setuju').show();
-        $('#logbook_decision_group').show();
+        $('#decision_status').val('');
+        $('#decision_note_group').hide();
+        $('#catatan_keputusan').val('');
+        $('#decision_note_label').text('Catatan Keputusan (Opsional)').attr('style', 'color: #1e293b; font-size: 0.88rem;');
         $('#input_id_penempatan').val(mhs.id_penempatan_magang);
         $('#selesai_id_penempatan').val(mhs.id_penempatan_magang);
 
@@ -465,33 +449,42 @@ $(document).ready(function() {
         $('#modalDetail').modal('show');
     });
 
-    // Tombol Show Tolak Form
-    $('#btn-show-tolak').on('click', function() {
-        $(this).hide();
-        $('#btn-submit-setuju').hide();
-        $('#logbook_decision_group').hide();
-        $('#setuju_reason_group').hide();
-        $('#tolak_reason_group').slideDown();
-        $('#btn-submit-tolak').fadeIn();
+    $('#decision_status').on('change', function() {
+        var val = $(this).val();
+        $('#decision_note_group').hide();
+
+        if (val === 'perbaikan') {
+            $('#decision_note_label').text('Catatan Perbaikan (Opsional)').attr('style', 'color: #1e293b; font-size: 0.88rem;');
+            $('#catatan_keputusan').attr('placeholder', 'Jelaskan bagian yang perlu diperbaiki...');
+            $('#decision_note_group').slideDown();
+        } else if (val === 'tolak') {
+            $('#decision_note_label').text('Alasan Penolakan (Opsional)').attr('style', 'color: #dc2626; font-size: 0.88rem;');
+            $('#catatan_keputusan').attr('placeholder', 'Berikan alasan penolakan jika diperlukan...');
+            $('#decision_note_group').slideDown();
+        } else if (val === 'setujui') {
+            $('#decision_note_label').text('Catatan Keputusan (Opsional)').attr('style', 'color: #1e293b; font-size: 0.88rem;');
+            $('#catatan_keputusan').attr('placeholder', 'Tambahkan catatan jika diperlukan...');
+            $('#decision_note_group').slideDown();
+        }
     });
 
-    // Konfirmasi Setuju
-    $('#btn-submit-setuju').on('click', function() {
+    $('#btn-submit-keputusan').on('click', function() {
+        var decision = $('#decision_status').val();
         var form = $('#formDisposisiAksi');
-        form.attr('action', '<?= base_url('kabid/disposisi/setujui') ?>');
-        form.submit();
-    });
 
-    // Konfirmasi Tolak
-    $('#btn-submit-tolak').on('click', function() {
-        var form = $('#formDisposisiAksi');
-        var alasan = $('#catatan_tolak').val();
-        if(alasan.trim() === '') {
-            alert('Mohon isi alasan penolakan.');
-            $('#catatan_tolak').focus();
+        if (!decision) {
+            alert('Silakan pilih keputusan terlebih dahulu.');
+            $('#decision_status').focus();
             return false;
         }
-        form.attr('action', '<?= base_url('kabid/disposisi/tolak') ?>');
+
+        if (decision === 'tolak') {
+            form.attr('action', '<?= base_url('kabid/disposisi/tolak') ?>');
+            form.submit();
+            return;
+        }
+
+        form.attr('action', '<?= base_url('kabid/disposisi/setujui') ?>');
         form.submit();
     });
 });

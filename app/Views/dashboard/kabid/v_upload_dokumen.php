@@ -106,20 +106,28 @@
                                     <td><?= esc($f->pengunggah ?? '-') ?></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 5px;">
-                                            <a href="<?= base_url('kabid/upload-dokumen/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
+                                            <a href="<?= base_url('kabid/upload-dokumen/download/' . $f->id_file_proses_magang) ?>" class="btn btn-sm btn-success" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-warning btn-ganti-file" 
                                                     title="Ganti File"
-                                                    data-id="<?= $f->id_file_selesai_magang ?>"
+                                                    data-id="<?= $f->id_file_proses_magang ?>"
                                                     data-idfile="<?= $f->id_file ?>"
-                                                    data-namafile="<?= esc($f->nama_file) ?>">
+                                                    data-nama="<?= esc($f->nama_file_master) ?>"
+                                                    data-path="<?= esc($f->path_file) ?>">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
+                                        Belum ada surat yang diunggah.
+                                    </td>
+                                </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>

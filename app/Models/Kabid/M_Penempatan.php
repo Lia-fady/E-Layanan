@@ -19,22 +19,25 @@ class M_Penempatan extends Model
     protected $primaryKey       = 'id_penempatan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $allowedFields    = ['id_persetujuan_magang', 'id_mahasiswa', 'id_bidang', 'tanggal_mulai', 'tanggal_selesai', 'tanggal_persetujuan', 'status_penempatan', 'is_log_book', 'catatan', 'created_at', 'updated_at'];
-    protected $useSoftDeletes   = false;
+    protected $allowedFields    = [
+        'id_bidang',
+        'id_persetujuan_magang',
+        'id_mahasiswa',
+        'catatan',
+        'status_penempatan',
+    ];
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-    
-    
-
     /**
-     * Ambil daftar semua penempatan untuk bidang tertentu.
+     * Ambil daftar penempatan untuk bidang tertentu.
      *
      * @param int|null $id_bidang  Jika null, tampilkan semua
+     * @param string|null $status_penempatan  Jika diset, filter berdasarkan status tertentu
      * @return array
      */
-    public function getSemuaPenempatan($id_bidang = null)
+    public function getSemuaPenempatan($id_bidang = null, $status_penempatan = null)
     {
         $db = \Config\Database::connect();
 
@@ -58,13 +61,12 @@ class M_Penempatan extends Model
             im.semester,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
             jp.jenis_permohonan,
             ip.instansi_pendidikan,
-            pr.nama_prodi,
+            pr.nama_prodi as prodi,
             ps.catatan as catatan_sekretariat
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
@@ -78,6 +80,10 @@ class M_Penempatan extends Model
 
         if ($id_bidang !== null) {
             $builder->where('pn.id_bidang', $id_bidang);
+        }
+
+        if ($status_penempatan !== null) {
+            $builder->where('pn.status_penempatan', $status_penempatan);
         }
 
         $builder->orderBy('pn.created_at', 'DESC');
@@ -105,7 +111,6 @@ class M_Penempatan extends Model
             mhs.no_telp,
             bd.bidang,
             pm.deskripsi_keahlian,
-            pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
             jp.jenis_permohonan,
@@ -142,7 +147,6 @@ class M_Penempatan extends Model
                 'status_penempatan' => 'BERJALAN',
                 'is_log_book'       => $is_log_book,
                 'catatan'           => $catatan,
-                'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
     }
@@ -166,7 +170,6 @@ class M_Penempatan extends Model
             ->update([
                 'status_penempatan' => 'DIBATALKAN',
                 'catatan'           => $catatan,
-                'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
@@ -193,7 +196,6 @@ class M_Penempatan extends Model
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
                 'status_penempatan' => 'SELESAI',
-                'updated_by'        => $updated_by,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
     }

@@ -44,6 +44,96 @@ class C_LogbookKabid extends BaseController
         return view('dashboard/kabid/v_logbook_mahasiswa', $data);
     }
 
+    public function riwayatSelesai()
+    {
+        if ($this->request->isAJAX() && $this->request->getGet('action') === 'detail' && $this->request->getGet('id')) {
+            $id_penempatan = $this->request->getGet('id');
+            $detail = $this->logbookModel->getDetailPenempatan($id_penempatan);
+
+            if (!$detail) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Data mahasiswa tidak ditemukan.']);
+            }
+
+            $db = \Config\Database::connect();
+            $originalFiles = $db->table('t_file_permohonan_magang f')
+                ->select('f.nama_file, f.path_file, mp.id_file')
+                ->join('m_file_permohonan mp', 'mp.id_file_permohonan = f.id_file_permohonan', 'left')
+                ->where('f.id_permohonan_magang', $detail->id_permohonan_magang)
+                ->get()
+                ->getResult();
+
+            $finalFiles = $db->table('t_file_proses_magang f')
+                ->select('f.id_file_selesai_magang, f.nama_file, f.path_file, mf.nama_file as nama_file_master')
+                ->join('m_file mf', 'mf.id_file = f.id_file', 'left')
+                ->where('f.id_persetujuan_magang', $detail->id_persetujuan_magang)
+                ->get()
+                ->getResult();
+
+            $cvFile = null;
+            $ktmFile = null;
+            foreach ($originalFiles as $file) {
+                if (in_array($file->id_file, [3, 4, 7]) && $cvFile === null) {
+                    $cvFile = $file;
+                }
+                if ($file->id_file == 11 && $ktmFile === null) {
+                    $ktmFile = $file;
+                }
+            }
+
+            $suratSelesaiFile = null;
+            foreach ($finalFiles as $file) {
+                if ($file->nama_file_master && stripos($file->nama_file_master, 'selesai') !== false) {
+                    $suratSelesaiFile = $file;
+                    break;
+                }
+            }
+            if (!$suratSelesaiFile && !empty($finalFiles)) {
+                $suratSelesaiFile = $finalFiles[0];
+            }
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data'   => [
+                    'nama_mahasiswa'      => $detail->nama_mahasiswa,
+                    'nim'                 => $detail->nim,
+                    'instansi_pendidikan' => $detail->instansi_pendidikan,
+                    'prodi'               => $detail->prodi,
+                    'jenis_permohonan'    => $detail->jenis_permohonan,
+                    'tgl_mulai'           => $detail->tgl_mulai,
+                    'tgl_selesai'         => $detail->tgl_selesai,
+                    'status_akhir'        => $detail->status_penempatan,
+                    'surat_selesai'       => $suratSelesaiFile ? [
+                        'label'     => $suratSelesaiFile->nama_file_master ?? 'Surat Keterangan Selesai Magang',
+                        'nama_file' => $suratSelesaiFile->nama_file,
+                        'url'       => base_url('kabid/upload-dokumen/download/' . $suratSelesaiFile->id_file_selesai_magang)
+                    ] : null,
+                    'cv' => $cvFile ? [
+                        'label'     => 'Curriculum Vitae (CV)',
+                        'nama_file' => $cvFile->nama_file,
+                        'url'       => base_url($cvFile->path_file)
+                    ] : null,
+                    'ktm' => $ktmFile ? [
+                        'label'     => 'Kartu Tanda Mahasiswa (KTM)',
+                        'nama_file' => $ktmFile->nama_file,
+                        'url'       => base_url($ktmFile->path_file)
+                    ] : null,
+                ]
+            ]);
+        }
+
+        $id_bidang = session('id_bidang');
+        $db = \Config\Database::connect();
+
+        $data = [
+            'title'       => 'Riwayat Disposisi Magang',
+            'active_menu' => 'riwayat_selesai',
+            'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang, null, null, 'SELESAI'),
+            'list_jenis'  => $db->table('m_jenis_permohonan')->get()->getResultArray()
+        ];
+
+        return view('dashboard/kabid/v_riwayat_selesai', $data);
+    }
+
     public function approve()
     {
         $id_logbook = $this->request->getPost('id_logbook_magang');
@@ -58,8 +148,7 @@ class C_LogbookKabid extends BaseController
             'status_logbook'    => 'disetujui',
             'disetujui_oleh'    => session('id_user_pegawai'),
             'tgl_disetujui'     => date('Y-m-d H:i:s'),
-            'file_tanda_tangan' => $ttd,
-            'updated_by'        => session('id_user_pegawai')
+            'file_tanda_tangan' => $ttd
         ];
 
         $this->logbookModel->update($id_logbook, $updateData);
@@ -70,6 +159,11 @@ class C_LogbookKabid extends BaseController
     public function bulkApprove()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
+        $selectedIds = $this->request->getPost('selected_ids');
+
+        if (empty($selectedIds) || !is_array($selectedIds)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Pilih minimal satu aktivitas untuk disetujui.']);
+        }
 
         $db = \Config\Database::connect();
         $userPegawai = $db->table('c_user_pegawai')->where('id_user_pegawai', session('id_user_pegawai'))->get()->getRow();
@@ -80,16 +174,16 @@ class C_LogbookKabid extends BaseController
             'status_logbook'    => 'disetujui',
             'disetujui_oleh'    => session('id_user_pegawai'),
             'tgl_disetujui'     => date('Y-m-d H:i:s'),
-            'file_tanda_tangan' => $ttd,
-            'updated_by'        => session('id_user_pegawai')
+            'file_tanda_tangan' => $ttd
         ];
 
-        $affectedRows = $this->logbookModel->bulkApprovePending($id_penempatan, $updateData);
+        $selectedIds = array_values(array_filter(array_map('intval', $selectedIds)));
+        $affectedRows = $this->logbookModel->bulkApproveSelected($id_penempatan, $selectedIds, $updateData);
 
         if ($affectedRows > 0) {
             return $this->response->setJSON(['success' => true, 'message' => $affectedRows . ' catatan logbook berhasil disetujui sekaligus.']);
         }
 
-        return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada logbook dengan status Menunggu.']);
+        return $this->response->setJSON(['success' => false, 'message' => 'Tidak ada logbook yang dapat disetujui dari pilihan Anda.']);
     }
 }

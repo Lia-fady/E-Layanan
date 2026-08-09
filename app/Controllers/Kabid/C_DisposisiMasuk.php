@@ -43,7 +43,7 @@ class C_DisposisiMasuk extends BaseController
 
         $status_filter = $this->request->getGet('status');
         
-        $penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang);
+        $penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang, 'MENUNGGU');
         
         // Remove server-side filtering to allow DataTables client-side filtering
         
@@ -75,8 +75,33 @@ class C_DisposisiMasuk extends BaseController
     public function setujui()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
-        $is_log_book   = $this->request->getPost('is_log_book'); // 'Ya' atau 'Tidak'
-        $catatan       = $this->request->getPost('catatan_setuju') ?? 'Permohonan magang disetujui';
+        $is_log_book   = $this->request->getPost('is_log_book') ?? 'Ya'; // 'Ya' atau 'Tidak'
+        $catatan       = $this->request->getPost('catatan_keputusan')
+            ?? $this->request->getPost('catatan_setuju')
+            ?? 'Permohonan magang disetujui';
+
+        $penempatan = $this->penempatanModel->getDetailPenempatan($id_penempatan);
+
+        if (!$penempatan) {
+            session()->setFlashdata('error', 'Data permohonan tidak ditemukan.');
+            return redirect()->to(base_url('kabid/disposisi'));
+        }
+
+        $db = \Config\Database::connect();
+
+        $id_bidang = $penempatan->id_bidang ?? null;
+        $kuotaRow = $db->table('m_kuota')->where('id_bidang', $id_bidang)->get()->getRow();
+        $total_kuota = $kuotaRow ? (int) $kuotaRow->kuota : 0;
+
+        $activeCount = $db->table('t_penempatan_magang')
+            ->where('id_bidang', $id_bidang)
+            ->where('status_penempatan', 'BERJALAN')
+            ->countAllResults();
+
+        if ($id_bidang && $total_kuota > 0 && $activeCount >= $total_kuota) {
+            session()->setFlashdata('error', 'Permohonan tidak dapat disetujui karena kuota mahasiswa pada bidang ini sudah penuh.');
+            return redirect()->to(base_url('kabid/disposisi'));
+        }
 
         $result = $this->penempatanModel->setujuiPenempatan(
             $id_penempatan,
@@ -116,7 +141,9 @@ class C_DisposisiMasuk extends BaseController
     public function tolak()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
-        $catatan = $this->request->getPost('catatan_tolak') ?? 'Ditolak oleh Kepala Bidang';
+        $catatan = $this->request->getPost('catatan_keputusan')
+            ?? $this->request->getPost('catatan_tolak')
+            ?? 'Ditolak oleh Kepala Bidang';
 
         $result = $this->penempatanModel->tolakPenempatan(
             $id_penempatan,

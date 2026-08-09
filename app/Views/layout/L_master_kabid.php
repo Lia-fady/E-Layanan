@@ -118,6 +118,31 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
+    <!-- SweetAlert2 Flashdata Handler -->
+    <script>
+        $(document).ready(function() {
+            <?php if (session()->getFlashdata('success')) : ?>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '<?= esc(session()->getFlashdata('success')) ?>',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            <?php endif; ?>
+
+            <?php if (session()->getFlashdata('error')) : ?>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '<?= esc(session()->getFlashdata('error')) ?>',
+                    showConfirmButton: true
+                });
+            <?php endif; ?>
+        });
+    </script>
+
     <!-- Page-specific scripts -->
     <?= $this->renderSection('scripts') ?>
 

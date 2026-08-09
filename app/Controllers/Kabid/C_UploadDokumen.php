@@ -32,7 +32,7 @@ class C_UploadDokumen extends BaseController
 
             $data = [
                 'persetujuan' => $persetujuan,
-                'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Keterangan Diterima', 'Surat Keterangan Selesai Kegiatan', 'Sertifikat / Bukti Kegiatan'])->where('status_aktif', '1')->findAll(),
+                'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Keterangan Diterima', 'Surat Keterangan Selesai Kegiatan', 'Sertifikat / Bukti Kegiatan'])->where('status', 'AKTIF')->findAll(),
                 'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
             ];
 
@@ -42,7 +42,7 @@ class C_UploadDokumen extends BaseController
         $db = \Config\Database::connect();
         
         $builder = $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi, jp.jenis_permohonan, pnm.status_penempatan')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, jp.jenis_permohonan, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -82,7 +82,7 @@ class C_UploadDokumen extends BaseController
     {
         $db = \Config\Database::connect();
         return $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi, pnm.status_penempatan')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
@@ -155,7 +155,7 @@ class C_UploadDokumen extends BaseController
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
-    public function update($id_file_proses)
+    public function update($id_file_selesai)
     {
         $validationRules = [
             'id_file'    => 'required',
@@ -174,7 +174,7 @@ class C_UploadDokumen extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => implode('<br>', $this->validator->getErrors())]);
         }
 
-        $existing = $this->fileProsesModel->find($id_file_proses);
+        $existing = $this->fileProsesModel->find($id_file_selesai);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -191,7 +191,7 @@ class C_UploadDokumen extends BaseController
                 unlink($oldFilePath);
             }
 
-            $this->fileProsesModel->update($id_file_proses, [
+            $this->fileProsesModel->update($id_file_selesai, [
                 'id_file'    => $this->request->getPost('id_file'),
                 'nama_file'  => $file->getClientName(),
                 'path_file'  => $path_file,
@@ -204,9 +204,9 @@ class C_UploadDokumen extends BaseController
         return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
-    public function download($id_file_proses)
+    public function download($id_file_selesai)
     {
-        $fileData = $this->fileProsesModel->find($id_file_proses);
+        $fileData = $this->fileProsesModel->find($id_file_selesai);
         if (!$fileData) {
             return redirect()->back()->with('error', 'File tidak ditemukan.');
         }
@@ -219,9 +219,9 @@ class C_UploadDokumen extends BaseController
         return $this->response->download($filePath, null)->setFileName($fileData->nama_file);
     }
 
-    public function delete($id_file_proses)
+    public function delete($id_file_selesai)
     {
-        $existing = $this->fileProsesModel->find($id_file_proses);
+        $existing = $this->fileProsesModel->find($id_file_selesai);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
@@ -231,7 +231,7 @@ class C_UploadDokumen extends BaseController
             unlink($filePath);
         }
 
-        $this->fileProsesModel->delete($id_file_proses);
+        $this->fileProsesModel->delete($id_file_selesai);
         return $this->response->setJSON(['success' => true, 'message' => 'Dokumen berhasil dihapus.']);
     }
 }
