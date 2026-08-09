@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Mahasiswa</h5>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Mahasiswa/Siswa</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
             Pantau dan setujui catatan aktivitas harian mahasiswa di bidang Anda.
         </p>

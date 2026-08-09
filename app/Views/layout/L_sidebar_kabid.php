@@ -48,7 +48,7 @@
 
     <!-- Heading: PENEMPATAN & PENGAWASAN -->
     <div class="sidebar-heading">
-        MANAJEMEN MAGANG
+        MANAJEMEN AKADEMIK
     </div>
 
     <!-- Nav Item - Disposisi Masuk -->
@@ -63,7 +63,7 @@
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'logbook') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('kabid/logbook') ?>">
             <i class="fas fa-fw fa-book"></i>
-            <span>Logbook Mahasiswa</span>
+            <span>Logbook Mahasisw/Siswa</span>
         </a>
     </li>
 

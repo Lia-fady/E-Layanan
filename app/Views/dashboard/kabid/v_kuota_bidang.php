@@ -28,7 +28,7 @@ Manajemen Kuota Bidang
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Kuota Bidang</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Atur dan kelola batas maksimal mahasiswa yang dapat diterima di bidang Anda.
+            Atur dan kelola batas maksimal mahasiswa/Siswa Magang atau PKL yang dapat diterima di bidang Anda.
         </p>
     </div>
 </div>
@@ -40,7 +40,7 @@ Manajemen Kuota Bidang
     <div class="col-xl-7 col-lg-8">
         <div class="card shadow-sm quota-card bg-white mb-4">
             <div class="card-header bg-white py-3" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;">
-                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.1rem;">Pengaturan Kuota Mahasiswa</h6>
+                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.1rem;">Pengaturan Kuota Magang/PKL</h6>
             </div>
             <div class="card-body p-4">
                 <?php if ($kuota): ?>
@@ -57,21 +57,21 @@ Manajemen Kuota Bidang
 
                     <div class="row mb-4">
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Total Kuota Mahasiswa</label>
+                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Total Kuota</label>
                             <div class="input-group">
                                 <input type="number" class="form-control form-control-premium" name="kuota" value="<?= esc($kuota->kuota) ?>" min="<?= $terisi ?>" required style="border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;">
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-white" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Orang</span>
                                 </div>
                             </div>
-                            <small class="text-muted mt-2 d-block">Batas maksimal mahasiswa yang diterima bersamaan.</small>
+                            <small class="text-muted mt-2 d-block">Batas maksimal Mahasiswa/Siswa yang diterima bersamaan.</small>
                         </div>
                         <div class="col-md-6">
-                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Mahasiswa Aktif Saat Ini</label>
+                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Total Mahasiswa/Siswa Aktif Saat Ini</label>
                             <div class="input-group">
                                 <input type="text" class="form-control form-control-premium bg-light" value="<?= $terisi ?>" readonly style="border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; color: #2563EB; font-weight: bold;">
                                 <div class="input-group-append">
-                                    <span class="input-group-text bg-light" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Mahasiswa</span>
+                                    <span class="input-group-text bg-light" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Mahasiswa/Siswa</span>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ Manajemen Kuota Bidang
                     Status Kuota: <?= $statusText ?>
                 </div>
                 <p style="color: #64748B; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
-                    Bidang Anda saat ini memiliki sisa ruang untuk <strong><?= $sisa ?> mahasiswa baru</strong>. Saat ada mahasiswa yang statusnya berubah menjadi selesai, sisa kuota ini akan otomatis bertambah kembali.
+                    Bidang Anda saat ini memiliki sisa ruang untuk <strong><?= $sisa ?> Mahasiswa/Siswa baru</strong>. Saat ada Mahasiswa/Siswa yang statusnya berubah menjadi selesai, sisa kuota ini akan otomatis bertambah kembali.
                 </p>
             </div>
         </div>
