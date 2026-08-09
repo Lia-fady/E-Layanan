@@ -24,14 +24,18 @@ class AuthController extends BaseController
         $this->instansiPendidikanModel = new InstansiPendidikanModel();
     }
 
+    // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
     public function register()
     {
-        // Mengambil data master kampus aktif untuk dropdown utama sesuai string 'aktif'
-        $data['kampus'] = $this->instansiPendidikanModel->where('status', 'aktif')->findAll();
-        
         $db = \Config\Database::connect();
+        // Mengambil data master kampus aktif untuk dropdown utama
+        $data['kampus'] = $this->instansiPendidikanModel->where('status', 'AKTIF')->findAll();
+        
+        // Mengambil data master jenjang pendidikan
+        $data['jenjang'] = $db->table('m_jenjang_pendidikan')->where('status', 'AKTIF')->get()->getResultArray();
+        
+        // Mengambil data master provinsi untuk dropdown alamat
         $data['provinsi'] = $db->table('m_provinsi')->get()->getResultArray();
-        $data['jenjang'] = $db->table('m_jenjang_pendidikan')->get()->getResultArray();
 
         $data['title']  = "Registrasi Akun Mahasiswa";
 
@@ -62,7 +66,7 @@ class AuthController extends BaseController
     {
         $db = \Config\Database::connect();
         $builder = $db->table('m_prodi');
-        $builder->select('id_prodi, prodi');
+        $builder->select('id_prodi, nama_prodi');
         $builder->where('id_fakultas', $id_fakultas);
         $builder->where('status', 'aktif'); // Menggunakan string 'aktif' sesuai database
 
@@ -96,42 +100,16 @@ class AuthController extends BaseController
                     'regex_match' => 'Password harus mengandung minimal satu huruf besar, huruf kecil, angka, dan simbol khusus (@$!%*?&).'
                 ]
             ],
-            'id_instansi_pendidikan' => [
-                'rules'  => 'required',
-                'errors' => ['required' => 'Asal Universitas / Kampus wajib dipilih.']
-            ],
-            'id_fakultas' => [
-                'rules'  => 'required',
-                'errors' => ['required' => 'Fakultas wajib dipilih.']
-            ],
-            'id_prodi' => [
-                'rules'  => 'required',
-                'errors' => ['required' => 'Program Studi (Prodi) wajib dipilih.']
-            ],
-            'semester' => [
-                'rules'  => 'required|numeric|greater_than[0]|less_than_equal_to[14]',
-                'errors' => [
-                    'required' => 'Semester aktif wajib diisi.',
-                    'numeric'  => 'Semester harus diisi dengan angka bulat.',
-                    'greater_than' => 'Semester tidak boleh kurang dari 1.',
-                    'less_than_equal_to' => 'Semester maksimal adalah 14 (batas DO).'
-                ]
-            ],
-            'angkatan_tahun' => [
-                'rules'  => 'required|numeric|exact_length[4]',
-                'errors' => [
-                    'required'     => 'Tahun angkatan masuk kuliah wajib diisi.',
-                    'numeric'      => 'Tahun angkatan harus berupa angka.',
-                    'exact_length' => 'Tahun angkatan harus 4 digit (misal: 2021).'
-                ]
-            ],
-            'tahun_akademik' => [
-                'rules'  => 'required',
-                'errors' => ['required' => 'Tahun akademik berjalan wajib diisi.']
-            ],
             'id_jenjang_pendidikan' => [
                 'rules'  => 'required',
-                'errors' => ['required' => 'Jenjang pendidikan (D3/S1) wajib dipilih.']
+                'errors' => ['required' => 'Jenjang pendidikan wajib dipilih.']
+            ],
+            'tgl_lahir' => [
+                'rules'  => 'required|valid_date',
+                'errors' => [
+                    'required' => 'Tanggal lahir wajib diisi.',
+                    'valid_date' => 'Format tanggal lahir tidak valid.'
+                ]
             ],
             'nik' => [
                 'rules'  => 'required|numeric|exact_length[16]|is_unique[m_mahasiswa.nik]',
@@ -145,11 +123,11 @@ class AuthController extends BaseController
             'nim' => [
                 'rules'  => 'required|numeric|min_length[5]|max_length[25]|is_unique[m_mahasiswa.nim]',
                 'errors' => [
-                    'required'      => 'Nomor Induk Mahasiswa (NIM) wajib diisi.',
-                    'numeric'       => 'NIM hanya boleh berisi angka tanpa spasi atau karakter lainnya.',
-                    'min_length'    => 'NIM minimal harus memiliki 5 digit angka.',
-                    'max_length'    => 'NIM maksimal 25 karakter.',
-                    'is_unique'     => 'NIM ini sudah terdaftar di sistem E-Layanan.'
+                    'required'      => 'Nomor Induk (NIM/NISN) wajib diisi.',
+                    'numeric'       => 'Nomor Induk hanya boleh berisi angka tanpa spasi atau karakter lainnya.',
+                    'min_length'    => 'Nomor Induk minimal harus memiliki 5 digit angka.',
+                    'max_length'    => 'Nomor Induk maksimal 25 karakter.',
+                    'is_unique'     => 'Nomor Induk ini sudah terdaftar di sistem E-Layanan.'
                 ]
             ],
             'nama_mahasiswa' => [
@@ -220,24 +198,49 @@ class AuthController extends BaseController
                 'errors' => [
                     'required'            => 'Kelurahan/Desa wajib dipilih.'
                 ]
-            ],
-            'kecamatan' => [
+            ]
+        ];
+
+        // Conditional rules for SMA vs Mahasiswa
+        $isSiswa = !empty($this->request->getPost('nama_sekolah'));
+        
+        if (!$isSiswa) {
+            $rules['id_instansi_pendidikan'] = [
                 'rules'  => 'required',
-                'errors' => [
-                    'required'            => 'Kecamatan wajib dipilih.'
-                ]
-            ],
-            'kabupaten' => [
+                'errors' => ['required' => 'Instansi Pendidikan wajib dipilih.']
+            ];
+            $rules['id_fakultas'] = [
                 'rules'  => 'required',
-                'errors' => [
-                    'required'            => 'Kota/Kabupaten wajib dipilih.'
-                ]
-            ],
-            'provinsi' => [
+                'errors' => ['required' => 'Fakultas wajib dipilih.']
+            ];
+            $rules['id_prodi'] = [
                 'rules'  => 'required',
+                'errors' => ['required' => 'Jurusan wajib dipilih.']
+            ];
+            $rules['tahun_akademik'] = [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Tahun akademik berjalan wajib diisi.']
+            ];
+            $rules['angkatan_tahun'] = [
+                'rules'  => 'required|numeric|exact_length[4]',
                 'errors' => [
-                    'required'            => 'Provinsi wajib dipilih.'
+                    'required'     => 'Tahun angkatan wajib diisi.',
+                    'numeric'      => 'Tahun angkatan harus berupa angka.',
+                    'exact_length' => 'Tahun angkatan harus 4 digit.'
                 ]
+            ];
+        } else {
+            $rules['nama_sekolah'] = ['rules' => 'required', 'errors' => ['required' => 'Instansi Pendidikan wajib diisi.']];
+            $rules['jurusan_smk'] = ['rules' => 'required', 'errors' => ['required' => 'Jurusan wajib diisi.']];
+        }
+
+        $rules['semester'] = [
+            'rules'  => 'required|numeric|greater_than[0]|less_than_equal_to[14]',
+            'errors' => [
+                'required' => 'Semester/Kelas wajib diisi.',
+                'numeric'  => 'Semester/Kelas harus berupa angka bulat.',
+                'greater_than' => 'Tidak valid.',
+                'less_than_equal_to' => 'Tidak valid.'
             ]
         ];
 
@@ -247,25 +250,53 @@ class AuthController extends BaseController
 
         // 2. Mulai Database Transaction agar data aman berantai (LOGIKA UTUH PUNYA KELOMPOKMU)
         $db = \Config\Database::connect();
-        
-        // Disable foreign key checks to break the circular dependency between m_mahasiswa and t_instansi_mahasiswa
-        $db->query('SET foreign_key_checks = 0');
         $db->transStart();
+
+        // Cek Jenjang (Siswa vs Mahasiswa logic based on UI)
+        $id_instansi = $this->request->getPost('id_instansi_pendidikan');
+        $nama_sekolah = $this->request->getPost('nama_sekolah');
+        
+        if (empty($id_instansi) && !empty($nama_sekolah)) {
+            $db = \Config\Database::connect();
+            // Cek exist
+            $eks = $db->table('m_instansi_pendidikan')->where('instansi_pendidikan', $nama_sekolah)->get()->getRow();
+            if($eks) {
+                $id_instansi = $eks->id_instansi_pendidikan;
+            } else {
+                $jenis = (stripos($nama_sekolah, 'negeri') !== false || stripos($nama_sekolah, 'n ') !== false) ? 'NEGERI' : 'SWASTA';
+                $res = $db->table('m_instansi_pendidikan')->insert([
+                    'id_jenjang_pendidikan' => $this->request->getPost('id_jenjang_pendidikan'),
+                    'instansi_pendidikan'   => $nama_sekolah,
+                    'jenis_instansi'        => $jenis,
+                    'status'                => 'AKTIF',
+                    'created_at'            => date('Y-m-d H:i:s')
+                ]);
+                if (!$res) {
+                    $db->transRollback();
+                    throw new \RuntimeException('Gagal insert sekolah baru (m_instansi_pendidikan). DB Error: ' . print_r($db->error(), true));
+                }
+                $id_instansi = $db->insertID();
+            }
+        }
 
         // STEP 1: Buat data akademik di t_instansi_mahasiswa terlebih dahulu
         $dataAkademik = [
-            'id_mahasiswa'           => 0, // Bypass NOT NULL constraint sementara
-            'id_instansi_pendidikan' => $this->request->getPost('id_instansi_pendidikan'),
-            'id_fakultas'            => $this->request->getPost('id_fakultas'),
-            'id_prodi'               => $this->request->getPost('id_prodi'),
+            'id_instansi_pendidikan' => $id_instansi,
+            'id_fakultas'            => $this->request->getPost('id_fakultas') ?: null,
+            'id_prodi'               => $this->request->getPost('id_prodi') ?: null,
             'id_jenjang_pendidikan'  => $this->request->getPost('id_jenjang_pendidikan'),
+            'jurusan'                => $this->request->getPost('jurusan_smk') ?: null,
             'angkatan_tahun'         => $this->request->getPost('angkatan_tahun'),
             'semester'               => $this->request->getPost('semester'),
-            'tahun_akademik'         => $this->request->getPost('tahun_akademik'),
+            'tahun_akademik'         => $this->request->getPost('tahun_akademik') ?: null,
             'created_by'             => 'SYSTEM_REGISTRATION'
         ];
         
-        $this->instansiMahasiswaModel->insert($dataAkademik);
+        if (!$this->instansiMahasiswaModel->insert($dataAkademik)) {
+            $dbError = $this->instansiMahasiswaModel->errors();
+            $db->transRollback();
+            throw new \RuntimeException('Gagal insert instansi: ' . print_r($dbError, true) . ' | DB Error: ' . print_r($db->error(), true));
+        }
         $idInstansiMahasiswaBaru = $this->instansiMahasiswaModel->getInsertID();
 
         // STEP 2: Masukkan biodata ke m_mahasiswa LANGSUNG bersama ID akademiknya
@@ -284,13 +315,18 @@ class AuthController extends BaseController
             'id_instansi_mahasiswa'  => $idInstansiMahasiswaBaru
         ];
         
-        $this->mahasiswaModel->insert($dataMahasiswa);
+        if (!$this->mahasiswaModel->insert($dataMahasiswa)) {
+            $dbError = $this->mahasiswaModel->errors();
+            $db->transRollback();
+            throw new \RuntimeException('Gagal insert mahasiswa: ' . print_r($dbError, true) . ' | DB Error: ' . print_r($db->error(), true));
+        }
         $idMahasiswaBaru = $this->mahasiswaModel->getInsertID();
 
         // STEP 3: Update tabel t_instansi_mahasiswa untuk memasukkan id_mahasiswa yang baru didapat
-        $this->instansiMahasiswaModel->update($idInstansiMahasiswaBaru, [
-            'id_mahasiswa' => $idMahasiswaBaru
-        ]);
+        if (!$this->instansiMahasiswaModel->update($idInstansiMahasiswaBaru, ['id_mahasiswa' => $idMahasiswaBaru])) {
+            $db->transRollback();
+            throw new \RuntimeException('Gagal update instansi dengan id_mahasiswa. DB Error: ' . print_r($db->error(), true));
+        }
 
         // STEP 4: Simpan data akun log masuk mahasiswa (m_user_mahasiswa)
         $dataUser = [
@@ -304,15 +340,12 @@ class AuthController extends BaseController
 
         // Selesaikan transaksi database
         $db->transComplete();
-        
-        // Re-enable foreign key checks
-        $db->query('SET foreign_key_checks = 1');
 
         if ($db->transStatus() === false) {
-            return redirect()->back()->withInput()->with('error', 'Gagal memproses pendaftaran data akademik Anda.');
+            return redirect()->back()->withInput()->with('error', 'Gagal memproses pendaftaran. Silakan coba lagi atau hubungi admin.');
         }
 
-        return redirect()->to(base_url('login'))->with('success', 'Registrasi berhasil! Data akademik Anda telah disinkronkan. Silakan login.');
+        return redirect()->to(base_url('login'))->with('success', 'Pendaftaran berhasil! Akun Anda telah dibuat. Silakan login.');
     }
     // --- TAMPILAN FORM LOGIN (SINGLE SCREEN) ---
     public function login()
