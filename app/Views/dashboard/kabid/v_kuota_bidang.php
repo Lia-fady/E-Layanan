@@ -114,7 +114,7 @@ Manajemen Kuota Bidang
                 </div>
                 <h4 style="font-weight: 800; color: #1E293B; margin-bottom: 5px;"><?= $sisa ?> Posisi</h4>
                 <div class="badge mb-3" style="background-color: <?= $statusBg ?>; color: <?= $statusColor ?>; padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 6px;">
-                    Status Slot: <?= $statusText ?>
+                    Status Kuota: <?= $statusText ?>
                 </div>
                 <p style="color: #64748B; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
                     Bidang Anda saat ini memiliki sisa ruang untuk <strong><?= $sisa ?> mahasiswa baru</strong>. Saat ada mahasiswa yang statusnya berubah menjadi selesai, sisa kuota ini akan otomatis bertambah kembali.
