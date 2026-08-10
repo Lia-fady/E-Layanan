@@ -440,7 +440,7 @@
                     
                     <div class="mb-3">
                         <label class="form-label">Tanggal Kegiatan <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" name="tgl_logbook" value="<?= date('Y-m-d') ?>" required>
+                        <input type="date" class="form-control" name="tgl_logbook" value="<?= date('Y-m-d') ?>" min="<?= $penempatan['tgl_mulai'] ?? '' ?>" max="<?= $penempatan['tgl_selesai'] ?? '' ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Rincian Kegiatan / Tugas <span class="text-danger">*</span></label>

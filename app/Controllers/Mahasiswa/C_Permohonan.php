@@ -55,6 +55,11 @@ class C_Permohonan extends C_BaseMahasiswa
             return redirect()->to(base_url('login'))->with('error', 'Sesi Anda telah habis. Silakan login kembali.');
         }
 
+        $stateData = $this->_getMahasiswaState($id_mahasiswa);
+        if ($stateData['state'] == 4) {
+            return redirect()->to(base_url('mahasiswa/dashboard'))->with('error', 'Gagal memproses. Anda masih memiliki kegiatan magang yang sedang berjalan.');
+        }
+
         $rules = [
             'id_jenis_permohonan' => [
                 'rules'  => 'required',
@@ -128,20 +133,64 @@ class C_Permohonan extends C_BaseMahasiswa
         $tglMulai = $this->request->getPost('tgl_mulai');
         $tglSelesai = $this->request->getPost('tgl_selesai');
         
-        if ($tglMulai && $tglSelesai && $id_jenis_permohonan == '3') {
+        $db = \Config\Database::connect();
+
+        if ($tglMulai && $tglSelesai) {
             $dateMulai = new \DateTime($tglMulai);
             $dateSelesai = new \DateTime($tglSelesai);
-            $diff = $dateMulai->diff($dateSelesai);
+            
+            $dateMulai->setTime(0,0,0);
+            $dateSelesai->setTime(0,0,0);
 
-            if ($diff->invert || $diff->days < 60) {
+            // Ambil konfigurasi tanggal dari database
+            $jenisConfig = $db->table('m_jenis_permohonan')
+                ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                ->get()->getRowArray();
+
+            $maksHariPengajuan  = (int)($jenisConfig['maksimal_hari_pengajuan'] ?? 0);
+            $durasiMinimal      = (int)($jenisConfig['durasi_minimal'] ?? 0);
+            $maksimalPermohonan = (int)($jenisConfig['maksimal_permohonan'] ?? 0);
+
+            $today = new \DateTime();
+            $today->setTime(0,0,0);
+
+            // Validasi 1: Tanggal mulai tidak boleh kurang dari hari_ini + maksimal_hari_pengajuan
+            $minMulai = clone $today;
+            $minMulai->modify('+' . $maksHariPengajuan . ' days');
+            if ($dateMulai < $minMulai) {
                 return redirect()->back()->withInput()->with('errors', [
-                    'tgl_mulai' => 'Durasi permohonan magang minimal adalah 2 bulan (60 hari).',
-                    'tgl_selesai' => 'Tanggal selesai magang harus minimal 2 bulan setelah tanggal mulai.'
+                    'tgl_mulai' => 'Tanggal mulai minimal ' . $maksHariPengajuan . ' hari dari tanggal pengajuan hari ini.'
                 ]);
             }
-        }
 
-        $db = \Config\Database::connect();
+            // Validasi 2: Tanggal mulai tidak boleh lebih dari maksimal_permohonan hari ke depan
+            if ($maksimalPermohonan > 0) {
+                $maxMulai = clone $today;
+                $maxMulai->modify('+' . $maksimalPermohonan . ' days');
+                if ($dateMulai > $maxMulai) {
+                    return redirect()->back()->withInput()->with('errors', [
+                        'tgl_mulai' => 'Maksimal memilih tanggal mulai kegiatan adalah ' . $maksimalPermohonan . ' hari dari hari ini.'
+                    ]);
+                }
+            }
+
+            // Validasi 3: Tanggal selesai >= tanggal_mulai + durasi_minimal
+            if ($dateSelesai < $dateMulai) {
+                return redirect()->back()->withInput()->with('errors', [
+                    'tgl_selesai' => 'Tanggal selesai tidak boleh mendahului tanggal mulai.'
+                ]);
+            }
+
+            if ($durasiMinimal > 0) {
+                $minSelesai = clone $dateMulai;
+                $minSelesai->modify('+' . $durasiMinimal . ' days');
+                if ($dateSelesai < $minSelesai) {
+                    return redirect()->back()->withInput()->with('errors', [
+                        'tgl_selesai' => 'Durasi kegiatan minimal untuk layanan permohonan ini adalah ' . $durasiMinimal . ' hari.'
+                    ]);
+                }
+            }
+        }
 
         $id_jenis_permohonan = $this->request->getPost('id_jenis_permohonan');
         $tgl_mulai           = $this->request->getPost('tgl_mulai');
@@ -412,16 +461,63 @@ class C_Permohonan extends C_BaseMahasiswa
         $id_jenis_permohonan = $this->request->getPost('id_jenis_permohonan');
         $tglMulai = $this->request->getPost('tgl_mulai');
         $tglSelesai = $this->request->getPost('tgl_selesai');
-        if ($tglMulai && $tglSelesai && $id_jenis_permohonan == '3') {
+        
+        $db = \Config\Database::connect();
+
+        if ($tglMulai && $tglSelesai) {
             $dateMulai = new \DateTime($tglMulai);
             $dateSelesai = new \DateTime($tglSelesai);
-            $diff = $dateMulai->diff($dateSelesai);
+            
+            $dateMulai->setTime(0,0,0);
+            $dateSelesai->setTime(0,0,0);
 
-            if ($diff->invert || $diff->days < 60) {
+            // Ambil konfigurasi tanggal dari database
+            $jenisConfig = $db->table('m_jenis_permohonan')
+                ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                ->get()->getRowArray();
+
+            $maksHariPengajuan  = (int)($jenisConfig['maksimal_hari_pengajuan'] ?? 0);
+            $durasiMinimal      = (int)($jenisConfig['durasi_minimal'] ?? 0);
+            $maksimalPermohonan = (int)($jenisConfig['maksimal_permohonan'] ?? 0);
+
+            $today = new \DateTime();
+            $today->setTime(0,0,0);
+
+            // Validasi 1: Tanggal mulai tidak boleh kurang dari hari_ini + maksimal_hari_pengajuan
+            $minMulai = clone $today;
+            $minMulai->modify('+' . $maksHariPengajuan . ' days');
+            if ($dateMulai < $minMulai) {
                 return redirect()->back()->withInput()->with('errors', [
-                    'tgl_mulai' => 'Durasi permohonan magang minimal adalah 2 bulan (60 hari).',
-                    'tgl_selesai' => 'Tanggal selesai magang harus minimal 2 bulan setelah tanggal mulai.'
+                    'tgl_mulai' => 'Tanggal mulai minimal ' . $maksHariPengajuan . ' hari dari tanggal pengajuan hari ini.'
                 ]);
+            }
+
+            // Validasi 2: Tanggal mulai tidak boleh lebih dari maksimal_permohonan hari ke depan
+            if ($maksimalPermohonan > 0) {
+                $maxMulai = clone $today;
+                $maxMulai->modify('+' . $maksimalPermohonan . ' days');
+                if ($dateMulai > $maxMulai) {
+                    return redirect()->back()->withInput()->with('errors', [
+                        'tgl_mulai' => 'Maksimal memilih tanggal mulai kegiatan adalah ' . $maksimalPermohonan . ' hari dari hari ini.'
+                    ]);
+                }
+            }
+
+            // Validasi 3: Tanggal selesai >= tanggal_mulai + durasi_minimal
+            if ($dateSelesai < $dateMulai) {
+                return redirect()->back()->withInput()->with('errors', [
+                    'tgl_selesai' => 'Tanggal selesai tidak boleh mendahului tanggal mulai.'
+                ]);
+            }
+
+            if ($durasiMinimal > 0) {
+                $minSelesai = clone $dateMulai;
+                $minSelesai->modify('+' . $durasiMinimal . ' days');
+                if ($dateSelesai < $minSelesai) {
+                    return redirect()->back()->withInput()->with('errors', [
+                        'tgl_selesai' => 'Durasi kegiatan minimal untuk layanan permohonan ini adalah ' . $durasiMinimal . ' hari.'
+                    ]);
+                }
             }
         }
 
