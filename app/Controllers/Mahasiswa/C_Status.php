@@ -195,7 +195,7 @@ class C_Status extends C_BaseMahasiswa
         return redirect()->to(base_url('mahasiswa/status'));
     }
 
-    public function downloadSuratPenerimaan($id_file_proses)
+    public function downloadSuratPenerimaan($id_file_selesai)
     {
         $id_mahasiswa = session()->get('id_mahasiswa');
         if (!$id_mahasiswa) {
@@ -207,7 +207,7 @@ class C_Status extends C_BaseMahasiswa
             ->select('t_file_proses_magang.*')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_persetujuan_magang = t_file_proses_magang.id_persetujuan_magang')
             ->join('t_permohonan_magang', 't_permohonan_magang.id_permohonan_magang = t_persetujuan_magang.id_permohonan_magang')
-            ->where('t_file_proses_magang.id_file_proses_magang', $id_file_proses)
+            ->where('t_file_proses_magang.id_file_proses_magang', $id_file_selesai)
             ->where('t_file_proses_magang.proses_magang', 'persetujuan')
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
@@ -230,3 +230,4 @@ class C_Status extends C_BaseMahasiswa
         return redirect()->to(base_url('mahasiswa/status'));
     }
 }
+

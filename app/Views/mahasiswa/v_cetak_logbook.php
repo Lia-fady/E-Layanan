@@ -194,6 +194,12 @@
                             </td>
                         </tr>
                     <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px;">
+                            <i>Belum ada catatan logbook yang disetujui.</i>
+                        </td>
+                    </tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -207,7 +213,7 @@
                 <p style="margin:0;">NIM. <?= esc($mhs['nim']) ?></p>
             </div>
             <div class="ttd-box">
-                <p>Kota Tangerang, <?= date('d F Y') ?><br>Pembimbing Bidang,</p>
+                <p>Kota Tangerang, <?= tgl_indo(date('Y-m-d')) ?><br>Pembimbing Bidang,</p>
                 <div class="ttd-space"></div>
                 <p class="ttd-name">....................................................</p>
                 <p style="margin:0;">NIP. ........................................</p>

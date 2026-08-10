@@ -52,6 +52,14 @@ $routes->group('api', ['namespace' => '\App\Controllers\Api'], static function (
     $routes->get('log/riwayat/(:num)', 'Log::get_riwayat/$1');
 });
 
+// --- API ROUTES FOR DROPDOWNS (from AuthController/ApiController) ---
+$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
+$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
+$routes->get('api/kabupaten/(:num)', 'ApiController::getKabupatenByProvinsi/$1');
+$routes->get('api/kecamatan/(:num)', 'ApiController::getKecamatanByKabupaten/$1');
+$routes->get('api/kelurahan/(:num)', 'ApiController::getKelurahanByKecamatan/$1');
+$routes->get('api/log/riwayat/(:num)', 'ApiController::getLogRiwayat/$1');
+
 // =========================================================================
 // MAHASISWA Route Group 
 // =========================================================================

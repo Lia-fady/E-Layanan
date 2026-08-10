@@ -83,7 +83,7 @@
                 <div class="col-sm-6">
                     <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">TANGGAL LAHIR</div>
                     <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= (!empty($m['tgl_lahir']) && $m['tgl_lahir'] != '0000-00-00') ? date('d F Y', strtotime($m['tgl_lahir'])) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
+                        <?= (!empty($m['tgl_lahir']) && $m['tgl_lahir'] != '0000-00-00') ? tgl_indo($m['tgl_lahir']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -126,19 +126,19 @@
                 <div class="col-sm-6">
                     <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">KELURAHAN / DESA</div>
                     <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($m['kelurahan']) ? esc($m['kelurahan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
+                        <?= !empty($m['nama_kelurahan']) ? esc($m['nama_kelurahan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">KECAMATAN</div>
                     <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($m['kecamatan']) ? esc($m['kecamatan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
+                        <?= !empty($m['nama_kecamatan']) ? esc($m['nama_kecamatan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">PROVINSI</div>
                     <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($m['provinsi']) ? esc($m['provinsi']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
+                        <?= !empty($m['nama_provinsi']) ? esc($m['nama_provinsi']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                 <div class="col-sm-6">
                     <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">JENJANG PENDIDIKAN</div>
                     <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($i['jenjang_pendidikan']) ? esc($i['jenjang_pendidikan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
+                        <?= !empty($i['nama_jenjang']) ? esc($i['nama_jenjang']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted mb-2">TANGGAL LAHIR</label>
-                                    <input type="date" name="tgl_lahir" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= $m['tgl_lahir'] ?? '' ?>" onkeydown="return false" onclick="this.showPicker()">
+                                    <input type="text" name="tgl_lahir" class="form-control form-control-lg flatpickr-id" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0; background-color: #fff;" value="<?= $m['tgl_lahir'] ?? '' ?>">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted mb-2">ALAMAT EMAIL</label>
@@ -278,17 +278,44 @@
                                     <input type="text" name="rw" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($m['rw'] ?? '') ?>" placeholder="002">
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">KELURAHAN / DESA</label>
-                                    <input type="text" name="kelurahan" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($m['kelurahan'] ?? '') ?>">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">KECAMATAN</label>
-                                    <input type="text" name="kecamatan" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($m['kecamatan'] ?? '') ?>">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">PROVINSI</label>
-                                    <input type="text" name="provinsi" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($m['provinsi'] ?? '') ?>">
-                                </div>
+                                      <label class="form-label small fw-bold text-muted mb-2">PROVINSI</label>
+                                      <select name="provinsi" id="edit_prov" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" onchange="loadKabupaten(this.value)">
+                                          <option value="">-- Pilih Provinsi --</option>
+                                          <?php if(!empty($provinsi)): foreach($provinsi as $pv): ?>
+                                              <option value="<?= $pv['id_provinsi'] ?>" <?= ($m['id_provinsi'] ?? '') == $pv['id_provinsi'] ? 'selected' : '' ?>><?= esc($pv['nama_provinsi']) ?></option>
+                                          <?php endforeach; endif; ?>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="form-label small fw-bold text-muted mb-2">KABUPATEN / KOTA</label>
+                                      <select name="kab_kota" id="edit_kab" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" onchange="loadKecamatan(this.value)">
+                                          <?php if(!empty($m['id_kabupaten'])): ?>
+                                              <option value="<?= $m['id_kabupaten'] ?>" selected><?= esc($m['nama_kabupaten']) ?></option>
+                                          <?php else: ?>
+                                              <option value="">-- Pilih Kabupaten --</option>
+                                          <?php endif; ?>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="form-label small fw-bold text-muted mb-2">KECAMATAN</label>
+                                      <select name="kecamatan" id="edit_kec" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" onchange="loadKelurahan(this.value)">
+                                          <?php if(!empty($m['id_kecamatan'])): ?>
+                                              <option value="<?= $m['id_kecamatan'] ?>" selected><?= esc($m['nama_kecamatan']) ?></option>
+                                          <?php else: ?>
+                                              <option value="">-- Pilih Kecamatan --</option>
+                                          <?php endif; ?>
+                                      </select>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="form-label small fw-bold text-muted mb-2">KELURAHAN / DESA</label>
+                                      <select name="id_kelurahan" id="edit_kel" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;">
+                                          <?php if(!empty($m['id_kelurahan'])): ?>
+                                              <option value="<?= $m['id_kelurahan'] ?>" selected><?= esc($m['nama_kelurahan']) ?></option>
+                                          <?php else: ?>
+                                              <option value="">-- Pilih Kelurahan --</option>
+                                          <?php endif; ?>
+                                      </select>
+                                  </div>
                             </div>
                         </div>
 
@@ -296,16 +323,14 @@
                         <div class="tab-pane fade" id="akademik" role="tabpanel">
                             <div class="row g-4">
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">JENJANG PENDIDIKAN</label>
-                                    <select name="jenjang_pendidikan" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="SMA/SMK" <?= ($i['jenjang_pendidikan'] ?? '') == 'SMA/SMK' ? 'selected' : '' ?>>SMA/SMK</option>
-                                        <option value="D3" <?= ($i['jenjang_pendidikan'] ?? '') == 'D3' ? 'selected' : '' ?>>D3</option>
-                                        <option value="D4" <?= ($i['jenjang_pendidikan'] ?? '') == 'D4' ? 'selected' : '' ?>>D4</option>
-                                        <option value="S1" <?= ($i['jenjang_pendidikan'] ?? '') == 'S1' ? 'selected' : '' ?>>S1</option>
-                                        <option value="S2" <?= ($i['jenjang_pendidikan'] ?? '') == 'S2' ? 'selected' : '' ?>>S2</option>
-                                    </select>
-                                </div>
+                                      <label class="form-label small fw-bold text-muted mb-2">JENJANG PENDIDIKAN</label>
+                                      <select name="id_jenjang_pendidikan" class="form-select form-select-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;">
+                                          <option value="">-- Pilih --</option>
+                                          <?php if(!empty($jenjang)): foreach($jenjang as $j): ?>
+                                              <option value="<?= $j['id_jenjang_pendidikan'] ?>" <?= ($i['id_jenjang_pendidikan'] ?? '') == $j['id_jenjang_pendidikan'] ? 'selected' : '' ?>><?= esc($j['nama_jenjang']) ?></option>
+                                          <?php endforeach; endif; ?>
+                                      </select>
+                                  </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted mb-2">TAHUN ANGKATAN</label>
                                     <input type="text" name="angkatan_tahun" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($i['angkatan_tahun'] ?? '') ?>" placeholder="Misal: 2021">
@@ -375,3 +400,45 @@
 <?php endif; ?>
 
 <?= $this->endSection() ?>
+
+<script>
+function loadKabupaten(id_prov) {
+    let kab = document.getElementById('edit_kab');
+    let kec = document.getElementById('edit_kec');
+    let kel = document.getElementById('edit_kel');
+    kab.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+    kec.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+    kel.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+    if(!id_prov) return;
+    
+    fetch('<?= base_url("api/kabupaten") ?>/'+id_prov)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kab.innerHTML += `<option value="${k.id_kabupaten}">${k.nama_kabupaten}</option>`);
+    });
+}
+
+function loadKecamatan(id_kab) {
+    let kec = document.getElementById('edit_kec');
+    let kel = document.getElementById('edit_kel');
+    kec.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+    kel.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+    if(!id_kab) return;
+    
+    fetch('<?= base_url("api/kecamatan") ?>/'+id_kab)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kec.innerHTML += `<option value="${k.id_kecamatan}">${k.nama_kecamatan}</option>`);
+    });
+}
+
+function loadKelurahan(id_kec) {
+    let kel = document.getElementById('edit_kel');
+    kel.innerHTML = '<option value="">-- Pilih Kelurahan --</option>';
+    if(!id_kec) return;
+    
+    fetch('<?= base_url("api/kelurahan") ?>/'+id_kec)
+    .then(r=>r.json()).then(d=>{
+        d.forEach(k => kel.innerHTML += `<option value="${k.id_kelurahan}">${k.nama_kelurahan}</option>`);
+    });
+}
+</script>
+

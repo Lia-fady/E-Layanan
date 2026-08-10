@@ -15,19 +15,28 @@ class C_Profil extends C_BaseMahasiswa
         $db = \Config\Database::connect();
         
         // Data Pribadi Mahasiswa
-        $mahasiswa = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $mahasiswa = $db->table('m_mahasiswa')
+            ->select('m_mahasiswa.*, m_kelurahan.nama_kelurahan, m_kecamatan.nama_kecamatan, m_kecamatan.id_kecamatan, m_kabupaten.nama_kabupaten, m_kabupaten.id_kabupaten, m_provinsi.nama_provinsi, m_provinsi.id_provinsi')
+            ->join('m_kelurahan', 'm_kelurahan.id_kelurahan = m_mahasiswa.id_kelurahan', 'left')
+            ->join('m_kecamatan', 'm_kecamatan.id_kecamatan = m_kelurahan.id_kecamatan', 'left')
+            ->join('m_kabupaten', 'm_kabupaten.id_kabupaten = m_kecamatan.id_kabupaten', 'left')
+            ->join('m_provinsi', 'm_provinsi.id_provinsi = m_kabupaten.id_provinsi', 'left')
+            ->where('id_mahasiswa', $id_mahasiswa)
+            ->get()->getRowArray();
         
         // Data Akademik + join ke m_instansi_pendidikan, m_prodi, m_fakultas
         $instansi = $db->table('t_instansi_mahasiswa')
             ->select('
                 t_instansi_mahasiswa.*,
-                m_instansi_pendidikan.instansi_pendidikan as instansi_pendidikan,
-                m_prodi.nama_prodi,
-                m_fakultas.fakultas AS nama_fakultas
+                m_instansi_pendidikan.instansi_pendidikan as nama_instansi,
+                m_prodi.nama_prodi as prodi,
+                m_fakultas.fakultas,
+                m_jenjang_pendidikan.nama_jenjang
             ')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
+            ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = t_instansi_mahasiswa.id_jenjang_pendidikan', 'left')
             ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
 
@@ -37,7 +46,9 @@ class C_Profil extends C_BaseMahasiswa
             'is_log_book'      => $stateData['is_log_book'],
             'jenis_permohonan' => $stateData['jenis_permohonan'],
             'm'                => $mahasiswa,
-            'i'                => $instansi
+            'i'                => $instansi,
+            'provinsi'         => $db->table('m_provinsi')->get()->getResultArray(),
+            'jenjang'          => $db->table('m_jenjang_pendidikan')->where('status', 'AKTIF')->get()->getResultArray()
         ];
 
         return view('mahasiswa/v_profil_mahasiswa', $data);
@@ -97,17 +108,9 @@ class C_Profil extends C_BaseMahasiswa
                 'rules'  => 'required|numeric|max_length[3]',
                 'errors' => ['required' => 'RW wajib diisi.', 'numeric' => 'RW harus angka.']
             ],
-            'kelurahan' => [
-                'rules'  => 'required|min_length[3]|max_length[100]',
-                'errors' => ['required' => 'Kelurahan wajib diisi.']
-            ],
-            'kecamatan' => [
-                'rules'  => 'required|min_length[3]|max_length[100]',
-                'errors' => ['required' => 'Kecamatan wajib diisi.']
-            ],
-            'provinsi' => [
-                'rules'  => 'required|min_length[3]|max_length[100]',
-                'errors' => ['required' => 'Provinsi wajib diisi.']
+            'id_kelurahan' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Kelurahan wajib dipilih.']
             ],
             'id_jenjang_pendidikan' => [
                 'rules'  => 'required',
@@ -144,9 +147,7 @@ class C_Profil extends C_BaseMahasiswa
             'alamat'        => $this->request->getPost('alamat'),
             'rt'            => $this->request->getPost('rt'),
             'rw'            => $this->request->getPost('rw'),
-            'kelurahan'     => $this->request->getPost('kelurahan'),
-            'kecamatan'     => $this->request->getPost('kecamatan'),
-            'provinsi'      => $this->request->getPost('provinsi')
+            'id_kelurahan'  => $this->request->getPost('id_kelurahan')
         ];
         
         $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->update($dataMahasiswa);
@@ -155,10 +156,10 @@ class C_Profil extends C_BaseMahasiswa
         $instansi = $db->table('t_instansi_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRow();
         
         $dataAkademik = [
-            'id_jenjang_pendidikan' => $this->request->getPost('jenjang_pendidikan'),
-            'angkatan_tahun'     => $this->request->getPost('angkatan_tahun'),
-            'semester'           => $this->request->getPost('semester'),
-            'tahun_akademik'     => $this->request->getPost('tahun_akademik'),
+            'id_jenjang_pendidikan' => $this->request->getPost('id_jenjang_pendidikan'),
+            'angkatan_tahun'        => $this->request->getPost('angkatan_tahun'),
+            'semester'              => $this->request->getPost('semester'),
+            'tahun_akademik'        => $this->request->getPost('tahun_akademik'),
         ];
 
         if ($instansi) {

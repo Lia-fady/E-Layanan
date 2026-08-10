@@ -270,7 +270,7 @@
                 <div class="col-md-7">
                     <h6 class="fw-bold text-dark mb-1" style="font-size: 1.1rem;"><?= esc($penempatan['nama_jenis'] ?? 'Kegiatan Magang') ?></h6>
                     <div class="text-muted" style="font-size: 0.88rem; margin-top: 4px;">
-                        Periode: <?= date('d M Y', strtotime($penempatan['tgl_mulai'])) ?> &ndash; <?= date('d M Y', strtotime($penempatan['tgl_selesai'])) ?>
+                        Periode: <?= tgl_indo($penempatan['tgl_mulai']) ?> &ndash; <?= tgl_indo($penempatan['tgl_selesai']) ?>
                         <span class="mx-2 text-black-50">|</span>
                         Status: <strong class="<?= $penempatan['status_penempatan'] == 'BERJALAN' ? 'text-success' : 'text-secondary' ?>"><?= esc($penempatan['status_penempatan']) ?></strong>
                     </div>
@@ -373,7 +373,7 @@
                                     <tr>
                                         <td class="text-muted" style="font-size: 0.82rem;"><?= $no++ ?></td>
                                         <td class="fw-semibold text-secondary" style="font-size: 0.82rem;">
-                                            <?= date('d M Y', strtotime($l['tgl_logbook'])) ?>
+                                            <?= tgl_indo($l['tgl_logbook']) ?>
                                         </td>
                                         <td style="line-height: 1.5;">
                                             <?= esc($l['logbook_magang']) ?>
@@ -440,7 +440,20 @@
                     
                     <div class="mb-3">
                         <label class="form-label">Tanggal Kegiatan <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" name="tgl_logbook" value="<?= date('Y-m-d') ?>" required>
+                        <?php
+                            $today = date('Y-m-d');
+                            $minDate = $penempatan['tgl_mulai'] ?? $today;
+                            $maxDate = $penempatan['tgl_selesai'] ?? $today;
+                            
+                            if ($today < $minDate) {
+                                $defaultDate = $minDate;
+                            } elseif ($today > $maxDate) {
+                                $defaultDate = $maxDate;
+                            } else {
+                                $defaultDate = $today;
+                            }
+                        ?>
+                        <input type="date" class="form-control" name="tgl_logbook" value="<?= $defaultDate ?>" min="<?= $minDate ?>" max="<?= $maxDate ?>" style="background-color: #fff;" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Rincian Kegiatan / Tugas <span class="text-danger">*</span></label>

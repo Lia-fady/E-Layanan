@@ -73,123 +73,131 @@
         pointer-events: none;
     }
 
-    .card-flat {
+    .card-minimalist {
         background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.03);
         border-radius: 12px;
         padding: 24px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        border: 1px solid #f1f5f9;
     }
-
-    /* --- CUSTOM OVERRIDE PAGINATION CI4 AGAR RAPI SEPERTI GAMBAR --- */
-    .custom-pagination ul {
-        display: flex;
-        padding-left: 0;
-        list-style: none;
-        margin: 0;
-        gap: 6px;
+    .table-minimalist {
+        border-collapse: separate !important;
+        border-spacing: 0 8px !important;
+        width: 100%;
     }
-    .custom-pagination li a, .custom-pagination li span {
-        position: relative;
-        display: block;
-        padding: 6px 14px;
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: var(--primary-royal);
-        text-decoration: none;
-        background-color: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px !important;
+    .table-minimalist thead th {
+        border-bottom: 2px solid #e2e8f0 !important;
+        border-top: none !important;
+        color: #475569;
+        background-color: #f8fafc;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 16px;
+    }
+    .table-minimalist thead th:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .table-minimalist thead th:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+    .table-minimalist tbody tr {
+        background: #ffffff;
         transition: all 0.2s ease;
     }
-    .custom-pagination li.active span, .custom-pagination li.active a {
-        z-index: 3;
-        color: #fff !important;
-        background-color: var(--primary-royal) !important;
-        border-color: var(--primary-royal) !important;
+    .table-minimalist tbody tr:hover {
+        background: #fcfcfc;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
-    .custom-pagination li a:hover {
-        background-color: #f3f4f6;
-        border-color: #d1d5db;
+    .table-minimalist tbody td {
+        border-top: 1px solid #f1f5f9;
+        border-bottom: 1px solid #f1f5f9;
+        padding: 12px 16px;
+        vertical-align: middle;
+        font-size: 0.85rem;
+        color: #475569;
     }
-    /* === PAGE HEADER === */
-    .page-header-top {
+    .table-minimalist tbody td:first-child {
+        border-left: 1px solid #f1f5f9;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .table-minimalist tbody td:last-child {
+        border-right: 1px solid #f1f5f9;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    /* Solid Badges */
+    .badge-solid {
+        display: inline-block; padding: 5px 12px;
+        font-size: 0.72rem; font-weight: 700; border-radius: 6px;
+        text-transform: uppercase; letter-spacing: 0.3px; color: #fff;
+    }
+    .badge-solid.draft { background: #94a3b8; }
+    .badge-solid.pending { background: #f59e0b; }
+    .badge-solid.approved { background: #3b82f6; }
+    .badge-solid.success { background: #10b981; }
+    .badge-solid.rejected { background: #ef4444; }
+
+    /* Action Buttons */
+    .action-btn {
+        width: 34px; height: 34px;
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 6px; border: none; color: #fff;
+        transition: opacity 0.2s; text-decoration: none;
+    }
+    .action-btn:hover { opacity: 0.85; color: #fff; }
+    .action-btn.edit { background: #f59e0b; }
+    .action-btn.delete { background: #ef4444; }
+    .action-btn.detail { background: #3b82f6; }
+    .action-btn.history { background: #10b981; }
+
+    /* Custom Pagination Footer */
+    .custom-dt-footer {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 18px;
-        margin-bottom: 20px;
-        margin-top: 5px;
+        padding-top: 20px;
+        border-top: 1px solid #f1f5f9;
+        margin-top: 12px;
     }
-    .page-header-top h4 {
-        font-weight: 800;
-        color: #1a2b3c;
-        margin: 0;
-        font-size: 1.4rem;
-        letter-spacing: -0.3px;
-    }
-    .page-header-top .sub-text {
+    .dt-info-text {
+        font-size: 0.85rem;
         color: #64748b;
-        font-size: 0.9rem;
-        margin: 4px 0 0;
-        line-height: 1.5;
+        font-weight: 500;
     }
-    .page-header-card {
+    .dt-page-buttons {
+        display: flex;
+        gap: 6px;
+    }
+    .dt-page-btn {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #475569;
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
-    .page-header-stats {
-        display: flex;
-        gap: 12px;
-    }
-    .ph-stat {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 18px;
+    .dt-page-btn:hover:not(.disabled) {
         background: #f8fafc;
-        border: 1px solid #edf2f7;
-        border-radius: 10px;
-        transition: border-color 0.2s;
-    }
-    .ph-stat:hover {
         border-color: #cbd5e1;
     }
-    .ph-stat-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 9px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        flex-shrink: 0;
+    .dt-page-btn.active {
+        background: #e0e7ff;
+        color: #4f46e5;
+        border-color: #e0e7ff;
     }
-    .ph-stat-icon.blue { background: #dbeafe; color: #2563eb; }
-    .ph-stat-icon.green { background: #dcfce7; color: #16a34a; }
-    .ph-stat-icon.amber { background: #fef3c7; color: #d97706; }
-    .ph-stat-icon.slate { background: #e2e8f0; color: #475569; }
-    .ph-stat-value {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #1e293b;
-        line-height: 1;
-    }
-    .ph-stat-label {
-        font-size: 0.72rem;
-        color: #94a3b8;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        margin-top: 2px;
-    }
-    .status-filter-bar { padding: 15px 17px; background: #f7fbfd; border: 1px solid #e1ebf0; border-radius: 10px; }
-    @media (max-width: 575.98px) {
-        .page-header-stats { flex-direction: column; }
-        .page-header-top { flex-direction: column; align-items: flex-start; }
+    .dt-page-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     /* --- VERTICAL TIMELINE --- */
@@ -289,52 +297,9 @@
 <?= $this->section('content') ?>
         
         <div id="sectionList">
-        <?php
-            $totalPermohonan = 0;
-            $totalSelesai = 0;
-            $totalDraft = 0;
-            foreach (($permohonan ?? []) as $statusItem) {
-                // Jangan hitung draft sebagai "Pengajuan" karena belum dikirim
-                if (strtolower($statusItem['posting_data'] ?? '') === 'draft') {
-                    $totalDraft++;
-                } else {
-                    $totalPermohonan++;
-                    if (!empty($statusItem['status_penempatan']) && $statusItem['status_penempatan'] !== 'MENUNGGU') {
-                        $totalSelesai++;
-                    }
-                }
-            }
-            $totalMenunggu = $totalPermohonan - $totalSelesai;
-        ?>
         <div class="mb-4">
-            <h3 class="fw-semibold mb-1 text-dark">Lihat Riwayat Permohonan</h3>
-            <p class="text-muted mb-0">Pantau perjalanan dokumen Anda dari pengajuan, verifikasi, hingga keputusan penempatan.</p>
-        </div>
-        
-        <div class="page-header-card">
-            <div class="page-header-stats">
-                <div class="ph-stat">
-                    <div class="ph-stat-icon blue"><i class="bi bi-file-earmark-text"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $totalPermohonan ?></div>
-                        <div class="ph-stat-label">Total Pengajuan</div>
-                    </div>
-                </div>
-                <div class="ph-stat">
-                    <div class="ph-stat-icon green"><i class="bi bi-check-circle"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $totalSelesai ?></div>
-                        <div class="ph-stat-label">Diproses</div>
-                    </div>
-                </div>
-                <div class="ph-stat">
-                    <div class="ph-stat-icon amber"><i class="bi bi-hourglass-split"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $totalMenunggu ?></div>
-                        <div class="ph-stat-label">Menunggu</div>
-                    </div>
-                </div>
-            </div>
+            <h3 class="fw-semibold mb-1 text-dark">Riwayat Permohonan</h3>
+            <p class="text-muted mb-0">Daftar riwayat dan status pengajuan permohonan Anda.</p>
         </div>
 
         <!-- Alert Flashdata Feedback Notifikasi -->
@@ -350,35 +315,33 @@
         <?php endif; ?>
 
         <!-- DATA DATA RIWAYAT TABLE -->
-        <div class="card-flat shadow-sm">
+        <div class="card-minimalist mb-4">
             
             <!-- CONTROLS ROW -->
             <div class="status-filter-bar mb-3">
-                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                     <!-- KIRI: Show Entries -->
                     <div class="d-flex align-items-center gap-2">
                         <span class="small text-muted fw-medium">Tampilkan</span>
-                        <select id="dt-length" class="form-select form-select-sm shadow-none border-secondary-subtle" style="width: 70px;">
+                        <select id="dt-length" class="form-select form-select-sm shadow-none border-secondary-subtle" style="width: 70px; border-radius: 6px;">
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
                         </select>
-                        <span class="small text-muted fw-medium">entri</span>
+                        <span class="small text-muted fw-medium">baris</span>
                     </div>
-                    <!-- KANAN: Search + Filters -->
-                    <div class="d-flex flex-wrap align-items-center gap-2">
-                        <div style="position: relative;">
-                            <i class="bi bi-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.8rem;"></i>
-                            <input type="text" id="dt-search" class="form-control form-control-sm shadow-none" placeholder="Cari..." style="padding-left: 30px; border-radius: 8px; width: 180px;">
-                        </div>
-                        <select id="filter-jenis" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 160px; border-radius: 8px;">
-                            <option value="">Semua Jenis</option>
+
+                    <!-- TENGAH: Filters -->
+                    <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1 justify-content-center">
+                        <select id="filter-jenis" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 170px; border-radius: 6px;">
+                            <option value="">Semua Jenis Layanan</option>
                             <option value="Penelitian / Skripsi">Penelitian / Skripsi</option>
                             <option value="Observasi / Ambil Data">Observasi / Ambil Data</option>
-                            <option value="Magang / PKL">Magang / PKL</option>
+                            <option value="Magang">Magang</option>
+                            <option value="Praktik Kerja Lapangan (PKL)">Praktik Kerja Lapangan (PKL)</option>
                             <option value="Uji Coba Produk">Uji Coba Produk</option>
                         </select>
-                        <select id="filter-status" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 160px; border-radius: 8px;">
+                        <select id="filter-status" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 140px; border-radius: 6px;">
                             <option value="">Semua Status</option>
                             <option value="Draft">Draft</option>
                             <option value="Menunggu">Menunggu</option>
@@ -388,112 +351,100 @@
                             <option value="Ditolak">Ditolak</option>
                         </select>
                     </div>
+
+                    <!-- KANAN: Search -->
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="small text-muted fw-medium">Cari:</span>
+                        <div style="position: relative;">
+                            <input type="text" id="dt-search" class="form-control form-control-sm shadow-none" style="border-radius: 6px; width: 180px;">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table id="tabelRiwayat" class="table table-hover align-middle m-0" style="width: 100%;">
-                    <colgroup>
-                        <col style="width: 5%;">          <!-- No -->
-                        <col style="width: 15%;">         <!-- Tanggal Diajukan -->
-                        <col style="width: 23%;">         <!-- Jenis Permohonan -->
-                        <col style="width: 15%;">         <!-- Tanggal Mulai -->
-                        <col style="width: 15%;">         <!-- Tanggal Selesai -->
-                        <col style="width: 15%;">         <!-- Status -->
-                        <col style="width: 12%;">         <!-- Aksi -->
-                    </colgroup>
-                    <thead class="table-light">
-                        <tr class="text-muted small text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.4px;">
-                            <th class="py-3 text-center">No</th>
-                            <th class="py-3 text-center" style="white-space: nowrap;">Tanggal Diajukan</th>
-                            <th class="py-3 text-center">Jenis Permohonan</th>
-                            <th class="py-3 text-center">Tanggal Mulai</th>
-                            <th class="py-3 text-center">Tanggal Selesai</th>
-                            <th class="py-3 text-center">Status Terkini</th>
-                            <th class="py-3 text-center">Aksi</th>
+            <div class="table-responsive mt-3">
+                <table id="tabelRiwayat" class="table-minimalist">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 5%;">NO</th>
+                            <th>JENIS PERMOHONAN</th>
+                            <th>NAMA</th>
+                            <th class="text-center">TANGGAL DIAJUKAN</th>
+                            <th class="text-center">PERIODE</th>
+                            <th class="text-center">STATUS</th>
+                            <th class="text-center">AKSI</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if(!empty($permohonan)): ?>
-                            <?php $no = 1; foreach($permohonan as $p): ?>
+                            <?php 
+                                $bln = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+                                $no = 1; 
+                                foreach($permohonan as $p): 
+                                    $tglAju = date('j', strtotime($p['created_at'])) . ' ' . $bln[(int)date('m', strtotime($p['created_at']))] . ' ' . date('Y', strtotime($p['created_at']));
+                                    $tglMulai = date('j', strtotime($p['tgl_mulai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_mulai']))] . ' ' . date('Y', strtotime($p['tgl_mulai']));
+                                    $tglSelesai = date('j', strtotime($p['tgl_selesai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_selesai']))] . ' ' . date('Y', strtotime($p['tgl_selesai']));
+                                    
+                                    $layanan = '';
+                                    if($p['id_jenis_permohonan'] == 1)      $layanan = 'Penelitian Skripsi / TA';
+                                    elseif($p['id_jenis_permohonan'] == 2)  $layanan = 'Observasi / Ambil Data';
+                                    elseif($p['id_jenis_permohonan'] == 3)  $layanan = 'Magang';
+                                    elseif($p['id_jenis_permohonan'] == 5)  $layanan = 'Praktik Kerja Lapangan';
+                                    elseif($p['id_jenis_permohonan'] == 4)  $layanan = 'Uji Coba Produk';
+                                    
+                                    // Tentukan nama mahasiswa/ketua
+                                    $namaPemohon = $p['nama_ketua'] ?? session()->get('nama') ?? session()->get('nama_lengkap') ?? '-';
+                                    
+                                    // Tentukan badge status
+                                    $badgeClass = 'pending';
+                                    $statusText = 'Menunggu';
+                                    if ($p['posting_data'] == 'draft') {
+                                        $badgeClass = 'draft'; $statusText = 'Draft';
+                                    } elseif ($p['status_persetujuan'] == 'DITOLAK') {
+                                        $badgeClass = 'rejected'; $statusText = 'Ditolak';
+                                    } elseif ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS') {
+                                        $badgeClass = 'pending'; $statusText = 'Perbaikan';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'SELESAI') {
+                                        $badgeClass = 'success'; $statusText = 'Selesai';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU') {
+                                        $badgeClass = 'approved'; $statusText = 'Disetujui';
+                                    }
+                            ?>
                             <tr>
-                                <td class="text-muted text-center" style="font-size: 0.82rem;"><?= $no++ ?></td>
-                                <td class="text-center" style="white-space: nowrap;">
-                                    <span class="fw-semibold text-dark" style="font-size: 0.82rem;"><?= date('d M Y', strtotime($p['created_at'])) ?></span>
+                                <td class="text-center fw-medium"><?= $no++ ?></td>
+                                <td>
+                                    <span class="fw-semibold text-dark"><?= $layanan ?></span>
+                                </td>
+                                <td>
+                                    <span class="text-dark"><?= $namaPemohon ?></span>
+                                </td>
+                                <td class="text-center"><?= $tglAju ?></td>
+                                <td class="text-center"><?= $tglMulai ?> s.d <?= $tglSelesai ?></td>
+                                <td class="text-center">
+                                    <span class="badge-solid <?= $badgeClass ?>"><?= $statusText ?></span>
                                 </td>
                                 <td class="text-center">
-                                    <div class="fw-semibold text-dark" style="font-size: 0.82rem; line-height: 1.4;">
-                                        <?php
-                                            if($p['id_jenis_permohonan'] == 1)      echo 'Penelitian / Skripsi';
-                                            elseif($p['id_jenis_permohonan'] == 2)  echo 'Observasi / Ambil Data';
-                                            elseif($p['id_jenis_permohonan'] == 3)  echo 'Magang / PKL';
-                                            else                                    echo 'Uji Coba Produk';
-                                        ?>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span class="fw-semibold text-dark" style="font-size: 0.8rem;"><?= date('d M Y', strtotime($p['tgl_mulai'])) ?></span>
-                                </td>
-                                <td class="text-center">
-                                    <span class="fw-semibold text-dark" style="font-size: 0.8rem;"><?= date('d M Y', strtotime($p['tgl_selesai'])) ?></span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <?php if ($p['posting_data'] == 'draft'): ?>
-                                        <span class="status-pill neutral"><i class="bi bi-file-earmark"></i> Draft</span>
-                                    <?php elseif ($p['status_persetujuan'] == 'DITOLAK'): ?>
-                                        <span class="status-pill rejected"><i class="bi bi-x-circle"></i> Ditolak</span>
-
-                                    <?php elseif ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
-                                        <span class="status-pill pending"><i class="bi bi-pencil-square"></i> Perlu Perbaikan</span>
-                                    <?php elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'SELESAI'): ?>
-                                        <span class="status-pill approved" style="background-color: #059669; color: #fff;"><i class="bi bi-check-all"></i> Selesai</span>
-                                    <?php elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU'): ?>
-                                        <span class="status-pill approved"><i class="bi bi-check-circle"></i> Disetujui</span>
-                                    <?php else: ?>
-                                        <span class="status-pill pending"><i class="bi bi-hourglass-split"></i> Menunggu</span>
-                                    <?php endif; ?>
-                                </td>
-                                
-                                <td class="align-middle text-center">
                                     <div class="d-flex align-items-center justify-content-center gap-2">
-                                        <!-- ACTION BUTTON 1: EDIT FORM (Draft / Revisi) -->
                                         <?php if ($p['posting_data'] == 'draft' || $p['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
-                                            <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn btn-sm <?= ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS') ? 'btn-outline-warning' : 'btn-outline-primary' ?> p-0 shadow-sm" 
-                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;" 
-                                                    title="<?= ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS') ? 'Revisi Permohonan' : 'Edit Draft' ?>">
+                                            <a href="<?= base_url('mahasiswa/permohonan') ?>" class="action-btn edit" title="Edit">
                                                 <i class="bi bi-pencil-fill"></i>
                                             </a>
                                         <?php endif; ?>
-
-                                        <!-- ACTION BUTTON 2: DETAIL FORM -->
                                         <?php if ($p['posting_data'] != 'draft'): ?>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary p-0 shadow-sm" 
-                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;" 
-                                                    onclick="showDetail(<?= $p['id_permohonan_magang'] ?>, this)"
-                                                    title="Lihat Detail Form">
-                                                <i class="bi bi-search"></i>
+                                            <button type="button" class="action-btn detail" onclick="showDetail(<?= $p['id_permohonan_magang'] ?>, this)" title="Detail">
+                                                <i class="bi bi-eye-fill"></i>
                                             </button>
                                         <?php endif; ?>
-
-                                        <!-- ACTION BUTTON: RIWAYAT / LOG -->
-                                        <button type="button" class="btn btn-sm btn-outline-info p-0 shadow-sm" 
-                                                style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;" 
-                                                onclick="showLogRiwayat(<?= $p['id_permohonan_magang'] ?>)"
-                                                title="Lacak Jejak (Log Riwayat)">
+                                        <button type="button" class="action-btn history" onclick="showLogRiwayat(<?= $p['id_permohonan_magang'] ?>)" title="Riwayat">
                                             <i class="bi bi-clock-history"></i>
                                         </button>
-
-                                        <!-- ACTION BUTTON: BATALKAN / HAPUS (Hanya Draft di tabel) -->
                                         <?php if ($p['posting_data'] == 'draft'): ?>
-                                            <button type="button" class="btn btn-sm btn-outline-danger p-0 shadow-sm"
-                                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;"
-                                                    onclick="confirmBatalkan(<?= $p['id_permohonan_magang'] ?>, '<?= $p['posting_data'] ?>')"
-                                                    title="Hapus Draft">
-                                                <i class="bi bi-trash"></i>
+                                            <button type="button" class="action-btn delete" onclick="confirmBatalkan(<?= $p['id_permohonan_magang'] ?>, '<?= $p['posting_data'] ?>')" title="Hapus">
+                                                <i class="bi bi-trash-fill"></i>
                                             </button>
                                         <?php endif; ?>
-
                                     </div>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -519,7 +470,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow" style="border-radius: 8px;">
             <div class="modal-header bg-white border-bottom py-3">
-                <h6 class="modal-title fw-bold text-dark m-0"><i class="bi bi-clock-history me-2 text-info"></i> Lacak Jejak (Log Riwayat)</h6>
+                <h6 class="modal-title fw-bold text-dark m-0"><i class="bi bi-clock-history me-2 text-info"></i> Riwayat Proses</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4 bg-white" id="logRiwayatContainer">
@@ -556,8 +507,8 @@
             order:        [[0, 'asc']],
             dom:          'rt',   // Hanya render tabel, pagination kita handle sendiri
             language: {
-                emptyTable:  'Belum ada pengajuan permohonan.',
-                zeroRecords: 'Tidak ditemukan data yang sesuai.'
+                emptyTable:  '<div class="py-4 text-muted"><i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>Belum ada pengajuan permohonan.</div>',
+                zeroRecords: '<div class="py-4 text-muted"><i class="bi bi-search fs-2 d-block mb-2 text-secondary"></i>Tidak ditemukan data yang sesuai.</div>'
             },
             columnDefs: [
                 { orderable: false, targets: 6 }
@@ -575,21 +526,21 @@
 
             // Info text
             if (total === 0) {
-                $('#dtInfoText').text('Tidak ada data');
+                $('#dtInfoText').text('Showing 0 to 0 of 0 entries');
             } else {
-                $('#dtInfoText').text('Menampilkan ' + start + ' - ' + end + ' dari ' + total + ' data');
+                $('#dtInfoText').text('Showing ' + start + ' to ' + end + ' of ' + total + ' entries');
             }
 
             // Page buttons
             var html = '';
             // Prev
-            html += '<span class="dt-page-btn ' + (page === 0 ? 'disabled' : '') + '" data-page="prev">&lsaquo;</span>';
+            html += '<span class="dt-page-btn ' + (page === 0 ? 'disabled' : '') + '" data-page="prev">Previous</span>';
             // Page numbers
             for (var i = 0; i < pages; i++) {
                 html += '<span class="dt-page-btn ' + (i === page ? 'active' : '') + '" data-page="' + i + '">' + (i + 1) + '</span>';
             }
             // Next
-            html += '<span class="dt-page-btn ' + (page >= pages - 1 ? 'disabled' : '') + '" data-page="next">&rsaquo;</span>';
+            html += '<span class="dt-page-btn ' + (page >= pages - 1 ? 'disabled' : '') + '" data-page="next">Next</span>';
             $('#dtPageButtons').html(html);
         }
 
@@ -615,14 +566,13 @@
             table.search(this.value).draw();
         });
 
-        // Filter Jenis (kolom 2) — pakai contains karena isi kolom terbungkus <div>
+        // Filter Jenis (kolom 1)
         $('#filter-jenis').on('change', function() {
             var val = this.value;
-            // Cari teks yang mengandung nilai filter (tanpa anchor ^ $)
-            table.column(2).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
+            table.column(1).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
         });
 
-        // Filter Status (kolom 5) — isi kolom adalah HTML badge, cari teks di dalamnya
+        // Filter Status (kolom 5)
         $('#filter-status').on('change', function() {
             var val = this.value;
             table.column(5).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
@@ -712,7 +662,7 @@
         let actionText = (posting_data === 'draft') ? 'menghapus draft ini' : 'membatalkan permohonan ini';
         Swal.fire({
             title: 'Apakah Anda yakin?',
-            text: "Anda akan " + actionText + ". Data tidak dapat dikembalikan!",
+            text: "Anda akan " + actionText + "? Data yang dibatalkan tidak dapat dikembalikan.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

@@ -75,6 +75,8 @@ class C_Logbook extends C_BaseMahasiswa
         $dataLogbook = [
             'id_penempatan_magang' => $id_penempatan_post, 
             'tgl_logbook'          => $this->request->getPost('tgl_logbook'),
+            'jam_logbook'          => date('H:i:s'),
+            'status_logbook'       => 'BELUM_DISETUJUI',
             'logbook_magang'       => $this->request->getPost('logbook_magang'),
             'created_at'           => date('Y-m-d H:i:s')
         ];

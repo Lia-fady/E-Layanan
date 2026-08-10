@@ -11,6 +11,9 @@
     <!-- Global CSS -->
     <link rel="stylesheet" href="<?= base_url('css/mahasiswa/global.css') ?>">
     
+    <!-- Flatpickr CSS for Datepicker (Airbnb Theme) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css">
+    
     <!-- Extra CSS from Views -->
     <?= $this->renderSection('extra_css') ?>
     
@@ -376,6 +379,22 @@ document.querySelectorAll('.locked-menu').forEach(item => {
             confirmButtonColor: '#dc3545'
         });
     <?php endif; ?>
+</script>
+
+<!-- Flatpickr JS & Locale -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
+<script>
+    // Inisialisasi Flatpickr global untuk semua input berkelas flatpickr-id
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr(".flatpickr-id", {
+            locale: "id",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y", // format tampilan: dd/mm/yyyy
+            allowInput: true
+        });
+    });
 </script>
 
 <?= $this->renderSection('extra_js') ?>

@@ -143,6 +143,18 @@ if(session()->getFlashdata('permohonan_sent')):
 </div>
 <?php endif; ?>
 
+<!-- FAQ / Panduan Jenis Permohonan (Dipindah ke Luar Form) -->
+<div class="alert alert-warning mb-4 shadow-sm" style="border-radius:10px; padding:16px 20px; border-left: 5px solid #ffc107;">
+    <div class="fw-bold text-dark mb-2" style="font-size:0.9rem;"><i class="bi bi-info-circle-fill text-warning me-2"></i> Informasi Layanan Akademik</div>
+    <ul class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.8;">
+        <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
+        <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
+        <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>
+        <li><strong>Praktik Kerja Lapangan (PKL):</strong> Praktik kerja bagi Siswa SMK.</li>
+        <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
+    </ul>
+</div>
+
 <!-- ============ FORM WRAPPER ============ -->
 <form action="<?= base_url('mahasiswa/permohonan/simpan') ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
     <?= csrf_field() ?>
@@ -155,38 +167,38 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <!-- Jenis Permohonan & Tujuan -->
         <div class="row g-3 mb-3">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label class="wz-form-label">Jenis Permohonan <span class="text-danger">*</span></label>
                 <div style="position:relative;">
                     <select class="wz-form-select" id="sel-jenis" onchange="if(this.value){document.getElementById('jenis_'+this.value).checked=true;}else{document.querySelectorAll('input[name=\'id_jenis_permohonan\']').forEach(r=>r.checked=false);} applyJenisCfg(this.value); document.getElementById('err-jenis').classList.add('d-none');">
                         <option value="">-- Pilih Jenis Permohonan --</option>
-                        <option value="1" <?= old('id_jenis_permohonan')=='1'?'selected':'' ?>>Penelitian Skripsi / TA</option>
+                        <option value="1" <?= old('id_jenis_permohonan')=='1'?'selected':'' ?>>Skripsi / Tugas Akhir</option>
                         <option value="2" <?= old('id_jenis_permohonan')=='2'?'selected':'' ?>>Observasi / Pengambilan Data</option>
-                        <option value="3" <?= old('id_jenis_permohonan')=='3'?'selected':'' ?>>Magang / PKL</option>
-                        <option value="4" <?= old('id_jenis_permohonan')=='4'?'selected':'' ?>>Uji Coba Produk (Prototype)</option>
+                        <option value="3" <?= old('id_jenis_permohonan')=='3'?'selected':'' ?>>Magang</option>
+                        <option value="5" <?= old('id_jenis_permohonan')=='5'?'selected':'' ?>>Praktik Kerja Lapangan (PKL)</option>
+                        <option value="4" <?= old('id_jenis_permohonan')=='4'?'selected':'' ?>>Uji Coba Aplikasi Produk</option>
                     </select>
                     <!-- Hidden radio inputs for form submission -->
                     <input type="radio" name="id_jenis_permohonan" id="jenis_1" value="1" <?= old('id_jenis_permohonan')=='1'?'checked':'' ?> style="display:none;">
                     <input type="radio" name="id_jenis_permohonan" id="jenis_2" value="2" <?= old('id_jenis_permohonan')=='2'?'checked':'' ?> style="display:none;">
                     <input type="radio" name="id_jenis_permohonan" id="jenis_3" value="3" <?= old('id_jenis_permohonan')=='3'?'checked':'' ?> style="display:none;">
+                    <input type="radio" name="id_jenis_permohonan" id="jenis_5" value="5" <?= old('id_jenis_permohonan')=='5'?'checked':'' ?> style="display:none;">
                     <input type="radio" name="id_jenis_permohonan" id="jenis_4" value="4" <?= old('id_jenis_permohonan')=='4'?'checked':'' ?> style="display:none;">
                 </div>
+
                 <div class="mt-2 d-none" id="err-jenis" style="color:#dc2626;font-size:0.8rem;">
                     <i class="bi bi-exclamation-circle me-1"></i>Jenis permohonan wajib dipilih.
                 </div>
             </div>
-            <div class="col-md-6">
-                <label class="wz-form-label">Tujuan / Kegiatan</label>
-                <input type="text" class="wz-form-control" id="tujuan-display" value="Pilih jenis permohonan terlebih dahulu" readonly style="background:#f1f5f9;color:#94a3b8;">
-            </div>
         </div>
+        <!-- Kolom Tujuan Kegiatan dihapus sesuai kesepakatan agar lebih ringkas -->
 
         <!-- Tanggal Mulai & Selesai -->
         <div class="row g-3 mb-3">
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_mulai">Tanggal Mulai <span class="text-danger">*</span></label>
                 <?php $errMulai = session('errors.tgl_mulai'); ?>
-                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai') ?>" onkeydown="return false" required>
+                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai') ?>" required style="background-color: #fff;">
                 <?php if($errMulai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errMulai) ?></div>
                 <?php endif; ?>
@@ -196,7 +208,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_selesai">Tanggal Selesai <span class="text-danger">*</span></label>
                 <?php $errSelesai = session('errors.tgl_selesai'); ?>
-                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai') ?>" onkeydown="return false" required>
+                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai') ?>" required style="background-color: #fff;">
                 <?php if($errSelesai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errSelesai) ?></div>
                 <?php endif; ?>
@@ -206,7 +218,7 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Instansi & Program Studi -->
         <div class="row g-3 mb-3">
             <div class="col-md-6">
-                <label class="wz-form-label">Instansi / Universitas</label>
+                <label class="wz-form-label">Asal Instansi Pendidikan</label>
                 <input type="text" class="wz-form-control" value="<?= esc(session()->get('kampus') ?? '-') ?>" readonly style="background:#f1f5f9;">
             </div>
             <div class="col-md-6">
@@ -217,15 +229,15 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <!-- Deskripsi Keahlian -->
         <div class="mb-3">
-            <label class="wz-form-label" id="lbl-keahlian">Keahlian / Skill <span class="text-danger">*</span></label>
+            <label class="wz-form-label" id="lbl-keahlian">Keahlian / Kompetensi <span class="text-danger">*</span></label>
             <textarea class="wz-form-control" name="deskripsi_keahlian" id="deskripsi_keahlian" rows="3" placeholder="Jelaskan keahlian atau kompetensi yang Anda miliki saat ini..." required maxlength="500" oninput="countChars(this,'cc-keahlian')"><?= old('deskripsi_keahlian') ?></textarea>
             <div class="char-counter"><span id="cc-keahlian">0</span>/500 karakter</div>
         </div>
 
         <!-- Deskripsi Magang -->
         <div class="mb-4">
-            <label class="wz-form-label" id="lbl-magang">Deskripsi Rencana Magang <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi') ?></textarea>
+            <label class="wz-form-label" id="lbl-magang">Apa yang ingin Anda kerjakan? <span class="text-danger">*</span></label>
+            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana kegiatan yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi') ?></textarea>
             <div class="char-counter"><span id="cc-magang">0</span>/1000 karakter</div>
         </div>
 
@@ -247,7 +259,7 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <!-- Upload: Surat Pengantar -->
         <div class="mb-4">
-            <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi Kampus <span class="text-danger">*</span></label>
+            <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi <span class="text-danger">*</span></label>
             <input class="form-control" type="file" name="surat_pengantar" id="input-surat" accept=".pdf" required>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF | Maksimal ukuran: 2 MB</div>
         </div>
@@ -261,7 +273,7 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <!-- Upload: KTM -->
         <div class="mb-4">
-            <label class="wz-form-label" id="lbl-ktm">Kartu Tanda Mahasiswa (KTM) <span class="text-danger">*</span></label>
+            <label class="wz-form-label" id="lbl-ktm">Kartu Identitas (KTM / Kartu Pelajar) <span class="text-danger">*</span></label>
             <input class="form-control" type="file" name="ktm" id="input-ktm" accept=".pdf,.jpg,.jpeg,.png" required>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF, JPG, PNG | Maksimal ukuran: 2 MB</div>
         </div>
@@ -287,26 +299,26 @@ if(session()->getFlashdata('permohonan_sent')):
     <!-- ============ STEP 3: REVIEW ============ -->
     <div class="wizard-card wizard-step" id="step-3">
         <div class="wz-section-title">
-            <i class="bi bi-clipboard2-check text-primary"></i> Review
+            <i class="bi bi-clipboard2-check text-primary"></i> Periksa Kembali Data
         </div>
         <p class="text-muted mb-4" style="font-size:0.84rem;margin-top:-8px;">
-            Periksa kembali seluruh data. Setelah terkirim, data <strong>tidak dapat diubah</strong>.
+            Periksa kembali data yang telah Anda isi sebelum mengirim permohonan.
         </p>
 
         <div class="row g-4 mb-4">
             <!-- Review: Identitas Pemohon -->
             <div class="col-lg-6">
                 <div class="review-data-card h-100 mb-0">
-                    <div class="rv-title">Identitas Pemohon</div>
+                    <div class="rv-title">Identitas Pribadi</div>
                     <table class="rv-table">
                         <tr><td style="width:140px;">Nama Lengkap</td><td class="rv-sep">:</td><td class="text-dark"><?= esc($mhs['nama_mahasiswa'] ?? '-') ?></td></tr>
-                        <tr><td>Nomor Induk (NIM)</td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
-                        <tr><td>NIK KTP</td><td class="rv-sep">:</td><td><?= esc($mhs['nik'] ?? '-') ?></td></tr>
-                        <tr><td>Nomor Telepon</td><td class="rv-sep">:</td><td><?= esc($mhs['no_telp'] ?? '-') ?></td></tr>
+                        <tr><td id="lbl-rv-nim">NIM / NISN</td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
+                        <tr><td>NIK</td><td class="rv-sep">:</td><td><?= esc($mhs['nik'] ?? '-') ?></td></tr>
+                        <tr><td>Nomor WhatsApp</td><td class="rv-sep">:</td><td><?= esc($mhs['no_telp'] ?? '-') ?></td></tr>
                         <tr><td>Email</td><td class="rv-sep">:</td><td><?= esc($mhs['email'] ?? '-') ?></td></tr>
-                        <tr><td>Asal Kampus</td><td class="rv-sep">:</td><td><?= esc($instansi['instansi_pendidikan'] ?? '-') ?></td></tr>
-                        <tr><td>Program Studi</td><td class="rv-sep">:</td><td><?= esc($instansi['prodi'] ?? '-') ?></td></tr>
-                        <tr><td>Semester</td><td class="rv-sep">:</td><td><?= esc($instansi['semester'] ?? '-') ?></td></tr>
+                        <tr><td>Asal Instansi Pendidikan</td><td class="rv-sep">:</td><td><?= esc($instansi['instansi_pendidikan'] ?? '-') ?></td></tr>
+                        <tr><td>Jurusan</td><td class="rv-sep">:</td><td><?= esc(!empty($instansi['prodi']) ? $instansi['prodi'] : ($instansi['jurusan'] ?? '-')) ?></td></tr>
+                        <tr><td id="lbl-rv-semester">Semester / Kelas</td><td class="rv-sep">:</td><td><?= esc($instansi['semester'] ?? '-') ?></td></tr>
                     </table>
                 </div>
             </div>
@@ -317,11 +329,10 @@ if(session()->getFlashdata('permohonan_sent')):
                     <div class="rv-title">Data Permohonan</div>
                     <table class="rv-table">
                         <tr><td style="width:140px;">Jenis Permohonan</td><td class="rv-sep">:</td><td id="rv-jenis" class="text-dark">—</td></tr>
-                        <tr><td>Tujuan / Kegiatan</td><td class="rv-sep">:</td><td id="rv-tujuan" class="text-dark">—</td></tr>
                         <tr><td>Tanggal Pelaksanaan</td><td class="rv-sep">:</td><td><span id="rv-tgl-mulai" class="text-dark">—</span> <span class="text-muted mx-1">s.d.</span> <span id="rv-tgl-selesai" class="text-dark">—</span></td></tr>
                         <tr><td>Lokasi Kegiatan</td><td class="rv-sep">:</td><td class="text-dark">Dinas Kominfo Kota Tangerang</td></tr>
-                        <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Deskripsi Keahlian</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
-                        <tr><td id="rv-magang-label" style="vertical-align:top; padding-top:10px;">Deskripsi Rencana Kegiatan</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-magang" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
+                        <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Keahlian / Kompetensi</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
+                        <tr><td id="rv-magang-label" style="vertical-align:top; padding-top:10px;">Apa yang ingin Anda kerjakan?</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-magang" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
                     </table>
                 </div>
             </div>
@@ -363,24 +374,6 @@ if(session()->getFlashdata('permohonan_sent')):
 <?= $this->section('extra_js') ?>
 <?= $this->include('mahasiswa/v_part_wizard_script') ?>
 <script>
-// Sync select with tujuan display
-var selJenis = document.getElementById('sel-jenis');
-if(selJenis) {
-    selJenis.addEventListener('change', function() {
-        var cfg = JENIS_CFG[this.value];
-        var td = document.getElementById('tujuan-display');
-        if (cfg) {
-            td.value = cfg.tujuan;
-            td.style.color = 'var(--text-dark)';
-            td.style.background = '#f1f5f9';
-        } else {
-            td.value = 'Pilih jenis permohonan terlebih dahulu';
-            td.style.color = '#94a3b8';
-        }
-    });
-    if (selJenis.value) selJenis.dispatchEvent(new Event('change'));
-}
-
 // ==========================================
 // VALIDASI TANGGAL DINAMIS (FRONTEND)
 // ==========================================
@@ -389,121 +382,234 @@ document.addEventListener('DOMContentLoaded', function() {
     var tglSelesai = document.getElementById('tgl_selesai');
 
     if (tglMulai && tglSelesai) {
-        var today = new Date();
-        var yyyy = today.getFullYear();
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var dd = String(today.getDate()).padStart(2, '0');
-        var todayStr = yyyy + '-' + mm + '-' + dd;
-        tglMulai.setAttribute('min', todayStr);
+        // Wait a small delay to ensure Flatpickr global init has finished
+        setTimeout(function() {
+            var fpMulai = tglMulai._flatpickr;
+            var fpSelesai = tglSelesai._flatpickr;
 
-        function parseInputDate(value) {
-            var p = value.split('-');
-            return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
-        }
+            var today = new Date();
+            var minTglMulai = new Date();
+            minTglMulai.setDate(today.getDate() + 30);
+            var maxTglMulai = new Date();
+            maxTglMulai.setMonth(today.getMonth() + 6);
 
-        function addDays(date, days) {
-            var d = new Date(date);
-            d.setDate(d.getDate() + days);
-            return d;
-        }
-
-        function formatInputDate(date) {
-            var yyyy2 = date.getFullYear();
-            var mm2 = String(date.getMonth() + 1).padStart(2, '0');
-            var dd2 = String(date.getDate()).padStart(2, '0');
-            return yyyy2 + '-' + mm2 + '-' + dd2;
-        }
-
-        function getSelectedJenis() {
-            var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
-            return j ? j.value : null;
-        }
-
-        function validateDurasi() {
-            var errDiv = document.getElementById('err-tgl-mulai-js');
-            if (!tglMulai.value || !tglSelesai.value) {
-                return;
-            }
-
-            var dateMulai = parseInputDate(tglMulai.value);
-            var dateSelesai = parseInputDate(tglSelesai.value);
-            var diffTime = dateSelesai - dateMulai;
-            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            var minStr = formatInputDate(minTglMulai);
+            var maxStr = formatInputDate(maxTglMulai);
+            var todayStr = formatInputDate(today);
             
-            var jenis = getSelectedJenis();
-            var isInvalid = false;
+            var currentJenis = getSelectedJenis();
             
-            if (jenis === '3') {
-                if (diffDays < 60 || dateSelesai < dateMulai) {
-                    isInvalid = true;
-                    if (errDiv) {
-                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
+            if (fpMulai) {
+                if (currentJenis === '3') {
+                    fpMulai.set('minDate', minStr);
+                    fpMulai.set('maxDate', maxStr);
+                } else {
+                    fpMulai.set('minDate', todayStr);
+                    fpMulai.set('maxDate', null);
+                }
+
+                // Mencegah bug bulan hilang saat kosong dengan melompat ke minDate saat dibuka
+                var jumpToMin = function(selectedDates, dateStr, instance) {
+                    if (!dateStr && instance.config.minDate) {
+                        instance.jumpToDate(instance.config.minDate);
                     }
-                }
-            } else {
-                if (diffDays <= 0 || dateSelesai < dateMulai) {
-                    isInvalid = true;
-                    if (errDiv) {
-                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Tanggal selesai harus setelah tanggal mulai.';
-                    }
-                }
-            }
-
-            if (isInvalid) {
-                tglMulai.classList.add('is-invalid');
-                tglSelesai.classList.add('is-invalid');
-                if (errDiv) {
-                    errDiv.classList.remove('d-none');
-                    errDiv.classList.add('d-block');
-                }
-            } else {
-                tglMulai.classList.remove('is-invalid');
-                tglSelesai.classList.remove('is-invalid');
-                if (errDiv) {
-                    errDiv.classList.remove('d-block');
-                    errDiv.classList.add('d-none');
-                }
-            }
-        }
-
-        tglMulai.addEventListener('change', function() {
-            if (tglMulai.value) {
-                var jenis = getSelectedJenis();
-                var minDays = (jenis === '3') ? 60 : 1;
-                var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
-                var minSelesaiStr = formatInputDate(minSelesai);
-                tglSelesai.setAttribute('min', minSelesaiStr);
-
-                if (!tglSelesai.value || parseInputDate(tglSelesai.value) < minSelesai) {
-                    tglSelesai.value = minSelesaiStr;
-                }
-            }
-            validateDurasi();
-        });
-
-        tglSelesai.addEventListener('change', function() {
-            if (tglMulai.value && tglSelesai.value) {
-                var jenis = getSelectedJenis();
-                var minDays = (jenis === '3') ? 60 : 1;
-                var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
-                var minSelesaiStr = formatInputDate(minSelesai);
-                tglSelesai.setAttribute('min', minSelesaiStr);
+                };
                 
-                if (parseInputDate(tglSelesai.value) < minSelesai) {
-                    tglSelesai.value = minSelesaiStr;
+                if (Array.isArray(fpMulai.config.onOpen)) {
+                    fpMulai.config.onOpen.push(jumpToMin);
+                } else {
+                    fpMulai.config.onOpen = [jumpToMin];
+                }
+
+                // Explicitly trigger auto-save on change
+                var triggerSave = function() {
+                    if (typeof saveToLocal === 'function') saveToLocal();
+                };
+                if (Array.isArray(fpMulai.config.onChange)) {
+                    fpMulai.config.onChange.push(triggerSave);
+                } else {
+                    fpMulai.config.onChange = [triggerSave];
+                }
+
+                if (fpSelesai) {
+                    if (Array.isArray(fpSelesai.config.onOpen)) {
+                        fpSelesai.config.onOpen.push(jumpToMin);
+                    } else {
+                        fpSelesai.config.onOpen = [jumpToMin];
+                    }
+
+                    if (Array.isArray(fpSelesai.config.onChange)) {
+                        fpSelesai.config.onChange.push(triggerSave);
+                    } else {
+                        fpSelesai.config.onChange = [triggerSave];
+                    }
                 }
             }
-            validateDurasi();
-        });
-        
-        // Re-validate when jenis permohonan changes
-        document.querySelectorAll('input[name="id_jenis_permohonan"]').forEach(function(r) {
-            r.addEventListener('change', function() {
-                if (tglMulai.value) {
-                    tglMulai.dispatchEvent(new Event('change'));
+
+            // Always apply to native inputs
+            if (currentJenis === '3') {
+                tglMulai.setAttribute('min', minStr);
+                tglMulai.setAttribute('max', maxStr);
+            } else {
+                tglMulai.setAttribute('min', todayStr);
+                tglMulai.removeAttribute('max');
+            }
+
+            // Update kalender jika jenis permohonan diubah
+            var selJenisEl = document.getElementById('sel-jenis');
+            if (selJenisEl) {
+                selJenisEl.addEventListener('change', function() {
+                    var jenis = this.value;
+                    if (jenis === '3') {
+                        tglMulai.setAttribute('min', minStr);
+                        tglMulai.setAttribute('max', maxStr);
+                    } else {
+                        tglMulai.setAttribute('min', todayStr);
+                        tglMulai.removeAttribute('max');
+                    }
+                    // Re-trigger start date validation & end date logic
+                    if (tglMulai.value) {
+                        tglMulai.dispatchEvent(new Event('change'));
+                    }
+                });
+            }
+
+            function parseInputDate(value) {
+                var p = value.split('-');
+                return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+            }
+
+            function addDays(date, days) {
+                var d = new Date(date);
+                d.setDate(d.getDate() + days);
+                return d;
+            }
+
+            function formatInputDate(date) {
+                var yyyy2 = date.getFullYear();
+                var mm2 = String(date.getMonth() + 1).padStart(2, '0');
+                var dd2 = String(date.getDate()).padStart(2, '0');
+                return yyyy2 + '-' + mm2 + '-' + dd2;
+            }
+
+            function getSelectedJenis() {
+                var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
+                return j ? j.value : null;
+            }
+
+            function validateDurasi() {
+                var errDiv = document.getElementById('err-tgl-mulai-js');
+                if (!tglMulai.value || !tglSelesai.value) {
+                    return;
                 }
+
+                var dateMulai = parseInputDate(tglMulai.value);
+                var dateSelesai = parseInputDate(tglSelesai.value);
+                var diffTime = dateSelesai - dateMulai;
+                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                var jenis = getSelectedJenis();
+                var isInvalid = false;
+                
+                // Aturan 60 hari HANYA untuk jenis permohonan = 3 (Magang)
+                if (jenis === '3' && diffDays < 60) {
+                    isInvalid = true;
+                    if (errDiv) {
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang minimal adalah 60 hari (2 bulan).';
+                    }
+                } else if (dateSelesai < dateMulai) {
+                    isInvalid = true;
+                    if (errDiv) {
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Tanggal selesai tidak boleh mendahului tanggal mulai.';
+                    }
+                }
+
+                // Untuk flatpickr, the hidden input doesn't show invalid state visually, we add it to the altInput
+                var altMulai = fpMulai ? fpMulai.altInput : tglMulai;
+                var altSelesai = fpSelesai ? fpSelesai.altInput : tglSelesai;
+
+                if (isInvalid) {
+                    if(altMulai) altMulai.classList.add('is-invalid');
+                    if(altSelesai) altSelesai.classList.add('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-none');
+                        errDiv.classList.add('d-block');
+                    }
+                } else {
+                    if(altMulai) altMulai.classList.remove('is-invalid');
+                    if(altSelesai) altSelesai.classList.remove('is-invalid');
+                    if (errDiv) {
+                        errDiv.classList.remove('d-block');
+                        errDiv.classList.add('d-none');
+                    }
+                }
+            }
+
+            tglMulai.addEventListener('change', function() {
+                if (tglMulai.value) {
+                    var jenis = getSelectedJenis();
+                    var minDays = (jenis === '3') ? 60 : 0;
+                    var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
+                    var minSelesaiStr = formatInputDate(minSelesai);
+                    
+                    if (fpSelesai) {
+                        fpSelesai.set('minDate', minSelesaiStr);
+                    } else {
+                        tglSelesai.setAttribute('min', minSelesaiStr);
+                    }
+
+                    if ((jenis === '3' && !tglSelesai.value) || (tglSelesai.value && parseInputDate(tglSelesai.value) < minSelesai)) {
+                        if (fpSelesai) {
+                            fpSelesai.setDate(minSelesaiStr, true); // true to trigger change
+                        } else {
+                            tglSelesai.value = minSelesaiStr;
+                        }
+                    }
+                } else {
+                    // Jika tglMulai di-clear, kosongkan juga tglSelesai
+                    tglSelesai.value = '';
+                    if (fpSelesai) fpSelesai.clear();
+                }
+                toggleSelesai();
+                validateDurasi();
             });
-        });
+
+            function toggleSelesai() {
+                var isDisabled = !tglMulai.value;
+                if (fpSelesai && fpSelesai.altInput) {
+                    fpSelesai.altInput.disabled = isDisabled;
+                } else {
+                    tglSelesai.disabled = isDisabled;
+                }
+            }
+            toggleSelesai(); // Jalankan saat pertama kali dimuat
+
+            tglSelesai.addEventListener('change', function() {
+                if (tglMulai.value && tglSelesai.value) {
+                    var jenis = getSelectedJenis();
+                    var minDays = (jenis === '3') ? 60 : 0;
+                    var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
+                    var minSelesaiStr = formatInputDate(minSelesai);
+                    
+                    if (fpSelesai) {
+                        fpSelesai.set('minDate', minSelesaiStr);
+                    } else {
+                        tglSelesai.setAttribute('min', minSelesaiStr);
+                    }
+                    
+                    if (parseInputDate(tglSelesai.value) < minSelesai) {
+                        if (fpSelesai) {
+                            fpSelesai.setDate(minSelesaiStr, true);
+                        } else {
+                            tglSelesai.value = minSelesaiStr;
+                        }
+                    }
+                }
+                validateDurasi();
+            });
+            
+            // (redundant radio listener removed)
+        }, 100); // 100ms delay
     }
 });
 </script>

@@ -99,7 +99,7 @@
 
 <?= $this->section('content') ?>
 <?php $documentGroups = $documentGroups ?? []; ?>
-<?php $listJenis = $listJenis ?? []; ?>
+<?php $listJenis = $list_jenis ?? []; ?>
 <div class="mb-4">
     <?php $availableDocuments = 0; ?>
     <?php foreach ($documentGroups as $group): ?>
@@ -168,9 +168,9 @@
                                 <small class="text-muted">Kegiatan akademik</small>
                             </td>
                             <td class="py-3 text-muted fw-medium">
-                                <?= !empty($group['tgl_mulai']) ? date('d M Y', strtotime($group['tgl_mulai'])) : '-' ?>
-                                s/d
-                                <?= !empty($group['tgl_selesai']) ? date('d M Y', strtotime($group['tgl_selesai'])) : '-' ?>
+                                <?= !empty($group['tgl_mulai']) ? tgl_indo($group['tgl_mulai']) : '-' ?>
+                                &mdash;
+                                <?= !empty($group['tgl_selesai']) ? tgl_indo($group['tgl_selesai']) : '-' ?>
                             </td>
                             <td class="py-3 text-muted fw-medium"><?= esc($group['bidang'] ?? '-') ?></td>
                             <td class="py-3">
@@ -234,20 +234,22 @@ $(document).ready(function() {
         order: [[0, 'asc']],
         dom: 'rt',
         language: { 
-            emptyTable: `<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 250px;">
-                            <div class="position-relative mb-3">
-                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                                    <i class="bi bi-folder-x text-secondary opacity-50" style="font-size: 2.5rem;"></i>
-                                </div>
-                                <div class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
-                                    <i class="bi bi-exclamation-lg fw-bold"></i>
-                                </div>
-                            </div>
-                            <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
-                            <p class="text-muted small mb-0" style="max-width: 350px;">
-                                Belum ada dokumen yang diunggah oleh Sekretariat atau Bidang ke akun Anda.
-                            </p>
-                        </div>`, 
+            emptyTable: `
+                <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 250px;">
+                    <div class="position-relative mb-3">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-folder-x text-secondary opacity-50" style="font-size: 2.5rem;"></i>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                            <i class="bi bi-exclamation-lg fw-bold"></i>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
+                    <p class="text-muted small mb-0" style="max-width: 350px;">
+                        Belum ada dokumen yang diunggah oleh Sekretariat atau Unit Bidang ke akun Anda.
+                    </p>
+                </div>
+            `,
             zeroRecords: 'Tidak ditemukan data yang sesuai.' 
         },
         columnDefs: [{ orderable: false, targets: [5] }]
@@ -294,7 +296,7 @@ $(document).ready(function() {
             const renderDoc = (label, doc, iconClass) => {
                 if (!doc) return '';
 
-                const urlPreview = baseUrl + 'mahasiswa/sertifikat/file/' + doc.id_file_selesai_magang;
+                const urlPreview = baseUrl + 'mahasiswa/sertifikat/file/' + doc.id_file_proses_magang;
                 const urlDownload = urlPreview + '?action=download';
 
                 return `

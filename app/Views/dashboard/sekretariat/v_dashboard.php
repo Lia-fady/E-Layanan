@@ -109,7 +109,7 @@
                 <div class="stat-card-icon purple">
                     <i class="fas fa-user-graduate"></i>
                 </div>
-                <div class="stat-card-title">Mahasiswa Aktif</div>
+                <div class="stat-card-title">Mahasiswa/Siswa Aktif</div>
             </div>
             <div class="stat-card-value"><?= esc($total_mahasiswa_aktif) ?></div>
             <div class="stat-card-desc">Sedang Magang</div>

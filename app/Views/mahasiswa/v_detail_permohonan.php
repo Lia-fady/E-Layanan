@@ -14,16 +14,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 /* Reset & Scope untuk Timeline */
 .tw-container { max-width: 900px; margin: 0 auto; padding-bottom: 40px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
-/* Timeline Item */
-.tw-item { position: relative; padding-left: 56px; padding-bottom: 48px; }
+/* Timeline Item (Simplified without avatar/line) */
+.tw-item { position: relative; padding-bottom: 40px; }
 .tw-item:last-child { padding-bottom: 0; }
-.tw-line { position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: #e5e7eb; z-index: 0; }
-
-/* Avatars */
-.tw-avatar { position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem; z-index: 1; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-.tw-avatar.mahasiswa { background: #f3f4f6; color: #4b5563; } /* Abu-abu sangat muda (seperti gambar referensi) */
-.tw-avatar.sekre { background: #f3f4f6; color: #4b5563; }
-.tw-avatar.kabid { background: #f3f4f6; color: #4b5563; }
 
 /* Header & Typography */
 .tw-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 12px; }
@@ -40,15 +33,11 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 .tw-badge.menunggu { background: #fefce8; color: #eab308; }
 .tw-badge.netral { background: #f3f4f6; color: #6b7280; }
 
-.tw-avatar.warning { background: #fefce8; color: #eab308; border-color: #fefce8; }
-.tw-avatar.disabled { background: #f9fafb; color: #d1d5db; border-color: #f9fafb; opacity: 0.7; }
-
 /* White Card & Tables */
-.tw-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02); }
+.tw-card { background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); }
 .tw-table { width: 100%; border-collapse: collapse; text-align: left; }
-.tw-table th, .tw-table td { padding: 14px 18px; border-bottom: 1px solid #e5e7eb; font-size: 0.85rem; vertical-align: top; }
-.tw-table tr:last-child th, .tw-table tr:last-child td { border-bottom: none; }
-.tw-table th { width: 220px; font-weight: 500; color: #6b7280; background: #ffffff; }
+.tw-table th, .tw-table td { padding: 14px 18px; border: 1px solid #e5e7eb; font-size: 0.85rem; vertical-align: top; }
+.tw-table th { width: 220px; font-weight: 500; color: #4b5563; background: #f9fafb; border-right: 1px solid #e5e7eb; }
 .tw-table td { color: #1f2937; background: #ffffff; }
 
 /* Files inside table */
@@ -94,9 +83,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 .tw-attachment-note { padding: 0 18px 18px; font-size: 0.85rem; color: #374151; }
 
 @media (max-width: 767.98px) {
-    .tw-item { padding-left: 48px; }
-    .tw-line { left: 15px; }
-    .tw-avatar { width: 32px; height: 32px; font-size: 0.75rem; }
     .tw-header { flex-direction: column; gap: 8px; }
     .tw-table th { width: 140px; padding: 12px; }
     .tw-table td { padding: 12px; }
@@ -125,11 +111,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
     <!-- FEED 1: PENGAJUAN (MAHASISWA)                                    -->
     <!-- ================================================================ -->
     <div class="tw-item">
-        <?php if(!empty($p['status_persetujuan']) && $p['posting_data'] == 'kirim'): ?>
-            <div class="tw-line"></div>
-        <?php endif; ?>
-        
-        <div class="tw-avatar mahasiswa" title="Pemohon"><?= $initials ?></div>
         
         <div class="tw-header">
             <div class="tw-header-text">
@@ -138,35 +119,81 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
             </div>
             <div class="tw-badge pengajuan">pengajuan</div>
         </div>
-
+        
         <div class="tw-profile-wrapper">
+            <?php $isSiswa = (isset($p['jenjang_pendidikan']) && stripos($p['jenjang_pendidikan'], 'SM') !== false) || (isset($p['id_jenis_permohonan']) && $p['id_jenis_permohonan'] == 5); ?>
             <div class="tw-section-title">Data Diri Pemohon</div>
-            <div class="tw-data-wrapper">
-                <table class="tw-data-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Jenis Kelamin</th>
-                            <th>NIK</th>
-                            <th>NIM</th>
-                            <th>Asal Kampus</th>
-                            <th>Prodi</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><?= esc($p['nama_mahasiswa'] ?? '-') ?></td>
-                            <td><?= ($p['jenis_kelamin'] ?? '') == 'L' ? 'Laki-laki' : (($p['jenis_kelamin'] ?? '') == 'P' ? 'Perempuan' : '-') ?></td>
-                            <td><?= esc($p['nik'] ?? '-') ?></td>
-                            <td><?= esc($p['nim'] ?? '-') ?></td>
-                            <td><?= esc($p['kampus'] ?? '-') ?></td>
-                            <td><?= esc($p['prodi'] ?? '-') ?></td>
-                            <td><?= esc($p['email'] ?? '-') ?></td>
-                            <td><?= esc($p['no_telp'] ?? '-') ?></td>
-                        </tr>
-                    </tbody>
+            
+            <div class="tw-card">
+                <table class="tw-table">
+                    <tr>
+                        <th>Nama Lengkap</th>
+                        <td><?= esc($p['nama_mahasiswa'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>NIK</th>
+                        <td><?= esc($p['nik'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $isSiswa ? 'NISN' : 'NIM' ?></th>
+                        <td><?= esc($p['nim'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Jenis Kelamin</th>
+                        <td><?= ($p['jenis_kelamin'] ?? '') == 'L' ? 'Laki-laki' : (($p['jenis_kelamin'] ?? '') == 'P' ? 'Perempuan' : '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal Lahir</th>
+                        <td><?= !empty($p['tgl_lahir']) ? date('d F Y', strtotime($p['tgl_lahir'])) : '-' ?></td>
+                    </tr>
+                    <tr>
+                        <th>Alamat Email</th>
+                        <td><?= esc($p['email'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>No. Telp / WA</th>
+                        <td><?= esc($p['no_telp'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Instansi Pendidikan</th>
+                        <td><?= esc($p['kampus'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th>Jenjang</th>
+                        <td><?= esc($p['jenjang_pendidikan'] ?? '-') ?></td>
+                    </tr>
+                    <?php if(!empty($p['fakultas'])): ?>
+                    <tr>
+                        <th>Fakultas</th>
+                        <td><?= esc($p['fakultas']) ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <th>Jurusan</th>
+                        <td><?= esc(!empty($p['prodi']) ? $p['prodi'] : ($p['jurusan'] ?? '-')) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $isSiswa ? 'Kelas' : 'Semester' ?></th>
+                        <td><?= esc($p['semester'] ?? '-') ?></td>
+                    </tr>
+                    <?php if(!$isSiswa): ?>
+                    <tr>
+                        <th>Tahun Angkatan</th>
+                        <td><?= esc($p['angkatan_tahun'] ?? '-') ?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <th>Alamat Domisili</th>
+                        <td>
+                            <?= esc($p['alamat'] ?? '-') ?>
+                            <?php if(!empty($p['kelurahan']) || !empty($p['kecamatan'])): ?>
+                            <br><span class="text-muted" style="font-size: 0.8rem;">(Kel. <?= esc($p['kelurahan'] ?? '-') ?>, Kec. <?= esc($p['kecamatan'] ?? '-') ?>)</span>
+                            <?php endif; ?>
+                            <?php if(!empty($p['provinsi'])): ?>
+                            <br><span class="text-muted" style="font-size: 0.8rem;"><?= esc($p['provinsi']) ?></span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -177,30 +204,22 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <th>Jenis Permohonan</th>
                     <td><?= esc($p['jenis_permohonan'] ?? '-') ?></td>
                 </tr>
+                <?php
+                    $bln = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+                    $tglMulai = date('d', strtotime($p['tgl_mulai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_mulai']))] . ' ' . date('Y', strtotime($p['tgl_mulai']));
+                    $tglSelesai = date('d', strtotime($p['tgl_selesai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_selesai']))] . ' ' . date('Y', strtotime($p['tgl_selesai']));
+                ?>
                 <tr>
                     <th>Tanggal Mulai</th>
-                    <td><?= date('d M Y', strtotime($p['tgl_mulai'])) ?></td>
+                    <td><?= $tglMulai ?></td>
                 </tr>
                 <tr>
                     <th>Tanggal Selesai</th>
-                    <td><?= date('d M Y', strtotime($p['tgl_selesai'])) ?></td>
+                    <td><?= $tglSelesai ?></td>
                 </tr>
                 <?php
-                    // Label dinamis berdasarkan jenis permohonan
-                    $jenisLower = strtolower($p['jenis_permohonan'] ?? '');
-                    if (strpos($jenisLower, 'penelitian') !== false || strpos($jenisLower, 'skripsi') !== false) {
-                        $labelKeahlian = 'Topik / Judul Penelitian';
-                        $labelDeskripsi = 'Deskripsi Penelitian';
-                    } elseif (strpos($jenisLower, 'observasi') !== false || strpos($jenisLower, 'pengambilan data') !== false) {
-                        $labelKeahlian = 'Fokus Observasi';
-                        $labelDeskripsi = 'Deskripsi Kegiatan';
-                    } elseif (strpos($jenisLower, 'uji coba') !== false || strpos($jenisLower, 'prototype') !== false) {
-                        $labelKeahlian = 'Nama Produk / Prototype';
-                        $labelDeskripsi = 'Deskripsi Uji Coba';
-                    } else {
-                        $labelKeahlian = 'Keahlian';
-                        $labelDeskripsi = 'Tujuan Magang';
-                    }
+                    $labelKeahlian = 'Keahlian / Kompetensi';
+                    $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
                 ?>
                 <tr>
                     <th><?= $labelKeahlian ?></th>
@@ -208,7 +227,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                 </tr>
                 <tr>
                     <th><?= $labelDeskripsi ?></th>
-                    <td style="white-space: pre-wrap;"><?= esc($p['rencana_kegiatan'] ?? '-') ?></td>
+                    <td style="white-space: pre-wrap;"><?= esc($p['deskripsi'] ?? ($p['rencana_kegiatan'] ?? '-')) ?></td>
                 </tr>
                 <?php if (!empty($p['files'])): ?>
                 <tr>
@@ -233,7 +252,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
     <!-- ================================================================ -->
     <!-- FEED 2: VERIFIKASI SEKRETARIAT                                   -->
     <!-- ================================================================ -->
-    <?php if(!empty($p['status_persetujuan'])): ?>
+    <?php if ($p['posting_data'] == 'kirim'): ?>
     <?php
         $jenisPermohonanText = strtolower(trim($p['jenis_permohonan'] ?? 'permohonan'));
         $jenisPermohonanText = preg_replace('/\s+/', ' ', $jenisPermohonanText);
@@ -256,11 +275,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
         }
     ?>
     <div class="tw-item">
-        <?php if($hasPenempatan): ?>
-            <div class="tw-line"></div>
-        <?php endif; ?>
-
-        <div class="tw-avatar sekre" title="Sekretariat">SK</div>
         
         <div class="tw-header">
             <div class="tw-header-text">
@@ -327,6 +341,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <tr>
                         <td style="width:60%;">
                             <div class="tw-file-row">
+                                <div class="text-muted fw-semibold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px; margin-bottom: 2px;">Asal Instansi Pendidikan</div>
+                                <div class="text-dark fw-bold" style="font-size: 0.9rem;"><?= esc($permohonan['asal_instansi']) ?></div>
                                 <i class="bi bi-paperclip tw-file-icon"></i>
                                 <span class="tw-file-name" style="margin-right:0;"><?= esc($file['nama_file']) ?></span>
                             </div>
@@ -390,7 +406,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
         }
     ?>
     <div class="tw-item">
-        <div class="tw-avatar kabid <?= $isRevisiSekre ? 'disabled' : '' ?>" title="Unit Bidang">UB</div>
         
         <div class="tw-header">
             <div class="tw-header-text">
@@ -423,7 +438,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         <i class="bi bi-paperclip" style="color: #9ca3af; font-size: 1.2rem; margin-right: 12px;"></i>
                         <span style="color: #374151; font-size: 0.85rem; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= esc($surat['nama_file']) ?></span>
                     </div>
-                    <a href="<?= base_url('mahasiswa/download-surat-penerimaan/' . $surat['id_file_selesai_magang']) ?>" target="_blank" style="color: #6366f1; font-weight: 600; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Download</a>
+                    <a href="<?= base_url('mahasiswa/download-surat-penerimaan/' . $surat['id_file_proses_magang']) ?>" target="_blank" style="color: #6366f1; font-weight: 600; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Download</a>
                 </div>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -443,3 +458,4 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
 
 </div>
+

@@ -2,19 +2,20 @@
 const JENIS_LABELS = {
     '1': 'Penelitian Skripsi / TA',
     '2': 'Observasi / Pengambilan Data',
-    '3': 'Magang / PKL',
+    '3': 'Magang',
+    '5': 'Praktik Kerja Lapangan (PKL)',
     '4': 'Uji Coba Produk (Prototype)'
 };
 
 const JENIS_CFG = {
     '1': {
-        keahlian: 'Deskripsi Judul Skripsi / TA',
-        phK: 'Jelaskan draf atau gambaran umum judul penelitian Skripsi/TA Anda...',
-        magang: 'Deskripsi Rencana Topik / Rumusan Masalah',
-        phM: 'Jelaskan rumusan masalah atau ruang lingkup data akademik...',
+        keahlian: 'Judul atau Topik Skripsi/TA',
+        phK: 'Tuliskan judul atau gambaran umum topik penelitianmu...',
+        magang: 'Fokus Penelitian / Data yang Dicari',
+        phM: 'Jelaskan secara spesifik data atau informasi apa yang ingin kamu teliti...',
         surat: 'Surat Izin Penelitian Resmi Kampus',
         cv: 'Proposal / Sinopsis Penelitian Skripsi',
-        tujuan: 'Penelitian / Riset Akademik',
+        ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
             'Surat izin penelitian menggunakan kop resmi kampus dan ditandatangani pejabat berwenang',
@@ -23,13 +24,13 @@ const JENIS_CFG = {
         ]
     },
     '2': {
-        keahlian: 'Deskripsi Latar Belakang Observasi',
-        phK: 'Jelaskan tujuan atau tugas mata kuliah yang melatarbelakangi observasi...',
-        magang: 'Deskripsi Daftar Kebutuhan Data',
-        phM: 'Sebutkan jenis data atau informasi yang ingin diambil di Dinas Kominfo...',
+        keahlian: 'Tujuan Observasi / Nama Mata Kuliah',
+        phK: 'Sebutkan nama mata kuliah dan tujuan tugas observasimu...',
+        magang: 'Daftar Kebutuhan Data',
+        phM: 'Sebutkan dengan jelas daftar data yang ingin kamu minta dari Dinas Kominfo...',
         surat: 'Surat Pengantar Kebutuhan Data Kampus',
         cv: null,
-        tujuan: 'Observasi Lapangan / Survei',
+        ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: false,
         panduan: [
             'Surat pengantar observasi/pengambilan data resmi dari kampus',
@@ -37,28 +38,43 @@ const JENIS_CFG = {
         ]
     },
     '3': {
-        keahlian: 'Deskripsi Keahlian / Skill',
-        phK: 'Jelaskan keahlian atau kompetensi teknis yang Anda miliki...',
-        magang: 'Deskripsi Rencana Magang / Kegiatan',
-        phM: 'Jelaskan maksud, tujuan, atau rencana topik magang...',
-        surat: 'Surat Pengantar Resmi Kampus',
+        keahlian: 'Keahlian / Kompetensi',
+        phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai (contoh: Pemrograman Web, Desain Grafis, Administrasi)...',
+        magang: 'Apa yang ingin Anda kerjakan?',
+        phM: 'Ceritakan rencana kegiatan, fokus bidang, atau posisi yang kamu harapkan selama magang...',
+        surat: 'Surat Pengantar Resmi',
         cv: 'Curriculum Vitae (CV) Terbaru',
-        tujuan: 'Praktik Kerja Lapangan',
+        ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
-            'Surat pengantar magang menggunakan kop resmi kampus dan ditandatangani pejabat berwenang',
-            'CV mencantumkan data diri, program studi, semester, dan keahlian teknis',
+            'Surat pengantar magang ditandatangani pejabat berwenang (Kampus)',
+            'Wajib melampirkan <strong>Curriculum Vitae (CV)</strong> terbaru (gabungkan dengan portfolio jika ada)',
+            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+        ]
+    },
+    '5': {
+        keahlian: 'Keahlian / Kompetensi',
+        phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai (contoh: Jaringan, Desain Grafis, Administrasi)...',
+        magang: 'Apa yang ingin Anda kerjakan?',
+        phM: 'Ceritakan rencana kegiatan, fokus bidang, atau posisi yang kamu harapkan selama PKL...',
+        surat: 'Surat Pengantar Resmi',
+        cv: 'Curriculum Vitae (CV) Terbaru',
+        ktm: 'Kartu Pelajar',
+        showCv: true,
+        panduan: [
+            'Surat pengantar PKL ditandatangani pejabat berwenang (Sekolah)',
+            'Wajib melampirkan <strong>Curriculum Vitae (CV)</strong> terbaru (gabungkan dengan portfolio jika ada)',
             'Pastikan file tidak terproteksi kata sandi (password-protected)'
         ]
     },
     '4': {
-        keahlian: 'Deskripsi Profil Aplikasi / Sistem',
-        phK: 'Jelaskan spesifikasi atau nama sistem prototype yang ingin diuji...',
-        magang: 'Deskripsi Skenario Uji Coba / Metode',
-        phM: 'Jelaskan rencana target bidang yang akan menggunakan prototype...',
+        keahlian: 'Nama dan Profil Singkat Sistem',
+        phK: 'Sebutkan nama aplikasimu dan jelaskan fungsinya secara singkat...',
+        magang: 'Skenario Pengujian / Target Pengguna',
+        phM: 'Siapa target penggunanya dan bagaimana skenario pengujiannya nanti?',
         surat: 'Surat Pengantar Uji Coba Produk Kampus',
         cv: 'Dokumen Profil / Panduan Singkat Produk',
-        tujuan: 'Uji Coba / Testing Sistem',
+        ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
             'Surat pengantar uji coba produk resmi dari kampus',
@@ -84,10 +100,10 @@ function applyJenisCfg(val) {
     // Default fallback jika tidak ada yang dipilih (opsi default)
     if (!cfg) {
         cfg = {
-            keahlian: 'Keahlian / Skill',
-            phK: 'Jelaskan keahlian atau kompetensi yang Anda miliki saat ini...',
-            magang: 'Deskripsi Rencana Magang',
-            phM: 'Jelaskan maksud, tujuan, atau rencana topik yang ingin Anda ajukan...',
+            keahlian: 'Keahlian / Kompetensi',
+            phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai...',
+            magang: 'Apa yang ingin Anda kerjakan?',
+            phM: 'Jelaskan maksud, tujuan, atau rencana kegiatan yang ingin Anda ajukan...',
             surat: 'Surat Pengantar Resmi',
             cv: '',
             showCv: false
@@ -111,9 +127,19 @@ function applyJenisCfg(val) {
     
     var txtMagang = document.getElementById('deskripsi');
     if(txtMagang) txtMagang.placeholder = cfg.phM;
+
+    // Update Identitas Pribadi Review labels dynamically
+    var isSiswa = (val === '5');
+    var lblNim = document.getElementById('lbl-rv-nim');
+    if (lblNim) lblNim.textContent = isSiswa ? 'NISN' : 'NIM';
+    var lblSemester = document.getElementById('lbl-rv-semester');
+    if (lblSemester) lblSemester.textContent = isSiswa ? 'Kelas' : 'Semester';
     
     var lblSurat = document.getElementById('lbl-surat');
     if(lblSurat) lblSurat.innerHTML = cfg.surat + ' <span class="text-danger">*</span>';
+
+    var lblKtm = document.getElementById('lbl-ktm');
+    if(lblKtm) lblKtm.innerHTML = (cfg.ktm || 'Kartu Identitas') + ' <span class="text-danger">*</span>';
 
     var wCv = document.getElementById('wrapper-cv');
     var iCv = document.getElementById('input-cv');
@@ -152,8 +178,22 @@ function clearInputsOnChange() {
     var mg = document.getElementById('deskripsi');
     var errTgl = document.getElementById('err-tgl-mulai-js');
     
-    if (tM) { tM.value = ''; tM.classList.remove('is-invalid'); }
-    if (tS) { tS.value = ''; tS.classList.remove('is-invalid'); }
+    if (tM) { 
+        tM.value = ''; 
+        tM.classList.remove('is-invalid'); 
+        if (tM._flatpickr) {
+            tM._flatpickr.clear();
+            tM._flatpickr.redraw();
+        }
+    }
+    if (tS) { 
+        tS.value = ''; 
+        tS.classList.remove('is-invalid'); 
+        if (tS._flatpickr) {
+            tS._flatpickr.clear();
+            tS._flatpickr.redraw();
+        }
+    }
     if (k) { k.value = ''; countChars(k, 'cc-keahlian'); }
     if (mg) { mg.value = ''; countChars(mg, 'cc-magang'); }
     if (errTgl) { errTgl.classList.add('d-none'); errTgl.classList.remove('d-block'); }
@@ -244,47 +284,72 @@ function vStep1() {
     var diffTime = new Date(tS) - new Date(tM);
     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    if (diffDays <= 0) { sAlert('Tanggal selesai harus setelah tanggal mulai.'); return false; }
-    
-    // Validasi minimal 60 hari HANYA untuk Magang (ID = 3)
     if (j.value === '3' && diffDays < 60) {
         document.getElementById('tgl_mulai').classList.add('is-invalid');
         var errDiv = document.getElementById('err-tgl-mulai-js');
         if(errDiv){
             errDiv.classList.remove('d-none');
             errDiv.classList.add('d-block');
-            errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi permohonan magang minimal adalah 2 bulan (60 hari).';
+            errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang minimal adalah 60 hari (2 bulan).';
         }
         document.getElementById('tgl_mulai').focus();
+        sAlert('Durasi magang minimal adalah 60 hari (2 bulan).');
         return false; 
+    } else if (diffDays < 0) {
+        document.getElementById('tgl_mulai').classList.add('is-invalid');
+        sAlert('Tanggal selesai tidak boleh mendahului tanggal mulai.');
+        return false;
     }
-    if (k.length < 10) { sAlert('Deskripsi keahlian minimal 10 karakter.'); return false; }
-    if (mg.length < 20) { sAlert('Deskripsi rencana kegiatan minimal 20 karakter.'); return false; }
+    var jVal = j.value;
+    var cfg = JENIS_CFG[jVal];
+    var labelKeahlian = cfg ? cfg.keahlian : 'Keahlian/Topik';
+    var labelMagang = cfg ? cfg.magang : 'Rencana/Fokus';
+
+    if (k.length === 0) { sAlert('Kolom "' + labelKeahlian + '" wajib diisi.'); return false; }
+    if (k.length < 10) { sAlert('Kolom "' + labelKeahlian + '" minimal 10 karakter.'); return false; }
+    
+    if (mg.length === 0) { sAlert('Kolom "' + labelMagang + '" wajib diisi.'); return false; }
+    if (mg.length < 20) { sAlert('Kolom "' + labelMagang + '" minimal 20 karakter.'); return false; }
+    
     return true;
 }
 
 function vStep2() {
+    var isEdit = typeof isEditMode !== 'undefined' && isEditMode;
     var sr = document.getElementById('input-surat');
-    if (!sr.files || !sr.files[0]) { sAlert('Surat pengantar wajib diunggah.'); return false; }
-    if (sr.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran surat pengantar maksimal 2 MB.'); return false; }
-    if (!sr.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('Surat pengantar harus berformat PDF.'); return false; }
+    
+    if (!isEdit) {
+        if (!sr.files || !sr.files[0]) { sAlert('Surat pengantar wajib diunggah.'); return false; }
+    }
+    if (sr.files && sr.files[0]) {
+        if (sr.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran surat pengantar maksimal 2 MB.'); return false; }
+        if (!sr.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('Surat pengantar harus berformat PDF.'); return false; }
+    }
 
     var wCv = document.getElementById('wrapper-cv');
     if (wCv.style.display !== 'none') {
         var cv = document.getElementById('input-cv');
-        if (!cv.files || !cv.files[0]) { sAlert('Berkas CV / Proposal wajib diunggah.'); return false; }
-        if (cv.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran CV / Proposal maksimal 2 MB.'); return false; }
-        if (!cv.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('CV / Proposal harus berformat PDF.'); return false; }
+        if (!isEdit) {
+            if (!cv.files || !cv.files[0]) { sAlert('Berkas CV wajib diunggah.'); return false; }
+        }
+        if (cv.files && cv.files[0]) {
+            if (cv.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran CV maksimal 2 MB.'); return false; }
+            if (!cv.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('CV harus berformat PDF.'); return false; }
+        }
     }
     
     var kt = document.getElementById('input-ktm');
-    if (kt && (!kt.files || !kt.files[0])) { sAlert('Kartu Tanda Mahasiswa (KTM) wajib diunggah.'); return false; }
-    if (kt && kt.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran KTM maksimal 2 MB.'); return false; }
-    if (kt && kt.files[0]) {
-        var ktExt = kt.files[0].name.toLowerCase();
-        if (!ktExt.endsWith('.pdf') && !ktExt.endsWith('.jpg') && !ktExt.endsWith('.jpeg') && !ktExt.endsWith('.png')) { sAlert('KTM harus berformat PDF atau JPG/PNG.'); return false; }
+    if (kt) {
+        if (!isEdit && (!kt.files || !kt.files[0])) { sAlert('Kartu Tanda Mahasiswa (KTM) wajib diunggah.'); return false; }
+        if (kt.files && kt.files[0]) {
+            if (kt.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran KTM maksimal 2 MB.'); return false; }
+            var n = kt.files[0].name.toLowerCase();
+            if (!n.endsWith('.pdf') && !n.endsWith('.jpg') && !n.endsWith('.jpeg') && !n.endsWith('.png')) {
+                sAlert('KTM harus berupa gambar (JPG/PNG) atau PDF.'); return false;
+            }
+        }
     }
-
+    
     return true;
 }
 
@@ -298,13 +363,19 @@ function fillReview() {
     var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
     var jVal = j ? j.value : null;
     var cfg = jVal ? JENIS_CFG[jVal] : null;
+    var isSiswa = (jVal === '5');
+
+    var lblNim = document.getElementById('lbl-rv-nim');
+    if (lblNim) lblNim.textContent = isSiswa ? 'NISN' : 'NIM';
+    var lblSemester = document.getElementById('lbl-rv-semester');
+    if (lblSemester) lblSemester.textContent = isSiswa ? 'Kelas' : 'Semester';
 
     document.getElementById('rv-jenis').textContent = j ? JENIS_LABELS[jVal] : '—';
-    document.getElementById('rv-tujuan').textContent = j ? JENIS_CFG[jVal].tujuan : '—';
     document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
     document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
+    document.getElementById('rv-keahlian-label').textContent = cfg ? cfg.keahlian : 'Keahlian / Kompetensi';
     document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
-    document.getElementById('rv-magang-label').textContent = cfg ? cfg.magang : 'Deskripsi Rencana Kegiatan';
+    document.getElementById('rv-magang-label').textContent = cfg ? cfg.magang : 'Apa yang ingin dikerjakan';
     document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';
 
     var tb = document.getElementById('rv-doc-tbody');
@@ -314,20 +385,21 @@ function fillReview() {
     var ls = document.getElementById('lbl-surat').textContent.replace('*', '').trim();
     if (sf) {
         var sfUrl = URL.createObjectURL(sf);
-        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + ls + '</td><td class="text-end"><a href="' + sfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)" style="cursor: pointer; display: inline-block; transition: all 0.2s;"><i class="bi bi-file-earmark-pdf"></i> ' + sf.name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a></td></tr>';
+        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + ls + '</td><td class="text-end"><a href="' + sfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf fs-4"></i></a></td></tr>';
     }
     var wCv = document.getElementById('wrapper-cv');
     var cf = document.getElementById('input-cv').files[0];
     if (cf && wCv.style.display !== 'none') {
         var cfUrl = URL.createObjectURL(cf);
         var lc = document.getElementById('lbl-cv').textContent.replace('*', '').trim();
-        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><a href="' + cfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)" style="cursor: pointer; display: inline-block; transition: all 0.2s;"><i class="bi bi-file-earmark-pdf"></i> ' + cf.name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a></td></tr>';
+        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><a href="' + cfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf fs-4"></i></a></td></tr>';
     }
     
     var ktf = document.getElementById('input-ktm') ? document.getElementById('input-ktm').files[0] : null;
     if (ktf) {
         var ktfUrl = URL.createObjectURL(ktf);
-        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">Kartu Tanda Mahasiswa (KTM)</td><td class="text-end"><a href="' + ktfUrl + '" target="_blank" class="file-chip text-decoration-none" title="Klik untuk melihat dokumen (Preview)" style="cursor: pointer; display: inline-block; transition: all 0.2s;"><i class="bi bi-file-earmark-check"></i> ' + ktf.name + ' <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.75rem;"></i></a></td></tr>';
+        var lk = cfg && cfg.ktm ? cfg.ktm : 'Kartu Identitas';
+        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lk + '</td><td class="text-end"><a href="' + ktfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-check fs-4"></i></a></td></tr>';
     }
     if (!tb.innerHTML) {
         tb.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3" style="font-size:0.83rem;">Tidak ada dokumen terlampir.</td></tr>';
@@ -503,13 +575,15 @@ function loadFromLocal() {
             if (radio) { radio.checked = true; applyJenisCfg(data['id_jenis_permohonan']); }
             var sel = document.getElementById('sel-jenis');
             if (sel) { sel.value = data['id_jenis_permohonan']; sel.dispatchEvent(new Event('change')); }
-            hasData = true;
         }
 
         // Isi field teks lainnya
         ['tgl_mulai', 'tgl_selesai', 'deskripsi_keahlian', 'deskripsi'].forEach(function(id) {
             var el = document.getElementById(id);
-            if (el && data[id]) { el.value = data[id]; hasData = true; }
+            if (el && data[id] && data[id].trim() !== '') { 
+                el.value = data[id]; 
+                hasData = true; // Hanya anggap ada data jika text/date terisi
+            }
         });
 
         // Update character counters
