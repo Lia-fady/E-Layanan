@@ -31,30 +31,99 @@ class KuotaBidangModel extends Model
     }
 
     /**
-     * Mengambil sisa kuota untuk bidang tertentu
+     * Menghitung kuota secara per-bulan berdasarkan rentang tanggal penempatan.
+     * (Menggunakan tanggal_selesai existing, DIBATALKAN menggunakan updated_at)
      */
-    public function getSisaKuota($id_bidang)
+    public function getKuotaPerBulan($id_bidang, $tahun = null)
     {
-        // Ambil kapasitas kuota dari m_kuota
-        $kuotaRow = $this->where('id_bidang', $id_bidang)->where('status_aktif', '1')->first();
-        if (!$kuotaRow) {
-            return ['total_kuota' => 0, 'terpakai' => 0, 'sisa' => 0];
+        if (!$tahun) {
+            $tahun = date('Y');
+        }
+
+        $db = \Config\Database::connect();
+        
+        // 1. Dapatkan atau buat data master kuota untuk 12 bulan di tahun tersebut
+        $kuotaBulan = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $row = $this->where('id_bidang', $id_bidang)
+                        ->where('tahun', $tahun)
+                        ->where('bulan', $i)
+                        ->first();
+                        
+            if (!$row) {
+                // Auto create jika belum ada (default 5)
+                $this->insert([
+                    'id_bidang' => $id_bidang,
+                    'tahun'     => $tahun,
+                    'bulan'     => $i,
+                    'kuota'     => 5,
+                    'status'    => 'AKTIF'
+                ]);
+                $row = $this->where('id_bidang', $id_bidang)->where('tahun', $tahun)->where('bulan', $i)->first();
+            }
+            $kuotaBulan[$i] = $row;
+        }
+
+        // 2. Ambil semua penempatan yang relevan
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_bidang', $id_bidang)
+            ->whereIn('status_penempatan', ['MENUNGGU', 'BERJALAN', 'SELESAI', 'DIBATALKAN'])
+            ->get()->getResultArray();
+
+        $hasil = [];
+        $nama_bulan = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        // 3. Hitung overlap per bulan
+        for ($i = 1; $i <= 12; $i++) {
+            $batas_kuota = (int)$kuotaBulan[$i]['kuota'];
+            
+            $awalBulan = sprintf('%04d-%02d-01', $tahun, $i);
+            $akhirBulan = date('Y-m-t', strtotime($awalBulan));
+            
+            $terpakai = 0;
+            
+            foreach ($penempatan as $p) {
+                $tgl_mulai = $p['tanggal_mulai'];
+                $tgl_selesai = $p['tanggal_selesai'];
+                $status = $p['status_penempatan'];
+                
+                if ($status === 'DIBATALKAN') {
+                    if (!empty($p['updated_at'])) {
+                        $tgl_batal = date('Y-m-d', strtotime($p['updated_at']));
+                        if ($tgl_batal < $tgl_selesai) {
+                            $tgl_selesai = $tgl_batal;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+                
+                // Logika overlap: (Mulai <= AkhirBulan) AND (Selesai >= AwalBulan)
+                if ($tgl_mulai && $tgl_selesai) {
+                    if ($tgl_mulai <= $akhirBulan && $tgl_selesai >= $awalBulan) {
+                        $terpakai++;
+                    }
+                }
+            }
+            
+            $sisa = max(0, $batas_kuota - $terpakai);
+            $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+            
+            $hasil[] = [
+                'id_kuota'    => $kuotaBulan[$i]['id_kuota'],
+                'bulan_angka' => $i,
+                'bulan_nama'  => $nama_bulan[$i],
+                'batas_kuota' => $batas_kuota,
+                'terpakai'    => $terpakai,
+                'sisa_kuota'  => $sisa,
+                'status'      => $status_kuota
+            ];
         }
         
-        $total_kuota = (int) $kuotaRow['kuota'];
-
-        // Hitung mahasiswa yang sedang aktif (BERJALAN) di bidang tersebut
-        $terpakai = $this->db->table('t_penempatan_magang')
-            ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
-            ->countAllResults();
-
-        $sisa = max(0, $total_kuota - $terpakai);
-
-        return [
-            'total_kuota' => $total_kuota,
-            'terpakai'    => $terpakai,
-            'sisa'        => $sisa
-        ];
+        return $hasil;
     }
 }

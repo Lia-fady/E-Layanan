@@ -44,17 +44,71 @@ class C_Verifikasi extends BaseController
                 ->getRow();
 
             $bidang_list = $db->table('m_bidang')
-                ->select('m_bidang.id_bidang, m_bidang.bidang, IFNULL(m_kuota.kuota, 0) as kuota')
-                ->join('m_kuota', 'm_kuota.id_bidang = m_bidang.id_bidang', 'left')
+                ->select('m_bidang.id_bidang, m_bidang.bidang')
                 ->where('m_bidang.status_aktif', '1')
                 ->get()->getResult();
 
+            $kuotaModel = new \App\Models\KuotaBidangModel();
+            
+            // Get permohonan to check dates
+            $permohonanData = $this->verifikasiModel->getPermohonanById($id);
+            $tgl_mulai = $permohonanData->tgl_mulai ?? null;
+            $tgl_selesai = $permohonanData->tgl_selesai ?? null;
+            
+            $tahun_mulai = $tgl_mulai ? (int)date('Y', strtotime($tgl_mulai)) : (int)date('Y');
+            $bulan_mulai = $tgl_mulai ? (int)date('m', strtotime($tgl_mulai)) : (int)date('m');
+            $tahun_selesai = $tgl_selesai ? (int)date('Y', strtotime($tgl_selesai)) : $tahun_mulai;
+            $bulan_selesai = $tgl_selesai ? (int)date('m', strtotime($tgl_selesai)) : $bulan_mulai;
+
             foreach ($bidang_list as &$b) {
-                $activeCount = $db->table('t_penempatan_magang')
-                    ->where('id_bidang', $b->id_bidang)
-                    ->where('status_penempatan', 'BERJALAN')
-                    ->countAllResults();
-                $b->sisa_kuota = max(0, $b->kuota - $activeCount);
+                $b->sisa_kuota = 0; // Default
+                $b->kuota_penuh_di_bulan = null;
+                
+                // Get kuota for the starting year
+                $kuotaTahunMulai = $kuotaModel->getKuotaPerBulan($b->id_bidang, $tahun_mulai);
+                
+                $semuaTersedia = true;
+                
+                // Check each month in the range
+                $curr_y = $tahun_mulai;
+                $curr_m = $bulan_mulai;
+                
+                while ($curr_y < $tahun_selesai || ($curr_y == $tahun_selesai && $curr_m <= $bulan_selesai)) {
+                    $kuotaBulanData = $kuotaTahunMulai; // Optimize: normally you'd fetch per year if range spans years
+                    if ($curr_y != $tahun_mulai) {
+                        $kuotaBulanData = $kuotaModel->getKuotaPerBulan($b->id_bidang, $curr_y);
+                    }
+                    
+                    // index is 1-based, array index is 0-based, but getKuotaPerBulan returns standard array
+                    // find by bulan_angka
+                    $sisaBulanIni = 0;
+                    foreach ($kuotaBulanData as $kb) {
+                        if ($kb['bulan_angka'] == $curr_m) {
+                            $sisaBulanIni = $kb['sisa_kuota'];
+                            $namaBulanIni = $kb['bulan_nama'] . ' ' . $curr_y;
+                            break;
+                        }
+                    }
+                    
+                    if ($sisaBulanIni <= 0) {
+                        $semuaTersedia = false;
+                        $b->kuota_penuh_di_bulan = $namaBulanIni;
+                        break;
+                    }
+                    
+                    $curr_m++;
+                    if ($curr_m > 12) {
+                        $curr_m = 1;
+                        $curr_y++;
+                    }
+                }
+                
+                if ($semuaTersedia) {
+                    // For UI purposes, just show > 0 if available
+                    $b->sisa_kuota = 1; 
+                } else {
+                    $b->sisa_kuota = 0;
+                }
             }
 
             $data = [

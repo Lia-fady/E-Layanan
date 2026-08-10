@@ -130,6 +130,8 @@ class M_Verifikasi extends Model
             mhs.jenis_kelamin,
             mhs.tgl_lahir,
             mhs.alamat,
+            mhs.rt,
+            mhs.rw,
             mhs.no_telp,
             mhs.email,
             jp.jenis_permohonan,
@@ -140,9 +142,17 @@ class M_Verifikasi extends Model
             COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
             ps.catatan,
             ps.id_persetujuan_magang,
-            ps.disposisi
+            ps.disposisi,
+            m_kelurahan.nama_kelurahan as kelurahan,
+            m_kecamatan.nama_kecamatan as kecamatan,
+            m_kabupaten.nama_kabupaten as kabupaten_kota,
+            m_provinsi.nama_provinsi as provinsi
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_kelurahan', 'm_kelurahan.id_kelurahan = mhs.id_kelurahan', 'left');
+        $builder->join('m_kecamatan', 'm_kecamatan.id_kecamatan = m_kelurahan.id_kecamatan', 'left');
+        $builder->join('m_kabupaten', 'm_kabupaten.id_kabupaten = m_kecamatan.id_kabupaten', 'left');
+        $builder->join('m_provinsi', 'm_provinsi.id_provinsi = m_kabupaten.id_provinsi', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');

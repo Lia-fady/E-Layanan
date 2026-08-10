@@ -90,16 +90,58 @@ class C_DisposisiMasuk extends BaseController
         $db = \Config\Database::connect();
 
         $id_bidang = $penempatan->id_bidang ?? null;
-        $kuotaRow = $db->table('m_kuota')->where('id_bidang', $id_bidang)->get()->getRow();
-        $total_kuota = $kuotaRow ? (int) $kuotaRow->kuota : 0;
+        
+        // Cek kuota bulanan
+        $kuotaModel = new \App\Models\KuotaBidangModel();
+        
+        // Ambil tanggal dari permohonan yang berhubungan dengan penempatan ini
+        $persetujuanData = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
+        $permohonanData = $db->table('t_permohonan_magang')->where('id_permohonan_magang', $persetujuanData->id_permohonan_magang)->get()->getRow();
+        
+        $tgl_mulai = $permohonanData->tgl_mulai ?? date('Y-m-d');
+        $tgl_selesai = $permohonanData->tgl_selesai ?? date('Y-m-d');
+        
+        $tahun_mulai = (int)date('Y', strtotime($tgl_mulai));
+        $bulan_mulai = (int)date('m', strtotime($tgl_mulai));
+        $tahun_selesai = (int)date('Y', strtotime($tgl_selesai));
+        $bulan_selesai = (int)date('m', strtotime($tgl_selesai));
 
-        $activeCount = $db->table('t_penempatan_magang')
-            ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
-            ->countAllResults();
+        $semuaTersedia = true;
+        
+        $curr_y = $tahun_mulai;
+        $curr_m = $bulan_mulai;
+        
+        $kuotaTahunMulai = $kuotaModel->getKuotaPerBulan($id_bidang, $tahun_mulai);
+        
+        while ($curr_y < $tahun_selesai || ($curr_y == $tahun_selesai && $curr_m <= $bulan_selesai)) {
+            $kuotaBulanData = $kuotaTahunMulai; 
+            if ($curr_y != $tahun_mulai) {
+                $kuotaBulanData = $kuotaModel->getKuotaPerBulan($id_bidang, $curr_y);
+            }
+            
+            $sisaBulanIni = 0;
+            foreach ($kuotaBulanData as $kb) {
+                if ($kb['bulan_angka'] == $curr_m) {
+                    $sisaBulanIni = $kb['sisa_kuota'];
+                    $namaBulanIni = $kb['bulan_nama'] . ' ' . $curr_y;
+                    break;
+                }
+            }
+            
+            if ($sisaBulanIni <= 0) {
+                $semuaTersedia = false;
+                break;
+            }
+            
+            $curr_m++;
+            if ($curr_m > 12) {
+                $curr_m = 1;
+                $curr_y++;
+            }
+        }
 
-        if ($id_bidang && $total_kuota > 0 && $activeCount >= $total_kuota) {
-            session()->setFlashdata('error', 'Permohonan tidak dapat disetujui karena kuota mahasiswa pada bidang ini sudah penuh.');
+        if (!$semuaTersedia) {
+            session()->setFlashdata('error', 'Permohonan tidak dapat disetujui karena kuota mahasiswa pada bidang ini sudah penuh pada periode kegiatan (' . ($namaBulanIni ?? 'bulan tertentu') . ').');
             return redirect()->to(base_url('kabid/disposisi'));
         }
 
