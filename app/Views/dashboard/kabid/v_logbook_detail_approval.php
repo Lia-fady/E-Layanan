@@ -309,7 +309,7 @@
                         <span id="selectedCountLabel" class="selection-count">0 Logbook Dipilih</span>
                     </div>
                     <button type="submit" id="btnEApprove" class="btn btn-success shadow-sm" style="border-radius: 8px; font-weight: 600; display: none;">
-                        <i class="fas fa-check-double mr-1"></i> e-Approve
+                        <i class="fas fa-check-double mr-1"></i> setujui
                     </button>
                 </div>
 

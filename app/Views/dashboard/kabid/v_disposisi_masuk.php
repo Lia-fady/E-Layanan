@@ -55,8 +55,8 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th width="5%" class="text-center align-middle">No</th>
-                        <th width="25%" class="text-center align-middle">Nama / NIM</th>
-                        <th width="25%" class="text-center align-middle">Instansi / Prodi</th>
+                        <th width="25%" class="text-center align-middle">Nama</th>
+                        <th width="25%" class="text-center align-middle">Instansi / Jurusan</th>
                         <th width="15%" class="text-center align-middle">Jenis Permohonan</th>
                         <th width="15%" class="text-center align-middle">Status</th>
                         <th width="15%" class="text-center align-middle">Aksi</th>
