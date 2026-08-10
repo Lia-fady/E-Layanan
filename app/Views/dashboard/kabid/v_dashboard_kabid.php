@@ -71,7 +71,7 @@
                     </div>
                     <span class="badge badge-primary bg-light text-primary border border-primary" style="padding: 0.4rem 0.6rem;">Total Aktif</span>
                 </div>
-                <div class="stat-title mt-3">Mahasiswa Aktif</div>
+                <div class="stat-title mt-3">Mahasiswa/Siswa Aktif</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $total_berjalan ?></div>
                     <div class="stat-desc">Sedang berjalan</div>

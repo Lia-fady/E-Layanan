@@ -13,7 +13,7 @@
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Disposisi Masuk</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Pantau dan kelola seluruh permohonan mahasiswa yang didisposisikan ke bidang Anda.
+            Pantau dan kelola seluruh permohonan mahasiswa/siswa yang didisposisikan ke bidang Anda.
         </p>
     </div>
 </div>
@@ -55,8 +55,8 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th width="5%" class="text-center align-middle">No</th>
-                        <th width="25%" class="text-center align-middle">Nama / NIM</th>
-                        <th width="25%" class="text-center align-middle">Instansi / Prodi</th>
+                        <th width="25%" class="text-center align-middle">Nama</th>
+                        <th width="25%" class="text-center align-middle">Instansi / Jurusan</th>
                         <th width="15%" class="text-center align-middle">Jenis Permohonan</th>
                         <th width="15%" class="text-center align-middle">Status</th>
                         <th width="15%" class="text-center align-middle">Aksi</th>

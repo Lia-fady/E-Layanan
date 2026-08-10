@@ -503,6 +503,19 @@ window.addEventListener('load', function() {
 });
 
 // ==========================================
+// KONFIGURASI TANGGAL DARI DATABASE
+// ==========================================
+var JENIS_DATE_CFG = {
+<?php foreach ($jenis_permohonan as $jp): ?>
+    '<?= $jp['id_jenis_permohonan'] ?>': {
+        maksHariPengajuan: <?= (int)($jp['maksimal_hari_pengajuan'] ?? 0) ?>,
+        durasiMinimal: <?= (int)($jp['durasi_minimal'] ?? 0) ?>,
+        maksimalPermohonan: <?= (int)($jp['maksimal_permohonan'] ?? 0) ?>
+    },
+<?php endforeach; ?>
+};
+
+// ==========================================
 // VALIDASI TANGGAL DINAMIS (FRONTEND)
 // ==========================================
 document.addEventListener('DOMContentLoaded', function() {
@@ -515,27 +528,72 @@ document.addEventListener('DOMContentLoaded', function() {
             var fpMulai = tglMulai._flatpickr;
             var fpSelesai = tglSelesai._flatpickr;
 
-            var today = new Date();
-            var minTglMulai = new Date();
-            minTglMulai.setDate(today.getDate() + 30);
-            var maxTglMulai = new Date();
-            maxTglMulai.setMonth(today.getMonth() + 6);
+            function parseInputDate(value) {
+                var p = value.split('-');
+                return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+            }
 
-            var minStr = formatInputDate(minTglMulai);
-            var maxStr = formatInputDate(maxTglMulai);
-            var todayStr = formatInputDate(today);
-            
-            var currentJenis = getSelectedJenis();
-            
-            if (fpMulai) {
-                if (currentJenis === '3') {
-                    fpMulai.set('minDate', minStr);
-                    fpMulai.set('maxDate', maxStr);
-                } else {
-                    fpMulai.set('minDate', todayStr);
-                    fpMulai.set('maxDate', null);
+            function addDays(date, days) {
+                var d = new Date(date);
+                d.setDate(d.getDate() + days);
+                return d;
+            }
+
+            function formatInputDate(date) {
+                var yyyy2 = date.getFullYear();
+                var mm2 = String(date.getMonth() + 1).padStart(2, '0');
+                var dd2 = String(date.getDate()).padStart(2, '0');
+                return yyyy2 + '-' + mm2 + '-' + dd2;
+            }
+
+            function getSelectedJenis() {
+                var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
+                return j ? j.value : null;
+            }
+
+            function getJenisDateConfig(jenisId) {
+                return JENIS_DATE_CFG[jenisId] || { maksHariPengajuan: 0, durasiMinimal: 0, maksimalPermohonan: 0 };
+            }
+
+            function applyKalenderConfig(jenisId) {
+                var cfg = getJenisDateConfig(jenisId);
+                var today = new Date();
+                today.setHours(0,0,0,0);
+
+                var minMulai = addDays(today, cfg.maksHariPengajuan);
+                var minMulaiStr = formatInputDate(minMulai);
+                
+                var maxMulaiStr = null;
+                if (cfg.maksimalPermohonan > 0) {
+                    var maxMulai = addDays(today, cfg.maksimalPermohonan);
+                    maxMulaiStr = formatInputDate(maxMulai);
                 }
 
+                if (fpMulai) {
+                    fpMulai.set('minDate', minMulaiStr);
+                    if (maxMulaiStr) {
+                        fpMulai.set('maxDate', maxMulaiStr);
+                    } else {
+                        fpMulai.set('maxDate', null);
+                    }
+                }
+
+                // Native input fallback
+                tglMulai.setAttribute('min', minMulaiStr);
+                if (maxMulaiStr) {
+                    tglMulai.setAttribute('max', maxMulaiStr);
+                } else {
+                    tglMulai.removeAttribute('max');
+                }
+            }
+
+            // Apply initial config
+            var currentJenis = getSelectedJenis();
+            if (currentJenis) {
+                applyKalenderConfig(currentJenis);
+            }
+
+            if (fpMulai) {
                 // Mencegah bug bulan hilang saat kosong dengan melompat ke minDate saat dibuka
                 var jumpToMin = function(selectedDates, dateStr, instance) {
                     if (!dateStr && instance.config.minDate) {
@@ -574,55 +632,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Always apply to native inputs
-            if (currentJenis === '3') {
-                tglMulai.setAttribute('min', minStr);
-                tglMulai.setAttribute('max', maxStr);
-            } else {
-                tglMulai.setAttribute('min', todayStr);
-                tglMulai.removeAttribute('max');
-            }
-
             // Update kalender jika jenis permohonan diubah
             var selJenisEl = document.getElementById('sel-jenis');
             if (selJenisEl) {
                 selJenisEl.addEventListener('change', function() {
                     var jenis = this.value;
-                    if (jenis === '3') {
-                        tglMulai.setAttribute('min', minStr);
-                        tglMulai.setAttribute('max', maxStr);
-                    } else {
-                        tglMulai.setAttribute('min', todayStr);
-                        tglMulai.removeAttribute('max');
+                    if (jenis) {
+                        applyKalenderConfig(jenis);
                     }
                     // Re-trigger start date validation & end date logic
                     if (tglMulai.value) {
                         tglMulai.dispatchEvent(new Event('change'));
                     }
                 });
-            }
-
-            function parseInputDate(value) {
-                var p = value.split('-');
-                return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
-            }
-
-            function addDays(date, days) {
-                var d = new Date(date);
-                d.setDate(d.getDate() + days);
-                return d;
-            }
-
-            function formatInputDate(date) {
-                var yyyy2 = date.getFullYear();
-                var mm2 = String(date.getMonth() + 1).padStart(2, '0');
-                var dd2 = String(date.getDate()).padStart(2, '0');
-                return yyyy2 + '-' + mm2 + '-' + dd2;
-            }
-
-            function getSelectedJenis() {
-                var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
-                return j ? j.value : null;
             }
 
             function validateDurasi() {
@@ -637,13 +659,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 
                 var jenis = getSelectedJenis();
+                var cfg = getJenisDateConfig(jenis);
                 var isInvalid = false;
                 
-                // Aturan 60 hari HANYA untuk jenis permohonan = 3 (Magang)
-                if (jenis === '3' && diffDays < 60) {
+                // Validasi durasi minimal dari database
+                if (cfg.durasiMinimal > 0 && diffDays < cfg.durasiMinimal) {
                     isInvalid = true;
                     if (errDiv) {
-                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang minimal adalah 60 hari (2 bulan).';
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi kegiatan minimal adalah ' + cfg.durasiMinimal + ' hari.';
                     }
                 } else if (dateSelesai < dateMulai) {
                     isInvalid = true;
@@ -676,7 +699,8 @@ document.addEventListener('DOMContentLoaded', function() {
             tglMulai.addEventListener('change', function() {
                 if (tglMulai.value) {
                     var jenis = getSelectedJenis();
-                    var minDays = (jenis === '3') ? 60 : 0;
+                    var cfg = getJenisDateConfig(jenis);
+                    var minDays = cfg.durasiMinimal;
                     var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
                     var minSelesaiStr = formatInputDate(minSelesai);
                     
@@ -686,7 +710,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         tglSelesai.setAttribute('min', minSelesaiStr);
                     }
 
-                    if ((jenis === '3' && !tglSelesai.value) || (tglSelesai.value && parseInputDate(tglSelesai.value) < minSelesai)) {
+                    if ((minDays > 0 && !tglSelesai.value) || (tglSelesai.value && parseInputDate(tglSelesai.value) < minSelesai)) {
                         if (fpSelesai) {
                             fpSelesai.setDate(minSelesaiStr, true); // true to trigger change
                         } else {
@@ -715,7 +739,8 @@ document.addEventListener('DOMContentLoaded', function() {
             tglSelesai.addEventListener('change', function() {
                 if (tglMulai.value && tglSelesai.value) {
                     var jenis = getSelectedJenis();
-                    var minDays = (jenis === '3') ? 60 : 0;
+                    var cfg = getJenisDateConfig(jenis);
+                    var minDays = cfg.durasiMinimal;
                     var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
                     var minSelesaiStr = formatInputDate(minSelesai);
                     
@@ -735,9 +760,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 validateDurasi();
             });
-
-        }, 100);
+            
+        }, 100); // 100ms delay
     }
+});
     
     // Handle visual feedback for file inputs during revision
     document.querySelectorAll('input[type="file"]').forEach(function(input) {

@@ -26,8 +26,8 @@
         <thead>
             <tr>
                 <th width="5%" class="text-center">NO</th>
-                <th>Nama Mahasiswa</th>
-                <th>NIM</th>
+                <th>Nama</th>
+                <th>NIM / NIS</th>
                 <th>Instansi</th>
                 <th>Tanggal Pengajuan</th>
                 <th class="text-center">Status Persetujuan</th>
@@ -39,7 +39,6 @@
                 <?php $no = 1; foreach ($permohonan as $row) : ?>
                 <?php
                     $status = $row->status_persetujuan ?? 'MENUNGGU';
-                    
                     if ($status == 'DISETUJUI') {
                         $badgeClass = 'disetujui';
                         $statusText = 'Disetujui';

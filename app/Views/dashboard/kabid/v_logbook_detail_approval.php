@@ -185,7 +185,7 @@
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Detail & Approval Logbook</h5>
         <p style="color:#64748B; font-size:0.9rem; margin:0;">
-            Review aktivitas harian dan berikan persetujuan untuk mahasiswa.
+            Review aktivitas harian dan berikan persetujuan untuk mahasiswa/siswa.
         </p>
     </div>
     <button type="button" id="btnKembaliList" class="btn btn-light border shadow-sm" style="border-radius: 8px; font-weight: 600; color: #475569;">
@@ -199,8 +199,8 @@
     <div class="card profile-card p-4">
         <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
             <div>
-                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.08rem;">Data Mahasiswa</h6>
-                <p class="text-muted mb-0" style="font-size: 0.85rem;">Informasi lengkap mahasiswa yang sedang ditinjau.</p>
+                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.08rem;">Data Mahasiswa/Siswa</h6>
+                <p class="text-muted mb-0" style="font-size: 0.85rem;">Informasi lengkap mahasiswa/siswa yang sedang ditinjau.</p>
             </div>
             <div class="mt-2 mt-md-0">
                 <?php if (($mahasiswa->status_penempatan ?? '') == 'SELESAI') : ?>
@@ -237,7 +237,7 @@
                         <div class="info-value"><?= esc($mahasiswa->instansi_pendidikan) ?></div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <div class="info-label"><i class="fas fa-graduation-cap mr-1"></i> Program Studi</div>
+                        <div class="info-label"><i class="fas fa-graduation-cap mr-1"></i>Jurusan</div>
                         <div class="info-value"><?= esc($mahasiswa->prodi) ?></div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -309,7 +309,7 @@
                         <span id="selectedCountLabel" class="selection-count">0 Logbook Dipilih</span>
                     </div>
                     <button type="submit" id="btnEApprove" class="btn btn-success shadow-sm" style="border-radius: 8px; font-weight: 600; display: none;">
-                        <i class="fas fa-check-double mr-1"></i> e-Approve
+                        <i class="fas fa-check-double mr-1"></i> Setujui
                     </button>
                 </div>
 
@@ -317,7 +317,7 @@
                     <div class="text-center py-5">
                         <img src="<?= base_url('img/undraw_empty.svg') ?>" alt="Empty" style="width: 150px; opacity: 0.5;" class="mb-3">
                         <h6 class="text-muted font-weight-bold">Belum ada catatan aktivitas harian.</h6>
-                        <p class="text-muted small">Mahasiswa belum mengisi logbook.</p>
+                        <p class="text-muted small">Mahasiswa/Siswa belum mengisi logbook.</p>
                     </div>
                 <?php else : ?>
                     <div class="table-responsive mt-2">

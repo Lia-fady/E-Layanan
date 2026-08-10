@@ -67,8 +67,8 @@ class C_Logbook extends C_BaseMahasiswa
              return redirect()->back()->with('error', 'Gagal menyimpan! ID Penempatan tidak valid.');
         }
 
-        $stateData = $this->_getMahasiswaState($id_mahasiswa);
-        if (isset($stateData['is_log_book']) && strtolower($stateData['is_log_book']) == 'tidak') {
+        $penempatanCheck = $this->logbookModel->db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan_post)->get()->getRowArray();
+        if ($penempatanCheck && isset($penempatanCheck['is_log_book']) && strtolower($penempatanCheck['is_log_book']) == 'tidak') {
             return redirect()->back()->with('error', 'Gagal menyimpan! Kegiatan magang Anda tidak mewajibkan pengisian logbook.');
         }
 

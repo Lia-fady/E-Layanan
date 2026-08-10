@@ -6,9 +6,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Mahasiswa</h5>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Mahasiswa/Siswa</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Pantau dan setujui catatan aktivitas harian mahasiswa di bidang Anda.
+            Pantau dan setujui catatan aktivitas harian mahasiswa/siswa di bidang Anda.
         </p>
     </div>
 </div>
@@ -62,8 +62,8 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th width="5%" class="text-center align-middle">No</th>
-                        <th width="20%" class="text-center align-middle">Nama / NIM</th>
-                        <th width="20%" class="text-center align-middle">Instansi / Prodi</th>
+                        <th width="20%" class="text-center align-middle">Nama</th>
+                        <th width="20%" class="text-center align-middle">Instansi / Jurusan</th>
                         <th width="15%" class="text-center align-middle">Jenis Permohonan</th>
                         <th width="15%" class="text-center align-middle">Periode</th>
                         <th width="10%" class="text-center align-middle">Status</th>
