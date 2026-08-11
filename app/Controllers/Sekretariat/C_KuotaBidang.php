@@ -22,27 +22,29 @@ class C_KuotaBidang extends BaseController
 
     public function detail($id_bidang)
     {
-        // Tahun di-set ke 2026 sesuai permintaan (atau bisa diambil dari parameter GET jika diperlukan)
-        $tahun = $this->request->getGet('tahun') ?? 2026;
+        // Redirect ke daftar jika diakses langsung (non-AJAX) untuk menjaga URL bersih di /sekretariat/kuota
+        if (!$this->request->isAJAX()) {
+            return redirect()->to(base_url('sekretariat/kuota'));
+        }
+
+        $tahun = $this->request->getGet('tahun') ?? date('Y');
 
         $db = \Config\Database::connect();
         $bidang = $db->table('m_bidang')->where('id_bidang', $id_bidang)->get()->getRowArray();
         
         if (!$bidang) {
-            return redirect()->to(base_url('sekretariat/kuota'))->with('error', 'Bidang tidak ditemukan');
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Bidang tidak ditemukan']);
         }
 
         $kuotaModel = new KuotaBidangModel();
-        $kuota_bulan = $kuotaModel->getKuotaPerBulan($id_bidang, $tahun);
+        // Menggunakan method khusus sekretariat sesuai PRD (hanya status BERJALAN)
+        $dataDetail = $kuotaModel->getKuotaDetailSekretariat($id_bidang, $tahun);
 
-        $data = [
-            'title'            => 'Detail Kuota Bidang',
-            'active_menu'      => 'kuota',
-            'tahun'            => $tahun,
-            'bidang'           => $bidang,
-            'kuota_bulan'      => $kuota_bulan
-        ];
-
-        return view('dashboard/sekretariat/v_kuota_detail', $data);
+        return $this->response->setJSON([
+            'status' => 'success',
+            'bidang' => $bidang,
+            'tahun'  => $tahun,
+            'data'   => $dataDetail
+        ]);
     }
 }
