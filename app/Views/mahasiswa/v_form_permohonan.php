@@ -374,6 +374,8 @@ if(session()->getFlashdata('permohonan_sent')):
 // ==========================================
 // KONFIGURASI TANGGAL DARI DATABASE
 // ==========================================
+var BULAN_PENUH = <?= json_encode($bulan_penuh ?? []) ?>;
+
 var JENIS_DATE_CFG = {
 <?php foreach ($jenis_permohonan as $jp): ?>
     '<?= $jp['id_jenis_permohonan'] ?>': {
@@ -430,6 +432,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 today.setHours(0,0,0,0);
 
                 var minMulai = addDays(today, cfg.maksHariPengajuan);
+                
+                // Cari bulan terdekat yang belum penuh
+                var maxAdvance = 12;
+                var b_penuh = BULAN_PENUH.map(Number);
+                while (b_penuh.includes(minMulai.getMonth() + 1) && maxAdvance > 0) {
+                    minMulai.setMonth(minMulai.getMonth() + 1);
+                    minMulai.setDate(1); // Set ke tanggal 1 bulan berikutnya
+                    maxAdvance--;
+                }
+
                 var minMulaiStr = formatInputDate(minMulai);
                 
                 var maxMulaiStr = null;
@@ -445,6 +457,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         fpMulai.set('maxDate', null);
                     }
+                    // Disable full months
+                    fpMulai.set('disable', [
+                        function(date) {
+                            var month = date.getMonth() + 1; // getMonth() returns 0-11
+                            var b_penuh = BULAN_PENUH.map(Number);
+                            return b_penuh.includes(month);
+                        }
+                    ]);
                 }
 
                 // Native input fallback

@@ -270,4 +270,43 @@ class KuotaBidangModel extends Model
             ]
         ];
     }
+
+    /**
+     * Mendapatkan daftar bulan (angka 1-12) yang kuotanya sudah penuh secara global (seluruh bidang)
+     */
+    public function getBulanPenuhGlobal($tahun = null)
+    {
+        if (!$tahun) {
+            $tahun = date('Y');
+        }
+
+        $db = \Config\Database::connect();
+        $semuaBidang = $db->table('m_bidang')->get()->getResultArray();
+        
+        $kuotaPerBidang = [];
+        foreach ($semuaBidang as $bidang) {
+            $kuotaPerBidang[] = $this->getKuotaPerBulan($bidang['id_bidang'], $tahun);
+        }
+        
+        $bulanPenuh = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $totalBatas = 0;
+            $totalTerpakai = 0;
+            foreach ($kuotaPerBidang as $kb) {
+                // Cari data bulan ke-$i
+                foreach ($kb as $bulanData) {
+                    if ($bulanData['bulan_angka'] == $i) {
+                        $totalBatas += $bulanData['batas_kuota'];
+                        $totalTerpakai += $bulanData['terpakai'];
+                        break;
+                    }
+                }
+            }
+            if ($totalBatas > 0 && $totalTerpakai >= $totalBatas) {
+                $bulanPenuh[] = $i;
+            }
+        }
+        
+        return $bulanPenuh;
+    }
 }

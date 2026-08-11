@@ -55,6 +55,10 @@ class C_Permohonan extends C_BaseMahasiswa
         $data['jenis_permohonan_aktif'] = $stateData['jenis_permohonan'];
         $data['permohonan_aktif'] = $stateData['permohonan_aktif'];
 
+        // Dapatkan data bulan yang kuotanya sudah penuh
+        $kuotaModel = new \App\Models\KuotaBidangModel();
+        $data['bulan_penuh'] = $kuotaModel->getBulanPenuhGlobal(date('Y'));
+
         return view('mahasiswa/v_form_permohonan', $data);
     }
 
@@ -157,6 +161,25 @@ class C_Permohonan extends C_BaseMahasiswa
                 }
             } else {
                 return redirect()->back()->withInput()->with('error', 'Data jenjang pendidikan Anda belum lengkap.');
+            }
+        }
+
+        // Backend Validation: Cek apakah bulan dari tanggal mulai sudah penuh kuotanya
+        $tgl_mulai = $this->request->getPost('tgl_mulai');
+        if ($tgl_mulai) {
+            $bulanMulai = (int)date('n', strtotime($tgl_mulai));
+            $tahunMulai = (int)date('Y', strtotime($tgl_mulai));
+            
+            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $bulanPenuh = $kuotaModel->getBulanPenuhGlobal($tahunMulai);
+            
+            if (in_array($bulanMulai, $bulanPenuh)) {
+                $nama_bulan = [
+                    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                    5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                    9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                ];
+                return redirect()->back()->withInput()->with('error', 'Maaf, kuota untuk bulan ' . $nama_bulan[$bulanMulai] . ' ' . $tahunMulai . ' sudah penuh secara keseluruhan. Silakan pilih tanggal mulai di bulan lain.');
             }
         }
 
@@ -420,12 +443,15 @@ class C_Permohonan extends C_BaseMahasiswa
                 ->get()->getResultArray();
         }
 
+        $kuotaModel = new \App\Models\KuotaBidangModel();
+        
         $data = [
             'title' => 'Edit Permohonan',
             'draft' => $draft,
             'mhs' => $mhs,
             'instansi' => $instansi,
             'jenis_permohonan' => $jenis_permohonan,
+            'bulan_penuh' => $kuotaModel->getBulanPenuhGlobal(date('Y')),
             'state' => ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') ? 6 : 1
         ];
 
@@ -521,6 +547,25 @@ class C_Permohonan extends C_BaseMahasiswa
                 }
             } else {
                 return redirect()->back()->withInput()->with('error', 'Data jenjang pendidikan Anda belum lengkap.');
+            }
+        }
+
+        // Backend Validation: Cek apakah bulan dari tanggal mulai sudah penuh kuotanya
+        $tgl_mulai_baru = $this->request->getPost('tgl_mulai');
+        if ($tgl_mulai_baru) {
+            $bulanMulaiBaru = (int)date('n', strtotime($tgl_mulai_baru));
+            $tahunMulaiBaru = (int)date('Y', strtotime($tgl_mulai_baru));
+            
+            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $bulanPenuh = $kuotaModel->getBulanPenuhGlobal($tahunMulaiBaru);
+            
+            if (in_array($bulanMulaiBaru, $bulanPenuh)) {
+                $nama_bulan = [
+                    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                    5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                    9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                ];
+                return redirect()->back()->withInput()->with('error', 'Maaf, kuota untuk bulan ' . $nama_bulan[$bulanMulaiBaru] . ' ' . $tahunMulaiBaru . ' sudah penuh secara keseluruhan. Silakan pilih tanggal mulai di bulan lain.');
             }
         }
 
