@@ -153,7 +153,7 @@ if(session()->getFlashdata('permohonan_sent')):
 <?php endif; ?>
 
 <!-- ============ FORM WRAPPER ============ -->
-<form action="<?= base_url('mahasiswa/permohonan/update/' . $draft['id_permohonan_magang']) ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
+<form action="<?= base_url('mahasiswa/permohonan/update') ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
     <?= csrf_field() ?>
 
     <!-- ============ STEP 1: DATA PERMOHONAN ============ -->
@@ -171,19 +171,21 @@ if(session()->getFlashdata('permohonan_sent')):
                 <label class="wz-form-label">Jenis Permohonan <span class="text-danger">*</span></label>
                 <div style="position:relative;">
                     <select class="wz-form-select" id="sel-jenis" onchange="if(this.value){document.getElementById('jenis_'+this.value).checked=true;}else{document.querySelectorAll('input[name=\'id_jenis_permohonan\']').forEach(r=>r.checked=false);} applyJenisCfg(this.value); document.getElementById('err-jenis').classList.add('d-none');">
-                        <option value="">-- Pilih Jenis Permohonan --</option>
-                        <option value="1" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='1'?'selected':'' ?>>Penelitian Skripsi / TA</option>
-                        <option value="2" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='2'?'selected':'' ?>>Observasi / Pengambilan Data</option>
-                        <option value="3" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='3'?'selected':'' ?>>Magang</option>
-                        <option value="5" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='5'?'selected':'' ?>>Praktik Kerja Lapangan (PKL)</option>
-                        <option value="4" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='4'?'selected':'' ?>>Uji Coba Produk (Prototype)</option>
+                        <?php if (empty($jenis_permohonan)): ?>
+                            <option value="">-- Tidak ada jenis permohonan untuk jenjang pendidikan Anda --</option>
+                        <?php else: ?>
+                            <option value="">-- Pilih Jenis Permohonan --</option>
+                            <?php foreach($jenis_permohonan as $jp): ?>
+                                <option value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan']) == $jp['id_jenis_permohonan'] ? 'selected' : '' ?>><?= esc($jp['jenis_permohonan']) ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </select>
                     <!-- Hidden radio inputs for form submission -->
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_1" value="1" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='1'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_2" value="2" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='2'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_3" value="3" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='3'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_5" value="5" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='5'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_4" value="4" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'])=='4'?'checked':'' ?> style="display:none;">
+                    <?php if (!empty($jenis_permohonan)): ?>
+                        <?php foreach($jenis_permohonan as $jp): ?>
+                            <input type="radio" name="id_jenis_permohonan" id="jenis_<?= $jp['id_jenis_permohonan'] ?>" value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan']) == $jp['id_jenis_permohonan'] ? 'checked' : '' ?> style="display:none;">
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="mt-2 d-none" id="err-jenis" style="color:#dc2626;font-size:0.8rem;">
                     <i class="bi bi-exclamation-circle me-1"></i>Jenis permohonan wajib dipilih.

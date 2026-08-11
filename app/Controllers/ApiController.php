@@ -49,7 +49,6 @@ class ApiController extends Controller
         $db = \Config\Database::connect();
         $builder = $db->table('m_kecamatan');
         $builder->where('id_kabupaten', $id_kabupaten);
-        $builder->where('status', 'AKTIF'); 
 
         $data = $builder->get()->getResultArray();
 

@@ -13,10 +13,6 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $db = \Config\Database::connect();
         
-        $data['jenis_permohonan'] = $db->table('m_jenis_permohonan')->get()->getResultArray();
-        $data['title']            = 'Form Permohonan Magang';
-        $data['nama']             = session()->get('nama') ?? 'Mahasiswa';
-        
         // Fetch data pribadi dan instansi untuk Review
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
@@ -26,6 +22,20 @@ class C_Permohonan extends C_BaseMahasiswa
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
             ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
+
+        if (isset($instansi['id_jenjang_pendidikan']) && $instansi['id_jenjang_pendidikan']) {
+            $data['jenis_permohonan'] = $db->table('m_jenis_permohonan')
+                ->select('m_jenis_permohonan.*')
+                ->join('m_jenis_permohonan_jenjang', 'm_jenis_permohonan_jenjang.id_jenis_permohonan = m_jenis_permohonan.id_jenis_permohonan')
+                ->where('m_jenis_permohonan_jenjang.id_jenjang_pendidikan', $instansi['id_jenjang_pendidikan'])
+                ->distinct()
+                ->get()->getResultArray();
+        } else {
+            $data['jenis_permohonan'] = [];
+        }
+
+        $data['title']            = 'Form Permohonan Magang';
+        $data['nama']             = session()->get('nama') ?? 'Mahasiswa';
 
         $data['mhs'] = $mhs;
         $data['instansi'] = $instansi;
@@ -124,7 +134,32 @@ class C_Permohonan extends C_BaseMahasiswa
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        $db = \Config\Database::connect();
+        
         $id_jenis_permohonan = $this->request->getPost('id_jenis_permohonan');
+        
+        // Backend Validation: Cek apakah id_jenis_permohonan valid untuk jenjang pendidikan mahasiswa
+        $mhsValid = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $id_instansi_mhs = $mhsValid['id_instansi_mahasiswa'] ?? 0;
+        
+        if ($id_instansi_mhs) {
+            $instValid = $db->table('t_instansi_mahasiswa')->where('id_instansi_mahasiswa', $id_instansi_mhs)->get()->getRowArray();
+            $id_jenjang = $instValid['id_jenjang_pendidikan'] ?? null;
+            
+            if ($id_jenjang) {
+                $isValidJenis = $db->table('m_jenis_permohonan_jenjang')
+                    ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                    ->where('id_jenjang_pendidikan', $id_jenjang)
+                    ->countAllResults();
+                    
+                if ($isValidJenis === 0) {
+                    return redirect()->back()->withInput()->with('error', 'Jenis permohonan yang dipilih tidak tersedia atau tidak sesuai dengan jenjang pendidikan Anda.');
+                }
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Data jenjang pendidikan Anda belum lengkap.');
+            }
+        }
+
         $tglMulai = $this->request->getPost('tgl_mulai');
         $tglSelesai = $this->request->getPost('tgl_selesai');
         
@@ -375,12 +410,22 @@ class C_Permohonan extends C_BaseMahasiswa
             ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
 
+        $jenis_permohonan = [];
+        if (isset($instansi['id_jenjang_pendidikan']) && $instansi['id_jenjang_pendidikan']) {
+            $jenis_permohonan = $db->table('m_jenis_permohonan')
+                ->select('m_jenis_permohonan.*')
+                ->join('m_jenis_permohonan_jenjang', 'm_jenis_permohonan_jenjang.id_jenis_permohonan = m_jenis_permohonan.id_jenis_permohonan')
+                ->where('m_jenis_permohonan_jenjang.id_jenjang_pendidikan', $instansi['id_jenjang_pendidikan'])
+                ->distinct()
+                ->get()->getResultArray();
+        }
+
         $data = [
             'title' => 'Edit Permohonan',
             'draft' => $draft,
             'mhs' => $mhs,
             'instansi' => $instansi,
-            'jenis_permohonan' => $db->table('m_jenis_permohonan')->get()->getResultArray(),
+            'jenis_permohonan' => $jenis_permohonan,
             'state' => ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') ? 6 : 1
         ];
 
@@ -456,6 +501,29 @@ class C_Permohonan extends C_BaseMahasiswa
         }
 
         $id_jenis_permohonan = $this->request->getPost('id_jenis_permohonan');
+        
+        // Backend Validation: Cek apakah id_jenis_permohonan valid untuk jenjang pendidikan mahasiswa
+        $mhsValid = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
+        $id_instansi_mhs = $mhsValid['id_instansi_mahasiswa'] ?? 0;
+        
+        if ($id_instansi_mhs) {
+            $instValid = $db->table('t_instansi_mahasiswa')->where('id_instansi_mahasiswa', $id_instansi_mhs)->get()->getRowArray();
+            $id_jenjang = $instValid['id_jenjang_pendidikan'] ?? null;
+            
+            if ($id_jenjang) {
+                $isValidJenis = $db->table('m_jenis_permohonan_jenjang')
+                    ->where('id_jenis_permohonan', $id_jenis_permohonan)
+                    ->where('id_jenjang_pendidikan', $id_jenjang)
+                    ->countAllResults();
+                    
+                if ($isValidJenis === 0) {
+                    return redirect()->back()->withInput()->with('error', 'Jenis permohonan yang dipilih tidak tersedia atau tidak sesuai dengan jenjang pendidikan Anda.');
+                }
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Data jenjang pendidikan Anda belum lengkap.');
+            }
+        }
+
         $tglMulai = $this->request->getPost('tgl_mulai');
         $tglSelesai = $this->request->getPost('tgl_selesai');
         if ($tglMulai && $tglSelesai) {

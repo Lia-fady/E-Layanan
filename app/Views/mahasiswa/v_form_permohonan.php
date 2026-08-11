@@ -97,17 +97,12 @@ if(session()->getFlashdata('permohonan_sent')):
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px;">
         <i class="bi bi-hourglass-split"></i>
     </div>
-    <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
-        <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
-            <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Bidang</h5>
-            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang. Silakan pantau halaman status secara berkala.</p>
-        <?php else: ?>
-            <h5 class="fw-bold text-dark mb-2">Menunggu Disposisi Sekretariat</h5>
-            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat. Silakan pantau halaman status secara berkala.</p>
-        <?php endif; ?>
+    <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI' && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
+        <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan</h5>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah selesai diperiksa dan dinyatakan sesuai. Permohonan Anda Telah diteruskan untuk proses persetujuan. Silahkan pantau halaman status secara berkala</p>
     <?php else: ?>
         <h5 class="fw-bold text-dark mb-2">Permohonan Sedang Diproses</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi oleh tim Sekretariat Dinas Kominfo. Silakan pantau halaman status secara berkala.</p>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi administrasi. Silakan pantau halaman status secara berkala.</p>
     <?php endif; ?>
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
@@ -118,8 +113,8 @@ if(session()->getFlashdata('permohonan_sent')):
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
         <i class="bi bi-check-circle-fill"></i>
     </div>
-    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui & Aktif</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan akademik Anda sudah disetujui. Anda tidak perlu mengajukan permohonan baru pada saat ini.</p>
+    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui</h5>
+    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda telah disetujui dan kegiatan dapat dilaksanakan sesuai periode yang telah ditentukan.</p>
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
 </div>
 
@@ -130,7 +125,7 @@ if(session()->getFlashdata('permohonan_sent')):
         <i class="bi bi-pencil-square"></i>
     </div>
     <h5 class="fw-bold text-dark mb-2">Permohonan Perlu Revisi Berkas</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:450px;">Berkas permohonan Anda sebelumnya dikembalikan oleh Sekretariat karena ada berkas yang tidak valid.<br><br>Anda <strong>tidak perlu membuat permohonan baru</strong>. Silakan kembali ke halaman <strong>Status Permohonan</strong> dan klik tombol Edit (Revisi) untuk mengunggah ulang berkas yang salah.</p>
+    <p class="text-muted mx-auto mb-4" style="max-width:450px;">Berkas permohonan Anda sebelumnya dikembalikan karena ada berkas yang tidak sesuai.<br><br>Anda <strong>tidak perlu membuat permohonan baru</strong>. Silakan kembali ke halaman <strong>Status Permohonan</strong> dan klik tombol Edit (Revisi) untuk mengunggah ulang berkas yang salah.</p>
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-primary" style="background: #eab308; border-color: #ca8a04;"><i class="bi bi-card-checklist"></i> Pergi ke Halaman Status</a>
 </div>
 
@@ -171,19 +166,21 @@ if(session()->getFlashdata('permohonan_sent')):
                 <label class="wz-form-label">Jenis Permohonan <span class="text-danger">*</span></label>
                 <div style="position:relative;">
                     <select class="wz-form-select" id="sel-jenis" onchange="if(this.value){document.getElementById('jenis_'+this.value).checked=true;}else{document.querySelectorAll('input[name=\'id_jenis_permohonan\']').forEach(r=>r.checked=false);} applyJenisCfg(this.value); document.getElementById('err-jenis').classList.add('d-none');">
-                        <option value="">-- Pilih Jenis Permohonan --</option>
-                        <option value="1" <?= old('id_jenis_permohonan')=='1'?'selected':'' ?>>Skripsi / Tugas Akhir</option>
-                        <option value="2" <?= old('id_jenis_permohonan')=='2'?'selected':'' ?>>Observasi / Pengambilan Data</option>
-                        <option value="3" <?= old('id_jenis_permohonan')=='3'?'selected':'' ?>>Magang</option>
-                        <option value="5" <?= old('id_jenis_permohonan')=='5'?'selected':'' ?>>Praktik Kerja Lapangan (PKL)</option>
-                        <option value="4" <?= old('id_jenis_permohonan')=='4'?'selected':'' ?>>Uji Coba Aplikasi Produk</option>
+                        <?php if (empty($jenis_permohonan)): ?>
+                            <option value="">-- Tidak ada jenis permohonan untuk jenjang pendidikan Anda --</option>
+                        <?php else: ?>
+                            <option value="">-- Pilih Jenis Permohonan --</option>
+                            <?php foreach($jenis_permohonan as $jp): ?>
+                                <option value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan') == $jp['id_jenis_permohonan'] ? 'selected' : '' ?>><?= esc($jp['jenis_permohonan']) ?></option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </select>
                     <!-- Hidden radio inputs for form submission -->
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_1" value="1" <?= old('id_jenis_permohonan')=='1'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_2" value="2" <?= old('id_jenis_permohonan')=='2'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_3" value="3" <?= old('id_jenis_permohonan')=='3'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_5" value="5" <?= old('id_jenis_permohonan')=='5'?'checked':'' ?> style="display:none;">
-                    <input type="radio" name="id_jenis_permohonan" id="jenis_4" value="4" <?= old('id_jenis_permohonan')=='4'?'checked':'' ?> style="display:none;">
+                    <?php if (!empty($jenis_permohonan)): ?>
+                        <?php foreach($jenis_permohonan as $jp): ?>
+                            <input type="radio" name="id_jenis_permohonan" id="jenis_<?= $jp['id_jenis_permohonan'] ?>" value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan') == $jp['id_jenis_permohonan'] ? 'checked' : '' ?> style="display:none;">
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
 
                 <div class="mt-2 d-none" id="err-jenis" style="color:#dc2626;font-size:0.8rem;">
@@ -637,4 +634,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-<?= $this->endSection() ?>
+<?= $this->endSection()?>

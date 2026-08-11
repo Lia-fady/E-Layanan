@@ -126,4 +126,41 @@ class KuotaBidangModel extends Model
         
         return $hasil;
     }
+
+    /**
+     * Menghitung kuota seluruh bidang untuk satu bulan spesifik.
+     * Digunakan oleh aktor Sekretariat untuk monitoring.
+     */
+    public function getKuotaAllBidangPerBulan($bulan, $tahun = null)
+    {
+        if (!$tahun) {
+            $tahun = date('Y');
+        }
+
+        $db = \Config\Database::connect();
+        $list_bidang = $db->table('m_bidang')->get()->getResultArray();
+        
+        $hasil = [];
+        foreach ($list_bidang as $bidang) {
+            // Get all 12 months for this bidang (auto-creates if missing)
+            $kuota_12_bulan = $this->getKuotaPerBulan($bidang['id_bidang'], $tahun);
+            
+            // Find the specific month
+            foreach ($kuota_12_bulan as $k) {
+                if ($k['bulan_angka'] == $bulan) {
+                    $hasil[] = [
+                        'id_bidang'   => $bidang['id_bidang'],
+                        'nama_bidang' => $bidang['bidang'],
+                        'batas_kuota' => $k['batas_kuota'],
+                        'terpakai'    => $k['terpakai'],
+                        'sisa_kuota'  => $k['sisa_kuota'],
+                        'status'      => $k['status']
+                    ];
+                    break;
+                }
+            }
+        }
+        
+        return $hasil;
+    }
 }

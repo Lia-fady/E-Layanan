@@ -148,6 +148,10 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->get('sertifikat', '\App\Controllers\Sekretariat\C_Sertifikat::index');
     $routes->get('sertifikat/download/(:num)', '\App\Controllers\Sekretariat\C_Sertifikat::download/$1');
 
+    // Kuota Bidang (Monitoring)
+    $routes->get('kuota', '\App\Controllers\Sekretariat\C_KuotaBidang::index');
+    $routes->get('kuota/detail/(:num)', '\App\Controllers\Sekretariat\C_KuotaBidang::detail/$1');
+
     // Surat Penerimaan Magang (Menu Baru)
     $routes->match(['get', 'post'], 'upload-surat-penerimaan', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::index');
     $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::store');

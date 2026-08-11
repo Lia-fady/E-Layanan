@@ -381,7 +381,7 @@
 
                 <div class="field">
                     <label id="lbl_nim">Nomor Induk Mahasiswa (NIM) <span class="req">*</span></label>
-                    <input type="text" name="nim" id="nim" required placeholder="Contoh: 12345678" value="<?= old('nim') ?>" class="<?= isset($ve['nim']) ? 'err' : '' ?>" maxlength="50">
+                    <input type="text" name="nim" id="nim" required placeholder="Contoh: 12345678" value="<?= old('nim') ?>" class="<?= isset($ve['nim']) ? 'err' : '' ?>" maxlength="50" oninput="this.value=this.value.replace(/\D/g,'')">
                     <?php if(isset($ve['nim'])): ?><div class="err-msg"><?= $ve['nim'] ?></div><?php endif; ?>
                 </div>
 
@@ -394,7 +394,14 @@
                 <div class="field">
                     <label id="lbl_semester">Semester Saat Ini <span class="req">*</span></label>
                     <input type="number" name="semester" id="semester" required placeholder="Contoh: 5" value="<?= old('semester') ?>" class="<?= isset($ve['semester']) ? 'err' : '' ?>" min="1" max="14">
+                    <select name="id_kelas" id="id_kelas" style="display:none;" required disabled class="<?= isset($ve['id_kelas']) ? 'err' : '' ?>">
+                        <option value="">-- Pilih Kelas --</option>
+                        <?php if(!empty($kelas)): foreach($kelas as $kls): ?>
+                            <option value="<?= $kls['id_kelas'] ?>" <?= old('id_kelas')==$kls['id_kelas']?'selected':'' ?>><?= esc($kls['nama_kelas']) ?></option>
+                        <?php endforeach; endif; ?>
+                    </select>
                     <?php if(isset($ve['semester'])): ?><div class="err-msg"><?= $ve['semester'] ?></div><?php endif; ?>
+                    <?php if(isset($ve['id_kelas'])): ?><div class="err-msg"><?= $ve['id_kelas'] ?></div><?php endif; ?>
                 </div>
 
                 <div class="field" id="grp_tahun_akademik">
@@ -578,6 +585,9 @@ function triggerJenjang() {
         
         $('#lbl_nim').html('NISN <span class="req">*</span>');
         $('#lbl_semester').html('Kelas <span class="req">*</span>');
+        $('#semester').hide().prop('disabled', true).prop('required', false);
+        $('#id_kelas').show().prop('disabled', false).prop('required', true);
+        $('#nim').attr('maxlength', '8');
         
         $('#grp_tahun_akademik').hide();
         $('#tahun_akademik').prop('required', false);
@@ -598,6 +608,9 @@ function triggerJenjang() {
         
         $('#lbl_nim').html('NIM <span class="req">*</span>');
         $('#lbl_semester').html('Semester <span class="req">*</span>');
+        $('#id_kelas').hide().prop('disabled', true).prop('required', false);
+        $('#semester').show().prop('disabled', false).prop('required', true);
+        $('#nim').attr('maxlength', '50');
         
         $('#grp_tahun_akademik').show();
         $('#tahun_akademik').prop('required', true);
@@ -660,6 +673,7 @@ function vStep(s) {
         var n = f.name;
         if (n==='nama_mahasiswa' && !/^[a-zA-Z\s'.]+$/.test(v)) { mErr(f,'Nama hanya boleh huruf dan spasi.'); ok=false; }
         if (n==='nik' && v.length!==16) { mErr(f,'NIK harus tepat 16 digit.'); ok=false; }
+        if (n==='nim' && isSiswa() && v.length !== 8) { mErr(f, 'NISN harus persis 8 digit angka.'); ok=false; }
         if (['nik','nim_mhs','nim_siswa','no_telp','rt','rw','angkatan_tahun','angkatan_tahun_smk'].includes(n) && !/^\d+$/.test(v)) { mErr(f,lb+' hanya boleh angka.'); ok=false; }
         if (n==='email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) { mErr(f,'Format email tidak valid.'); ok=false; }
         if (n==='semester') { var sv=parseInt(v); if(sv<1||sv>14){ mErr(f,'Semester 1-14.'); ok=false; } }
@@ -753,7 +767,7 @@ function review_data() {
         h += tr('Jenjang Pendidikan', gt('jenjang_pendidikan'));
         h += tr('Instansi Pendidikan', g('nama_sekolah'));
         h += tr('Jurusan', g('jurusan_smk'));
-        h += tr('Kelas', g('semester'));
+        h += tr('Kelas', gt('id_kelas'));
         h += tr('NISN', nimV);
     }
     h += '</table>';

@@ -7,6 +7,7 @@ use App\Models\MahasiswaModel;
 use App\Models\UserMahasiswaModel;
 use App\Models\InstansiMahasiswaModel; 
 use App\Models\InstansiPendidikanModel; 
+use App\Models\MasterKelasModel;
 
 class AuthController extends BaseController
 {
@@ -14,6 +15,7 @@ class AuthController extends BaseController
     protected $userMahasiswaModel;
     protected $instansiMahasiswaModel;
     protected $instansiPendidikanModel;
+    protected $masterKelasModel;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class AuthController extends BaseController
         $this->userMahasiswaModel      = new UserMahasiswaModel();
         $this->instansiMahasiswaModel  = new InstansiMahasiswaModel();
         $this->instansiPendidikanModel = new InstansiPendidikanModel();
+        $this->masterKelasModel        = new MasterKelasModel();
     }
 
     // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
@@ -36,6 +39,8 @@ class AuthController extends BaseController
         
         // Mengambil data master provinsi untuk dropdown alamat
         $data['provinsi'] = $db->table('m_provinsi')->get()->getResultArray();
+        
+        $data['kelas'] = $this->masterKelasModel->where('status', 'AKTIF')->findAll();
 
         $data['title']  = "Registrasi Akun Mahasiswa";
 
@@ -234,15 +239,31 @@ class AuthController extends BaseController
             $rules['jurusan_smk'] = ['rules' => 'required', 'errors' => ['required' => 'Jurusan wajib diisi.']];
         }
 
-        $rules['semester'] = [
-            'rules'  => 'required|numeric|greater_than[0]|less_than_equal_to[14]',
-            'errors' => [
-                'required' => 'Semester/Kelas wajib diisi.',
-                'numeric'  => 'Semester/Kelas harus berupa angka bulat.',
-                'greater_than' => 'Tidak valid.',
-                'less_than_equal_to' => 'Tidak valid.'
-            ]
-        ];
+        if ($isSiswa) {
+            $rules['nim'] = [
+                'rules'  => 'required|numeric|exact_length[8]|is_unique[m_mahasiswa.nim]',
+                'errors' => [
+                    'required'      => 'NISN wajib diisi.',
+                    'numeric'       => 'NISN hanya boleh berisi angka.',
+                    'exact_length'  => 'NISN harus persis 8 digit angka.',
+                    'is_unique'     => 'NISN ini sudah terdaftar.'
+                ]
+            ];
+            $rules['id_kelas'] = [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Kelas wajib dipilih.']
+            ];
+        } else {
+            $rules['semester'] = [
+                'rules'  => 'required|numeric|greater_than[0]|less_than_equal_to[14]',
+                'errors' => [
+                    'required' => 'Semester wajib diisi.',
+                    'numeric'  => 'Semester harus berupa angka bulat.',
+                    'greater_than' => 'Tidak valid.',
+                    'less_than_equal_to' => 'Tidak valid.'
+                ]
+            ];
+        }
 
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
@@ -287,7 +308,8 @@ class AuthController extends BaseController
             'id_jenjang_pendidikan'  => $this->request->getPost('id_jenjang_pendidikan'),
             'jurusan'                => $this->request->getPost('jurusan_smk') ?: null,
             'angkatan_tahun'         => $this->request->getPost('angkatan_tahun'),
-            'semester'               => $this->request->getPost('semester'),
+            'semester'               => $this->request->getPost('semester') ?: null,
+            'id_kelas'               => $this->request->getPost('id_kelas') ?: null,
             'tahun_akademik'         => $this->request->getPost('tahun_akademik') ?: null,
             'created_by'             => 'SYSTEM_REGISTRATION'
         ];
