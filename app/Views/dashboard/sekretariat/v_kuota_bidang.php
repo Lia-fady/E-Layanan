@@ -29,7 +29,7 @@ Daftar Bidang
 </style>
 
 <div class="mb-4">
-    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Kuota refa hama</h5>
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Kuota Bidang</h5>
     <p style="color:#667085; font-size:0.9rem; margin:0;">
         Pilih bidang untuk melihat rincian kapasitas dan penggunaan kuota sepanjang tahun.
     </p>
