@@ -341,10 +341,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <tr>
                         <td style="width:60%;">
                             <div class="tw-file-row">
-                                <div class="text-muted fw-semibold text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.5px; margin-bottom: 2px;">Asal Instansi Pendidikan</div>
-                                <div class="text-dark fw-bold" style="font-size: 0.9rem;"><?= esc($p['kampus'] ?? '-') ?></div>
                                 <i class="bi bi-paperclip tw-file-icon"></i>
-                                <span class="tw-file-name" style="margin-right:0;"><?= esc($file['nama_file']) ?></span>
+                                <span class="tw-file-name" style="font-size: 0.9rem; margin-right:0;"><?= esc($file['nama_file']) ?></span>
                             </div>
                         </td>
                         <td style="vertical-align: middle;">
