@@ -22,47 +22,57 @@
     .custom-dt-footer .dt-page-btn.active { background: #13325B; border-color: #13325B; color: #fff; }
     .custom-dt-footer .dt-page-btn.disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
-    .card-flat {
+    .card-minimalist {
         background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.03);
         border-radius: 12px;
         padding: 24px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        border: 1px solid #f1f5f9;
     }
-    /* === PAGE HEADER === */
-    .page-header-top {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 20px;
-        margin-top: 5px;
+    .table-minimalist {
+        border-collapse: separate !important;
+        border-spacing: 0 8px !important;
+        width: 100%;
     }
-    .page-header-top h4 {
-        font-weight: 800;
-        color: #1a2b3c;
-        margin: 0;
-        font-size: 1.4rem;
-        letter-spacing: -0.3px;
+    .table-minimalist thead th {
+        border-bottom: 2px solid #e2e8f0 !important;
+        border-top: none !important;
+        color: #475569;
+        background-color: #f8fafc;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 16px;
     }
-    .page-header-top .sub-text {
-        color: #64748b;
-        font-size: 0.9rem;
-        margin: 4px 0 0;
-        line-height: 1.5;
+    .table-minimalist thead th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .table-minimalist thead th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+    .table-minimalist tbody tr { background: #ffffff; transition: all 0.2s ease; }
+    .table-minimalist tbody tr:hover { background: #fcfcfc; transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .table-minimalist tbody td { border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 12px 16px; vertical-align: middle; font-size: 0.85rem; color: #475569; }
+    .table-minimalist tbody td:first-child { border-left: 1px solid #f1f5f9; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .table-minimalist tbody td:last-child { border-right: 1px solid #f1f5f9; border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+    /* Solid Badges */
+    .badge-solid {
+        display: inline-block; padding: 5px 12px;
+        font-size: 0.72rem; font-weight: 700; border-radius: 6px;
+        text-transform: uppercase; letter-spacing: 0.3px; color: #fff;
     }
-    .document-table-card .table tbody tr { transition: background 0.2s ease; }
-    .document-table-card .table tbody tr:hover { background: #f7fbfd; }
-    .document-table-card .table td, .document-table-card .table th { border-color: #e8eff3; }
-    .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 0.85rem;
-        font-weight: 500;
+    .badge-solid.success { background: #10b981; }
+    .badge-solid.pending { background: #f59e0b; }
+    
+    /* Action Buttons */
+    .action-btn {
+        width: 34px; height: 34px;
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 6px; border: none; color: #fff; background: #3b82f6;
+        transition: opacity 0.2s; text-decoration: none;
     }
-    .status-badge.available { background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-    .status-badge.waiting { background-color: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+    .action-btn:hover { opacity: 0.85; color: #fff; }
+    .action-btn.disabled { background: #cbd5e1; cursor: not-allowed; }
+    .action-btn.disabled:hover { opacity: 1; }
+    
     .btn-download {
         display: inline-flex;
         align-items: center;
@@ -116,7 +126,7 @@
     </div>
 </div>
 
-<div class="card-flat shadow-sm document-table-card">
+<div class="card-minimalist shadow-sm">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-3 border-bottom gap-3">
         <div class="d-flex align-items-center gap-2">
             <span class="small text-muted fw-semibold"><i class="bi bi-list-ul me-1"></i>Daftar kegiatan</span>
@@ -137,24 +147,16 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table id="tabelDokumen" class="table table-hover align-middle m-0" style="width: 100%;">
-            <colgroup>
-                <col style="width: 10%;">
-                <col style="width: 25%;">
-                <col style="width: 20%;">
-                <col style="width: 20%;">
-                <col style="width: 15%;">
-                <col style="width: 10%;">
-            </colgroup>
-            <thead class="table-light">
-                <tr class="text-muted small text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.4px;">
-                    <th class="py-3 ps-4">No</th>
-                    <th class="py-3">Jenis Permohonan</th>
-                    <th class="py-3">Periode</th>
-                    <th class="py-3">Bidang</th>
-                    <th class="py-3">Status</th>
-                    <th class="py-3 text-center">Aksi</th>
+    <div class="table-responsive mt-3" id="tabelDokumenContainer" style="opacity: 0; transition: opacity 0.4s ease;">
+        <table id="tabelDokumen" class="table-minimalist">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 5%;">No</th>
+                    <th style="width: 20%;">Jenis Permohonan</th>
+                    <th class="text-center" style="width: 25%;">Periode</th>
+                    <th class="text-center" style="width: 25%;">Bidang</th>
+                    <th class="text-center" style="width: 15%;">Ketersediaan</th>
+                    <th class="text-center" style="width: 10%;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,37 +164,38 @@
                     <?php foreach ($documentGroups as $idx => $group): ?>
                         <?php $hasDocs = !empty(array_filter($group['docs'], fn($doc) => !empty($doc))); ?>
                         <tr class="doc-row">
-                            <td class="ps-4 py-3 fw-semibold text-muted"><?= $idx + 1 ?></td>
-                            <td class="py-3">
-                                <span class="fw-bold text-dark d-block"><?= esc($group['jenis_permohonan']) ?></span>
-                                <small class="text-muted">Kegiatan akademik</small>
+                            <td class="text-center fw-medium"><?= $idx + 1 ?></td>
+                            <td>
+                                <span class="fw-semibold text-dark d-block"><?= esc($group['jenis_permohonan']) ?></span>
                             </td>
-                            <td class="py-3 text-muted fw-medium">
-                                <?= !empty($group['tgl_mulai']) ? tgl_indo($group['tgl_mulai']) : '-' ?>
-                                &mdash;
-                                <?= !empty($group['tgl_selesai']) ? tgl_indo($group['tgl_selesai']) : '-' ?>
+                            <td class="text-center text-muted fw-medium" style="white-space: nowrap;">
+                                <?= !empty($group['tgl_mulai']) ? tgl_indo($group['tgl_mulai']) : '-' ?> s.d <?= !empty($group['tgl_selesai']) ? tgl_indo($group['tgl_selesai']) : '-' ?>
                             </td>
-                            <td class="py-3 text-muted fw-medium"><?= esc($group['bidang'] ?? '-') ?></td>
-                            <td class="py-3">
-                                <?php if ($group['status_penempatan'] === 'SELESAI'): ?>
-                                    <span class="status-badge available"><i class="bi bi-check-circle-fill"></i> Selesai</span>
-                                <?php elseif ($group['status_penempatan'] === 'BERJALAN'): ?>
-                                    <span class="status-badge waiting"><i class="bi bi-clock-fill"></i> Berjalan</span>
+                            <td class="text-center text-muted fw-medium" style="white-space: nowrap;"><?= esc($group['bidang'] ?? '-') ?></td>
+                            <td class="text-center">
+                                <?php 
+                                    $jmlDocs = count(array_filter($group['docs'], fn($doc) => !empty($doc)));
+                                ?>
+                                <?php if ($jmlDocs === 0): ?>
+                                    <span class="badge-solid pending" style="background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0;">Belum Ada</span>
+                                <?php elseif ($jmlDocs === 3): ?>
+                                    <span class="badge-solid success">Lengkap</span>
                                 <?php else: ?>
-                                    <span class="status-badge waiting"><i class="bi bi-clock-fill"></i> Menunggu</span>
+                                    <span class="badge-solid" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd;"><?= $jmlDocs ?> Dokumen</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="py-3 text-center">
-                                <button type="button"
-                                    class="btn btn-sm btn-outline-primary p-0 shadow-sm mx-auto"
-                                    style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px;"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#docModal"
-                                    data-group-id="<?= esc($group['id_persetujuan_magang']) ?>"
-                                    data-docs='<?= json_encode($group['docs']) ?>'
-                                    title="Lihat Dokumen Kegiatan">
-                                    <i class="bi bi-folder2-open"></i>
-                                </button>
+                            <td class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <button type="button"
+                                        class="action-btn detail"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#docModal"
+                                        data-group-id="<?= esc($group['id_persetujuan_magang']) ?>"
+                                        data-docs='<?= json_encode($group['docs']) ?>'
+                                        title="Lihat Dokumen Kegiatan">
+                                        <i class="bi <?= $hasDocs ? 'bi-folder2-open' : 'bi-folder' ?>"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -246,11 +249,14 @@ $(document).ready(function() {
                     </div>
                     <h6 class="fw-bold text-dark mb-1">Belum Ada Dokumen</h6>
                     <p class="text-muted small mb-0" style="max-width: 350px;">
-                        Belum ada dokumen yang diunggah oleh Sekretariat atau Unit Bidang ke akun Anda.
+                        Belum ada dokumen resmi yang diterbitkan untuk akun Anda.
                     </p>
                 </div>
             `,
             zeroRecords: 'Tidak ditemukan data yang sesuai.' 
+        },
+        initComplete: function(settings, json) {
+            $('#tabelDokumenContainer').css('opacity', '1');
         },
         columnDefs: [{ orderable: false, targets: [5] }]
     });
@@ -310,8 +316,8 @@ $(document).ready(function() {
                                 </div>
                             </div>
                             <div class="d-flex gap-2">
-                                <a href="${urlPreview}" target="_blank" class="btn btn-sm btn-outline-danger px-3"><i class="bi bi-eye"></i></a>
-                                <a href="${urlDownload}" class="btn btn-sm btn-danger px-3"><i class="bi bi-download"></i></a>
+                                <a href="${urlPreview}" target="_blank" class="btn btn-sm btn-outline-primary px-3"><i class="bi bi-eye"></i></a>
+                                <a href="${urlDownload}" class="btn btn-sm btn-primary px-3"><i class="bi bi-download"></i></a>
                             </div>
                         </div>
                     </div>
@@ -326,6 +332,7 @@ $(document).ready(function() {
             modalBody.innerHTML = html || '<div class="text-center text-muted py-4">Belum ada dokumen yang diterbitkan untuk kegiatan ini.</div>';
         });
     });
+
 });
 </script>
 <?= $this->endSection() ?>
