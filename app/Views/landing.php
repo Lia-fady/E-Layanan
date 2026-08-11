@@ -66,28 +66,6 @@
             </div>
         </div>
 
-        <!-- Stats Bar -->
-        <div class="lp-hero-stats">
-            <div class="stat-item">
-                <div class="stat-number">4<span>+</span></div>
-                <div class="stat-label">Jenis Program</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">100<span>%</span></div>
-                <div class="stat-label">Proses Digital</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">24<span>/7</span></div>
-                <div class="stat-label">Pantau Status</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">0<span> biaya</span></div>
-                <div class="stat-label">Pendaftaran Gratis</div>
-            </div>
-        </div>
     </div>
 </section>
 

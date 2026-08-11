@@ -423,7 +423,7 @@
                 <select name="provinsi" id="provinsi" required class="<?= isset($ve['provinsi']) ? 'err' : '' ?>" onchange="loadKabupaten(this.value)">
                     <option value="">— Pilih Provinsi —</option>
                     <?php if(!empty($provinsi)): foreach($provinsi as $pv): ?>
-                        <option value="<?= $pv['id_provinsi'] ?>"><?= ucwords(strtolower(esc($pv['nama_provinsi']))) ?></option>
+                        <option value="<?= $pv['id_provinsi'] ?>" <?= old('provinsi') == $pv['id_provinsi'] ? 'selected' : '' ?>><?= ucwords(strtolower(esc($pv['nama_provinsi']))) ?></option>
                     <?php endforeach; endif; ?>
                 </select>
                 <?php if(isset($ve['provinsi'])): ?><div class="err-msg"><?= $ve['provinsi'] ?></div><?php endif; ?>
@@ -431,7 +431,7 @@
             
             <div class="field">
                 <label>Kabupaten / Kota <span class="req">*</span></label>
-                <select name="kab_kota" id="kab_kota" required disabled class="<?= isset($ve['kab_kota']) ? 'err' : '' ?>" onchange="loadKecamatan(this.value)">
+                <select name="kab_kota" id="kab_kota" required disabled class="<?= isset($ve['kab_kota']) ? 'err' : '' ?>" data-old="<?= old('kab_kota') ?>" onchange="loadKecamatan(this.value)">
                     <option value="">— Pilih Kabupaten/Kota —</option>
                 </select>
                 <?php if(isset($ve['kab_kota'])): ?><div class="err-msg"><?= $ve['kab_kota'] ?></div><?php endif; ?>
@@ -439,7 +439,7 @@
 
             <div class="field">
                 <label>Kecamatan <span class="req">*</span></label>
-                <select name="kecamatan" id="kecamatan" required disabled class="<?= isset($ve['kecamatan']) ? 'err' : '' ?>" onchange="loadKelurahan(this.value)">
+                <select name="kecamatan" id="kecamatan" required disabled class="<?= isset($ve['kecamatan']) ? 'err' : '' ?>" data-old="<?= old('kecamatan') ?>" onchange="loadKelurahan(this.value)">
                     <option value="">— Pilih Kecamatan —</option>
                 </select>
                 <?php if(isset($ve['kecamatan'])): ?><div class="err-msg"><?= $ve['kecamatan'] ?></div><?php endif; ?>
@@ -447,7 +447,7 @@
             
             <div class="field">
                 <label>Kelurahan / Desa <span class="req">*</span></label>
-                <select name="id_kelurahan" id="kelurahan" required disabled class="<?= isset($ve['id_kelurahan']) ? 'err' : '' ?>">
+                <select name="id_kelurahan" id="kelurahan" required disabled class="<?= isset($ve['id_kelurahan']) ? 'err' : '' ?>" data-old="<?= old('id_kelurahan') ?>">
                     <option value="">— Pilih Kelurahan —</option>
                 </select>
                 <?php if(isset($ve['id_kelurahan'])): ?><div class="err-msg"><?= $ve['id_kelurahan'] ?></div><?php endif; ?>
@@ -465,7 +465,7 @@
                     <?php if(isset($ve['rw'])): ?><div class="err-msg"><?= $ve['rw'] ?></div><?php endif; ?>
                 </div>
                 <div class="field" style="flex:3;">
-                    <label>Detail Alamat (Nama Jalan, Blok, No. Rumah) <span class="req">*</span></label>
+                    <label>Detail Alamat <span class="req">*</span></label>
                     <input type="text" name="alamat" id="alamat" placeholder="Contoh: Jl. Merdeka No. 10, Blok A" value="<?= old('alamat') ?>" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>">
                     <?php if(isset($ve['alamat'])): ?><div class="err-msg"><?= $ve['alamat'] ?></div><?php endif; ?>
                 </div>
@@ -823,10 +823,15 @@ function loadKabupaten(id_prov) {
     kab.disabled = true; kec.disabled = true; kel.disabled = true;
     if(!id_prov) return;
     
+    let old_kab = kab.getAttribute('data-old');
     fetch('<?= base_url("api/kabupaten") ?>/'+id_prov)
     .then(r=>r.json()).then(d=>{
-        d.forEach(k => kab.innerHTML += `<option value="${k.id_kabupaten}">${tc(k.nama_kabupaten)}</option>`);
+        d.forEach(k => {
+            let sel = (k.id_kabupaten == old_kab) ? 'selected' : '';
+            kab.innerHTML += `<option value="${k.id_kabupaten}" ${sel}>${tc(k.nama_kabupaten)}</option>`;
+        });
         kab.disabled = false;
+        if (old_kab) { $(kab).trigger('change'); }
     });
 }
 
@@ -838,10 +843,15 @@ function loadKecamatan(id_kab) {
     kec.disabled = true; kel.disabled = true;
     if(!id_kab) return;
     
+    let old_kec = kec.getAttribute('data-old');
     fetch('<?= base_url("api/kecamatan") ?>/'+id_kab)
     .then(r=>r.json()).then(d=>{
-        d.forEach(k => kec.innerHTML += `<option value="${k.id_kecamatan}">${tc(k.nama_kecamatan)}</option>`);
+        d.forEach(k => {
+            let sel = (k.id_kecamatan == old_kec) ? 'selected' : '';
+            kec.innerHTML += `<option value="${k.id_kecamatan}" ${sel}>${tc(k.nama_kecamatan)}</option>`;
+        });
         kec.disabled = false;
+        if (old_kec) { $(kec).trigger('change'); }
     });
 }
 
@@ -851,9 +861,13 @@ function loadKelurahan(id_kec) {
     kel.disabled = true;
     if(!id_kec) return;
     
+    let old_kel = kel.getAttribute('data-old');
     fetch('<?= base_url("api/kelurahan") ?>/'+id_kec)
     .then(r=>r.json()).then(d=>{
-        d.forEach(k => kel.innerHTML += `<option value="${k.id_kelurahan}">${tc(k.nama_kelurahan)}</option>`);
+        d.forEach(k => {
+            let sel = (k.id_kelurahan == old_kel) ? 'selected' : '';
+            kel.innerHTML += `<option value="${k.id_kelurahan}" ${sel}>${tc(k.nama_kelurahan)}</option>`;
+        });
         kel.disabled = false;
     });
 }
@@ -893,6 +907,7 @@ $(document).ready(function(){
         }
     });
     if($('#kampus_select').val())$('#kampus_select').trigger('change');
+    if($('#provinsi').val()) $('#provinsi').trigger('change');
 });
 </script>
 </body>

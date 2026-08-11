@@ -29,7 +29,7 @@ class C_BaseMahasiswa extends BaseController
         $db = \Config\Database::connect();
 
         $permohonan = $db->table('t_permohonan_magang')
-            ->select('t_permohonan_magang.*, t_persetujuan_magang.id_persetujuan_magang, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.disposisi, t_persetujuan_magang.catatan as catatan_persetujuan, t_penempatan_magang.status_penempatan, t_penempatan_magang.is_log_book')
+            ->select('t_permohonan_magang.*, t_persetujuan_magang.id_persetujuan_magang, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.disposisi, t_persetujuan_magang.catatan as catatan_persetujuan, t_penempatan_magang.status_penempatan, t_penempatan_magang.is_log_book, t_penempatan_magang.catatan as catatan_penempatan')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
@@ -59,6 +59,9 @@ class C_BaseMahasiswa extends BaseController
                     } else {
                         if ($permohonan['status_penempatan'] == 'SELESAI') {
                             $state = 5; 
+                        } elseif ($permohonan['status_penempatan'] == 'DIBATALKAN') {
+                            $state = 3; 
+                            $catatan = !empty($permohonan['catatan_penempatan']) ? $permohonan['catatan_penempatan'] : 'Penempatan Dibatalkan/Ditolak oleh Kepala Bidang';
                         } else {
                             $state = 4; // BERJALAN
                         }

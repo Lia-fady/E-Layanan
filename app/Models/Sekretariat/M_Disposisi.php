@@ -39,9 +39,9 @@ class M_Disposisi extends Model
             ps.status_persetujuan,
             ps.disposisi,
             ps.id_bidang,
-            ps.tgl_persetujuan,
+            ps.tanggal_persetujuan as tgl_persetujuan,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.rencana_kegiatan as deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -57,7 +57,7 @@ class M_Disposisi extends Model
             $builder->where('ps.disposisi', '0');
             $builder->orWhere('ps.disposisi IS NULL');
         $builder->groupEnd();
-        $builder->orderBy('ps.tgl_persetujuan', 'DESC');
+        $builder->orderBy('ps.tanggal_persetujuan', 'DESC');
 
         return $builder->get()->getResult();
     }
@@ -77,7 +77,7 @@ class M_Disposisi extends Model
             ps.*,
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.rencana_kegiatan as deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
@@ -87,9 +87,9 @@ class M_Disposisi extends Model
             mhs.email,
             mhs.no_telp,
             jp.jenis_permohonan,
-            im.jenjang_pendidikan,
+            mj.nama_jenjang as jenjang_pendidikan,
             ip.instansi_pendidikan,
-            pr.prodi,
+            pr.nama_prodi as prodi,
             fk.fakultas,
             bd.bidang
         ');
@@ -97,6 +97,7 @@ class M_Disposisi extends Model
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
+        $builder->join('m_jenjang_pendidikan as mj', 'mj.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
         $builder->join('m_fakultas as fk', 'fk.id_fakultas = pr.id_fakultas', 'left');
@@ -154,11 +155,11 @@ class M_Disposisi extends Model
         $result = $db->table('t_persetujuan_magang')
             ->where('id_persetujuan_magang', $id_persetujuan)
             ->update([
-                'disposisi'       => '1',
+                'disposisi'       => 'DIKIRIM',
                 'id_bidang'       => $data['id_bidang'],
                 'updated_by'      => $data['updated_by'],
                 'updated_at'      => date('Y-m-d H:i:s'),
-                'tgl_persetujuan' => date('Y-m-d H:i:s'),
+                'tanggal_persetujuan' => date('Y-m-d H:i:s'),
             ]);
 
         if (!$result) {
@@ -184,33 +185,33 @@ class M_Disposisi extends Model
             return false;
         }
 
-        // 3. Cek apakah id_mahasiswa sudah memiliki penempatan
+        // 3. Cek apakah sudah ada record penempatan untuk approval ini.
+        // Jangan pakai id_mahasiswa saja karena satu mahasiswa bisa punya banyak riwayat permohonan.
         $existingPenempatan = $db->table('t_penempatan_magang')
-            ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+            ->where('id_persetujuan_magang', $id_persetujuan)
             ->get()
             ->getRow();
 
         if ($existingPenempatan) {
-            // Jika sudah ada, lakukan UPDATE
+            // Jika record untuk approval ini sudah ada, update record itu saja.
             $db->table('t_penempatan_magang')
-                ->where('id_mahasiswa', $permohonan->id_mahasiswa)
+                ->where('id_persetujuan_magang', $id_persetujuan)
                 ->update([
                     'id_bidang'             => $data['id_bidang'],
-                    'id_persetujuan_magang' => $id_persetujuan,
+                    'id_mahasiswa'          => $permohonan->id_mahasiswa,
                     'catatan'               => $data['catatan_disposisi'] ?? null,
                     'status_penempatan'     => 'MENUNGGU',
-                    'updated_by'            => $data['updated_by'],
                     'updated_at'            => date('Y-m-d H:i:s'),
                 ]);
         } else {
-            // Jika belum ada, lakukan INSERT
+            // Jika belum ada, lakukan INSERT baru untuk approval ini.
+            // Ini menjaga riwayat penempatan lama tetap utuh dan tidak ikut reset.
             $db->table('t_penempatan_magang')->insert([
                 'id_bidang'             => $data['id_bidang'],
                 'id_persetujuan_magang' => $id_persetujuan,
                 'id_mahasiswa'          => $permohonan->id_mahasiswa,
                 'catatan'               => $data['catatan_disposisi'] ?? null,
                 'status_penempatan'     => 'MENUNGGU',
-                'created_by'            => $data['updated_by'],
                 'created_at'            => date('Y-m-d H:i:s'),
             ]);
         }

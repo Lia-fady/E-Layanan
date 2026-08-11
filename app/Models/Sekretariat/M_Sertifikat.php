@@ -85,15 +85,15 @@ class M_Sertifikat extends Model
             'm.no_telp',
             'b.bidang',
             'ps.status_persetujuan',
-            'ps.tgl_persetujuan',
+            'ps.tanggal_persetujuan as tgl_persetujuan',
             'pm.id_permohonan_magang',
             'pm.tgl_mulai',
             'pm.tgl_selesai',
             'pm.deskripsi_keahlian',
-            'pm.deskripsi_magang',
+            'pm.rencana_kegiatan as deskripsi',
             'ip.instansi_pendidikan',
             'ip.jenis_instansi',
-            'pr.prodi',
+            'pr.nama_prodi as prodi',
         ]);
 
         $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');

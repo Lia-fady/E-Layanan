@@ -7,10 +7,30 @@
  * ============================================================
  */
 
+$jenisPermohonanText = strtolower(trim($permohonan->jenis_permohonan ?? ''));
+if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermohonanText, 'skripsi') !== false || strpos($jenisPermohonanText, 'ta') !== false) {
+    $labelKeahlian = 'Deskripsi Judul Skripsi / TA';
+    $labelDeskripsi = 'Deskripsi Rencana Topik / Rumusan Masalah';
+} elseif (strpos($jenisPermohonanText, 'observasi') !== false || strpos($jenisPermohonanText, 'pengambilan data') !== false) {
+    $labelKeahlian = 'Deskripsi Latar Belakang Observasi';
+    $labelDeskripsi = 'Deskripsi Daftar Kebutuhan Data';
+} elseif (strpos($jenisPermohonanText, 'uji coba') !== false || strpos($jenisPermohonanText, 'prototype') !== false) {
+    $labelKeahlian = 'Deskripsi Profil Aplikasi / Sistem';
+    $labelDeskripsi = 'Deskripsi Skenario Uji Coba / Metode';
+} else {
+    $labelKeahlian = 'Deskripsi Keahlian / Skill';
+    $labelDeskripsi = 'Deskripsi Rencana Magang / Kegiatan';
+}
+
 $isLocked = false;
-if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
+$lockMessage = '';
+if (($permohonan->status_persetujuan ?? '') === 'DITOLAK') {
+    $isLocked = true;
+    $lockMessage = 'Verifikasi sudah final. Permohonan ini telah <strong>Ditolak secara permanen</strong>.';
+} elseif (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
     if (($status_penempatan ?? 'MENUNGGU') !== 'MENUNGGU') {
         $isLocked = true;
+        $lockMessage = 'Verifikasi sudah final. Status penempatan saat ini adalah <strong>' . esc($status_penempatan ?? 'MENUNGGU') . '</strong>.';
     }
 }
 ?>
@@ -33,7 +53,7 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
             <?php if ($isLocked) : ?>
                 <div class="alert alert-info mb-4">
                     <i class="fas fa-lock mr-2"></i>
-                    Verifikasi sudah final. Status penempatan saat ini adalah <strong><?= esc($status_penempatan ?? 'MENUNGGU') ?></strong>.
+                    <?= $lockMessage ?>
                 </div>
             <?php endif; ?>
 
@@ -73,6 +93,12 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                             <td><?= !empty($permohonan->created_at) ? date('d F Y, H:i', strtotime($permohonan->created_at)) : '-' ?></td>
                         </tr>
                         <tr>
+                            <td class="text-muted">Jenis Kegiatan</td>
+                            <td>:</td>
+                            <td><strong><?= esc($permohonan->jenis_permohonan ?? '-') ?></strong></td>
+                        </tr>
+
+                        <tr>
                             <td class="text-muted">Periode Magang</td>
                             <td>:</td>
                             <td>
@@ -100,19 +126,19 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                         </tr>
                     </table>
 
-                    <h6 class="mb-3 font-weight-bold" style="color: #1B2559; border-top: 1px solid #eee; padding-top: 15px;">Keahlian & Tujuan Magang</h6>
+                    <h6 class="mb-3 font-weight-bold" style="color: #1B2559; border-top: 1px solid #eee; padding-top: 15px;">Data Permohonan</h6>
                     <div class="card bg-light border-0 mb-4">
                         <div class="card-body p-3">
                             <div class="mb-3">
-                                <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi Keahlian</span>
+                                <span class="text-muted d-block" style="font-size: 0.9rem;"><?= esc($labelKeahlian) ?></span>
                                 <strong style="font-size: 0.95rem;">
                                     <?= !empty($permohonan->deskripsi_keahlian) ? esc($permohonan->deskripsi_keahlian) : 'Belum diisi' ?>
                                 </strong>
                             </div>
                             <div>
-                                <span class="text-muted d-block" style="font-size: 0.9rem;">Deskripsi / Tujuan Magang</span>
+                                <span class="text-muted d-block" style="font-size: 0.9rem;"><?= esc($labelDeskripsi) ?></span>
                                 <strong style="font-size: 0.95rem;">
-                                    <?= !empty($permohonan->deskripsi_magang) ? esc($permohonan->deskripsi_magang) : 'Belum diisi' ?>
+                                    <?= !empty($permohonan->deskripsi) ? esc($permohonan->deskripsi) : 'Belum diisi' ?>
                                 </strong>
                             </div>
                         </div>
@@ -124,7 +150,10 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                         <select name="id_bidang" id="id_bidang" class="form-control" <?= $isLocked ? 'disabled' : '' ?>>
                             <option value="" data-kuota="">-- Pilih Bidang Tujuan --</option>
                             <?php foreach ($bidang as $b) : ?>
-                                <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
+                                <option value="<?= $b->id_bidang ?>" 
+                                    data-isfull="<?= $b->is_full ? '1' : '0' ?>" 
+                                    data-warning="<?= esc($b->kuota_warning) ?>" 
+                                    <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
                                     <?= esc($b->bidang) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -188,10 +217,22 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
                 <small class="text-muted">Jika dikosongkan, sistem akan otomatis menggunakan catatan standar berdasarkan status berkas.</small>
             </div>
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn btn-secondary mr-2" id="btnKembali" onclick="$('#btnKembali').click()">Batal</button>
+                <input type="hidden" name="action_type" id="action_type" value="">
+                <?php 
+                    // Cek apakah sudah didisposisikan ke bidang (sudah pernah disave)
+                    $isDisposisi = ($permohonan->status_persetujuan ?? '') === 'DISETUJUI' && ($permohonan->disposisi ?? '0') == '1';
+                ?>
+                <button type="button" class="btn btn-secondary mr-2" id="btnKembali">
+                    <?= $isDisposisi ? 'Kembali' : 'Batal' ?>
+                </button>
                 <?php if (!$isLocked) : ?>
-                    <button type="submit" class="btn btn-primary" id="btnSimpanKeputusan">
-                        <i class="fas fa-save mr-1"></i> Simpan Keputusan
+                    <?php if (!$isDisposisi) : ?>
+                        <button type="button" class="btn btn-danger mr-2" id="btnTolakMutlak">
+                            <i class="fas fa-times-circle mr-1"></i> Tolak Permohonan
+                        </button>
+                    <?php endif; ?>
+                    <button type="submit" class="btn <?= $isDisposisi ? 'btn-warning text-dark' : 'btn-primary' ?>" id="btnSimpanKeputusan">
+                        <i class="fas <?= $isDisposisi ? 'fa-edit' : 'fa-save' ?> mr-1"></i> <?= $isDisposisi ? 'Ubah Data' : 'Simpan Keputusan' ?>
                     </button>
                 <?php else : ?>
                     <button type="button" class="btn btn-secondary" disabled>
@@ -207,19 +248,23 @@ if (($permohonan->status_persetujuan ?? '') === 'DISETUJUI') {
     $(document).ready(function() {
         $('#id_bidang').on('change', function() {
             var selectedOption = $(this).find('option:selected');
-            var kuota = selectedOption.data('kuota');
+            var isFull = selectedOption.data('isfull');
+            var warningMsg = selectedOption.data('warning');
             var infoBox = $('#info_kuota_bidang');
             
-            if (kuota !== undefined && kuota !== '') {
+            if (selectedOption.val() !== '') {
                 infoBox.show();
-                if (kuota > 0) {
-                    infoBox.html('<i class="bi bi-info-circle text-primary me-1"></i> <span class="text-primary">Sisa Kuota Tersedia: <strong>' + kuota + ' Orang</strong></span>');
+                if (isFull == '1') {
+                    infoBox.html('<div class="alert alert-danger p-2 mb-0"><i class="fas fa-exclamation-circle mr-1"></i> <strong>' + warningMsg + '</strong></div>');
                 } else {
-                    infoBox.html('<i class="bi bi-exclamation-circle text-danger me-1"></i> <span class="text-danger">Sisa Kuota Tersedia: <strong>0 Orang (Penuh)</strong></span>');
+                    infoBox.html('<div class="alert alert-success p-2 mb-0"><i class="fas fa-check-circle mr-1"></i> <strong>' + warningMsg + '</strong></div>');
                 }
             } else {
                 infoBox.hide();
             }
         });
+
+        // Trigger change to show initial state if any
+        $('#id_bidang').trigger('change');
     });
 </script>

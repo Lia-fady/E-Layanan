@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class M_FileProsesMagang extends Model
 {
     protected $table            = 't_file_proses_magang';
-    protected $primaryKey       = 'id_file_selesai_magang';
+    protected $primaryKey       = 'id_file_proses_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
     protected $useTimestamps    = true;
@@ -40,3 +40,4 @@ class M_FileProsesMagang extends Model
                     ->first();
     }
 }
+

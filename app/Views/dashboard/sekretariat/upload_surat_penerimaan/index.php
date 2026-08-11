@@ -48,6 +48,26 @@
 $(document).ready(function() {
     var table = $('#dataTable').DataTable();
 
+    // Filter Jenis Permohonan
+    $('#filterJenisPermohonan').on('change', function() {
+        table.column(2).search(this.value).draw();
+    });
+
+    // Filter Status Penempatan
+    $('#filterStatusPermohonan').on('change', function() {
+        var val = $(this).val();
+        if (val === 'BERJALAN') {
+            table.column(3).search('DITERIMA').draw();
+        } else {
+            table.column(3).search(val).draw();
+        }
+    });
+
+    // Filter Status Surat
+    $('#filterStatusSurat').on('change', function() {
+        table.column(4).search(this.value).draw();
+    });
+
     // Transisi Buka Detail
     $(document).on('click', '.btn-upload-surat', function(e) {
         e.preventDefault();
@@ -167,7 +187,7 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var formData = new FormData();
         formData.append('file_surat', file);
-        formData.append('id_file_selesai_magang', id);
+        formData.append('id_file_proses_magang', id);
         formData.append("<?= csrf_token() ?>", "<?= csrf_hash() ?>");
 
         Swal.fire({
@@ -205,3 +225,4 @@ $(document).ready(function() {
 });
 </script>
 <?= $this->endSection() ?>
+

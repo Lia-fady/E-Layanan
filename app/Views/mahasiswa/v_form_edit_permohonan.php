@@ -99,15 +99,15 @@ if(session()->getFlashdata('permohonan_sent')):
     </div>
     <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
         <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
-            <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan Bidang</h5>
-            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang. Silakan pantau halaman status secara berkala.</p>
+            <h5 class="fw-bold text-dark mb-2">Proses Penempatan</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan sesuai dan saat ini sedang dalam tahap <strong>penentuan unit penempatan</strong>. Silakan pantau halaman status secara berkala.</p>
         <?php else: ?>
-            <h5 class="fw-bold text-dark mb-2">Menunggu Disposisi Sekretariat</h5>
-            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat. Silakan pantau halaman status secara berkala.</p>
+            <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah selesai diperiksa dan dinyatakan sesuai. Permohonan Anda telah diteruskan untuk <strong>proses persetujuan</strong>. Silakan pantau halaman status secara berkala.</p>
         <?php endif; ?>
     <?php else: ?>
         <h5 class="fw-bold text-dark mb-2">Permohonan Sedang Diproses</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi oleh tim Sekretariat Dinas Kominfo. Silakan pantau halaman status secara berkala.</p>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam <strong>antrean verifikasi administrasi</strong>. Silakan pantau halaman status secara berkala.</p>
     <?php endif; ?>
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
@@ -133,7 +133,7 @@ if(session()->getFlashdata('permohonan_sent')):
 <?php elseif(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
 <div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
     <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-    <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan oleh Sekretariat. Silakan perbaiki data/file Anda dan ajukan kembali.
+    <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan. Silakan perbaiki data/file Anda dan ajukan kembali.
     <?php if(!empty($draft['catatan_sekretariat'])): ?>
         <hr class="my-2" style="border-color: #fde047;">
         <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Revisi:</div>
@@ -528,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var currentJenis = getSelectedJenis();
             
             if (fpMulai) {
-                if (currentJenis === '3') {
+                if (currentJenis === '3' || currentJenis === '5') {
                     fpMulai.set('minDate', minStr);
                     fpMulai.set('maxDate', maxStr);
                 } else {
@@ -575,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Always apply to native inputs
-            if (currentJenis === '3') {
+            if (currentJenis === '3' || currentJenis === '5') {
                 tglMulai.setAttribute('min', minStr);
                 tglMulai.setAttribute('max', maxStr);
             } else {
@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (selJenisEl) {
                 selJenisEl.addEventListener('change', function() {
                     var jenis = this.value;
-                    if (jenis === '3') {
+                    if (jenis === '3' || jenis === '5') {
                         tglMulai.setAttribute('min', minStr);
                         tglMulai.setAttribute('max', maxStr);
                     } else {
@@ -639,11 +639,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 var jenis = getSelectedJenis();
                 var isInvalid = false;
                 
-                // Aturan 60 hari HANYA untuk jenis permohonan = 3 (Magang)
-                if (jenis === '3' && diffDays < 60) {
+                // Aturan 60 hari HANYA untuk jenis permohonan = 3 (Magang) dan 5 (PKL)
+                if ((jenis === '3' || jenis === '5') && diffDays < 60) {
                     isInvalid = true;
                     if (errDiv) {
-                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang minimal adalah 60 hari (2 bulan).';
+                        errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang/PKL minimal adalah 60 hari (2 bulan).';
                     }
                 } else if (dateSelesai < dateMulai) {
                     isInvalid = true;
@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tglMulai.addEventListener('change', function() {
                 if (tglMulai.value) {
                     var jenis = getSelectedJenis();
-                    var minDays = (jenis === '3') ? 60 : 0;
+                    var minDays = (jenis === '3' || jenis === '5') ? 60 : 0;
                     var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
                     var minSelesaiStr = formatInputDate(minSelesai);
                     
@@ -686,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         tglSelesai.setAttribute('min', minSelesaiStr);
                     }
 
-                    if ((jenis === '3' && !tglSelesai.value) || (tglSelesai.value && parseInputDate(tglSelesai.value) < minSelesai)) {
+                    if (((jenis === '3' || jenis === '5') && !tglSelesai.value) || (tglSelesai.value && parseInputDate(tglSelesai.value) < minSelesai)) {
                         if (fpSelesai) {
                             fpSelesai.setDate(minSelesaiStr, true); // true to trigger change
                         } else {
@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tglSelesai.addEventListener('change', function() {
                 if (tglMulai.value && tglSelesai.value) {
                     var jenis = getSelectedJenis();
-                    var minDays = (jenis === '3') ? 60 : 0;
+                    var minDays = (jenis === '3' || jenis === '5') ? 60 : 0;
                     var minSelesai = addDays(parseInputDate(tglMulai.value), minDays);
                     var minSelesaiStr = formatInputDate(minSelesai);
                     

@@ -34,7 +34,7 @@ class M_Verifikasi extends Model
         $builder->select('
             pm.id_permohonan_magang,
             pm.deskripsi_keahlian,
-            pm.deskripsi_magang,
+            pm.rencana_kegiatan as deskripsi,
             pm.tgl_mulai,
             pm.tgl_selesai,
             pm.posting_data,
@@ -50,6 +50,7 @@ class M_Verifikasi extends Model
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
+        $builder->join('m_jenjang_pendidikan as mj', 'mj.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
@@ -59,6 +60,7 @@ class M_Verifikasi extends Model
             $builder->where('ps.id_persetujuan_magang IS NULL');
             $builder->orWhere('ps.status_persetujuan', 'MENUNGGU');
             $builder->orWhere('ps.status_persetujuan', 'PERBAIKAN_BERKAS');
+            $builder->orWhere('ps.status_persetujuan', 'DITOLAK');
             $builder->orGroupStart()
                 ->where('ps.status_persetujuan', 'DISETUJUI')
                 ->groupStart()
@@ -75,7 +77,11 @@ class M_Verifikasi extends Model
             $status_pers = strtoupper($row->status_persetujuan ?? 'MENUNGGU');
             $has_bidang = !empty($row->nama_bidang);
             
-            if ($status_pers === 'PERBAIKAN_BERKAS') {
+            if ($status_pers === 'DITOLAK') {
+                $row->badge_penempatan = 'badge badge-secondary';
+                $row->label_penempatan = 'Tidak Ada Penempatan';
+                $row->bidang_display   = '-';
+            } elseif ($status_pers === 'PERBAIKAN_BERKAS') {
                 $row->badge_penempatan = 'badge badge-secondary';
                 $row->label_penempatan = 'Berkas Dikembalikan';
                 $row->bidang_display   = '-';
@@ -131,17 +137,19 @@ class M_Verifikasi extends Model
             mhs.no_telp,
             mhs.email,
             jp.jenis_permohonan,
-            im.jenjang_pendidikan,
+            mj.nama_jenjang as jenjang_pendidikan,
             ip.instansi_pendidikan,
-            pr.prodi,
+            pr.nama_prodi as prodi,
             fk.fakultas,
             COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
             ps.catatan,
-            ps.id_persetujuan_magang
+            ps.id_persetujuan_magang,
+            ps.disposisi
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
+        $builder->join('m_jenjang_pendidikan as mj', 'mj.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
         $builder->join('m_fakultas as fk', 'fk.id_fakultas = pr.id_fakultas', 'left');
@@ -237,11 +245,11 @@ class M_Verifikasi extends Model
                 'catatan'             => $data['catatan'],
                 'status_persetujuan'  => $data['status_persetujuan'],
                 'updated_by'          => $data['updated_by'],
-                'tgl_persetujuan'     => date('Y-m-d H:i:s'),
+                'tanggal_persetujuan'     => date('Y-m-d H:i:s'),
             ];
 
             if ($data['status_persetujuan'] === 'PERBAIKAN_BERKAS' || $data['status_persetujuan'] === 'MENUNGGU') {
-                $updateData['disposisi'] = '0';
+                $updateData['disposisi'] = 'BELUM';
                 $updateData['id_bidang'] = null;
             }
 
@@ -256,8 +264,8 @@ class M_Verifikasi extends Model
                     'status_persetujuan'   => $data['status_persetujuan'],
                     'created_by'           => $data['created_by'],
                     'updated_by'           => $data['updated_by'],
-                    'disposisi'            => '0',
-                    'tgl_persetujuan'      => date('Y-m-d H:i:s'),
+                    'disposisi'            => 'BELUM',
+                    'tanggal_persetujuan'      => date('Y-m-d H:i:s'),
                 ]);
         }
     }
@@ -280,9 +288,9 @@ class M_Verifikasi extends Model
                 ->update([
                     'status_persetujuan' => 'PERBAIKAN_BERKAS',
                     'catatan'            => 'Berkas dikembalikan',
-                    'disposisi'          => '0',
+                    'disposisi'          => 'BELUM',
                     'id_bidang'          => null,
-                    'tgl_persetujuan'    => date('Y-m-d H:i:s'),
+                    'tanggal_persetujuan'    => date('Y-m-d H:i:s'),
                 ]);
         } else {
             return $db->table('t_persetujuan_magang')
@@ -290,8 +298,8 @@ class M_Verifikasi extends Model
                     'id_permohonan_magang' => $id_permohonan,
                     'status_persetujuan'   => 'PERBAIKAN_BERKAS',
                     'catatan'              => 'Berkas dikembalikan',
-                    'disposisi'            => '0',
-                    'tgl_persetujuan'      => date('Y-m-d H:i:s'),
+                    'disposisi'            => 'BELUM',
+                    'tanggal_persetujuan'      => date('Y-m-d H:i:s'),
                 ]);
         }
     }

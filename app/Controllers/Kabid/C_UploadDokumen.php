@@ -18,31 +18,61 @@ class C_UploadDokumen extends BaseController
 
     public function index()
     {
-        // Untuk kabid, tampilkan juga yang DISETUJUI, atau disesuaikan logika bisnis jika Kabid hanya melihat bidangnya.
-        // Asumsi sementara: Kabid melihat semua yang disetujui (atau per bidang).
+        if ($this->request->isAJAX() && $this->request->getPost('action') === 'get_detail') {
+            $id_persetujuan = $this->request->getPost('id');
+            $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
+            
+            if (!$persetujuan) {
+                return "Data persetujuan tidak ditemukan.";
+            }
+
+            if (!in_array($persetujuan->status_penempatan, ['BERJALAN', 'SELESAI'])) {
+                return "Mahasiswa belum disetujui atau status belum aktif.";
+            }
+
+            $data = [
+                'persetujuan' => $persetujuan,
+                'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Keterangan Diterima', 'Surat Keterangan Selesai Kegiatan', 'Sertifikat / Bukti Kegiatan'])->where('status', 'AKTIF')->findAll(),
+                'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
+            ];
+
+            return view('dashboard/kabid/v_upload_dokumen', $data);
+        }
+
         $db = \Config\Database::connect();
         
         $builder = $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, jp.jenis_permohonan, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
+            ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.status_persetujuan', 'DISETUJUI')
-            ->orderBy('ps.tgl_persetujuan', 'DESC');
+            ->orderBy('ps.tanggal_persetujuan', 'DESC');
             
-        // Jika perlu dibatasi berdasarkan id_bidang kabid:
+        $builder->groupStart()
+            ->where('pnm.status_penempatan', 'BERJALAN')
+            ->orWhere('pnm.status_penempatan', 'SELESAI')
+        ->groupEnd();
+            
         if (session()->has('id_bidang')) {
              $builder->where('ps.id_bidang', session('id_bidang'));
         }
 
         $persetujuan = $builder->get()->getResult();
+        $list_jenis = $db->table('m_jenis_permohonan')->get()->getResultArray();
 
         $data = [
-            'title'       => 'Daftar Surat Penerimaan Magang',
+            'title'       => 'Daftar Dokumen Kegiatan',
             'active_menu' => 'upload_dokumen',
             'persetujuan' => $persetujuan,
+            'list_jenis'  => $list_jenis,
+            'search'      => null,
+            'jenis_permohonan' => null,
+            'status_penempatan' => null
         ];
 
         return view('dashboard/kabid/v_upload_dokumen_index', $data);
@@ -52,33 +82,18 @@ class C_UploadDokumen extends BaseController
     {
         $db = \Config\Database::connect();
         return $db->table('t_persetujuan_magang ps')
-            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.prodi')
+            ->select('ps.*, pm.tgl_mulai, pm.tgl_selesai, mhs.nama_mahasiswa, mhs.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, pnm.status_penempatan')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('t_penempatan_magang pnm', 'pnm.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.id_persetujuan_magang', $id_persetujuan)
             ->get()->getRow();
     }
 
-    public function form($id_persetujuan)
-    {
-        $persetujuan = $this->getPersetujuanDetail($id_persetujuan);
-        if (!$persetujuan) {
-            return redirect()->to(base_url('kabid/upload-dokumen'))->with('error', 'Data persetujuan tidak ditemukan.');
-        }
-
-        $data = [
-            'title'       => 'Upload Surat Penerimaan Magang',
-            'active_menu' => 'upload_dokumen',
-            'persetujuan' => $persetujuan,
-            'jenis_file'  => $this->fileModel->whereIn('nama_file', ['Surat Penerimaan Magang', 'Surat Telah Selesai Magang', 'Sertifikat Magang'])->where('status_aktif', '1')->findAll(),
-            'files'       => $this->fileProsesModel->getSuratByPersetujuan($id_persetujuan),
-        ];
-
-        return view('dashboard/kabid/v_upload_dokumen', $data);
-    }
+    // public function form dihapus karena digantikan oleh AJAX get_detail di index()
 
     public function store()
     {
@@ -97,7 +112,7 @@ class C_UploadDokumen extends BaseController
         ];
 
         if (!$this->validate($validationRules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return $this->response->setJSON(['success' => false, 'message' => implode('<br>', $this->validator->getErrors())]);
         }
 
         $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
@@ -109,13 +124,13 @@ class C_UploadDokumen extends BaseController
                              ->get()->getRow();
                              
         if (!$cekPersetujuan) {
-            return redirect()->back()->with('error', 'Data persetujuan magang tidak valid atau tidak ditemukan.');
+            return $this->response->setJSON(['success' => false, 'message' => 'Data persetujuan magang tidak valid atau tidak ditemukan.']);
         }
 
         $id_file = $this->request->getPost('id_file');
         $existing = $this->fileProsesModel->getExistingSurat($id_persetujuan, $id_file);
         if ($existing) {
-            return redirect()->back()->with('error', 'Dokumen jenis ini sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.');
+            return $this->response->setJSON(['success' => false, 'message' => 'Dokumen jenis ini sudah ada. Gunakan tombol Ganti File jika ingin mengubahnya.']);
         }
 
         $file = $this->request->getFile('file_surat');
@@ -130,14 +145,14 @@ class C_UploadDokumen extends BaseController
                 'id_file'               => $this->request->getPost('id_file'),
                 'nama_file'             => $file->getClientName(),
                 'path_file'             => $path_file,
-                'proses_magang'         => 'SURAT_PENERIMAAN_MAGANG',
+                'proses_magang'         => 'SURAT_KETERANGAN_DITERIMA',
                 'created_by'            => session('id_user_pegawai')
             ]);
 
-            return redirect()->back()->with('success', 'Surat penerimaan berhasil diunggah.');
+            return $this->response->setJSON(['success' => true, 'message' => 'Surat keterangan diterima berhasil diunggah.']);
         }
 
-        return redirect()->back()->with('error', 'Gagal mengunggah file.');
+        return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
     public function update($id_file_selesai)
@@ -156,12 +171,12 @@ class C_UploadDokumen extends BaseController
         ];
 
         if (!$this->validate($validationRules)) {
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            return $this->response->setJSON(['success' => false, 'message' => implode('<br>', $this->validator->getErrors())]);
         }
 
         $existing = $this->fileProsesModel->find($id_file_selesai);
         if (!$existing) {
-            return redirect()->back()->with('error', 'File tidak ditemukan.');
+            return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
 
         $file = $this->request->getFile('file_surat');
@@ -183,10 +198,10 @@ class C_UploadDokumen extends BaseController
                 'updated_by' => session('id_user_pegawai')
             ]);
 
-            return redirect()->back()->with('success', 'Surat penerimaan berhasil diganti.');
+            return $this->response->setJSON(['success' => true, 'message' => 'Dokumen berhasil diganti.']);
         }
 
-        return redirect()->back()->with('error', 'Gagal mengunggah file.');
+        return $this->response->setJSON(['success' => false, 'message' => 'Gagal mengunggah file.']);
     }
 
     public function download($id_file_selesai)
@@ -202,5 +217,21 @@ class C_UploadDokumen extends BaseController
         }
 
         return $this->response->download($filePath, null)->setFileName($fileData->nama_file);
+    }
+
+    public function delete($id_file_selesai)
+    {
+        $existing = $this->fileProsesModel->find($id_file_selesai);
+        if (!$existing) {
+            return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
+        }
+
+        $filePath = WRITEPATH . $existing->path_file;
+        if (file_exists($filePath) && is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        $this->fileProsesModel->delete($id_file_selesai);
+        return $this->response->setJSON(['success' => true, 'message' => 'Dokumen berhasil dihapus.']);
     }
 }

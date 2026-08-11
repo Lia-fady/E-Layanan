@@ -145,7 +145,7 @@ class C_Dashboard extends BaseController
 
         $ringkasan_verifikasi = $db->table('t_persetujuan_magang')
             ->whereIn('status_persetujuan', ['DISETUJUI'])
-            ->where('DATE(tgl_persetujuan)', $hariIni)
+            ->where('DATE(tanggal_persetujuan)', $hariIni)
             ->countAllResults();
 
         $ringkasan_disposisi = $db->table('t_penempatan_magang')
@@ -154,7 +154,7 @@ class C_Dashboard extends BaseController
 
         $ringkasan_perbaikan = $db->table('t_persetujuan_magang')
             ->where('status_persetujuan', 'PERBAIKAN_BERKAS')
-            ->where('DATE(tgl_persetujuan)', $hariIni)
+            ->where('DATE(tanggal_persetujuan)', $hariIni)
             ->countAllResults();
 
         // ============================================================

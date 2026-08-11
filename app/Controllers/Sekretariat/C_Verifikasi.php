@@ -49,16 +49,23 @@ class C_Verifikasi extends BaseController
                 ->where('m_bidang.status_aktif', '1')
                 ->get()->getResult();
 
+            $permohonan_data = $this->verifikasiModel->getPermohonanById($id);
+
+            $kuotaModel = new \App\Models\KuotaBidangModel();
             foreach ($bidang_list as &$b) {
-                $activeCount = $db->table('t_penempatan_magang')
-                    ->where('id_bidang', $b->id_bidang)
-                    ->where('status_penempatan', 'BERJALAN')
-                    ->countAllResults();
-                $b->sisa_kuota = max(0, $b->kuota - $activeCount);
+                // Pengecekan Kuota Bulanan
+                $cekKuota = $kuotaModel->checkKetersediaanPeriode(
+                    $b->id_bidang, 
+                    $permohonan_data->tanggal_mulai ?? null, 
+                    $permohonan_data->tanggal_selesai ?? null
+                );
+                
+                $b->is_full = !$cekKuota['status'];
+                $b->kuota_warning = $cekKuota['pesan'];
             }
 
             $data = [
-                'permohonan'      => $this->verifikasiModel->getPermohonanById($id),
+                'permohonan'      => $permohonan_data,
                 'files'           => $this->verifikasiModel->getFilePermohonan($id),
                 'bidang'          => $bidang_list,
                 'selected_bidang' => $penempatan->id_bidang ?? null,
@@ -121,28 +128,40 @@ class C_Verifikasi extends BaseController
 
         $fileStatuses = $this->request->getPost('file_status') ?? [];
         $id_bidang = $this->request->getPost('id_bidang');
+        $action_type = $this->request->getPost('action_type');
 
-        $allValid = true;
-        $anyInvalid = false;
-        foreach ($fileStatuses as $status) {
-            if ($status !== 'VALID') $allValid = false;
-            if ($status === 'TIDAK_VALID') $anyInvalid = true;
-        }
-
-        $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
-        $catatanManual = $this->request->getPost('catatan_manual');
-        if (!empty(trim($catatanManual))) {
-            $catatan = trim($catatanManual);
+        if ($action_type === 'TOLAK') {
+            $overallStatus = 'DITOLAK';
+            $catatan = trim($this->request->getPost('catatan_manual'));
+            if (empty($catatan)) {
+                return $this->response->setJSON([
+                    'success' => false, 
+                    'message' => 'Catatan penolakan wajib diisi jika menolak permohonan secara permanen!'
+                ]);
+            }
         } else {
-            $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
-        }
+            $allValid = true;
+            $anyInvalid = false;
+            foreach ($fileStatuses as $status) {
+                if ($status !== 'VALID') $allValid = false;
+                if ($status === 'TIDAK_VALID') $anyInvalid = true;
+            }
 
-        // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
-        if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
-            return $this->response->setJSON([
-                'success' => false, 
-                'message' => 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.'
-            ]);
+            $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
+            $catatanManual = $this->request->getPost('catatan_manual');
+            if (!empty(trim($catatanManual))) {
+                $catatan = trim($catatanManual);
+            } else {
+                $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
+            }
+
+            // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
+            if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
+                return $this->response->setJSON([
+                    'success' => false, 
+                    'message' => 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.'
+                ]);
+            }
         }
 
         $data = [
@@ -176,7 +195,15 @@ class C_Verifikasi extends BaseController
                     'updated_by'        => session('id_user_pegawai'),
                     'catatan_disposisi' => 'Disposisi dari Verifikasi',
                 ]);
+                
+                // Get nama bidang untuk log
+                $bidangRow = $db->table('m_bidang')->where('id_bidang', $id_bidang)->get()->getRow();
+                $namaBidang = $bidangRow ? $bidangRow->bidang : 'Bidang Tujuan';
+                
+                catat_log($id_permohonan, 'Sekretariat', 'Verifikasi & Disposisi', 'Berkas dinyatakan VALID dan didisposisikan ke ' . $namaBidang);
             }
+        } else {
+            catat_log($id_permohonan, 'Sekretariat', 'Verifikasi Berkas Ditolak', 'Permohonan dikembalikan untuk perbaikan. Catatan: ' . $catatan);
         }
 
         if ($result) {

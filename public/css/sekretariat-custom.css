@@ -35,7 +35,7 @@ html, body {
 
 #content-wrapper {
     height: 100vh;
-    overflow-y: auto;     /* Area konten yang melakukan scroll */
+    overflow-y: scroll;     /* Memaksa scrollbar selalu muncul agar layout tidak geser */
 }
 
 

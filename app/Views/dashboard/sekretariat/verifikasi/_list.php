@@ -19,6 +19,7 @@
         <option value="MENUNGGU">Menunggu</option>
         <option value="PERBAIKAN_BERKAS">Perbaikan Berkas</option>
         <option value="DISETUJUI">Disetujui</option>
+        <option value="DITOLAK">Ditolak</option>
     </select>
 </div>
 
@@ -47,8 +48,11 @@
                         $badgeClass = 'disetujui';
                         $statusText = 'Disetujui';
                     } elseif ($status == 'PERBAIKAN_BERKAS') {
-                        $badgeClass = 'ditolak';
+                        $badgeClass = 'ditolak'; // we use orange/warning usually, but keeping current
                         $statusText = 'Perbaikan Berkas';
+                    } elseif ($status == 'DITOLAK') {
+                        $badgeClass = 'ditolak'; // Assuming ditolak class gives red styling
+                        $statusText = 'Ditolak';
                     } else {
                         $badgeClass = 'menunggu-verifikasi';
                         $statusText = 'Menunggu';
@@ -76,6 +80,14 @@
                                     style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; background:#EFF6FF; color:#2563EB; border-radius:6px;"
                                     data-id="<?= $row->id_permohonan_magang ?>">
                                 <i class="fas fa-edit"></i>
+                            </button>
+                            <!-- Ikon History/Log -->
+                            <button type="button" 
+                                    class="riwayat-action-btn" 
+                                    title="Lacak Jejak (Log Riwayat)"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border:none; background:#E0F2FE; color:#0369A1; border-radius:6px;"
+                                    onclick="showLogRiwayatSekre(<?= $row->id_permohonan_magang ?>)">
+                                <i class="fas fa-history"></i>
                             </button>
                         </div>
                     </td>

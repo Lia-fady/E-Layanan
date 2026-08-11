@@ -20,7 +20,7 @@ class PersetujuanMagangModel extends Model
         'updated_by',
         'disposisi',          // enum(0,1,2)
         'id_bidang',
-        'tgl_persetujuan'
+        'tanggal_persetujuan'
     ];
 
     protected $useTimestamps = false; // Diisi manual di controller biar aman

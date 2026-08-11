@@ -2,276 +2,237 @@
 
 Saya sedang mengembangkan aplikasi web **Sistem Informasi E-Layanan Permohonan & Kegiatan Akademik** pada Dinas Komunikasi dan Informatika Kota Tangerang.
 
-Framework yang digunakan adalah **CodeIgniter 4 (CI4)** 
+Framework yang digunakan adalah **CodeIgniter 4 (CI4)**.
 
-Mohon pahami keseluruhan proyek ini terlebih dahulu sebelum memberikan solusi.
+Sebelum memberikan solusi, pahami terlebih dahulu keseluruhan alur bisnis, struktur database, relasi tabel, serta arsitektur project.
 
-**Jangan langsung menghasilkan kode apabila saya belum memintanya.**
+Jangan langsung menghasilkan kode apabila saya belum memintanya.
 
-Selalu analisis dahulu alur bisnis, database, relasi tabel, dan struktur project sebelum memberikan implementasi.
+Selalu lakukan analisis terhadap:
+
+- Alur bisnis
+- Struktur database
+- Relasi tabel
+- Controller
+- Model
+- View yang sudah ada
+
+Gunakan struktur project yang sudah tersedia dan jangan membuat file baru apabila fitur masih dapat dikembangkan pada file yang sudah ada.
+
+Jangan mengubah nama tabel, relasi database, maupun alur bisnis tanpa persetujuan saya.
+
+Apabila terdapat alur yang ambigu, tanyakan terlebih dahulu sebelum memberikan implementasi.
+
+Seluruh implementasi harus mengikuti standar CodeIgniter 4 dan mudah dipelihara.
 
 ---
 
+# ALUR BISNIS
 
-Seluruh implementasi harus mengikuti standar CodeIgniter 4.
+Aplikasi memiliki tiga aktor utama.
 
+1. Mahasiswa/siswa
+2. Sekretariat
+3. Bidang
 
+Sistem menggunakan konsep satu alur permohonan dari awal hingga selesai. Mahasiswa tidak mengetahui proses internal seperti disposisi antar pegawai.
 
 ---
 
-# Aktor Sistem
+# AKTOR
 
-Sistem memiliki empat aktor utama.
-
-## 1. Mahasiswa
+## peserta mahasiswa/siswa smk
 
 Mahasiswa dapat:
 
 - Registrasi akun
 - Login
 - Mengelola profil
-- Mengajukan permohonan
+- Membuat permohonan
 - Menyimpan Draft
-- Mengedit Draft
-- Membatalkan permohonan sebelum diproses
+- Melanjutkan Draft
 - Mengunggah dokumen persyaratan
 - Melihat status permohonan
 - Melihat catatan Sekretariat
-- Melakukan revisi apabila file permohonan yg dikirim ada yg salah dan disuru Sekretariat
-- Mengisi Logbook bila membuthkan
+- Melakukan perbaikan dokumen apabila diminta Sekretariat
+- Membatalkan permohonan 
+- Mengisi Logbook apabila diaktifkan oleh Bidang
 - Mengunduh Surat Penerimaan Magang
 - Mengunduh Surat Selesai Magang
 - Mengunduh Sertifikat
 
+
+Mahasiswa tidak mengetahui proses disposisi internal.
+
 ---
 
-## 2. Sekretariat
+## Sekretariat
 
 Sekretariat merupakan pintu masuk seluruh permohonan.
 
-Tugas Sekretariat:
+Sekretariat bertugas:
 
-- Verifikasi administrasi
-- Memeriksa seluruh dokumen
-- Memberikan catatan revisi bila dokumen permohonan mhs ada yg salah
+- Memverifikasi administrasi
+- Memeriksa dokumen persyaratan
+- Menentukan apakah dokumen sesuai atau tidak sesuai
+- Memberikan catatan apabila terdapat kesalahan
+- Meminta perbaikan dokumen
 - Menolak permohonan
-- Menentukan bidang tujuan berdasarkan kompetensi mahasiswa
-- Mengirim disposisi ke Kepala Bidang
-- hanya bisa Upload Surat Penerimaan Magang
+- Menentukan bidang tujuan sesuai kompetensi mahasiswa
+- Mengirim disposisi ke Bidang
+- Mengunggah Surat Penerimaan Magang
 - Mengelola seluruh permohonan
-
 
 ---
 
-## 3. Bidang
+## Bidang
 
 Bidang menerima permohonan yang telah didisposisikan oleh Sekretariat.
 
 Bidang dapat:
 
-- Melihat detail mahasiswa
+- Melihat detail peserta mahasiswa/siswa
 - Melihat dokumen permohonan
-- Menyetujui disposisi dari sekretariat
+- Menyetujui atau menolak disposisi
 - Memberikan catatan
-- Melihat kuota bidang
-- Menambah kuota untuk bidangnya masing2
-- Melihat mahasiswa aktif
-- Melihat riwayat magang
-- Menyetujui logbook
-- Upload Surat Selesai Magang
-- Upload Surat Penerimaan Magang
-- Upload Sertifikat
-- Menyelesaikan magang mahasiswa
-- Membatalkan magang apabila diperlukan
+- Mengatur kuota bidang
+- Menentukan apakah peserta wajib mengisi logbook (Ya/Tidak)
+- Melihat daftar peserta aktif
+- Melihat riwayat magang yang telah selesai
+- Memverifikasi logbook
+- Mengunggah Surat Penerimaan 
+- Mengunggah Surat Selesai
+- Mengunggah Sertifikat
+- Menyelesaikan kegiatan 
+- Membatalkan kegiatan apabila diperlukan
 
 ---
 
-## 4. Super Admin
+# JENIS PERMOHONAN
 
-Super Admin hanya mengelola master data.
+Sistem memiliki empat jenis permohonan.
 
-Menu:
-
-- Dashboard
-- Manajemen User
-- Manajemen Menu
-- Hak Akses
-- bertangunggung jawab semua tabel master pokonya
-- Konfigurasi Sistem
-
-Super Admin tidak ikut memproses permohonan mahasiswa.
-
----
-
-# Jenis Permohonan
-
-Sistem memiliki beberapa jenis permohonan.
-
-- Magang / PKL
-- Penelitian Skripsi / TA
-- Observasi
-- Uji Coba Produk
+- Magang
+- Praktik Kerja Lapangan
+- Penelitian Skripsi / Tugas Akhir
+- Observasi / Pengambilan Data
+- Uji Coba Produk (Prototype)
 
 Setiap jenis permohonan memiliki:
 
-- Form berbeda
-- Dokumen berbeda
+- Form yang berbeda
+- Dokumen persyaratan yang berbeda
+- Validasi yang berbeda
+- Alur yang dapat berbeda sesuai kebutuhan
 
 ---
 
+# DRAFT
 
-# Status Mahasiswa
+Peserta dapat menyimpan permohonan sebagai Draft.
 
-Status yang terlihat oleh Mahasiswa hanya:
+Draft belum diproses oleh Sekretariat.
 
-- Menunggu
-- Disetujui
-- Ditolak
+Saat peserta membuka kembali Draft, sistem harus menampilkan form **Ajukan Permohonan** yang sama dengan seluruh data yang sebelumnya telah diisi.
 
-Mahasiswa tidak mengetahui proses internal seperti disposisi.
+Jangan membuat halaman edit draft yang berbeda.
 
-Catatan revisi tetap ditampilkan pada detail permohonan.
-
----
-
-# Logika Revisi
-
-Sekretariat dapat memberikan status revisi.
-
-Mahasiswa tidak membuat permohonan baru.
-
-Mahasiswa hanya memperbaiki dokumen pada permohonan yang sama.
+Draft hanya merupakan kondisi data, bukan halaman baru.
 
 ---
 
-# Draft
+# REVISI PERMOHONAN
 
-Mahasiswa dapat:
+Apabila Sekretariat meminta perbaikan dokumen:
 
-- Simpan Draft
-- Edit Draft
-- Kirim Draft menjadi permohonan
+Peserta tidak membuat permohonan baru.
 
-Draft belum diproses Sekretariat.
+Peserta hanya memperbaiki data atau dokumen pada permohonan yang sama.
 
----
+File lama tetap dapat ditampilkan sebagai referensi hingga diganti oleh file baru.
 
-# Logbook
+Catatan Sekretariat harus tetap terlihat pada halaman detail permohonan.
 
-Logbook hanya aktif apabila:
-
-Permohonan telah disetujui.
-
-dan apabila memang mahasiswa dalah kegiatannya memerlukan isi logbook, ya/tidak nya nanti bidang yg ngautur
+Riwayat revisi harus dapat diketahui.
 
 ---
 
-# Upload Dokumen
+# LOGBOOK
 
+Logbook hanya dapat digunakan apabila:
 
-Sekretariat
+- Permohonan telah disetujui.
+- Bidang mengaktifkan kebutuhan logbook.
 
-- Upload Surat Penerimaan Magang
-
-Kepala Bidang
-
-- Upload Surat Penerimaan Magang
-- Upload Surat Selesai Magang
-- Upload Sertifikat
-
-(bisa semua)
+Apabila Bidang memilih "Tidak", maka menu logbook tidak digunakan pada permohonan tersebut.
 
 ---
 
-# Database
+# KUOTA
 
-Gunakan ERD terbaru sebagai acuan.
+Kuota hanya berlaku untuk:
 
-Relasi utama meliputi:
+- Magang
+- Praktik Kerja Lapangan (PKL)
 
-- c_menus
-- c_menus_privilages
-- c_user_group
-- c_user_pegawai
-- m_mahasiswa
-- m_user_mahasiswa
-- m_bidang
-- m_kuota
-- m_instansi_pendidikan
-- m_fakultas
-- m_prodi
-- m_file
-- m_file_permnohonan
-- m_jenis_permohonan
-- m_opd
-- t_instansi_mahasiswa
-- t_permohonan_magang
-- t_file_permohonan_magang
-- t_persetujuan_magang
-- t_penempatan_magang
-- t_logbook_magang
-- t_file_proses_magang
+Jenis permohonan lain tidak menggunakan kuota.
 
-
-Jangan mengubah struktur tabel tanpa instruksi.
+Kuota dihitung berdasarkan periode pelaksanaan.
 
 ---
 
-# Validasi
+# VALIDASI TANGGAL
 
-Gunakan Validation bawaan CodeIgniter 4.
+Validasi tanggal hanya diterapkan pada:
+
+- Magang
+- Praktik Kerja Lapangan (PKL)
+
+Ketentuan:
+
+- Pengajuan minimal H-30 sebelum tanggal mulai.
+- Tanggal mulai maksimal 6 bulan ke depan.
+- Durasi minimal mengikuti ketentuan sistem.
+
+Jenis permohonan lain tidak menggunakan validasi tersebut.
+
+---
+
+# UX WRITING
+
+Seluruh teks antarmuka harus menggunakan Bahasa Indonesia yang jelas, konsisten, dan mudah dipahami.
+
+Hindari penggunaan istilah yang ambigu, singkatan yang tidak umum, maupun campuran Bahasa Indonesia dan Bahasa Inggris.
+
+Gunakan istilah yang konsisten pada seluruh sistem.
 
 Contoh:
 
-- Username tanpa spasi
-- NIK tepat 16 digit
-- Semester maksimal 14
-- RT hanya angka
-- RW hanya angka
-- Nomor Telepon hanya angka
-- CAPTCHA
-- Upload file tervalidasi
+- Tahun Angkatan (bukan Thn Angkatan)
+- Nomor WhatsApp (bukan Nomor Telepon apabila yang digunakan adalah WhatsApp)
+- Perguruan Tinggi
+- Ringkasan Data
+- Data Pemohon
+- Data Pendidikan
+- Data Permohonan
+- Catatan Perbaikan
+- Disetujui
+- Ditolak
+- Menunggu
+
+Judul halaman, label form, tombol, notifikasi, dialog konfirmasi, placeholder, helper text, dan pesan validasi harus mengikuti prinsip UX Writing yang baik.
 
 ---
 
-# UI / UX
+# IMPLEMENTASI
 
-Gunakan Bootstrap 5.
+Sebelum memberikan implementasi:
 
-Konsep UI:
-
-- Modern
-- Clean
-- Solid
-- Professional
-- Dashboard bergaya AdminLTE modern
-- Card tegas
-- Sidebar sedikit lebih tebal
-- Border radius sedang
-- Shadow ringan
-- Konsisten pada seluruh halaman
-
-Seluruh halaman antar aktor harus memiliki tampilan yang konsisten.
-
----
-
-# Ketika Memberikan Solusi
-
-Sebelum memberikan kode:
-
-1. Analisis dahulu struktur project.
-2. Analisis Controller terkait.
-3. Analisis Model.
-4. Analisis Database.
-5. Analisis Relasi.
+1. Analisis Controller terkait.
+2. Analisis Model.
+3. Analisis Database.
+4. Analisis Relasi.
+5. Analisis View yang sudah ada.
 6. Analisis Alur Bisnis.
 
-Jangan membuat file baru apabila file lama masih bisa digunakan.
-
-Gunakan struktur project yang sudah ada.
-
-Jangan mengubah nama tabel, relasi, atau alur bisnis tanpa persetujuan saya
-
-Jika terdapat ambiguitas pada alur, tanyakan terlebih dahulu sebelum mengimplementasikan solusi.
-
-Apabila saya meminta implementasi fitur, berikan solusi yang mengikuti standar CodeIgniter 4, mudah dipelihara, dan konsisten dengan arsitektur proyek.
+Berikan solusi yang konsisten dengan arsitektur project, mudah dipelihara, dan mengikuti standar CodeIgniter 4.

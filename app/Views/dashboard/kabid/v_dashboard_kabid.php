@@ -23,8 +23,10 @@
 <!-- Header Area -->
 <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
-        <div class="dashboard-subtitle mb-1">Akses Kepala Bidang</div>
-        <h1 class="dashboard-header-title mb-0">Selamat Datang, <?= esc($bidang_info->bidang ?? 'TIK') ?></h1>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Dashboard Bidang</h5>
+        <p style="color:#667085; font-size:0.85rem; margin:0;">
+            Selamat Datang, <?= esc($bidang_info->bidang ?? 'TIK') ?>. Berikut adalah ringkasan data kegiatan di bidang Anda.
+        </p>
     </div>
     <div class="d-flex" style="gap: 10px;">
         <button class="btn btn-outline-secondary bg-white font-weight-bold" style="border-radius: 8px; border-color: #CBD5E1;">
@@ -55,6 +57,7 @@
                     <div class="stat-number"><?= $total_menunggu ?></div>
                     <div class="stat-desc">Disposisi masuk</div>
                 </div>
+                <a href="<?= base_url('kabid/disposisi') ?>" class="stretched-link"></a>
             </div>
         </div>
     </div>
@@ -74,6 +77,7 @@
                     <div class="stat-number"><?= $total_berjalan ?></div>
                     <div class="stat-desc">Sedang berjalan</div>
                 </div>
+                <a href="<?= base_url('kabid/disposisi') ?>" class="stretched-link"></a>
             </div>
         </div>
     </div>
@@ -92,6 +96,7 @@
                     <div class="stat-number"><?= $sisa_kuota ?></div>
                     <div class="stat-desc">Posisi tersisa</div>
                 </div>
+                <a href="<?= base_url('kabid/kuota') ?>" class="stretched-link"></a>
             </div>
         </div>
     </div>
@@ -104,13 +109,12 @@
                     <div class="rounded p-2" style="background-color: rgba(255,255,255,0.2);">
                         <i class="fas fa-check-circle fa-lg text-white"></i>
                     </div>
-                    <span class="badge" style="background-color: rgba(255,255,255,0.2); color: white; padding: 0.4rem 0.6rem;">Total Historis</span>
                 </div>
-                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Telah Selesai Magang</div>
+                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Telah Selesai Kegiatan</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number text-white"><?= $total_selesai ?></div>
-                    <div class="stat-desc text-white" style="opacity: 0.8;">Alumni bidang</div>
                 </div>
+                <a href="<?= base_url('kabid/disposisi') ?>" class="stretched-link"></a>
             </div>
         </div>
     </div>

@@ -29,7 +29,7 @@ class Database extends Config
         'hostname'     => 'localhost',
         'username'     => 'root',
         'password'     => '',
-        'database'     => 'db_elayanan_akademik_kominfo',
+        'database'     => 'db_elayanan_akademik_kominfo_final',
         'DBDriver'     => 'MySQLi',    
         'DBPrefix'     => '',
         'pConnect'     => false,

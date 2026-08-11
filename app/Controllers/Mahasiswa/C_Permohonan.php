@@ -135,7 +135,7 @@ class C_Permohonan extends C_BaseMahasiswa
             $dateMulai->setTime(0,0,0);
             $dateSelesai->setTime(0,0,0);
 
-            if ($id_jenis_permohonan == '3') {
+            if ($id_jenis_permohonan == '3' || $id_jenis_permohonan == '5') {
                 $today = new \DateTime();
                 $today->setTime(0,0,0);
                 
@@ -147,14 +147,14 @@ class C_Permohonan extends C_BaseMahasiswa
 
                 if ($dateMulai < $minMulai || $dateMulai > $maxMulai) {
                     return redirect()->back()->withInput()->with('errors', [
-                        'tgl_mulai' => 'Tanggal mulai magang minimal H-30 dan maksimal 6 bulan dari hari ini.'
+                        'tgl_mulai' => 'Tanggal mulai magang/PKL minimal H-30 dan maksimal 6 bulan dari hari ini.'
                     ]);
                 }
 
                 $diff = $dateMulai->diff($dateSelesai);
                 if ($diff->invert || $diff->days < 60) {
                     return redirect()->back()->withInput()->with('errors', [
-                        'tgl_mulai' => 'Durasi permohonan magang minimal adalah 2 bulan (60 hari).'
+                        'tgl_mulai' => 'Durasi permohonan magang/PKL minimal adalah 2 bulan (60 hari).'
                     ]);
                 }
             } else {

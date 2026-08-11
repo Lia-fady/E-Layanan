@@ -26,8 +26,10 @@ Manajemen Kuota Bidang
 
 <div class="d-flex justify-content-between align-items-end mb-4">
     <div>
-        <div class="dashboard-subtitle mb-1">Manajemen Pengaturan</div>
-        <h1 class="dashboard-header-title mb-0">Kuota Bidang</h1>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Kuota Bidang</h5>
+        <p style="color:#667085; font-size:0.85rem; margin:0;">
+            Atur dan kelola batas maksimal mahasiswa yang dapat diterima di bidang Anda.
+        </p>
     </div>
 </div>
 
@@ -45,10 +47,10 @@ Manajemen Kuota Bidang
 
 <div class="row">
     <!-- Form Kolom -->
-    <div class="col-xl-7 col-lg-8">
-        <div class="card shadow-sm quota-card bg-white mb-4">
+    <div class="col-xl-4 col-lg-5 mb-4">
+        <div class="card shadow-sm quota-card bg-white h-100">
             <div class="card-header bg-white py-3" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;">
-                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.1rem;">Pengaturan Kuota Mahasiswa</h6>
+                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.1rem;">Pengaturan Kuota Bulanan</h6>
             </div>
             <div class="card-body p-4">
                 <?php if ($kuota): ?>
@@ -56,42 +58,27 @@ Manajemen Kuota Bidang
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_kuota" value="<?= $kuota->id_kuota ?>">
                     
-                    <div class="row mb-4">
-                        <div class="col-md-12">
-                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Nama Bidang</label>
-                            <input type="text" class="form-control form-control-premium bg-light" value="<?= esc($kuota->bidang) ?>" readonly>
-                        </div>
+                    <div class="form-group mb-4">
+                        <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Nama Bidang</label>
+                        <input type="text" class="form-control form-control-premium bg-light" value="<?= esc($kuota->bidang) ?>" readonly>
                     </div>
 
-                    <div class="row mb-4">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Total Kuota Mahasiswa</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control form-control-premium" name="kuota" value="<?= esc($kuota->kuota) ?>" min="<?= $terisi ?>" required style="border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-white" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Orang</span>
-                                </div>
-                            </div>
-                            <small class="text-muted mt-2 d-block">Batas maksimal mahasiswa magang yang diterima bersamaan.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Mahasiswa Aktif Saat Ini</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control form-control-premium bg-light" value="<?= $terisi ?>" readonly style="border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; color: #2563EB; font-weight: bold;">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-light" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Mahasiswa</span>
-                                </div>
+                    <div class="form-group mb-4">
+                        <label style="font-weight: 600; color: #475569; font-size: 0.9rem;">Batas Maksimal Kuota (Per Bulan)</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control form-control-premium" name="kuota" value="<?= esc($kuota->kuota) ?>" min="0" required style="border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-white" style="border-color: #CBD5E1; color: #64748B; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">Mahasiswa</span>
                             </div>
                         </div>
+                        <small class="text-muted mt-2 d-block">Jumlah mahasiswa magang maksimal yang diizinkan beraktivitas pada setiap bulan.</small>
                     </div>
 
                     <hr style="border-color: #E2E8F0; margin: 2rem 0;">
 
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary font-weight-bold px-4" style="border-radius: 8px; background-color: #1E40AF; border-color: #1E40AF;" onclick="return confirm('Apakah Anda yakin ingin memperbarui total kuota bidang ini?')">
-                            <i class="fas fa-save mr-2"></i> Simpan Perubahan
-                        </button>
-                    </div>
+                    <button type="submit" class="btn btn-primary font-weight-bold btn-block" style="border-radius: 8px; background-color: #1E40AF; border-color: #1E40AF;" onclick="return confirm('Apakah Anda yakin ingin memperbarui total kuota bulanan ini?')">
+                        <i class="fas fa-save mr-2"></i> Simpan Perubahan
+                    </button>
                 </form>
                 <?php else: ?>
                     <div class="text-center py-5">
@@ -104,36 +91,55 @@ Manajemen Kuota Bidang
         </div>
     </div>
 
-    <!-- Informasi Kolom -->
-    <div class="col-xl-5 col-lg-4">
-        <?php if ($kuota): 
-            $sisa = $kuota->kuota - $terisi; 
-            $sisa = $sisa < 0 ? 0 : $sisa;
-            
-            $statusColor = $sisa > 0 ? '#16A34A' : '#DC2626';
-            $statusBg = $sisa > 0 ? '#DCFCE7' : '#FEE2E2';
-            $statusText = $sisa > 0 ? 'Tersedia' : 'Penuh';
-            $icon = $sisa > 0 ? 'fa-check-circle' : 'fa-times-circle';
-        ?>
-        <div class="card shadow-sm quota-card bg-white mb-4">
-            <div class="card-body p-4 text-center">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: <?= $statusBg ?>; color: <?= $statusColor ?>;">
-                    <i class="fas <?= $icon ?> fa-3x"></i>
+    <!-- Tabel Bulanan -->
+    <div class="col-xl-8 col-lg-7 mb-4">
+        <div class="card shadow-sm quota-card bg-white h-100">
+            <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between" style="border-bottom: 1px solid #E2E8F0; border-radius: 12px 12px 0 0;">
+                <h6 class="m-0 font-weight-bold" style="color: #1E293B; font-size: 1.1rem;">Rincian Kuota Tahun <?= esc($tahun) ?></h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" style="font-size: 0.95rem;">
+                        <thead class="bg-light text-center">
+                            <tr>
+                                <th style="border-top: none; color: #475569; font-weight: 600;">Bulan</th>
+                                <th style="border-top: none; color: #475569; font-weight: 600;">Batas Kuota</th>
+                                <th style="border-top: none; color: #475569; font-weight: 600;">Terpakai</th>
+                                <th style="border-top: none; color: #475569; font-weight: 600;">Sisa Kuota</th>
+                                <th style="border-top: none; color: #475569; font-weight: 600;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if(!empty($rekap_bulanan)): ?>
+                                <?php foreach($rekap_bulanan as $rek): ?>
+                                <?php 
+                                    $isFull = $rek['sisa'] <= 0;
+                                    $statusColor = $isFull ? '#DC2626' : '#16A34A';
+                                    $statusBg = $isFull ? '#FEE2E2' : '#DCFCE7';
+                                    $statusText = $isFull ? 'Penuh' : 'Tersedia';
+                                ?>
+                                <tr class="text-center align-middle">
+                                    <td class="text-left font-weight-bold" style="color: #334155; padding-left: 1.5rem;"><?= esc($rek['bulan_nama']) ?></td>
+                                    <td><?= esc($rek['kuota']) ?></td>
+                                    <td><span style="color: #2563EB; font-weight: bold;"><?= esc($rek['terpakai']) ?></span></td>
+                                    <td><span style="font-weight: 800; color: <?= $statusColor ?>;"><?= esc($rek['sisa']) ?></span></td>
+                                    <td>
+                                        <div class="badge" style="background-color: <?= $statusBg ?>; color: <?= $statusColor ?>; padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">
+                                            <?= $statusText ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">Data rekap bulanan tidak tersedia.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
-                <h4 style="font-weight: 800; color: #1E293B; margin-bottom: 5px;"><?= $sisa ?> Posisi</h4>
-                <div class="badge mb-3" style="background-color: <?= $statusBg ?>; color: <?= $statusColor ?>; padding: 0.4rem 0.8rem; font-size: 0.85rem; border-radius: 6px;">
-                    Status Slot: <?= $statusText ?>
-                </div>
-                <p style="color: #64748B; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
-                    Bidang Anda saat ini memiliki sisa ruang untuk <strong><?= $sisa ?> mahasiswa baru</strong>. Saat ada mahasiswa yang statusnya berubah menjadi selesai, sisa kuota ini akan otomatis bertambah kembali.
-                </p>
             </div>
         </div>
-        
-        <div class="alert bg-light" style="border: 1px solid #CBD5E1; border-radius: 12px; color: #475569; font-size: 0.85rem;">
-            <i class="fas fa-info-circle mr-2 text-primary"></i> <strong>Catatan:</strong> Anda tidak bisa menurunkan total kuota di bawah jumlah mahasiswa yang sedang aktif magang saat ini (<?= $terisi ?> mahasiswa).
-        </div>
-        <?php endif; ?>
     </div>
 </div>
 

@@ -22,7 +22,7 @@ class C_Dashboard extends C_BaseMahasiswa
         $nilai_akhir    = '-';
         $predikat_akhir = 'Belum Ada';
 
-        if ($stateData['state'] >= 4) {
+        if (in_array($stateData['state'], [4, 5])) {
             $penempatan = $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
 
             if ($penempatan) {

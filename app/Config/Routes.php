@@ -62,6 +62,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->post('permohonan/update/(:num)', 'C_Permohonan::updatePermohonan/$1');
 
     $routes->get('status', 'C_Status::statusPermohonan');
+    $routes->get('status/detail/(:num)', 'C_Status::detail/$1');
     $routes->get('batalkan-permohonan/(:num)', 'C_Status::batalkanPermohonan/$1');
     $routes->get('view-file/(:num)', 'C_Status::viewFile/$1');
     $routes->get('view-file/(:num)/(:any)', 'C_Status::viewFile/$1/$2');
@@ -139,6 +140,9 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->post('upload-surat-penerimaan/store', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::store');
     $routes->post('upload-surat-penerimaan/delete/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::delete/$1');
     $routes->get('upload-surat-penerimaan/download/(:num)', '\App\Controllers\Sekretariat\C_UploadSuratPenerimaan::download/$1');
+
+    // Kuota Bidang (Pemantauan Bulanan)
+    $routes->get('kuota', '\App\Controllers\Sekretariat\C_Kuota::index');
 });
 
 // =========================================================================
@@ -155,7 +159,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('disposisi/selesaikan', '\App\Controllers\Kabid\C_DisposisiMasuk::selesaikan');
 
     // 2. Logbook (Approval)
-    $routes->get('logbook', '\App\Controllers\Kabid\C_LogbookKabid::index');
+    $routes->match(['get', 'post'], 'logbook', '\App\Controllers\Kabid\C_LogbookKabid::index');
     $routes->get('logbook/detail/(:num)', '\App\Controllers\Kabid\C_LogbookKabid::detail/$1');
     $routes->post('logbook/approve', '\App\Controllers\Kabid\C_LogbookKabid::approve');
     $routes->post('logbook/bulkApprove', '\App\Controllers\Kabid\C_LogbookKabid::bulkApprove');
@@ -167,7 +171,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('kuota/update', '\App\Controllers\Kabid\C_KuotaBidang::update');
 
     // 5. Upload Dokumen Magang
-    $routes->get('upload-dokumen', '\App\Controllers\Kabid\C_UploadDokumen::index');
+    $routes->match(['get', 'post'], 'upload-dokumen', '\App\Controllers\Kabid\C_UploadDokumen::index');
     $routes->get('upload-dokumen/form/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::form/$1');
     $routes->post('upload-dokumen/store', '\App\Controllers\Kabid\C_UploadDokumen::store');
     $routes->post('upload-dokumen/delete/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::delete/$1');
@@ -177,3 +181,12 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
 // --- API ROUTES FOR DROPDOWNS ---
 $routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
 $routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
+
+// Wilayah
+$routes->get('api/kabupaten/(:num)', 'ApiController::getKabupatenByProvinsi/$1');
+$routes->get('api/kecamatan/(:num)', 'ApiController::getKecamatanByKabupaten/$1');
+$routes->get('api/kelurahan/(:num)', 'ApiController::getKelurahanByKecamatan/$1');
+
+// --- API ROUTES FOR LOG RIWAYAT ---
+$routes->get('api/log/riwayat/(:num)', 'ApiController::getLogRiwayat/$1');
+

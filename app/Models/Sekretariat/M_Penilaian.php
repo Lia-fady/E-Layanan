@@ -117,7 +117,7 @@ class M_Penilaian extends Model
             'pm.tgl_mulai',
             'pm.tgl_selesai',
             'pm.deskripsi_keahlian',
-            'pm.deskripsi_magang',
+            'pm.rencana_kegiatan as deskripsi',
         ]);
 
         $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');

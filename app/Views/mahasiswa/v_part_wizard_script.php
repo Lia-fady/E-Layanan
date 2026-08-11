@@ -284,16 +284,16 @@ function vStep1() {
     var diffTime = new Date(tS) - new Date(tM);
     var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    if (j.value === '3' && diffDays < 60) {
+    if ((j.value === '3' || j.value === '5') && diffDays < 60) {
         document.getElementById('tgl_mulai').classList.add('is-invalid');
         var errDiv = document.getElementById('err-tgl-mulai-js');
         if(errDiv){
             errDiv.classList.remove('d-none');
             errDiv.classList.add('d-block');
-            errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang minimal adalah 60 hari (2 bulan).';
+            errDiv.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i> Durasi magang/PKL minimal adalah 60 hari (2 bulan).';
         }
         document.getElementById('tgl_mulai').focus();
-        sAlert('Durasi magang minimal adalah 60 hari (2 bulan).');
+        sAlert('Durasi magang/PKL minimal adalah 60 hari (2 bulan).');
         return false; 
     } else if (diffDays < 0) {
         document.getElementById('tgl_mulai').classList.add('is-invalid');
@@ -440,7 +440,7 @@ function submitPermohonan(type) {
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Simpan Draft',
+            confirmButtonText: 'Ya',
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -458,8 +458,8 @@ function submitPermohonan(type) {
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="bi bi-send-fill"></i> Ya, Kirim Sekarang',
-            cancelButtonText: 'Cek Kembali'
+            confirmButtonText: '<i class="bi bi-send-fill"></i> Kirim',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 var btn = document.getElementById('btn-submit');

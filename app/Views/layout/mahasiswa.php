@@ -11,6 +11,9 @@
     <!-- Global CSS -->
     <link rel="stylesheet" href="<?= base_url('css/mahasiswa/global.css') ?>">
     
+    <!-- Flatpickr CSS for Datepicker (Airbnb Theme) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/airbnb.css">
+    
     <!-- Extra CSS from Views -->
     <?= $this->renderSection('extra_css') ?>
     
@@ -215,9 +218,9 @@
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="student-sidebar">
-    <div class="brand-area d-flex align-items-center gap-2">
-        <i class="bi bi-mortarboard-fill fs-3" style="color: #EAB308;"></i>
-        <div>E-LAYANAN AKADEMIK<br><small class="fw-normal text-white-50" style="font-size: 0.72rem;">KOMINFO TANGERANG</small></div>
+    <div class="brand-area d-flex align-items-center gap-3">
+        <img src="<?= base_url('img/kota tng_nobg.png') ?>" alt="Logo Tangerang" style="width: 40px; height: 40px; object-fit: contain;">
+        <div style="line-height: 1.2;">E-LAYANAN AKADEMIK<br><small class="fw-normal text-white-50" style="font-size: 0.72rem;">KOMINFO TANGERANG</small></div>
     </div>
     <div class="nav flex-column mt-2">
         <a href="<?= base_url('mahasiswa/dashboard') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/dashboard') !== false) ? 'active' : '' ?>">
@@ -309,7 +312,7 @@ document.querySelectorAll('.locked-menu').forEach(item => {
 <div class="main-workspace">
     <!-- TOP BAR -->
     <div class="top-bar d-flex justify-content-between align-items-center">
-        <div class="small fw-semibold text-muted" style="font-size: 0.78rem;">
+        <div style="font-size: 0.95rem;">
             <?= $this->renderSection('breadcrumb') ?>
         </div>
         <div class="d-flex align-items-center gap-3">
@@ -376,6 +379,22 @@ document.querySelectorAll('.locked-menu').forEach(item => {
             confirmButtonColor: '#dc3545'
         });
     <?php endif; ?>
+</script>
+
+<!-- Flatpickr JS & Locale -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
+<script>
+    // Inisialisasi Flatpickr global untuk semua input berkelas flatpickr-id
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr(".flatpickr-id", {
+            locale: "id",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y", // format tampilan: dd/mm/yyyy
+            allowInput: true
+        });
+    });
 </script>
 
 <?= $this->renderSection('extra_js') ?>

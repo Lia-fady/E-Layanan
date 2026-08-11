@@ -1,42 +1,14 @@
-/**
- * View untuk Upload Dokumen Magang (Kepala Bidang)
- */
-?>
-<?= $this->extend('layout/L_master_kabid') ?>
-
-<?= $this->section('title') ?>
-<?= esc($title) ?>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
-
-<!-- Flash Messages -->
-<?php if (session()->getFlashdata('success')) : ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle mr-2"></i>
-    <?= session()->getFlashdata('success') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Upload Dokumen Kegiatan</h5>
+        <p style="color:#667085; font-size:0.85rem; margin:0;">
+            Unggah dan kelola dokumen resmi untuk mahasiswa terkait.
+        </p>
+    </div>
+    <button type="button" id="btnKembaliList" class="btn btn-sm btn-secondary shadow-sm" style="border-radius: 8px;">
+        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Kembali
+    </button>
 </div>
-<?php endif; ?>
-<?php if (session()->getFlashdata('error')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    <?= session()->getFlashdata('error') ?>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
-<?php if (session()->getFlashdata('errors')) : ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle mr-2"></i>
-    Terdapat kesalahan pada input Anda:
-    <ul class="mb-0">
-    <?php foreach (session()->getFlashdata('errors') as $err) : ?>
-        <li><?= esc($err) ?></li>
-    <?php endforeach; ?>
-    </ul>
-    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-</div>
-<?php endif; ?>
 
 <!-- Detail Header -->
 <div class="detail-header mb-4">
@@ -50,7 +22,7 @@
         </div>
     </div>
     <div class="detail-header-box">
-        <div class="detail-header-box-label">Periode Magang</div>
+        <div class="detail-header-box-label">Periode Kegiatan</div>
         <div class="detail-header-box-value">
             <?php
                 $mulai = !empty($persetujuan->tgl_mulai) ? date('d F Y', strtotime($persetujuan->tgl_mulai)) : '-';
@@ -62,9 +34,9 @@
 </div>
 
 <!-- Back Link -->
-<a href="<?= base_url('kabid/upload-dokumen') ?>" class="detail-back-link mb-4 d-inline-block">
+<button type="button" id="btnKembaliListBawah" class="btn btn-link text-secondary detail-back-link mb-4 d-inline-block p-0">
     <i class="fas fa-arrow-left"></i> Kembali ke Daftar
-</a>
+</button>
 
 <div class="row">
     <!-- Form Upload -->
@@ -108,7 +80,7 @@
     <div class="col-lg-8 mb-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Dokumen Magang</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Dokumen</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -134,12 +106,12 @@
                                     <td><?= esc($f->pengunggah ?? '-') ?></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 5px;">
-                                            <a href="<?= base_url('kabid/upload-dokumen/download/' . $f->id_file_selesai_magang) ?>" class="btn btn-sm btn-success" title="Download">
+                                            <a href="<?= base_url('kabid/upload-dokumen/download/' . $f->id_file_proses_magang) ?>" class="btn btn-sm btn-success" title="Download">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-warning btn-ganti-file" 
                                                     title="Ganti File"
-                                                    data-id="<?= $f->id_file_selesai_magang ?>"
+                                                    data-id="<?= $f->id_file_proses_magang ?>"
                                                     data-idfile="<?= $f->id_file ?>"
                                                     data-namafile="<?= esc($f->nama_file) ?>">
                                                 <i class="fas fa-edit"></i>
@@ -171,7 +143,7 @@
             <form action="" method="POST" enctype="multipart/form-data" id="formGantiFile">
                 <?= csrf_field() ?>
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalGantiFileLabel"><i class="fas fa-edit mr-2"></i>Ganti Dokumen Magang</h5>
+                    <h5 class="modal-title" id="modalGantiFileLabel"><i class="fas fa-edit mr-2"></i>Ganti Dokumen</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -208,9 +180,6 @@
     </div>
 </div>
 
-<?= $this->endSection() ?>
-
-<?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
     // Populate Modal Ganti File
@@ -226,55 +195,130 @@ $(document).ready(function() {
         $('#modalGantiFile').modal('show');
     });
 
-    // SweetAlert untuk Konfirmasi Upload Baru
+    // AJAX Form Upload
     $('#formUploadSurat').on('submit', function(e) {
         e.preventDefault();
         var form = this;
+        var formData = new FormData(form);
         
         Swal.fire({
             title: 'Upload Dokumen?',
-            text: 'Pastikan file dokumen magang yang Anda unggah sudah benar dan sesuai dengan data mahasiswa bersangkutan.',
+            text: 'Pastikan file dokumen yang Anda unggah sudah benar dan sesuai dengan data mahasiswa bersangkutan.',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#4e73df',
-            cancelButtonColor: '#858796',
-            confirmButtonText: 'Ya, Upload',
-            cancelButtonText: 'Batal',
-            reverseButtons: true,
-            customClass: {
-                popup: 'shadow-sm rounded'
-            }
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Upload!',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                form.submit();
+                var btn = $(form).find('button[type="submit"]');
+                var originalHtml = btn.html();
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Mengupload...');
+                
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if (res.success) {
+                            Swal.fire('Berhasil!', res.message, 'success').then(() => {
+                                $('.btn-kelola-dokumen[data-id="<?= $persetujuan->id_persetujuan_magang ?>"]').click();
+                            });
+                        } else {
+                            Swal.fire('Gagal!', res.message, 'error');
+                            btn.prop('disabled', false).html(originalHtml);
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Terjadi kesalahan sistem', 'error');
+                        btn.prop('disabled', false).html(originalHtml);
+                    }
+                });
             }
         });
     });
 
-    // SweetAlert untuk Konfirmasi Ganti/Edit File
+    // AJAX Form Ganti File
     $('#formGantiFile').on('submit', function(e) {
         e.preventDefault();
         var form = this;
+        var formData = new FormData(form);
         
-        Swal.fire({
-            title: 'Ganti Dokumen?',
-            text: 'Dokumen lama akan tertimpa dan diganti dengan file baru. Pastikan file yang dipilih sudah benar sebelum melanjutkan.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#4e73df',
-            cancelButtonColor: '#858796',
-            confirmButtonText: 'Ya, Ganti',
-            cancelButtonText: 'Batal',
-            reverseButtons: true,
-            customClass: {
-                popup: 'shadow-sm rounded'
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
+        var btn = $(form).find('button[type="submit"]');
+        var originalHtml = btn.html();
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Menyimpan...');
+        
+        $.ajax({
+            url: $(form).attr('action'),
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                if (res.success) {
+                    $('#modalGantiFile').modal('hide');
+                    $('.modal-backdrop').remove(); // Bersihkan backdrop
+                    Swal.fire('Berhasil!', res.message, 'success').then(() => {
+                        $('.btn-kelola-dokumen[data-id="<?= $persetujuan->id_persetujuan_magang ?>"]').click();
+                    });
+                } else {
+                    Swal.fire('Gagal!', res.message, 'error');
+                    btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+            error: function() {
+                Swal.fire('Error!', 'Terjadi kesalahan sistem', 'error');
+                btn.prop('disabled', false).html(originalHtml);
             }
         });
     });
+
+    // Hapus File via AJAX
+    $('.btn-hapus-file').on('click', function(e) {
+        e.preventDefault();
+        var deleteUrl = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'Hapus Dokumen?',
+            text: "Dokumen yang dihapus tidak dapat dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: deleteUrl,
+                    type: "POST",
+                    data: {
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            Swal.fire('Terhapus!', res.message, 'success').then(() => {
+                                $('.btn-kelola-dokumen[data-id="<?= $persetujuan->id_persetujuan_magang ?>"]').click();
+                            });
+                        } else {
+                            Swal.fire('Gagal!', res.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus', 'error');
+                    }
+                });
+            }
+        });
+    });
+
+    // Handle Kembali Bawah
+    $('#btnKembaliListBawah').on('click', function() {
+        $('#btnKembaliList').click();
+    });
 });
 </script>
-<?= $this->endSection() ?>
+

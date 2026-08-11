@@ -8,138 +8,108 @@ class MasterDataSeeder extends Seeder
 {
     public function run()
     {
-        // 1. Data m_jenis_permohonan
-        $dataJenisPermohonan = [
-            ['id_jenis_permohonan' => 1, 'jenis_permohonan' => 'Penelitian Skripsi / TA'],
-            ['id_jenis_permohonan' => 2, 'jenis_permohonan' => 'Observasi / Pengambilan Data'],
-            ['id_jenis_permohonan' => 3, 'jenis_permohonan' => 'Magang / PKL'],
-            ['id_jenis_permohonan' => 4, 'jenis_permohonan' => 'Uji Coba Produk (Prototype)'],
-        ];
-        $this->db->table('m_jenis_permohonan')->ignore(true)->insertBatch($dataJenisPermohonan);
+        // 1. Wilayah
+        // Provinsi Banten
+        $this->db->table('m_provinsi')->insert([
+            'kode_provinsi' => '36',
+            'nama_provinsi' => 'BANTEN',
+            'created_at'    => date('Y-m-d H:i:s'),
+        ]);
+        $id_prov = $this->db->insertID();
 
-        // 2. Data m_file
-        $dataFile = [
-            ['id_file' => 1, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 2, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 3, 'nama_file' => 'Curriculum Vitae (CV)', 'status_aktif' => '1'],
-            ['id_file' => 4, 'nama_file' => 'Proposal / Sinopsis', 'status_aktif' => '1'],
-            ['id_file' => 5, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 6, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 7, 'nama_file' => 'Proposal Uji Coba Produk', 'status_aktif' => '1'],
-        ];
-        $this->db->table('m_file')->ignore(true)->insertBatch($dataFile);
+        // Kabupaten/Kota
+        $this->db->table('m_kabupaten')->insert([
+            'id_provinsi'    => $id_prov,
+            'kode_kabupaten' => '3671',
+            'nama_kabupaten' => 'KOTA TANGERANG',
+            'created_at'     => date('Y-m-d H:i:s'),
+        ]);
+        $id_kab = $this->db->insertID();
 
-        // 3. Data Pivot m_file_permohonan (Relasi Jenis Permohonan <-> File)
-        $dataPivot = [
-            // Penelitian (1) -> Surat(1), Proposal(4)
-            ['id_jenis_permohonan' => 1, 'id_file' => 1],
-            ['id_jenis_permohonan' => 1, 'id_file' => 4],
-            // Observasi (2) -> Surat(5) saja
-            ['id_jenis_permohonan' => 2, 'id_file' => 5],
-            // Magang (3) -> Surat(2), CV(3)
-            ['id_jenis_permohonan' => 3, 'id_file' => 2],
-            ['id_jenis_permohonan' => 3, 'id_file' => 3],
-            // Uji Coba (4) -> Surat(6), Proposal(7)
-            ['id_jenis_permohonan' => 4, 'id_file' => 6],
-            ['id_jenis_permohonan' => 4, 'id_file' => 7],
-        ];
-        $this->db->table('m_file_permohonan')->ignore(true)->insertBatch($dataPivot);
+        // Kecamatan
+        $this->db->table('m_kecamatan')->insert([
+            'id_kabupaten'   => $id_kab,
+            'kode_kecamatan' => '367101',
+            'nama_kecamatan' => 'TANGERANG',
+            'created_at'     => date('Y-m-d H:i:s'),
+        ]);
+        $id_kec = $this->db->insertID();
 
-        // 4. Data m_bidang (Untuk Penempatan Kabid)
-        $dataBidang = [
-            ['id_bidang' => 1, 'bidang' => 'Sekretariat', 'status_aktif' => 1],
-            ['id_bidang' => 2, 'bidang' => 'Bidang Diseminasi Informasi Dan Komunikasi Publik', 'status_aktif' => 1],
-            ['id_bidang' => 3, 'bidang' => 'Bidang Sarana, Prasarana TIK dan Persandian', 'status_aktif' => 1],
-            ['id_bidang' => 4, 'bidang' => 'Bidang Statistik Dan Pemberdayaan TIK', 'status_aktif' => 1],
-            ['id_bidang' => 5, 'bidang' => 'Bidang Pengembangan E-Goverment', 'status_aktif' => 1],
-        ];
-        $this->db->table('m_bidang')->ignore(true)->insertBatch($dataBidang);
-
-        // 5. Data m_instansi_pendidikan
-        $dataInstansi = [
-            ['id_instansi_pendidikan' => 1, 'instansi_pendidikan' => 'Universitas Indonesia', 'jenis_instansi' => 'negeri', 'status' => 'aktif'],
-            ['id_instansi_pendidikan' => 2, 'instansi_pendidikan' => 'Universitas Gadjah Mada', 'jenis_instansi' => 'negeri', 'status' => 'aktif'],
-            ['id_instansi_pendidikan' => 3, 'instansi_pendidikan' => 'Universitas Brawijaya', 'jenis_instansi' => 'negeri', 'status' => 'aktif'],
-            ['id_instansi_pendidikan' => 4, 'instansi_pendidikan' => 'Universitas Gunadarma', 'jenis_instansi' => 'swasta', 'status' => 'aktif'],
-            ['id_instansi_pendidikan' => 5, 'instansi_pendidikan' => 'Bina Nusantara (Binus)', 'jenis_instansi' => 'swasta', 'status' => 'aktif'],
-            ['id_instansi_pendidikan' => 6, 'instansi_pendidikan' => 'Universitas Muhammadiyah Tangerang', 'jenis_instansi' => 'swasta', 'status' => 'aktif'],
-        ];
-        $this->db->table('m_instansi_pendidikan')->ignore(true)->insertBatch($dataInstansi);
-
-        // 6. Data m_fakultas
-        $dataFakultas = [
-            ['id_fakultas' => 1, 'fakultas' => 'Fakultas Ilmu Komputer', 'status' => 'aktif'],
-            ['id_fakultas' => 2, 'fakultas' => 'Fakultas Teknik', 'status' => 'aktif'],
-            ['id_fakultas' => 3, 'fakultas' => 'Fakultas Ekonomi dan Bisnis', 'status' => 'aktif'],
-            ['id_fakultas' => 4, 'fakultas' => 'Fakultas Ilmu Sosial dan Ilmu Politik', 'status' => 'aktif'],
-        ];
-        $this->db->table('m_fakultas')->ignore(true)->insertBatch($dataFakultas);
-
-        // 7. Data m_prodi
-        $dataProdi = [
-            ['id_prodi' => 1, 'id_fakultas' => 1, 'prodi' => 'Teknik Informatika', 'status' => 'aktif'],
-            ['id_prodi' => 2, 'id_fakultas' => 1, 'prodi' => 'Sistem Informasi', 'status' => 'aktif'],
-            ['id_prodi' => 3, 'id_fakultas' => 2, 'prodi' => 'Teknik Elektro', 'status' => 'aktif'],
-            ['id_prodi' => 4, 'id_fakultas' => 2, 'prodi' => 'Teknik Industri', 'status' => 'aktif'],
-            ['id_prodi' => 5, 'id_fakultas' => 3, 'prodi' => 'Manajemen Bisnis', 'status' => 'aktif'],
-            ['id_prodi' => 6, 'id_fakultas' => 4, 'prodi' => 'Ilmu Komunikasi', 'status' => 'aktif'],
-        ];
-        $this->db->table('m_prodi')->ignore(true)->insertBatch($dataProdi);
-
-        // 8. Data Akun Pegawai (Untuk testing login Sekretariat & Kabid)
-        $passwordDefault = password_hash('password123', PASSWORD_DEFAULT);
-        $dataPegawai = [
+        // Kelurahan
+        $kelurahan_data = [
             [
-                'id_user_pegawai' => 1, 
-                'nama'            => 'Admin Sekretariat', 
-                'nip'             => '12345678', 
-                'password'        => $passwordDefault, 
-                'id_bidang'       => null, 
-                'id_user_group'   => 2,
-                'kode_unor'       => 'SEKRETARIAT',
-                'status_aktif'    => '1',
+                'id_kecamatan'   => $id_kec,
+                'kode_kelurahan' => '3671011001',
+                'nama_kelurahan' => 'SUKAASIH',
+                'kode_pos'       => '15111',
+                'created_at'     => date('Y-m-d H:i:s'),
             ],
             [
-                'id_user_pegawai' => 2, 
-                'nama'            => 'Kepala Bidang Diseminasi Informasi', 
-                'nip'             => '87654321', 
-                'password'        => $passwordDefault, 
-                'id_bidang'       => 2, 
-                'id_user_group'   => 3,
-                'kode_unor'       => 'KABID',
-                'status_aktif'    => '1',
-            ],
-            [
-                'id_user_pegawai' => 3, 
-                'nama'            => 'Kepala Bidang Sarana & Prasarana TIK', 
-                'nip'             => '87654322', 
-                'password'        => $passwordDefault, 
-                'id_bidang'       => 3, 
-                'id_user_group'   => 3,
-                'kode_unor'       => 'KABID',
-                'status_aktif'    => '1',
-            ],
-            [
-                'id_user_pegawai' => 4, 
-                'nama'            => 'Kepala Bidang Statistik', 
-                'nip'             => '87654323', 
-                'password'        => $passwordDefault, 
-                'id_bidang'       => 4, 
-                'id_user_group'   => 3,
-                'kode_unor'       => 'KABID',
-                'status_aktif'    => '1',
-            ],
-            [
-                'id_user_pegawai' => 5, 
-                'nama'            => 'Kepala Bidang Pengembangan E-Gov', 
-                'nip'             => '87654324', 
-                'password'        => $passwordDefault, 
-                'id_bidang'       => 5, 
-                'id_user_group'   => 3,
-                'kode_unor'       => 'KABID',
-                'status_aktif'    => '1',
+                'id_kecamatan'   => $id_kec,
+                'kode_kelurahan' => '3671011002',
+                'nama_kelurahan' => 'SUKASARI',
+                'kode_pos'       => '15118',
+                'created_at'     => date('Y-m-d H:i:s'),
             ],
         ];
-        $this->db->table('c_user_pegawai')->ignore(true)->insertBatch($dataPegawai);
+        $this->db->table('m_kelurahan')->insertBatch($kelurahan_data);
+
+        // 2. Jenjang Pendidikan
+        $jenjang = [
+            ['nama_jenjang' => 'SMA/SMK', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['nama_jenjang' => 'D3', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['nama_jenjang' => 'D4', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['nama_jenjang' => 'S1', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['nama_jenjang' => 'S2', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+        ];
+        $this->db->table('m_jenjang_pendidikan')->insertBatch($jenjang);
+        
+        // Cari ID S1 dan SMK
+        $id_s1 = $this->db->table('m_jenjang_pendidikan')->where('nama_jenjang', 'S1')->get()->getRow()->id_jenjang_pendidikan;
+        $id_smk = $this->db->table('m_jenjang_pendidikan')->where('nama_jenjang', 'SMA/SMK')->get()->getRow()->id_jenjang_pendidikan;
+
+        // 3. Instansi Pendidikan
+        $this->db->table('m_instansi_pendidikan')->insert([
+            'id_jenjang_pendidikan' => $id_s1,
+            'instansi_pendidikan'   => 'Universitas Indonesia',
+            'jenis_instansi'        => 'NEGERI',
+            'status'                => 'AKTIF',
+            'created_at'            => date('Y-m-d H:i:s'),
+        ]);
+        $id_ui = $this->db->insertID();
+
+        $this->db->table('m_instansi_pendidikan')->insert([
+            'id_jenjang_pendidikan' => $id_smk,
+            'instansi_pendidikan'   => 'SMKN 1 Tangerang',
+            'jenis_instansi'        => 'NEGERI',
+            'status'                => 'AKTIF',
+            'created_at'            => date('Y-m-d H:i:s'),
+        ]);
+
+        // 4. Fakultas
+        $this->db->table('m_fakultas')->insert([
+            'id_instansi_pendidikan' => $id_ui,
+            'fakultas'               => 'Ilmu Komputer',
+            'status'                 => 'AKTIF',
+            'created_at'             => date('Y-m-d H:i:s'),
+        ]);
+        $id_fik = $this->db->insertID();
+
+        $this->db->table('m_fakultas')->insert([
+            'id_instansi_pendidikan' => $id_ui,
+            'fakultas'               => 'Teknik',
+            'status'                 => 'AKTIF',
+            'created_at'             => date('Y-m-d H:i:s'),
+        ]);
+        $id_ft = $this->db->insertID();
+
+        // 5. Prodi
+        $prodi = [
+            ['id_fakultas' => $id_fik, 'nama_prodi' => 'Teknik Informatika', 'jenjang' => 'S1', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['id_fakultas' => $id_fik, 'nama_prodi' => 'Sistem Informasi', 'jenjang' => 'S1', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['id_fakultas' => $id_ft, 'nama_prodi' => 'Teknik Sipil', 'jenjang' => 'S1', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+            ['id_fakultas' => $id_ft, 'nama_prodi' => 'Teknik Mesin', 'jenjang' => 'S1', 'status' => 'AKTIF', 'created_at' => date('Y-m-d H:i:s')],
+        ];
+        $this->db->table('m_prodi')->insertBatch($prodi);
     }
 }
