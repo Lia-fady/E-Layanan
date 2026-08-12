@@ -182,6 +182,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->get('riwayat-selesai', '\App\Controllers\Kabid\C_LogbookKabid::riwayatSelesai');
     // 4. Kuota Bidang
     $routes->get('kuota', '\App\Controllers\Kabid\C_KuotaBidang::index');
+    $routes->get('kuota/(:num)/(:num)', '\App\Controllers\Kabid\C_KuotaBidang::detail/$1/$2');
     $routes->post('kuota/update', '\App\Controllers\Kabid\C_KuotaBidang::update');
 
     // 5. Upload Dokumen Magang

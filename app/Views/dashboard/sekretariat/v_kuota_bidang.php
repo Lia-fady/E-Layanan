@@ -30,6 +30,24 @@ Monitoring Kuota Bidang
     .badge-status { padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; }
     .badge-tersedia { background-color: #DCFCE7; color: #16A34A; }
     .badge-penuh { background-color: #FEE2E2; color: #DC2626; }
+    .badge-belum { background-color: #F1F5F9; color: #94A3B8; }
+
+    .filter-tahun-select {
+        border-radius: 8px;
+        border: 1px solid #CBD5E1;
+        padding: 0.5rem 2rem 0.5rem 0.8rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #1E293B;
+        background-color: #fff;
+        min-width: 120px;
+        cursor: pointer;
+    }
+    .filter-tahun-select:focus {
+        border-color: #3B82F6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        outline: none;
+    }
     
     .btn-back {
         background-color: #fff;
@@ -159,6 +177,14 @@ Monitoring Kuota Bidang
         </div>
     </div> -->
     
+    <!-- Filter Tahun -->
+    <div class="d-flex align-items-center mb-4" id="filter-tahun-wrapper">
+        <label for="filterTahunDetail" class="mr-2 mb-0" style="font-weight:600; color:#475569; font-size:0.9rem;">Tahun</label>
+        <select id="filterTahunDetail" class="filter-tahun-select">
+            <!-- Opsi tahun akan di-populate oleh JavaScript -->
+        </select>
+    </div>
+
     <div class="card shadow-sm quota-card bg-white mb-4">
         <div class="card-body p-4">
             <div class="mb-4" style="background:#F8FAFC; padding:1.5rem; border-radius:12px; border:1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
@@ -194,6 +220,8 @@ Monitoring Kuota Bidang
 <script>
 let dtBidang;
 let dtDetail;
+let currentBidangId = null;  // Menyimpan id_bidang yang sedang dilihat
+let currentBidangNama = '';  // Menyimpan nama bidang yang sedang dilihat
 
 $(document).ready(function() {
     dtBidang = $('#tabel_bidang').DataTable({
@@ -215,6 +243,14 @@ $(document).ready(function() {
         },
         "ordering": false
     });
+
+    // Event handler filter tahun pada detail
+    $('#filterTahunDetail').on('change', function() {
+        if (currentBidangId) {
+            var tahun = $(this).val();
+            fetchDetail(currentBidangId, tahun);
+        }
+    });
 });
 
 function loadDetail(id_bidang) {
@@ -223,18 +259,43 @@ function loadDetail(id_bidang) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Memuat...';
     btn.disabled = true;
 
+    currentBidangId = id_bidang;
+
+    fetchDetail(id_bidang, null, btn, originalText);
+}
+
+function fetchDetail(id_bidang, tahun, btn, originalText) {
+    let url = '<?= base_url('sekretariat/kuota/detail') ?>/' + id_bidang;
+    if (tahun) {
+        url += '?tahun=' + tahun;
+    }
+
     $.ajax({
-        url: '<?= base_url('sekretariat/kuota/detail') ?>/' + id_bidang,
+        url: url,
         type: 'GET',
         dataType: 'json',
         success: function(res) {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
+            if (btn) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
 
             if (res.status === 'success') {
-                // Update Title
-                $('#detail-title').text('Rincian Kuota Tahun ' + res.tahun + ' Bidang ' + res.bidang.bidang);
+                currentBidangNama = res.bidang.bidang;
+
+                // Update Title — dinamis berdasarkan tahun dan nama bidang dari m_bidang
+                $('#detail-title').text('Rincian Kuota Tahun ' + res.tahun + ' ' + res.bidang.bidang);
                 
+                // Populate dropdown tahun
+                if (res.available_years && res.available_years.length > 0) {
+                    let optHtml = '';
+                    res.available_years.forEach(function(y) {
+                        let selected = (y == res.tahun) ? 'selected' : '';
+                        optHtml += '<option value="' + y + '" ' + selected + '>' + y + '</option>';
+                    });
+                    $('#filterTahunDetail').html(optHtml);
+                }
+
                 // Update Ringkasan
                 $('#val-total-kuota').text(res.data.ringkasan.total_kuota);
                 $('#val-total-terpakai').text(res.data.ringkasan.total_terpakai);
@@ -255,16 +316,30 @@ function loadDetail(id_bidang) {
                 let html = '';
                 if (res.data.kuota_bulan && res.data.kuota_bulan.length > 0) {
                     res.data.kuota_bulan.forEach(function(item) {
-                        let colorSisa = item.sisa_kuota > 0 ? '#16A34A' : '#DC2626';
-                        let badgeHtml = item.status === 'Tersedia' 
-                            ? '<span class="badge badge-status badge-tersedia">Tersedia</span>'
-                            : '<span class="badge badge-status badge-penuh">Penuh</span>';
+                        let badgeHtml;
+                        let batasText;
+                        let sisaText;
+                        let colorSisa;
+
+                        if (item.status === 'Belum Diatur') {
+                            badgeHtml = '<span class="badge badge-status badge-belum">Belum Diatur</span>';
+                            batasText = '-';
+                            sisaText = '-';
+                            colorSisa = '#94A3B8';
+                        } else {
+                            colorSisa = item.sisa_kuota > 0 ? '#16A34A' : '#DC2626';
+                            badgeHtml = item.status === 'Tersedia' 
+                                ? '<span class="badge badge-status badge-tersedia">Tersedia</span>'
+                                : '<span class="badge badge-status badge-penuh">Penuh</span>';
+                            batasText = item.batas_kuota;
+                            sisaText = item.sisa_kuota;
+                        }
 
                         html += `<tr>
                             <td class="font-weight-bold" style="padding-left: 1rem; color: #1E293B;">${item.bulan_nama}</td>
-                            <td class="text-center text-muted">${item.batas_kuota}</td>
+                            <td class="text-center text-muted">${batasText}</td>
                             <td class="text-center font-weight-bold text-primary">${item.terpakai}</td>
-                            <td class="text-center font-weight-bold" style="color: ${colorSisa};">${item.sisa_kuota}</td>
+                            <td class="text-center font-weight-bold" style="color: ${colorSisa};">${sisaText}</td>
                             <td class="text-center">${badgeHtml}</td>
                         </tr>`;
                     });
@@ -302,14 +377,18 @@ function loadDetail(id_bidang) {
             }
         },
         error: function() {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
+            if (btn) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
             alert('Terjadi kesalahan jaringan atau server.');
         }
     });
 }
 
 function showDaftar() {
+    currentBidangId = null;
+    currentBidangNama = '';
     $('#state-detail').addClass('d-none');
     $('#state-daftar').removeClass('d-none');
 }

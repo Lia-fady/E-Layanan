@@ -40,11 +40,15 @@ class C_KuotaBidang extends BaseController
         // Menggunakan method khusus sekretariat sesuai PRD (hanya status BERJALAN)
         $dataDetail = $kuotaModel->getKuotaDetailSekretariat($id_bidang, $tahun);
 
+        // Daftar tahun yang tersedia untuk dropdown filter
+        $available_years = $kuotaModel->getAvailableYears($id_bidang);
+
         return $this->response->setJSON([
             'status' => 'success',
             'bidang' => $bidang,
             'tahun'  => $tahun,
-            'data'   => $dataDetail
+            'data'   => $dataDetail,
+            'available_years' => $available_years
         ]);
     }
 }

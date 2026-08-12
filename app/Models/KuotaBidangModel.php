@@ -42,26 +42,14 @@ class KuotaBidangModel extends Model
 
         $db = \Config\Database::connect();
         
-        // 1. Dapatkan atau buat data master kuota untuk 12 bulan di tahun tersebut
+        // 1. Dapatkan data master kuota untuk 12 bulan di tahun tersebut (TANPA auto-insert)
         $kuotaBulan = [];
         for ($i = 1; $i <= 12; $i++) {
             $row = $this->where('id_bidang', $id_bidang)
                         ->where('tahun', $tahun)
                         ->where('bulan', $i)
                         ->first();
-                        
-            if (!$row) {
-                // Auto create jika belum ada (default 5)
-                $this->insert([
-                    'id_bidang' => $id_bidang,
-                    'tahun'     => $tahun,
-                    'bulan'     => $i,
-                    'kuota'     => 5,
-                    'status'    => 'AKTIF'
-                ]);
-                $row = $this->where('id_bidang', $id_bidang)->where('tahun', $tahun)->where('bulan', $i)->first();
-            }
-            $kuotaBulan[$i] = $row;
+            $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
         // 2. Ambil semua penempatan yang relevan
@@ -79,7 +67,9 @@ class KuotaBidangModel extends Model
 
         // 3. Hitung overlap per bulan
         for ($i = 1; $i <= 12; $i++) {
-            $batas_kuota = (int)$kuotaBulan[$i]['kuota'];
+            $row = $kuotaBulan[$i];
+            $has_data = ($row !== null);
+            $batas_kuota = $has_data ? (int)$row['kuota'] : null;
             
             $awalBulan = sprintf('%04d-%02d-01', $tahun, $i);
             $akhirBulan = date('Y-m-t', strtotime($awalBulan));
@@ -97,11 +87,17 @@ class KuotaBidangModel extends Model
                 }
             }
             
-            $sisa = max(0, $batas_kuota - $terpakai);
-            $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+            // Tentukan status
+            if (!$has_data) {
+                $sisa = null;
+                $status_kuota = 'Belum Diatur';
+            } else {
+                $sisa = max(0, $batas_kuota - $terpakai);
+                $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+            }
             
             $hasil[] = [
-                'id_kuota'    => $kuotaBulan[$i]['id_kuota'],
+                'id_kuota'    => $has_data ? $row['id_kuota'] : null,
                 'bulan_angka' => $i,
                 'bulan_nama'  => $nama_bulan[$i],
                 'batas_kuota' => $batas_kuota,
@@ -163,26 +159,14 @@ class KuotaBidangModel extends Model
 
         $db = \Config\Database::connect();
         
-        // 1. Dapatkan atau buat data master kuota untuk 12 bulan di tahun tersebut
+        // 1. Dapatkan data master kuota untuk 12 bulan di tahun tersebut (TANPA auto-insert)
         $kuotaBulan = [];
         for ($i = 1; $i <= 12; $i++) {
             $row = $this->where('id_bidang', $id_bidang)
                         ->where('tahun', $tahun)
                         ->where('bulan', $i)
                         ->first();
-                        
-            if (!$row) {
-                // Auto create jika belum ada (default 5)
-                $this->insert([
-                    'id_bidang' => $id_bidang,
-                    'tahun'     => $tahun,
-                    'bulan'     => $i,
-                    'kuota'     => 5,
-                    'status'    => 'AKTIF'
-                ]);
-                $row = $this->where('id_bidang', $id_bidang)->where('tahun', $tahun)->where('bulan', $i)->first();
-            }
-            $kuotaBulan[$i] = $row;
+            $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
         // 2. Ambil penempatan KHUSUS BERJALAN
@@ -203,8 +187,12 @@ class KuotaBidangModel extends Model
 
         // 3. Hitung per bulan (overlap)
         for ($i = 1; $i <= 12; $i++) {
-            $batas_kuota = (int)$kuotaBulan[$i]['kuota'];
-            $total_kuota += $batas_kuota;
+            $row = $kuotaBulan[$i];
+            $has_data = ($row !== null);
+            $batas_kuota = $has_data ? (int)$row['kuota'] : null;
+            if ($has_data) {
+                $total_kuota += (int)$row['kuota'];
+            }
             
             $awalBulan = sprintf('%04d-%02d-01', $tahun, $i);
             $akhirBulan = date('Y-m-t', strtotime($awalBulan));
@@ -223,11 +211,18 @@ class KuotaBidangModel extends Model
             }
             
             $terpakai = count($terpakaiBulanIni);
-            $sisa = max(0, $batas_kuota - $terpakai);
-            $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+            
+            // Tentukan status
+            if (!$has_data) {
+                $sisa = null;
+                $status_kuota = 'Belum Diatur';
+            } else {
+                $sisa = max(0, $batas_kuota - $terpakai);
+                $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+            }
             
             $hasilBulan[] = [
-                'id_kuota'    => $kuotaBulan[$i]['id_kuota'],
+                'id_kuota'    => $has_data ? $row['id_kuota'] : null,
                 'bulan_angka' => $i,
                 'bulan_nama'  => $nama_bulan[$i],
                 'batas_kuota' => $batas_kuota,
@@ -296,7 +291,7 @@ class KuotaBidangModel extends Model
                 // Cari data bulan ke-$i
                 foreach ($kb as $bulanData) {
                     if ($bulanData['bulan_angka'] == $i) {
-                        $totalBatas += $bulanData['batas_kuota'];
+                        $totalBatas += (int)($bulanData['batas_kuota'] ?? 0);
                         $totalTerpakai += $bulanData['terpakai'];
                         break;
                     }
@@ -308,5 +303,130 @@ class KuotaBidangModel extends Model
         }
         
         return $bulanPenuh;
+    }
+
+    /**
+     * Mendapatkan daftar tahun yang tersedia dari database + tahun berjalan + tahun berikutnya.
+     * Jika $id_bidang diberikan, filter per bidang.
+     */
+    public function getAvailableYears($id_bidang = null)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('m_kuota')->select('tahun')->distinct()->orderBy('tahun', 'ASC');
+        
+        if ($id_bidang) {
+            $builder->where('id_bidang', $id_bidang);
+        }
+        
+        $rows = $builder->get()->getResultArray();
+        $years = array_map(function($r) { return (int)$r['tahun']; }, $rows);
+        
+        // Pastikan tahun berjalan dan tahun berikutnya selalu tersedia
+        $currentYear = (int)date('Y');
+        if (!in_array($currentYear, $years)) {
+            $years[] = $currentYear;
+        }
+        if (!in_array($currentYear + 1, $years)) {
+            $years[] = $currentYear + 1;
+        }
+        
+        sort($years);
+        return $years;
+    }
+
+    /**
+     * Mengambil data kuota satu bulan spesifik beserta terpakai.
+     * Digunakan oleh halaman detail Bidang.
+     */
+    public function getKuotaSingleBulan($id_bidang, $tahun, $bulan)
+    {
+        $nama_bulan = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        ];
+
+        if ($bulan < 1 || $bulan > 12) {
+            return null;
+        }
+
+        $db = \Config\Database::connect();
+
+        // Ambil record kuota
+        $row = $this->where('id_bidang', $id_bidang)
+                    ->where('tahun', $tahun)
+                    ->where('bulan', $bulan)
+                    ->first();
+
+        $has_data = ($row !== null);
+        $batas_kuota = $has_data ? (int)$row['kuota'] : null;
+
+        // Hitung terpakai
+        $awalBulan = sprintf('%04d-%02d-01', $tahun, $bulan);
+        $akhirBulan = date('Y-m-t', strtotime($awalBulan));
+
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_bidang', $id_bidang)
+            ->where('status_penempatan', 'BERJALAN')
+            ->get()->getResultArray();
+
+        $terpakai = 0;
+        foreach ($penempatan as $p) {
+            $tgl_mulai = $p['tanggal_mulai'];
+            $tgl_selesai = $p['tanggal_selesai'];
+            if ($tgl_mulai && $tgl_selesai) {
+                if ($tgl_mulai <= $akhirBulan && $tgl_selesai >= $awalBulan) {
+                    $terpakai++;
+                }
+            }
+        }
+
+        if (!$has_data) {
+            $sisa = null;
+            $status_kuota = 'Belum Diatur';
+        } else {
+            $sisa = max(0, $batas_kuota - $terpakai);
+            $status_kuota = ($sisa > 0) ? 'Tersedia' : 'Penuh';
+        }
+
+        return [
+            'id_kuota'    => $has_data ? $row['id_kuota'] : null,
+            'bulan_angka' => (int)$bulan,
+            'bulan_nama'  => $nama_bulan[$bulan] ?? '',
+            'batas_kuota' => $batas_kuota,
+            'terpakai'    => $terpakai,
+            'sisa_kuota'  => $sisa,
+            'status'      => $status_kuota,
+            'has_data'    => $has_data
+        ];
+    }
+
+    /**
+     * Simpan kuota (INSERT jika belum ada, UPDATE jika sudah ada).
+     * Identitas logis: id_bidang + tahun + bulan.
+     */
+    public function simpanKuota($id_bidang, $tahun, $bulan, $kuota)
+    {
+        $existing = $this->where('id_bidang', $id_bidang)
+                         ->where('tahun', $tahun)
+                         ->where('bulan', $bulan)
+                         ->first();
+
+        if ($existing) {
+            // UPDATE
+            return $this->update($existing['id_kuota'], [
+                'kuota'      => $kuota,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        } else {
+            // INSERT
+            return $this->insert([
+                'id_bidang'  => $id_bidang,
+                'tahun'      => $tahun,
+                'bulan'      => $bulan,
+                'kuota'      => $kuota,
+                'status'     => 'AKTIF'
+            ]);
+        }
     }
 }
