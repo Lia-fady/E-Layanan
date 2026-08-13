@@ -49,7 +49,7 @@
             <hr class="text-black-50 opacity-10">
             
             <div class="text-start px-2 mb-3">
-                <label class="small text-muted fw-bold d-block mb-1" style="font-size: 0.7rem;">ASAL KAMPUS / SEKOLAH</label>
+                <label class="small text-muted fw-bold d-block mb-1" style="font-size: 0.7rem;">INSTITUSI PENDIDIKAN</label>
                 <div class="fw-semibold text-dark small"><i class="bi bi-building me-2 text-primary"></i> <?= $kampus ?></div>
             </div>
             
@@ -62,16 +62,16 @@
         <!-- CARD: DATA PRIBADI -->
         <div class="card-flat shadow-sm mb-4">
             <h6 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-person-lines-fill me-2 text-primary"></i> Data Pribadi & Kontak</h6>
-            <div class="row g-4">
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">NIK (NOMOR INDUK KEPENDUDUKAN)</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+            <div class="row g-0">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">NIK (Nomor Induk Kependudukan)</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['nik']) ? esc($m['nik']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">JENIS KELAMIN</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Jenis Kelamin</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?php 
                             $jk = $m['jenis_kelamin'] ?? '';
                             if($jk == 'L' || $jk == 'Laki-Laki') echo 'Laki-Laki';
@@ -80,21 +80,21 @@
                         ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">TANGGAL LAHIR</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Tanggal Lahir</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= (!empty($m['tgl_lahir']) && $m['tgl_lahir'] != '0000-00-00') ? tgl_indo($m['tgl_lahir']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">ALAMAT EMAIL</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Alamat Email</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['email']) ? esc($m['email']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">NO. TELEPON / WHATSAPP</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">No. Telepon / WhatsApp</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['no_telp']) ? esc($m['no_telp']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
@@ -104,40 +104,34 @@
         <!-- CARD: DATA DOMISILI -->
         <div class="card-flat shadow-sm mb-4">
             <h6 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-geo-alt-fill me-2 text-danger"></i> Data Domisili Tempat Tinggal</h6>
-            <div class="mb-4">
-                <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">ALAMAT JALAN LENGKAP</div>
-                <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                    <?= !empty($m['alamat']) ? esc($m['alamat']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
-                </div>
-            </div>
-            <div class="row g-4">
-                <div class="col-sm-3">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">RT</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($m['rt']) ? esc($m['rt']) : '-' ?>
+            <div class="row g-0">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-start">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4 mt-sm-1" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Alamat Jalan Lengkap</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem; line-height: 1.6;">
+                        <?= !empty($m['alamat']) ? esc($m['alamat']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">RW</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
-                        <?= !empty($m['rw']) ? esc($m['rw']) : '-' ?>
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">RT / RW</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
+                        <?= !empty($m['rt']) ? esc($m['rt']) : '-' ?> / <?= !empty($m['rw']) ? esc($m['rw']) : '-' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">KELURAHAN / DESA</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Kelurahan / Desa</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['nama_kelurahan']) ? esc($m['nama_kelurahan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">KECAMATAN</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Kecamatan</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['nama_kecamatan']) ? esc($m['nama_kecamatan']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">PROVINSI</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Provinsi</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($m['nama_provinsi']) ? esc($m['nama_provinsi']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
@@ -147,34 +141,34 @@
         <!-- CARD: DATA AKADEMIK -->
         <div class="card-flat shadow-sm mb-4">
             <h6 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-mortarboard-fill me-2 text-warning"></i> Data Institusi Akademik</h6>
-            <div class="row g-4">
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">JENJANG PENDIDIKAN</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+            <div class="row g-0">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Jenjang Pendidikan</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($i['nama_jenjang']) ? esc($i['nama_jenjang']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">PROGRAM STUDI / JURUSAN</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Program Studi / Jurusan</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($i['prodi']) ? esc($i['prodi']) : '<span class="text-muted fst-italic">Belum diatur</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">TAHUN ANGKATAN</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Tahun Angkatan / Masuk</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($i['angkatan_tahun']) ? esc($i['angkatan_tahun']) : '<span class="text-muted fst-italic">-</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">SEMESTER</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Semester / Kelas</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($i['semester']) ? esc($i['semester']) : '<span class="text-muted fst-italic">-</span>' ?>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="text-muted fw-bold mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px; text-transform: uppercase;">TAHUN AKADEMIK</div>
-                    <div class="fw-semibold text-dark bg-light px-3 py-2 rounded-3 border border-light-subtle" style="font-size: 0.9rem;">
+                <div class="col-12 py-3 d-flex flex-column flex-sm-row align-items-sm-center">
+                    <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Tahun Akademik</div>
+                    <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
                         <?= !empty($i['tahun_akademik']) ? esc($i['tahun_akademik']) : '<span class="text-muted fst-italic">-</span>' ?>
                     </div>
                 </div>
@@ -332,11 +326,11 @@
                                       </select>
                                   </div>
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">TAHUN ANGKATAN</label>
+                                    <label class="form-label small fw-bold text-muted mb-2">TAHUN ANGKATAN / MASUK</label>
                                     <input type="text" name="angkatan_tahun" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($i['angkatan_tahun'] ?? '') ?>" placeholder="Misal: 2021">
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted mb-2">SEMESTER SAAT INI</label>
+                                    <label class="form-label small fw-bold text-muted mb-2">SEMESTER / KELAS SAAT INI</label>
                                     <input type="text" name="semester" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($i['semester'] ?? '') ?>" placeholder="Misal: 6">
                                 </div>
                                 <div class="col-md-6">
@@ -349,7 +343,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <label class="form-label small fw-bold text-muted mb-2">INSTANSI PENDIDIKAN / ASAL KAMPUS</label>
+                                    <label class="form-label small fw-bold text-muted mb-2">INSTITUSI PENDIDIKAN</label>
                                     <div class="px-3 py-2 bg-light border border-light-subtle rounded-3 text-dark fw-medium" style="font-size:0.95rem; cursor:not-allowed;">
                                         <i class="bi bi-building text-secondary me-2"></i><?= esc($i['nama_instansi'] ?? $kampus) ?>
                                     </div>
@@ -371,7 +365,7 @@
                                     <div class="d-flex align-items-start p-3 bg-primary-subtle rounded-3 border border-primary-subtle">
                                         <i class="bi bi-info-circle-fill text-primary fs-5 me-3 mt-1"></i>
                                         <div class="text-primary-emphasis" style="font-size:0.85rem; line-height:1.6;">
-                                            <strong>Pemberitahuan:</strong> Data Asal Kampus, Fakultas, dan Program Studi tidak dapat diubah secara mandiri untuk menjaga validitas data magang. Hubungi Administrator jika terdapat kesalahan penulisan.
+                                            <strong>Pemberitahuan:</strong> Data Institusi Pendidikan, Fakultas, dan Program Studi tidak dapat diubah secara mandiri untuk menjaga validitas data magang. Hubungi Administrator jika terdapat kesalahan penulisan.
                                         </div>
                                     </div>
                                 </div>

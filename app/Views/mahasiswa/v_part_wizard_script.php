@@ -318,24 +318,36 @@ function vStep1() {
 }
 
 function vStep2() {
-    var isEdit = typeof isEditMode !== 'undefined' && isEditMode;
-    var sr = document.getElementById('input-surat');
-    
-    if (!isEdit) {
-        if (!sr.files || !sr.files[0]) { sAlert('Surat pengantar wajib diunggah.'); return false; }
+    // Helper: check if a file text span shows an existing file name (not default text)
+    function hasExistingFile(textId) {
+        var el = document.getElementById(textId);
+        if (!el) return false;
+        var txt = el.textContent.trim();
+        return txt !== '' && txt !== 'No file chosen' && txt !== 'Belum ada file';
     }
-    if (sr.files && sr.files[0]) {
+
+    var sr = document.getElementById('input-surat');
+    var hasNewSurat = sr && sr.files && sr.files[0];
+    var hasDraftSurat = hasExistingFile('text-surat');
+
+    if (!hasNewSurat && !hasDraftSurat) {
+        sAlert('Surat pengantar wajib diunggah.'); return false;
+    }
+    if (hasNewSurat) {
         if (sr.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran surat pengantar maksimal 2 MB.'); return false; }
         if (!sr.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('Surat pengantar harus berformat PDF.'); return false; }
     }
 
     var wCv = document.getElementById('wrapper-cv');
-    if (wCv.style.display !== 'none') {
+    if (wCv && wCv.style.display !== 'none') {
         var cv = document.getElementById('input-cv');
-        if (!isEdit) {
-            if (!cv.files || !cv.files[0]) { sAlert('Berkas CV wajib diunggah.'); return false; }
+        var hasNewCv = cv && cv.files && cv.files[0];
+        var hasDraftCv = hasExistingFile('text-cv');
+
+        if (!hasNewCv && !hasDraftCv) {
+            sAlert('Berkas CV wajib diunggah.'); return false;
         }
-        if (cv.files && cv.files[0]) {
+        if (hasNewCv) {
             if (cv.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran CV maksimal 2 MB.'); return false; }
             if (!cv.files[0].name.toLowerCase().endsWith('.pdf')) { sAlert('CV harus berformat PDF.'); return false; }
         }
@@ -343,8 +355,13 @@ function vStep2() {
     
     var kt = document.getElementById('input-ktm');
     if (kt) {
-        if (!isEdit && (!kt.files || !kt.files[0])) { sAlert('Kartu Tanda Mahasiswa (KTM) wajib diunggah.'); return false; }
-        if (kt.files && kt.files[0]) {
+        var hasNewKtm = kt.files && kt.files[0];
+        var hasDraftKtm = hasExistingFile('text-ktm');
+
+        if (!hasNewKtm && !hasDraftKtm) {
+            sAlert('Kartu Tanda Mahasiswa (KTM) wajib diunggah.'); return false;
+        }
+        if (hasNewKtm) {
             if (kt.files[0].size > 2 * 1024 * 1024) { sAlert('Ukuran KTM maksimal 2 MB.'); return false; }
             var n = kt.files[0].name.toLowerCase();
             if (!n.endsWith('.pdf') && !n.endsWith('.jpg') && !n.endsWith('.jpeg') && !n.endsWith('.png')) {
@@ -384,26 +401,50 @@ function fillReview() {
     var tb = document.getElementById('rv-doc-tbody');
     tb.innerHTML = '';
     var no = 1;
-    var sf = document.getElementById('input-surat').files[0];
+
+    // Helper: check if a file text span shows an existing file name
+    function _hasFile(textId) {
+        var el = document.getElementById(textId);
+        if (!el) return false;
+        var txt = el.textContent.trim();
+        return txt !== '' && txt !== 'No file chosen' && txt !== 'Belum ada file';
+    }
+
+    // Surat Pengantar
+    var sr = document.getElementById('input-surat');
     var ls = document.getElementById('lbl-surat').textContent.replace('*', '').trim();
-    if (sf) {
-        var sfUrl = URL.createObjectURL(sf);
+    if (sr.files && sr.files[0]) {
+        var sfUrl = URL.createObjectURL(sr.files[0]);
         tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + ls + '</td><td class="text-end"><a href="' + sfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf fs-4"></i></a></td></tr>';
+    } else if (_hasFile('text-surat')) {
+        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + ls + '</td><td class="text-end"><i class="bi bi-file-earmark-pdf fs-4 text-primary" title="Dokumen tersimpan"></i></td></tr>';
     }
+
+    // CV / Proposal
     var wCv = document.getElementById('wrapper-cv');
-    var cf = document.getElementById('input-cv').files[0];
-    if (cf && wCv.style.display !== 'none') {
-        var cfUrl = URL.createObjectURL(cf);
-        var lc = document.getElementById('lbl-cv').textContent.replace('*', '').trim();
-        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><a href="' + cfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf fs-4"></i></a></td></tr>';
+    if (wCv && wCv.style.display !== 'none') {
+        var cv = document.getElementById('input-cv');
+        var lc = document.getElementById('lbl-cv') ? document.getElementById('lbl-cv').textContent.replace('*', '').trim() : 'CV';
+        if (cv.files && cv.files[0]) {
+            var cfUrl = URL.createObjectURL(cv.files[0]);
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><a href="' + cfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-pdf fs-4"></i></a></td></tr>';
+        } else if (_hasFile('text-cv')) {
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lc + '</td><td class="text-end"><i class="bi bi-file-earmark-pdf fs-4 text-primary" title="Dokumen tersimpan"></i></td></tr>';
+        }
     }
-    
-    var ktf = document.getElementById('input-ktm') ? document.getElementById('input-ktm').files[0] : null;
-    if (ktf) {
-        var ktfUrl = URL.createObjectURL(ktf);
+
+    // KTM / Kartu Pelajar
+    var kt = document.getElementById('input-ktm');
+    if (kt) {
         var lk = cfg && cfg.ktm ? cfg.ktm : 'Kartu Identitas';
-        tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lk + '</td><td class="text-end"><a href="' + ktfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-check fs-4"></i></a></td></tr>';
+        if (kt.files && kt.files[0]) {
+            var ktfUrl = URL.createObjectURL(kt.files[0]);
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lk + '</td><td class="text-end"><a href="' + ktfUrl + '" target="_blank" class="text-primary text-decoration-none" title="Klik untuk melihat dokumen (Preview)"><i class="bi bi-file-earmark-check fs-4"></i></a></td></tr>';
+        } else if (_hasFile('text-ktm')) {
+            tb.innerHTML += '<tr><td class="text-muted" style="font-size:0.82rem;">' + (no++) + '</td><td class="fw-semibold">' + lk + '</td><td class="text-end"><i class="bi bi-file-earmark-check fs-4 text-primary" title="Dokumen tersimpan"></i></td></tr>';
+        }
     }
+
     if (!tb.innerHTML) {
         tb.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3" style="font-size:0.83rem;">Tidak ada dokumen terlampir.</td></tr>';
     }

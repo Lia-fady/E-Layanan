@@ -16,10 +16,12 @@ class C_Permohonan extends C_BaseMahasiswa
         // Fetch data pribadi dan instansi untuk Review
         $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
         $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas, m_prodi.nama_prodi as prodi')
+            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas, m_prodi.nama_prodi as prodi, m_kelas.nama_kelas as kelas, m_jenjang_pendidikan.nama_jenjang as jenjang_pendidikan')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
+            ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = t_instansi_mahasiswa.id_jenjang_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
+            ->join('m_kelas', 'm_kelas.id_kelas = t_instansi_mahasiswa.id_kelas', 'left')
             ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
 
@@ -42,11 +44,12 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $stateData = $this->_getMahasiswaState($id_mahasiswa);
 
-        // Jika ada draf atau revisi berkas yang sedang berjalan, tampilkan form edit langsung di URL ini
+        // Jika ada draf atau revisi berkas yang sedang berjalan, load data draft
+        $data['draft'] = null;
         if (!empty($stateData['permohonan_aktif'])) {
             $aktif = $stateData['permohonan_aktif'];
             if ($aktif['status_persetujuan'] === 'PERBAIKAN_BERKAS' || $aktif['posting_data'] === 'draft') {
-                return $this->editPermohonan($aktif['id_permohonan_magang']);
+                $data['draft'] = $this->_loadDraftData($aktif['id_permohonan_magang'], $id_mahasiswa);
             }
         }
 
@@ -381,13 +384,8 @@ class C_Permohonan extends C_BaseMahasiswa
         }
     }
 
-    public function editPermohonan($id_permohonan)
+    private function _loadDraftData($id_permohonan, $id_mahasiswa)
     {
-        $id_mahasiswa = session()->get('id_mahasiswa');
-        if (!$id_mahasiswa) {
-            return redirect()->to(base_url('login'));
-        }
-
         $db = \Config\Database::connect();
         $draft = $db->table('t_permohonan_magang')
                     ->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan as catatan_sekretariat')
@@ -396,9 +394,7 @@ class C_Permohonan extends C_BaseMahasiswa
                     ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
                     ->get()->getRowArray();
                                        
-        if (!$draft || ($draft['posting_data'] !== 'draft' && $draft['status_persetujuan'] !== 'PERBAIKAN_BERKAS')) {
-            return redirect()->to(base_url('mahasiswa/status'))->with('error', 'Permohonan tidak ditemukan atau tidak dapat diedit.');
-        }
+        if (!$draft) return null;
 
         $draft['surat_pengantar'] = '';
         $draft['nama_surat_pengantar'] = '';
@@ -423,39 +419,13 @@ class C_Permohonan extends C_BaseMahasiswa
                 }
             }
         }
+        return $draft;
+    }
 
-        $mhs = $db->table('m_mahasiswa')->where('id_mahasiswa', $id_mahasiswa)->get()->getRowArray();
-        $instansi = $db->table('t_instansi_mahasiswa')
-            ->select('t_instansi_mahasiswa.*, m_instansi_pendidikan.instansi_pendidikan, m_fakultas.fakultas, m_prodi.nama_prodi as prodi')
-            ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
-            ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
-            ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
-            ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
-            ->get()->getRowArray();
-
-        $jenis_permohonan = [];
-        if (isset($instansi['id_jenjang_pendidikan']) && $instansi['id_jenjang_pendidikan']) {
-            $jenis_permohonan = $db->table('m_jenis_permohonan')
-                ->select('m_jenis_permohonan.*')
-                ->join('m_jenis_permohonan_jenjang', 'm_jenis_permohonan_jenjang.id_jenis_permohonan = m_jenis_permohonan.id_jenis_permohonan')
-                ->where('m_jenis_permohonan_jenjang.id_jenjang_pendidikan', $instansi['id_jenjang_pendidikan'])
-                ->distinct()
-                ->get()->getResultArray();
-        }
-
-        $kuotaModel = new \App\Models\KuotaBidangModel();
-        
-        $data = [
-            'title' => 'Edit Permohonan',
-            'draft' => $draft,
-            'mhs' => $mhs,
-            'instansi' => $instansi,
-            'jenis_permohonan' => $jenis_permohonan,
-            'bulan_penuh' => $kuotaModel->getBulanPenuhGlobal(date('Y')),
-            'state' => ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') ? 6 : 1
-        ];
-
-        return view('mahasiswa/v_form_edit_permohonan', $data);
+    public function editPermohonan($id_permohonan)
+    {
+        // Redirect to main form to prevent 2 views architecture
+        return redirect()->to(base_url('mahasiswa/permohonan'));
     }
 
     public function updatePermohonan()

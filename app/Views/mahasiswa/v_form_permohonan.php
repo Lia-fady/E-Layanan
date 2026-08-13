@@ -107,14 +107,14 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
 
-<?php elseif($state == 4): ?>
-<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4) ============ -->
+<?php elseif($state == 4 || $state == 5): ?>
+<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4 ATAU 5) ============ -->
 <div class="wizard-card text-center py-5">
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
         <i class="bi bi-check-circle-fill"></i>
     </div>
-    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda telah disetujui dan kegiatan dapat dilaksanakan sesuai periode yang telah ditentukan.</p>
+    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui & Aktif</h5>
+    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan magang/akademik Anda sudah disetujui. Anda tidak perlu mengajukan permohonan baru pada saat ini.</p>
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
 </div>
 
@@ -130,34 +130,54 @@ if(session()->getFlashdata('permohonan_sent')):
 </div>
 
 <?php else: ?>
-<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3 - DITOLAK/PERLU REVISI) ============ -->
+<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3/6 - DITOLAK/PERLU REVISI) ============ -->
 <?php if($state == 3): ?>
+<div class="alert alert-danger p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
+    <i class="bi bi-x-circle-fill text-danger me-2"></i>
+    <strong>Permohonan Sebelumnya Ditolak:</strong> Anda dapat mengajukan permohonan ulang dengan data yang baru.
+</div>
+<?php elseif(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
 <div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
     <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-    <strong>Permohonan Sebelumnya Ditolak:</strong> Anda dapat membuat pengajuan permohonan baru dengan mengisi kembali form di bawah ini.
+    <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan oleh Sekretariat. Silakan perbaiki data/file Anda dan ajukan kembali.
+    <?php if(!empty($draft['catatan_sekretariat'])): ?>
+        <hr class="my-2" style="border-color: #fde047;">
+        <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Revisi:</div>
+        <div style="font-style: italic; color: #a16207;">
+            <?php 
+                $catatanSekre = esc($draft['catatan_sekretariat']);
+                if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
+                    $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
+                    echo nl2br(trim($parts[0]));
+                } else {
+                    echo nl2br($catatanSekre);
+                }
+            ?>
+        </div>
+    <?php endif; ?>
 </div>
 <?php endif; ?>
 
-<!-- FAQ / Panduan Jenis Permohonan (Dipindah ke Luar Form) -->
-<div class="alert alert-warning mb-4 shadow-sm" style="border-radius:10px; padding:16px 20px; border-left: 5px solid #ffc107;">
-    <div class="fw-bold text-dark mb-2" style="font-size:0.9rem;"><i class="bi bi-info-circle-fill text-warning me-2"></i> Informasi Layanan Akademik</div>
-    <ul class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.8;">
-        <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
-        <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
-        <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>
-        <li><strong>Praktik Kerja Lapangan (PKL):</strong> Praktik kerja bagi Siswa SMK.</li>
-        <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
-    </ul>
-</div>
-
 <!-- ============ FORM WRAPPER ============ -->
-<form action="<?= base_url('mahasiswa/permohonan/simpan') ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
+<form action="<?= base_url(!empty($draft) ? 'mahasiswa/permohonan/update' : 'mahasiswa/permohonan/simpan') ?>" method="POST" enctype="multipart/form-data" id="formPermohonan" novalidate>
     <?= csrf_field() ?>
 
     <!-- ============ STEP 1: DATA PERMOHONAN ============ -->
     <div class="wizard-card wizard-step is-active" id="step-1">
         <div class="wz-section-title">
             <i class="bi bi-card-list text-primary"></i> Data Permohonan
+        </div>
+
+        <!-- FAQ / Panduan Jenis Permohonan -->
+        <div class="alert alert-warning mb-4 shadow-sm" style="border-radius:10px; padding:16px 20px; border-left: 5px solid #ffc107;">
+            <div class="fw-bold text-dark mb-2" style="font-size:0.9rem;"><i class="bi bi-info-circle-fill text-warning me-2"></i> Informasi Layanan Akademik</div>
+            <ul class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.8;">
+                <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
+                <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
+                <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>
+                <li><strong>Praktik Kerja Lapangan (PKL):</strong> Praktik kerja bagi Siswa SMK.</li>
+                <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
+            </ul>
         </div>
 
         <!-- Jenis Permohonan & Tujuan -->
@@ -171,14 +191,14 @@ if(session()->getFlashdata('permohonan_sent')):
                         <?php else: ?>
                             <option value="">-- Pilih Jenis Permohonan --</option>
                             <?php foreach($jenis_permohonan as $jp): ?>
-                                <option value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan') == $jp['id_jenis_permohonan'] ? 'selected' : '' ?>><?= esc($jp['jenis_permohonan']) ?></option>
+                                <option value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'] ?? '') == $jp['id_jenis_permohonan'] ? 'selected' : '' ?>><?= esc($jp['jenis_permohonan']) ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
                     <!-- Hidden radio inputs for form submission -->
                     <?php if (!empty($jenis_permohonan)): ?>
                         <?php foreach($jenis_permohonan as $jp): ?>
-                            <input type="radio" name="id_jenis_permohonan" id="jenis_<?= $jp['id_jenis_permohonan'] ?>" value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan') == $jp['id_jenis_permohonan'] ? 'checked' : '' ?> style="display:none;">
+                            <input type="radio" name="id_jenis_permohonan" id="jenis_<?= $jp['id_jenis_permohonan'] ?>" value="<?= $jp['id_jenis_permohonan'] ?>" <?= old('id_jenis_permohonan', $draft['id_jenis_permohonan'] ?? '') == $jp['id_jenis_permohonan'] ? 'checked' : '' ?> style="display:none;">
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
@@ -195,7 +215,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_mulai">Tanggal Mulai <span class="text-danger">*</span></label>
                 <?php $errMulai = session('errors.tgl_mulai'); ?>
-                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai') ?>" required style="background-color: #fff;">
+                <input type="date" class="wz-form-control <?= $errMulai ? 'is-invalid' : '' ?>" name="tgl_mulai" id="tgl_mulai" value="<?= old('tgl_mulai', $draft['tgl_mulai'] ?? '') ?>" required style="background-color: #fff;">
                 <?php if($errMulai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errMulai) ?></div>
                 <?php endif; ?>
@@ -205,7 +225,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <div class="col-md-6">
                 <label class="wz-form-label" for="tgl_selesai">Tanggal Selesai <span class="text-danger">*</span></label>
                 <?php $errSelesai = session('errors.tgl_selesai'); ?>
-                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai') ?>" required style="background-color: #fff;">
+                <input type="date" class="wz-form-control <?= $errSelesai ? 'is-invalid' : '' ?>" name="tgl_selesai" id="tgl_selesai" value="<?= old('tgl_selesai', $draft['tgl_selesai'] ?? '') ?>" required style="background-color: #fff;">
                 <?php if($errSelesai): ?>
                     <div class="invalid-feedback d-block" style="font-size:0.75rem; font-weight: 500; margin-top: 4px; color: #dc3545;"><i class="bi bi-exclamation-circle me-1"></i> <?= esc($errSelesai) ?></div>
                 <?php endif; ?>
@@ -227,14 +247,14 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Deskripsi Keahlian -->
         <div class="mb-3">
             <label class="wz-form-label" id="lbl-keahlian">Keahlian / Kompetensi <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi_keahlian" id="deskripsi_keahlian" rows="3" placeholder="Jelaskan keahlian atau kompetensi yang Anda miliki saat ini..." required maxlength="500" oninput="countChars(this,'cc-keahlian')"><?= old('deskripsi_keahlian') ?></textarea>
+            <textarea class="wz-form-control" name="deskripsi_keahlian" id="deskripsi_keahlian" rows="3" placeholder="Jelaskan keahlian atau kompetensi yang Anda miliki saat ini..." required maxlength="500" oninput="countChars(this,'cc-keahlian')"><?= old('deskripsi_keahlian', $draft['deskripsi_keahlian'] ?? '') ?></textarea>
             <div class="char-counter"><span id="cc-keahlian">0</span>/500 karakter</div>
         </div>
 
         <!-- Deskripsi Magang -->
         <div class="mb-4">
             <label class="wz-form-label" id="lbl-magang">Apa yang ingin Anda kerjakan? <span class="text-danger">*</span></label>
-            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana kegiatan yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi') ?></textarea>
+            <textarea class="wz-form-control" name="deskripsi" id="deskripsi" rows="4" placeholder="Jelaskan maksud, tujuan, atau rencana kegiatan yang ingin Anda ajukan..." required maxlength="1000" oninput="countChars(this,'cc-magang')"><?= old('deskripsi', $draft['rencana_kegiatan'] ?? '') ?></textarea>
             <div class="char-counter"><span id="cc-magang">0</span>/1000 karakter</div>
         </div>
 
@@ -255,23 +275,50 @@ if(session()->getFlashdata('permohonan_sent')):
         </p>
 
         <!-- Upload: Surat Pengantar -->
-        <div class="mb-4">
+        <div class="mb-4 position-relative">
             <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi <span class="text-danger">*</span></label>
-            <input class="form-control" type="file" name="surat_pengantar" id="input-surat" accept=".pdf" required>
+            <div class="position-relative">
+                <input class="form-control" type="file" name="surat_pengantar" id="input-surat" accept=".pdf" <?= empty($draft['surat_pengantar']) ? 'required' : '' ?> style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;" onchange="document.getElementById('text-surat').textContent = this.files[0] ? this.files[0].name : '<?= !empty($draft['surat_pengantar']) ? esc($draft['nama_surat_pengantar'] ?? basename($draft['surat_pengantar'])) : 'No file chosen' ?>';">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-surat" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['surat_pengantar']) ? esc($draft['nama_surat_pengantar'] ?? basename($draft['surat_pengantar'])) : 'No file chosen' ?>
+                    </div>
+                </div>
+            </div>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF | Maksimal ukuran: 2 MB</div>
         </div>
 
         <!-- Upload: CV / Proposal -->
         <div class="mb-4" id="wrapper-cv">
             <label class="wz-form-label" id="lbl-cv">Curriculum Vitae (CV) Terbaru <span class="text-danger">*</span></label>
-            <input class="form-control" type="file" name="cv" id="input-cv" accept=".pdf">
+            <div class="position-relative">
+                <input class="form-control" type="file" name="cv" id="input-cv" accept=".pdf" style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;" onchange="document.getElementById('text-cv').textContent = this.files[0] ? this.files[0].name : '<?= !empty($draft['cv']) ? esc($draft['nama_cv'] ?? basename($draft['cv'])) : 'No file chosen' ?>';">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-cv" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['cv']) ? esc($draft['nama_cv'] ?? basename($draft['cv'])) : 'No file chosen' ?>
+                    </div>
+                </div>
+            </div>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF | Maksimal ukuran: 2 MB</div>
+            <?php if(session()->getFlashdata('errors') || session()->getFlashdata('error')) : ?>
+                <div class="text-danger mt-1" style="font-size: 0.75rem; font-weight: 600;"><i class="bi bi-exclamation-triangle-fill"></i> Pastikan Anda memilih (browse) ulang file ini jika bermaksud merevisinya.</div>
+            <?php endif; ?>
         </div>
 
         <!-- Upload: KTM -->
-        <div class="mb-4">
+        <div class="mb-4 position-relative">
             <label class="wz-form-label" id="lbl-ktm">Kartu Identitas (KTM / Kartu Pelajar) <span class="text-danger">*</span></label>
-            <input class="form-control" type="file" name="ktm" id="input-ktm" accept=".pdf,.jpg,.jpeg,.png" required>
+            <div class="position-relative">
+                <input class="form-control" type="file" name="ktm" id="input-ktm" accept=".pdf,.jpg,.jpeg,.png" <?= empty($draft['ktm']) ? 'required' : '' ?> style="opacity: 0; position: absolute; top: 0; left: 0; z-index: 2; width: 100%; height: 100%; cursor: pointer;" onchange="document.getElementById('text-ktm').textContent = this.files[0] ? this.files[0].name : '<?= !empty($draft['ktm']) ? esc($draft['nama_ktm'] ?? basename($draft['ktm'])) : 'No file chosen' ?>';">
+                <div class="form-control d-flex align-items-center" style="z-index: 1; overflow: hidden;">
+                    <div style="background: #e9ecef; border-right: 1px solid #ced4da; margin: -0.375rem 0.75rem -0.375rem -0.75rem; padding: 0.375rem 0.75rem; color: #212529;">Choose File</div>
+                    <div id="text-ktm" class="text-truncate" style="color: #212529;">
+                        <?= !empty($draft['ktm']) ? esc($draft['nama_ktm'] ?? basename($draft['ktm'])) : 'No file chosen' ?>
+                    </div>
+                </div>
+            </div>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF, JPG, PNG | Maksimal ukuran: 2 MB</div>
         </div>
 
@@ -308,14 +355,26 @@ if(session()->getFlashdata('permohonan_sent')):
                 <div class="review-data-card h-100 mb-0">
                     <div class="rv-title">Identitas Pribadi</div>
                     <table class="rv-table">
+                        <?php 
+                            $isSiswa = (isset($instansi['jenjang_pendidikan']) && stripos($instansi['jenjang_pendidikan'], 'SM') !== false) || (isset($instansi['id_jenjang_pendidikan']) && $instansi['id_jenjang_pendidikan'] == 3);
+                            $labelNim = $isSiswa ? 'NISN' : 'NIM';
+                            $labelKelas = $isSiswa ? 'Kelas' : 'Semester';
+                            $valKelas = $isSiswa ? ($instansi['kelas'] ?? '-') : ($instansi['semester'] ?? '-');
+                        ?>
                         <tr><td style="width:140px;">Nama Lengkap</td><td class="rv-sep">:</td><td class="text-dark"><?= esc($mhs['nama_mahasiswa'] ?? '-') ?></td></tr>
-                        <tr><td id="lbl-rv-nim">NIM / NISN</td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
+                        <tr><td>Jenis Kelamin</td><td class="rv-sep">:</td><td><?= esc(isset($mhs['jenis_kelamin']) ? ($mhs['jenis_kelamin'] === 'L' ? 'Laki-laki' : ($mhs['jenis_kelamin'] === 'P' ? 'Perempuan' : '-')) : '-') ?></td></tr>
+                        <tr><td>Tanggal Lahir</td><td class="rv-sep">:</td><td><?= esc(!empty($mhs['tgl_lahir']) ? date('d F Y', strtotime($mhs['tgl_lahir'])) : '-') ?></td></tr>
+                        <tr><td id="lbl-rv-nim"><?= $labelNim ?></td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
                         <tr><td>NIK</td><td class="rv-sep">:</td><td><?= esc($mhs['nik'] ?? '-') ?></td></tr>
                         <tr><td>Nomor WhatsApp</td><td class="rv-sep">:</td><td><?= esc($mhs['no_telp'] ?? '-') ?></td></tr>
                         <tr><td>Email</td><td class="rv-sep">:</td><td><?= esc($mhs['email'] ?? '-') ?></td></tr>
+                        <tr><td>Jenjang Pendidikan</td><td class="rv-sep">:</td><td><?= esc($instansi['jenjang_pendidikan'] ?? '-') ?></td></tr>
                         <tr><td>Asal Instansi Pendidikan</td><td class="rv-sep">:</td><td><?= esc($instansi['instansi_pendidikan'] ?? '-') ?></td></tr>
+                        <?php if (!$isSiswa && !empty($instansi['fakultas'])): ?>
+                            <tr><td>Fakultas</td><td class="rv-sep">:</td><td><?= esc($instansi['fakultas']) ?></td></tr>
+                        <?php endif; ?>
                         <tr><td>Jurusan</td><td class="rv-sep">:</td><td><?= esc(!empty($instansi['prodi']) ? $instansi['prodi'] : ($instansi['jurusan'] ?? '-')) ?></td></tr>
-                        <tr><td id="lbl-rv-semester">Semester / Kelas</td><td class="rv-sep">:</td><td><?= esc($instansi['semester'] ?? '-') ?></td></tr>
+                        <tr><td id="lbl-rv-semester"><?= $labelKelas ?></td><td class="rv-sep">:</td><td><?= esc($valKelas) ?></td></tr>
                     </table>
                 </div>
             </div>

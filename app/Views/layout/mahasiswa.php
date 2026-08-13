@@ -329,22 +329,22 @@ document.querySelectorAll('.locked-menu').forEach(item => {
             ?>
             <div class="text-end">
                 <div class="fw-bold text-dark mb-0" style="font-size: 0.88rem;"><?= esc($nama_user) ?></div>
-                <div class="text-muted" style="font-size: 0.72rem;">Aktor: Mahasiswa</div>
+                <div class="text-muted" style="font-size: 0.75rem; letter-spacing: 0.3px; font-weight: 500;"><?= session()->get('kategori_pelajar') ?? 'Mahasiswa' ?></div>
             </div>
             <div class="dropdown">
                 <div class="avatar-circle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                     <?= esc($inisial) ?>
                 </div>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom mt-3" style="min-width: 220px;">
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" style="min-width: 160px; font-size: 0.85rem; border: 1px solid #e2e8f0; border-radius: 8px;">
                     <li>
-                        <a class="dropdown-item dropdown-item-custom" href="<?= base_url('mahasiswa/profil') ?>">
-                            <i class="bi bi-person-circle fs-5 me-3 text-primary"></i> Profil Saya
+                        <a class="dropdown-item py-2 text-dark" href="<?= base_url('mahasiswa/profil') ?>">
+                            <i class="bi bi-person fa-fw me-2 text-secondary"></i> Profil Saya
                         </a>
                     </li>
-                    <li><hr class="dropdown-divider my-2 mx-2 opacity-50"></li>
+                    <li><hr class="dropdown-divider my-1 opacity-25"></li>
                     <li>
-                        <a class="dropdown-item dropdown-item-custom text-danger" href="#" onclick="document.getElementById('btn-logout').click();">
-                            <i class="bi bi-box-arrow-right fs-5 me-3"></i> Keluar Akun
+                        <a class="dropdown-item py-2 text-dark" href="#" onclick="document.getElementById('btn-logout').click();">
+                            <i class="bi bi-box-arrow-right fa-fw me-2 text-secondary"></i> Keluar Akun
                         </a>
                     </li>
                 </ul>

@@ -26,10 +26,16 @@ class Log extends BaseController
             ]);
         }
 
+        $bulanIndo = [
+            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
+            7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+        ];
+
         // Format tanggal agar lebih manusiawi
         foreach ($logs as &$log) {
-            $date = date_create($log['created_at']);
-            $log['tanggal_format'] = date_format($date, 'd M Y, H:i');
+            $t = strtotime($log['created_at']);
+            $m = (int)date('n', $t);
+            $log['tanggal_format'] = date('d', $t) . ' ' . $bulanIndo[$m] . ' ' . date('Y, H:i', $t);
             
             // Tentukan warna ikon berdasarkan aksi
             $aksi = strtolower($log['aksi']);

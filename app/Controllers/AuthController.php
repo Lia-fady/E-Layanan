@@ -434,13 +434,23 @@ class AuthController extends BaseController
                 // Mengambil biodata langsung dan melakukan join ke tabel induk pendidikan
                 $mahasiswa = $this->mahasiswaModel->find($userMahasiswa['id_mahasiswa']);
 
-                // Ambil data kampus pasangannya dari tabel jembatan t_instansi_mahasiswa
+                // Ambil data kampus pasangannya dari tabel jembatan t_instansi_mahasiswa beserta jenjang pendidikannya
                 $akademik = $db->table('t_instansi_mahasiswa im')
-                    ->select('ip.instansi_pendidikan')
+                    ->select('ip.instansi_pendidikan, jp.nama_jenjang')
                     ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
+                    ->join('m_jenjang_pendidikan jp', 'jp.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left')
                     ->where('im.id_mahasiswa', $userMahasiswa['id_mahasiswa'])
                     ->get()
                     ->getRowArray();
+
+                // Deteksi kategori pelajar berdasarkan jenjang pendidikan
+                $kategori_pelajar = 'Mahasiswa'; // Default
+                if (!empty($akademik) && !empty($akademik['nama_jenjang'])) {
+                    $jenjang = strtoupper($akademik['nama_jenjang']);
+                    if (strpos($jenjang, 'SMA') !== false || strpos($jenjang, 'SMK') !== false || strpos($jenjang, 'SLTA') !== false) {
+                        $kategori_pelajar = 'Siswa';
+                    }
+                }
 
                 // Set data ke Session secara lengkap tanpa ada yang tertinggal
                 $sessionData = [
@@ -451,6 +461,7 @@ class AuthController extends BaseController
                     'nim'               => $mahasiswa['nim'], 
                     'kampus'            => (!empty($akademik)) ? $akademik['instansi_pendidikan'] : 'Belum Memilih Kampus',
                     'role'              => 'mahasiswa',
+                    'kategori_pelajar'  => $kategori_pelajar,
                     'isLoggedIn'        => true
                 ];
                 session()->set($sessionData);
