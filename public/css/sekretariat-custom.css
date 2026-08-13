@@ -1424,3 +1424,192 @@ html, body {
         padding: 0 1rem 1rem;
     }
 }
+
+/* ===================================================================
+   DETAIL PEMOHON - Redesign Layout Profile Kiri + Detail Kanan
+   Scoped ke .detail-pemohon agar tidak memengaruhi halaman lain.
+   Menggunakan warna existing project (SB Admin 2 + sekretariat theme).
+   =================================================================== */
+
+/* Container utama */
+.detail-pemohon {
+    display: flex;
+    gap: 0;
+    min-height: 200px;
+}
+
+/* Panel Kiri - Profile */
+.detail-pemohon__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid #e5e7eb;
+    background-color: #f8fafb;
+    border-radius: 0 0 0 8px;
+}
+
+.detail-pemohon__avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #e8edf5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.detail-pemohon__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-pemohon__avatar i {
+    font-size: 2.5rem;
+    color: #98a2b3;
+}
+
+.detail-pemohon__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1d2939;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.detail-pemohon__badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background-color: #e8f4fd;
+    color: #1a73e8;
+    margin-bottom: 0.5rem;
+}
+
+.detail-pemohon__meta {
+    font-size: 0.78rem;
+    color: #667085;
+    line-height: 1.5;
+}
+
+/* Panel Kanan - Detail Content */
+.detail-pemohon__content {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    min-width: 0;
+}
+
+/* Section dalam Panel Kanan */
+.detail-pemohon__section {
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.detail-pemohon__section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.detail-pemohon__section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1B2A4A;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-pemohon__section-title i {
+    font-size: 0.8rem;
+    color: #2563EB;
+}
+
+/* Label dan Value */
+.detail-pemohon__label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.detail-pemohon__value {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #0f172a;
+    line-height: 1.4;
+}
+
+/* Textarea/Description box */
+.detail-pemohon__desc-box {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: #334155;
+    line-height: 1.6;
+    min-height: 60px;
+}
+
+.detail-pemohon__desc-box em {
+    color: #94a3b8;
+}
+
+/* Field group spacing */
+.detail-pemohon__field {
+    margin-bottom: 1rem;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 991.98px) {
+    .detail-pemohon {
+        flex-direction: column;
+    }
+
+    .detail-pemohon__profile {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.5rem 1rem;
+        border-radius: 0;
+    }
+
+    .detail-pemohon__content {
+        padding: 1.25rem 1rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .detail-pemohon__content {
+        padding: 1rem 0.75rem;
+    }
+
+    .detail-pemohon__profile {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .detail-pemohon__avatar {
+        width: 72px;
+        height: 72px;
+    }
+
+    .detail-pemohon__avatar i {
+        font-size: 2rem;
+    }
+}

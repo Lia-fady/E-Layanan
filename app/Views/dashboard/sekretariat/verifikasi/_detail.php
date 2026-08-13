@@ -74,177 +74,206 @@ if ($statusPersetujuan === 'DITOLAK') {
             </div>
         <?php endif; ?>
 
-        <!-- Card 1: Informasi Pemohon -->
-        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;">
+        <!-- Card 1: Data Lengkap Pemohon - Layout Profile Kiri + Detail Kanan -->
+        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; overflow: hidden;">
             <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
                 <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Data Lengkap Pemohon</h6>
             </div>
-            <div class="card-body px-4 pb-4 pt-2">
-                <hr class="mt-0 mb-4" style="border-top: 1px solid #f1f5f9;">
-                <div class="row">
-                    <!-- Baris 1 -->
-                    <div class="col-md-3 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">NAMA LENGKAP</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->nama_mahasiswa ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-5 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">JURUSAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->nama_prodi ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">PROVINSI</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->provinsi ?? '-') ?></span>
-                    </div>
+            <div class="card-body p-0">
+                <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
 
-                    <!-- Baris 2 -->
-                    <div class="col-md-3 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">NIK</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->nik ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-5 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">UNIVERSITAS</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->instansi_pendidikan ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">KABUPATEN/KOTA</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->kabupaten_kota ?? '-') ?></span>
-                    </div>
-
-                    <!-- Baris 3 -->
-                    <div class="col-md-3 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">NO. TELEPON</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->no_telp ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-5 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">JENIS KEGIATAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->jenis_permohonan ?? '-') ?></span>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">KECAMATAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->kecamatan ?? '-') ?></span>
-                    </div>
-
-                    <!-- Baris 4 -->
-                    <div class="col-md-3 mb-4 mb-md-0">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">TANGGAL PENGAJUAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= tgl_indo($permohonan->created_at, true) ?></span>
-                    </div>
-                    <div class="col-md-5 mb-4 mb-md-0">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">PERIODE KEGIATAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;">
-                            <?= tgl_indo($permohonan->tgl_mulai) ?> <span class="text-muted mx-1">s/d</span> <?= tgl_indo($permohonan->tgl_selesai) ?>
+                <div class="detail-pemohon">
+                    <!-- Panel Kiri - Profile Pemohon -->
+                    <div class="detail-pemohon__profile" style="width: 25%; min-width: 200px; max-width: 280px;">
+                        <div class="detail-pemohon__avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="detail-pemohon__name"><?= esc($permohonan->nama_mahasiswa ?? '-') ?></div>
+                        <span class="detail-pemohon__badge">
+                            <i class="fas fa-briefcase mr-1" style="font-size: 0.65rem;"></i>
+                            <?= esc($permohonan->jenis_permohonan ?? 'Permohonan') ?>
                         </span>
-                    </div>
-                    <div class="col-md-4 mb-4 mb-md-0">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">KELURAHAN</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;"><?= esc($permohonan->kelurahan ?? '-') ?></span>
+                        <div class="detail-pemohon__meta mt-2">
+                            <?= esc($permohonan->instansi_pendidikan ?? '-') ?>
+                        </div>
                     </div>
 
-                    <!-- Baris 5 -->
-                    <div class="col-md-3 d-none d-md-block"></div>
-                    <div class="col-md-5 d-none d-md-block"></div>
-                    <div class="col-md-4 mt-md-4">
-                        <span class="d-block text-uppercase mb-1" style="font-size: 10px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;">RT/RW</span>
-                        <span style="font-size: 13px; color: #0f172a; font-weight: 500;">
-                            <?= esc($permohonan->rt ?? '-') ?> / <?= esc($permohonan->rw ?? '-') ?>
-                        </span>
+                    <!-- Panel Kanan - Detail Informasi -->
+                    <div class="detail-pemohon__content">
+
+                        <!-- Section 1: Informasi Pribadi -->
+                        <div class="detail-pemohon__section">
+                            <div class="detail-pemohon__section-title">
+                                <i class="fas fa-user"></i> Informasi Pribadi
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Nama Lengkap</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->nama_mahasiswa ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">NIK</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->nik ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">No. Telepon</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->no_telp ?? '-') ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Informasi Pendidikan -->
+                        <div class="detail-pemohon__section">
+                            <div class="detail-pemohon__section-title">
+                                <i class="fas fa-graduation-cap"></i> Informasi Pendidikan
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Universitas / Institusi</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->instansi_pendidikan ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-6 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Jurusan / Program Studi</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->nama_prodi ?? '-') ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Alamat -->
+                        <div class="detail-pemohon__section">
+                            <div class="detail-pemohon__section-title">
+                                <i class="fas fa-map-marker-alt"></i> Alamat
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Provinsi</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->provinsi ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Kabupaten / Kota</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->kabupaten_kota ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Kecamatan</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->kecamatan ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Kelurahan</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->kelurahan ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">RT / RW</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->rt ?? '-') ?> / <?= esc($permohonan->rw ?? '-') ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Informasi Pengajuan -->
+                        <div class="detail-pemohon__section">
+                            <div class="detail-pemohon__section-title">
+                                <i class="fas fa-file-alt"></i> Informasi Pengajuan
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Jenis Kegiatan</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->jenis_permohonan ?? '-') ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Tanggal Pengajuan</span>
+                                    <span class="detail-pemohon__value"><?= tgl_indo($permohonan->created_at, true) ?></span>
+                                </div>
+                                <div class="col-sm-4 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Periode Kegiatan</span>
+                                    <span class="detail-pemohon__value">
+                                        <?= tgl_indo($permohonan->tgl_mulai) ?> <span class="text-muted">s/d</span> <?= tgl_indo($permohonan->tgl_selesai) ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-12 detail-pemohon__field">
+                                    <span class="detail-pemohon__label"><?= esc($labelKeahlian) ?></span>
+                                    <div class="detail-pemohon__desc-box mt-1">
+                                        <?= !empty($permohonan->deskripsi_keahlian) ? nl2br(esc($permohonan->deskripsi_keahlian)) : '<em>Belum diisi</em>' ?>
+                                    </div>
+                                </div>
+                                <div class="col-12 detail-pemohon__field mb-0">
+                                    <span class="detail-pemohon__label"><?= esc($labelDeskripsi) ?></span>
+                                    <div class="detail-pemohon__desc-box mt-1">
+                                        <?= !empty($permohonan->rencana_kegiatan) ? nl2br(esc($permohonan->rencana_kegiatan)) : '<em>Belum diisi</em>' ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                    <!-- End Panel Kanan -->
                 </div>
+
             </div>
         </div>
 
-        <!-- Bagian 2: Data Permohonan (Kiri) & Dokumen (Kanan) -->
-        <div class="row mb-4 align-items-stretch">
-            <!-- Card 2: Data Permohonan -->
-            <div class="col-md-5 mb-4 mb-md-0 d-flex flex-column">
-                <div class="card bg-white border-0 shadow-sm h-100 flex-grow-1" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-                        <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Data Permohonan</h6>
-                    </div>
-                    <div class="card-body px-4 pb-4 pt-2">
-                        <hr class="mt-0 mb-4" style="border-top: 1px solid #f1f5f9;">
-                        
-                        <div class="mb-4">
-                            <label class="d-block text-uppercase mb-2" style="font-size: 12px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;"><?= esc($labelKeahlian) ?></label>
-                            <div class="rounded px-3 py-3" style="background-color: #f8fafc; font-size: 14px; color: #334155; min-height: 80px; border: 1px solid #e2e8f0; line-height: 1.6;">
-                                <?= !empty($permohonan->deskripsi_keahlian) ? nl2br(esc($permohonan->deskripsi_keahlian)) : '<em style="color: #94a3b8;">Belum diisi</em>' ?>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="d-block text-uppercase mb-2" style="font-size: 12px; font-weight: 600; color: #64748b; letter-spacing: 0.5px;"><?= esc($labelDeskripsi) ?></label>
-                            <div class="rounded px-3 py-3" style="background-color: #f8fafc; font-size: 14px; color: #334155; min-height: 80px; border: 1px solid #e2e8f0; line-height: 1.6;">
-                                <?= !empty($permohonan->rencana_kegiatan) ? nl2br(esc($permohonan->rencana_kegiatan)) : '<em style="color: #94a3b8;">Belum diisi</em>' ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Card 2: Dokumen yang Diajukan (full-width) -->
+        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; overflow: hidden;">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
+                <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Dokumen yang Diajukan</h6>
             </div>
+            <div class="card-body p-0 d-flex flex-column justify-content-between">
+                <div>
+                    <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
+                    <div class="table-responsive">
+                        <table class="table table-borderless m-0" style="font-size: 12px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <th width="5%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NO.</th>
+                                    <th class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NAMA DOKUMEN</th>
+                                    <th width="15%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">FILE</th>
+                                    <th width="40%" class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">VERIFIKASI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($files)) : ?>
+                                    <?php $no = 1; foreach ($files as $f) : ?>
+                                        <?php $fStatus = $f->status_verifikasi ?? ''; ?>
+                                        <tr style="border-bottom: 1px solid #f8fafc;">
+                                            <td class="text-center align-middle py-3" style="color: #64748b; font-size: 14px;"><?= $no++ ?></td>
+                                            <td class="align-middle py-3 font-weight-500" style="color: #1e293b; font-size: 14px;"><?= esc($f->nama_file_master ?? 'Dokumen') ?></td>
+                                            <td class="text-center align-middle py-3">
+                                                <a href="<?= base_url($f->path_file) ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 py-1" style="font-size: 11px; font-weight: 500;" title="Lihat Berkas">
+                                                    Lihat
+                                                </a>
+                                            </td>
+                                            <td class="align-middle py-3">
+                                                <div class="d-flex align-items-center" style="gap: 16px;">
+                                                    <input type="hidden" name="file_status[<?= $f->id_file_permohonan_magang ?>]" value="<?= esc($fStatus) ?>" required>
+                                                    
+                                                    <!-- Using checkbox to preserve existing javascript mechanism -->
+                                                    <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0">
+                                                        <input type="checkbox" class="custom-control-input cb-sesuai" id="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
+                                                        <label class="custom-control-label" for="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
+                                                            Sesuai
+                                                        </label>
+                                                    </div>
 
-            <!-- Card 3: Dokumen yang Diajukan -->
-            <div class="col-md-7 d-flex flex-column">
-                <div class="card bg-white border-0 shadow-sm h-100 flex-grow-1" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; overflow: hidden;">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-                        <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Dokumen yang Diajukan</h6>
-                    </div>
-                    <div class="card-body p-0 d-flex flex-column justify-content-between">
-                        <div>
-                            <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
-                            <div class="table-responsive">
-                                <table class="table table-borderless m-0" style="font-size: 12px;">
-                                    <thead>
-                                        <tr style="border-bottom: 1px solid #f1f5f9;">
-                                            <th width="5%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NO.</th>
-                                            <th class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NAMA DOKUMEN</th>
-                                            <th width="15%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">FILE</th>
-                                            <th width="40%" class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">VERIFIKASI</th>
+                                                    <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0 mr-0">
+                                                        <input type="checkbox" class="custom-control-input cb-tidak-sesuai" id="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'TIDAK_SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
+                                                        <label class="custom-control-label" for="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
+                                                            Tidak Sesuai
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php if (!empty($files)) : ?>
-                                            <?php $no = 1; foreach ($files as $f) : ?>
-                                                <?php $fStatus = $f->status_verifikasi ?? ''; ?>
-                                                <tr style="border-bottom: 1px solid #f8fafc;">
-                                                    <td class="text-center align-middle py-3" style="color: #64748b; font-size: 14px;"><?= $no++ ?></td>
-                                                    <td class="align-middle py-3 font-weight-500" style="color: #1e293b; font-size: 14px;"><?= esc($f->nama_file_master ?? 'Dokumen') ?></td>
-                                                    <td class="text-center align-middle py-3">
-                                                        <a href="<?= base_url($f->path_file) ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 py-1" style="font-size: 11px; font-weight: 500;" title="Lihat Berkas">
-                                                            Lihat
-                                                        </a>
-                                                    </td>
-                                                    <td class="align-middle py-3">
-                                                        <div class="d-flex align-items-center" style="gap: 16px;">
-                                                            <input type="hidden" name="file_status[<?= $f->id_file_permohonan_magang ?>]" value="<?= esc($fStatus) ?>" required>
-                                                            
-                                                            <!-- Using checkbox to preserve existing javascript mechanism -->
-                                                            <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0">
-                                                                <input type="checkbox" class="custom-control-input cb-sesuai" id="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
-                                                                <label class="custom-control-label" for="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
-                                                                    Sesuai
-                                                                </label>
-                                                            </div>
-
-                                                            <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0 mr-0">
-                                                                <input type="checkbox" class="custom-control-input cb-tidak-sesuai" id="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'TIDAK_SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
-                                                                <label class="custom-control-label" for="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
-                                                                    Tidak Sesuai
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <?php if (!$isLocked) : ?>
-                        <div class="px-4 py-3" style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; font-size: 11px; color: #64748b;">
-                            <i class="fas fa-info-circle mr-1" style="color: #64748b;"></i> Jika berkas Tidak Sesuai, status menjadi Perbaikan Berkas dan disposisi batal.
-                        </div>
-                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <?php if (!$isLocked) : ?>
+                <div class="px-4 py-3" style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; font-size: 11px; color: #64748b;">
+                    <i class="fas fa-info-circle mr-1" style="color: #64748b;"></i> Jika berkas Tidak Sesuai, status menjadi Perbaikan Berkas dan disposisi batal.
+                </div>
+                <?php endif; ?>
             </div>
         </div>
 
