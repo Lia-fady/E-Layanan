@@ -115,7 +115,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
         <div class="tw-header">
             <div class="tw-header-text">
                 <span class="tw-header-actor"><?= esc($p['nama_mahasiswa'] ?? 'Mahasiswa') ?></span> mengajukan permohonan <?= strtolower(esc($p['jenis_permohonan'] ?? 'magang')) ?>.
-                <span class="tw-header-time"><?= date('d F Y, H:i', strtotime($p['created_at'])) ?> WIB</span>
+                <span class="tw-header-time"><?= !empty($p['created_at']) ? tgl_indo($p['created_at'], true) . ' WIB' : '-' ?></span>
             </div>
             <div class="tw-badge pengajuan">pengajuan</div>
         </div>
@@ -144,7 +144,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     </tr>
                     <tr>
                         <th>Tanggal Lahir</th>
-                        <td><?= !empty($p['tgl_lahir']) ? date('d F Y', strtotime($p['tgl_lahir'])) : '-' ?></td>
+                        <td><?= !empty($p['tgl_lahir']) ? tgl_indo($p['tgl_lahir']) : '-' ?></td>
                     </tr>
                     <tr>
                         <th>Alamat Email</th>
@@ -174,7 +174,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     </tr>
                     <tr>
                         <th><?= $isSiswa ? 'Kelas' : 'Semester' ?></th>
-                        <td><?= esc($p['semester'] ?? '-') ?></td>
+                        <td><?= esc(!empty($p['kelas']) ? $p['kelas'] : ($p['semester'] ?? '-')) ?></td>
                     </tr>
                     <?php if(!$isSiswa): ?>
                     <tr>
@@ -185,13 +185,15 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <tr>
                         <th>Alamat Domisili</th>
                         <td>
-                            <?= esc($p['alamat'] ?? '-') ?>
-                            <?php if(!empty($p['kelurahan']) || !empty($p['kecamatan'])): ?>
-                            <br><span class="text-muted" style="font-size: 0.8rem;">(Kel. <?= esc($p['kelurahan'] ?? '-') ?>, Kec. <?= esc($p['kecamatan'] ?? '-') ?>)</span>
-                            <?php endif; ?>
-                            <?php if(!empty($p['provinsi'])): ?>
-                            <br><span class="text-muted" style="font-size: 0.8rem;"><?= esc($p['provinsi']) ?></span>
-                            <?php endif; ?>
+                            <?php
+                                $alamatParts = [];
+                                if (!empty($p['alamat']) && $p['alamat'] !== '-') $alamatParts[] = trim($p['alamat']);
+                                if (!empty($p['kelurahan']) && $p['kelurahan'] !== '-') $alamatParts[] = 'Kelurahan ' . trim($p['kelurahan']);
+                                if (!empty($p['kecamatan']) && $p['kecamatan'] !== '-') $alamatParts[] = 'Kecamatan ' . trim($p['kecamatan']);
+                                if (!empty($p['kabupaten_kota']) && $p['kabupaten_kota'] !== '-') $alamatParts[] = trim($p['kabupaten_kota']);
+                                if (!empty($p['provinsi']) && $p['provinsi'] !== '-') $alamatParts[] = 'Provinsi ' . trim($p['provinsi']);
+                                echo !empty($alamatParts) ? esc(implode(', ', $alamatParts)) : '-';
+                            ?>
                         </td>
                     </tr>
                 </table>
@@ -205,9 +207,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <td><?= esc($p['jenis_permohonan'] ?? '-') ?></td>
                 </tr>
                 <?php
-                    $bln = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-                    $tglMulai = date('d', strtotime($p['tgl_mulai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_mulai']))] . ' ' . date('Y', strtotime($p['tgl_mulai']));
-                    $tglSelesai = date('d', strtotime($p['tgl_selesai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_selesai']))] . ' ' . date('Y', strtotime($p['tgl_selesai']));
+                    $tglMulai = !empty($p['tgl_mulai']) ? tgl_indo($p['tgl_mulai']) : '-';
+                    $tglSelesai = !empty($p['tgl_selesai']) ? tgl_indo($p['tgl_selesai']) : '-';
                 ?>
                 <tr>
                     <th>Tanggal Mulai</th>
@@ -284,7 +285,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         $waktuSekre = !empty($p['waktu_sekretariat']) ? $p['waktu_sekretariat'] : (!empty($p['waktu_sekretariat_fallback']) ? $p['waktu_sekretariat_fallback'] : '');
                         if(!empty($waktuSekre)): 
                     ?>
-                        <?= date('d F Y, H:i', strtotime($waktuSekre)) ?> WIB
+                        <?= tgl_indo($waktuSekre, true) ?> WIB
+                    <?php else: ?>
+                        Menunggu Proses
                     <?php endif; ?>
                 </span>
             </div>
@@ -411,7 +414,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                 <span class="tw-header-time">
                     <?php $waktuKabid = !empty($p['waktu_kabid']) ? $p['waktu_kabid'] : (!empty($p['waktu_kabid_fallback']) ? $p['waktu_kabid_fallback'] : ''); ?>
                     <?php if(!empty($waktuKabid) && !$isKabidMenunggu): ?>
-                        <?= date('d F Y, H:i', strtotime($waktuKabid)) ?> WIB
+                        <?= tgl_indo($waktuKabid, true) ?> WIB
+                    <?php else: ?>
+                        Menunggu Proses
                     <?php endif; ?>
                 </span>
             </div>

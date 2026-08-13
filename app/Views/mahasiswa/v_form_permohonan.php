@@ -118,16 +118,7 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
 </div>
 
-<?php elseif($state == 6): ?>
-<!-- ============ TAMPILAN JIKA PERMOHONAN SEDANG REVISI (STATE 6) ============ -->
-<div class="wizard-card text-center py-5">
-    <div style="width: 80px; height: 80px; border-radius: 50%; background: #fef08a; color: #ca8a04; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
-        <i class="bi bi-pencil-square"></i>
-    </div>
-    <h5 class="fw-bold text-dark mb-2">Permohonan Perlu Revisi Berkas</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:450px;">Berkas permohonan Anda sebelumnya dikembalikan karena ada berkas yang tidak sesuai.<br><br>Anda <strong>tidak perlu membuat permohonan baru</strong>. Silakan kembali ke halaman <strong>Status Permohonan</strong> dan klik tombol Edit (Revisi) untuk mengunggah ulang berkas yang salah.</p>
-    <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-primary" style="background: #eab308; border-color: #ca8a04;"><i class="bi bi-card-checklist"></i> Pergi ke Halaman Status</a>
-</div>
+
 
 <?php else: ?>
 <!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3/6 - DITOLAK/PERLU REVISI) ============ -->

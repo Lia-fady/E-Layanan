@@ -139,6 +139,9 @@ class M_Verifikasi extends Model
             ip.instansi_pendidikan,
             pr.nama_prodi,
             fk.fakultas AS nama_fakultas,
+            im.semester,
+            im.angkatan_tahun,
+            kls.nama_kelas AS kelas,
             COALESCE(ps.status_persetujuan, "MENUNGGU") as status_persetujuan,
             ps.catatan,
             ps.id_persetujuan_magang,
@@ -158,6 +161,7 @@ class M_Verifikasi extends Model
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
         $builder->join('m_fakultas as fk', 'fk.id_fakultas = pr.id_fakultas', 'left');
+        $builder->join('m_kelas as kls', 'kls.id_kelas = im.id_kelas', 'left');
         $builder->join('m_jenjang_pendidikan as jn', 'jn.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
         $builder->where('pm.id_permohonan_magang', $id);
