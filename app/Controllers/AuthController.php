@@ -37,6 +37,9 @@ class AuthController extends BaseController
         // Mengambil data master jenjang pendidikan
         $data['jenjang'] = $db->table('m_jenjang_pendidikan')->where('status', 'AKTIF')->get()->getResultArray();
         
+        // Mengambil data jurusan
+        $data['jurusan_smk'] = $db->table('m_jurusan')->where('status', 'AKTIF')->get()->getResultArray();
+
         // Mengambil data master provinsi untuk dropdown alamat
         $data['provinsi'] = $db->table('m_provinsi')->get()->getResultArray();
         
@@ -235,8 +238,20 @@ class AuthController extends BaseController
                 ]
             ];
         } else {
-            $rules['nama_sekolah'] = ['rules' => 'required', 'errors' => ['required' => 'Instansi Pendidikan wajib diisi.']];
-            $rules['jurusan_smk'] = ['rules' => 'required', 'errors' => ['required' => 'Jurusan wajib diisi.']];
+            $rules['nama_sekolah'] = [
+                'rules' => 'required|is_not_unique[m_instansi_pendidikan.id_instansi_pendidikan]', 
+                'errors' => [
+                    'required' => 'Instansi Pendidikan wajib dipilih.',
+                    'is_not_unique' => 'Instansi Pendidikan tidak valid.'
+                ]
+            ];
+            $rules['jurusan_smk'] = [
+                'rules' => 'required|is_not_unique[m_jurusan.id_jurusan]', 
+                'errors' => [
+                    'required' => 'Jurusan wajib dipilih.',
+                    'is_not_unique' => 'Jurusan tidak valid.'
+                ]
+            ];
         }
 
         if ($isSiswa) {
@@ -275,28 +290,18 @@ class AuthController extends BaseController
 
         // Cek Jenjang (Siswa vs Mahasiswa logic based on UI)
         $id_instansi = $this->request->getPost('id_instansi_pendidikan');
-        $nama_sekolah = $this->request->getPost('nama_sekolah');
+        $nama_sekolah = $this->request->getPost('nama_sekolah'); // Untuk SMA/SMK ini sekarang berisi id_instansi_pendidikan
+        $id_jurusan_smk = $this->request->getPost('jurusan_smk'); // Untuk SMA/SMK ini sekarang berisi id_jurusan
+        $nama_jurusan_str = null;
         
         if (empty($id_instansi) && !empty($nama_sekolah)) {
-            $db = \Config\Database::connect();
-            // Cek exist
-            $eks = $db->table('m_instansi_pendidikan')->where('instansi_pendidikan', $nama_sekolah)->get()->getRow();
-            if($eks) {
-                $id_instansi = $eks->id_instansi_pendidikan;
-            } else {
-                $jenis = (stripos($nama_sekolah, 'negeri') !== false || stripos($nama_sekolah, 'n ') !== false) ? 'NEGERI' : 'SWASTA';
-                $res = $db->table('m_instansi_pendidikan')->insert([
-                    'id_jenjang_pendidikan' => $this->request->getPost('id_jenjang_pendidikan'),
-                    'instansi_pendidikan'   => $nama_sekolah,
-                    'jenis_instansi'        => $jenis,
-                    'status'                => 'AKTIF',
-                    'created_at'            => date('Y-m-d H:i:s')
-                ]);
-                if (!$res) {
-                    $db->transRollback();
-                    throw new \RuntimeException('Gagal insert sekolah baru (m_instansi_pendidikan). DB Error: ' . print_r($db->error(), true));
-                }
-                $id_instansi = $db->insertID();
+            $id_instansi = $nama_sekolah;
+        }
+
+        if (!empty($id_jurusan_smk) && is_numeric($id_jurusan_smk)) {
+            $jurusanRow = $db->table('m_jurusan')->where('id_jurusan', $id_jurusan_smk)->get()->getRow();
+            if ($jurusanRow) {
+                $nama_jurusan_str = $jurusanRow->nama_jurusan;
             }
         }
 
@@ -306,7 +311,8 @@ class AuthController extends BaseController
             'id_fakultas'            => $this->request->getPost('id_fakultas') ?: null,
             'id_prodi'               => $this->request->getPost('id_prodi') ?: null,
             'id_jenjang_pendidikan'  => $this->request->getPost('id_jenjang_pendidikan'),
-            'jurusan'                => $this->request->getPost('jurusan_smk') ?: null,
+            'id_jurusan'             => $id_jurusan_smk ?: null,
+            'jurusan'                => $nama_jurusan_str ?: null,
             'angkatan_tahun'         => $this->request->getPost('angkatan_tahun'),
             'semester'               => $this->request->getPost('semester') ?: null,
             'id_kelas'               => $this->request->getPost('id_kelas') ?: null,

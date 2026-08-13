@@ -352,7 +352,12 @@
                 <div class="field">
                     <label id="lbl_kampus">Instansi Pendidikan <span class="req">*</span></label>
                     <!-- Input untuk Instansi (Sekolah / Kampus) -->
-                    <input type="text" name="nama_sekolah" id="nama_sekolah" style="display:none;" placeholder="Contoh: SMKN 1 Tangerang" value="<?= old('nama_sekolah') ?>" maxlength="150" disabled>
+                    <select name="nama_sekolah" id="nama_sekolah" style="display:none;" disabled class="<?= isset($ve['nama_sekolah']) ? 'err' : '' ?>">
+                        <option value="" data-jenjang="">-- Pilih Instansi Pendidikan --</option>
+                        <?php if(!empty($kampus)): foreach($kampus as $k): ?>
+                            <option value="<?= $k['id_instansi_pendidikan'] ?>" data-jenjang="<?= $k['id_jenjang_pendidikan'] ?>" <?= old('nama_sekolah')==$k['id_instansi_pendidikan']?'selected':'' ?>><?= esc($k['instansi_pendidikan']) ?></option>
+                        <?php endforeach; endif; ?>
+                    </select>
                     <select name="id_instansi_pendidikan" id="kampus_select" required class="<?= isset($ve['id_instansi_pendidikan']) ? 'err' : '' ?>">
                         <option value="" data-jenjang="">-- Pilih Instansi --</option>
                         <?php if(!empty($kampus)): foreach($kampus as $k): ?>
@@ -375,7 +380,12 @@
                     <select name="id_prodi" id="prodi_select" required disabled data-old="<?= old('id_prodi') ?>" class="<?= isset($ve['id_prodi']) ? 'err' : '' ?>">
                         <option value="">-- Pilih Prodi --</option>
                     </select>
-                    <input type="text" name="jurusan_smk" id="jurusan_smk" style="display:none;" placeholder="Contoh: Rekayasa Perangkat Lunak" value="<?= old('jurusan_smk') ?>" maxlength="150" disabled>
+                    <select name="jurusan_smk" id="jurusan_smk" style="display:none;" disabled class="<?= isset($ve['jurusan_smk']) ? 'err' : '' ?>">
+                        <option value="" data-jenjang="">-- Pilih Jurusan --</option>
+                        <?php if(!empty($jurusan_smk)): foreach($jurusan_smk as $jsmk): ?>
+                            <option value="<?= $jsmk['id_jurusan'] ?>" data-jenjang="<?= $jsmk['id_jenjang_pendidikan'] ?>" <?= old('jurusan_smk')==$jsmk['id_jurusan']?'selected':'' ?>><?= esc($jsmk['nama_jurusan']) ?></option>
+                        <?php endforeach; endif; ?>
+                    </select>
                     <?php if(isset($ve['id_prodi'])): ?><div class="err-msg"><?= $ve['id_prodi'] ?></div><?php endif; ?>
                 </div>
 
@@ -555,8 +565,8 @@ function triggerJenjang() {
     var siswa = isSiswa();
     var jVal = $('#jenjang_pendidikan').val();
     
-    // Filter instansi dropdown based on jenjang
-    $('#kampus_select option').each(function() {
+    // Filter dropdowns based on jenjang
+    $('#kampus_select option, #nama_sekolah option, #jurusan_smk option').each(function() {
         var dj = $(this).attr('data-jenjang');
         if (!dj || dj === jVal) {
             $(this).show();
@@ -564,11 +574,26 @@ function triggerJenjang() {
             $(this).hide();
         }
     });
+    
+    if (!jVal) {
+        $('#nama_sekolah option:first').text('-- Pilih jenjang pendidikan terlebih dahulu --');
+        $('#jurusan_smk option:first').text('-- Pilih jenjang pendidikan terlebih dahulu --');
+    } else {
+        $('#nama_sekolah option:first').text('-- Pilih Instansi Pendidikan --');
+        $('#jurusan_smk option:first').text('-- Pilih Jurusan --');
+    }
+
     // Reset to default if currently selected option is now hidden
     if ($('#kampus_select option:selected').css('display') === 'none') {
         $('#kampus_select').val('');
         $('#fakultas_select').html('<option value="">-- Pilih Fakultas --</option>').val('');
         $('#prodi_select').html('<option value="">-- Pilih Prodi --</option>').val('');
+    }
+    if ($('#nama_sekolah option:selected').css('display') === 'none') {
+        $('#nama_sekolah').val('');
+    }
+    if ($('#jurusan_smk option:selected').css('display') === 'none') {
+        $('#jurusan_smk').val('');
     }
     
     if (siswa) {
@@ -765,8 +790,8 @@ function review_data() {
         h += tr('Tahun Akademik', g('tahun_akademik'));
     } else {
         h += tr('Jenjang Pendidikan', gt('jenjang_pendidikan'));
-        h += tr('Instansi Pendidikan', g('nama_sekolah'));
-        h += tr('Jurusan', g('jurusan_smk'));
+        h += tr('Instansi Pendidikan', gt('nama_sekolah'));
+        h += tr('Jurusan', gt('jurusan_smk'));
         h += tr('Kelas', gt('id_kelas'));
         h += tr('NISN', nimV);
     }
