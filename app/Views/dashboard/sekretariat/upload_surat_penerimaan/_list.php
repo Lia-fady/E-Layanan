@@ -9,46 +9,36 @@
  */
 ?>
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Daftar Peserta</h6>
+<!-- Search & Filter -->
+<div class="verifikasi-search-bar">
+    <div style="position:relative; flex:1; max-width:450px;">
+        <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#98a2b3;"></i>
+        <input type="text" id="searchUploadSurat" placeholder="Cari nama..." style="width:100%;">
     </div>
-    <div class="card-body">
-        <!-- Filter Row -->
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label>Jenis Permohonan</label>
-                <select id="filterJenisPermohonan" class="form-control form-control-sm">
-                    <option value="">-- Semua Jenis --</option>
-                    <option value="Penelitian">Penelitian Skripsi / TA</option>
-                    <option value="Observasi">Observasi / Pengambilan Data</option>
-                    <option value="Magang">Magang / PKL</option>
-                    <option value="Uji Coba">Uji Coba Produk (Prototype)</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label>Status</label>
-                <select id="filterStatusPermohonan" class="form-control form-control-sm">
-                    <option value="">-- Semua Status --</option>
-                    <option value="MENUNGGU">Menunggu</option>
-                    <option value="BERJALAN">Diterima / Berjalan</option>
-                    <option value="SELESAI">Selesai</option>
-                    <option value="DIBATALKAN">Dibatalkan</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label>Status Surat</label>
-                <select id="filterStatusSurat" class="form-control form-control-sm">
-                    <option value="">-- Semua --</option>
-                    <option value="Sudah Di-upload">Sudah Di-upload</option>
-                    <option value="Belum Di-upload">Belum Di-upload</option>
-                </select>
-            </div>
-        </div>
+    <select id="filterJenisPermohonan">
+        <option value="">-- Semua Jenis --</option>
+        <option value="Penelitian">Penelitian Skripsi / TA</option>
+        <option value="Observasi">Observasi / Pengambilan Data</option>
+        <option value="Magang">Magang / PKL</option>
+        <option value="Uji Coba">Uji Coba Produk (Prototype)</option>
+    </select>
+    <select id="filterStatusPermohonan">
+        <option value="">-- Semua Status --</option>
+        <option value="MENUNGGU">Menunggu</option>
+        <option value="BERJALAN">Diterima / Berjalan</option>
+        <option value="SELESAI">Selesai</option>
+        <option value="DIBATALKAN">Dibatalkan</option>
+    </select>
+    <select id="filterStatusSurat">
+        <option value="">-- Semua Surat --</option>
+        <option value="Sudah Di-upload">Sudah Di-upload</option>
+        <option value="Belum Di-upload">Belum Di-upload</option>
+    </select>
+</div>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                <thead class="bg-light">
+            <table class="riwayat-table" id="dataTable" width="100%">
+                <thead>
                     <tr>
                         <th width="5%" class="text-center">No</th>
                         <th>Nama</th>
@@ -95,5 +85,3 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>

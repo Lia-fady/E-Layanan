@@ -984,6 +984,23 @@ html, body {
     color: #fff;
 }
 
+/* Fix DataTables info & pagination spacing agar align dengan teks tabel */
+.dataTables_wrapper .dataTables_info {
+    padding-left: 1rem;
+    font-size: 0.85rem;
+    color: #667085;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    padding-right: 1rem;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
 /* ===================================================================
    DISPOSISI / PILIH BIDANG TUJUAN
    =================================================================== */

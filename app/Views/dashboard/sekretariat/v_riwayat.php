@@ -58,7 +58,7 @@
             <tr>
                 <th width="5%" class="text-center">NO</th>
                 <th>Nama</th>
-                <th>Universitas</th>
+                <th>Instansi</th>
                 <th>Jenis</th>
                 <th>Tanggal Pengajuan</th>
                 <th class="text-center">Status</th>

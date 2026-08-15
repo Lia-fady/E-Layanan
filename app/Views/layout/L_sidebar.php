@@ -71,6 +71,13 @@
         </a>
     </li>
 
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
+        </a>
+    </li>
+
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
             <i class="fas fa-fw fa-file-upload"></i>
@@ -85,12 +92,6 @@
         </a>
     </li>
 
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
-            <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat</span>
-        </a>
-    </li>
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-fw fa-sign-out-alt"></i>

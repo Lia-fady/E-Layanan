@@ -31,6 +31,14 @@
 </div>
 <?php endif; ?>
 
+<!-- Page Description -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Upload Surat Penerimaan</h5>
+    <p style="color:#667085; font-size:0.9rem; margin:0;">
+        Kelola dan unggah surat penerimaan untuk permohonan magang yang telah diproses.
+    </p>
+</div>
+
 <!-- Section Daftar Upload Surat -->
 <div id="sectionList">
     <?= $this->include('dashboard/sekretariat/upload_surat_penerimaan/_list') ?>
@@ -46,7 +54,41 @@
 <?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
-    var table = $('#dataTable').DataTable();
+    var table = $('#dataTable').DataTable({
+        "language": {
+            "decimal": "",
+            "emptyTable": "Tidak ada data yang tersedia",
+            "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+            "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+            "infoFiltered": "(disaring dari _MAX_ total entri)",
+            "lengthMenu": "Tampilkan _MENU_ entri",
+            "loadingRecords": "Memuat...",
+            "processing": "Memproses...",
+            "search": "Cari:",
+            "zeroRecords": "Tidak ditemukan data yang cocok",
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                "next": "Selanjutnya",
+                "previous": "Sebelumnya"
+            },
+            "aria": {
+                "sortAscending": ": aktifkan untuk mengurutkan kolom secara ascending",
+                "sortDescending": ": aktifkan untuk mengurutkan kolom secara descending"
+            }
+        },
+        "order": [[4, "asc"]],
+        "pageLength": 10,
+        "dom": '<"d-flex justify-content-between align-items-center mb-3"<""l><""f>>rt<"d-flex justify-content-between align-items-center mt-3"<""i><""p>>'
+    });
+
+    // Custom search
+    $('#searchUploadSurat').on('keyup', function() {
+        table.search(this.value).draw();
+    });
+    
+    // Hide default search
+    $('#dataTable_filter').hide();
 
     // Filter Jenis Permohonan
     $('#filterJenisPermohonan').on('change', function() {
