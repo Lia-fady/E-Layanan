@@ -33,13 +33,17 @@
 <ul class="navbar-nav sidebar sidebar-dark-navy sidebar-dark accordion d-flex flex-column" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center" href="<?= base_url('sekretariat/dashboard') ?>">
+    <a class="sidebar-brand d-flex align-items-center position-relative" href="<?= base_url('sekretariat/dashboard') ?>">
         <div class="sidebar-brand-icon">
             <img src="<?= base_url('images/kota tng_nobg.png'); ?>" alt="Logo" style="width: 40px; height: 40px;">
         </div>
         <div class="sidebar-brand-text mx-2">
             <span class="font-weight-bold">KOTA TANGERANG</span>
         </div>
+        <!-- Close button for mobile -->
+        <button type="button" class="sidebar-close-btn" id="sidebarCloseMobile">
+            &times;
+        </button>
     </a>
 
     <!-- Divider -->
@@ -71,6 +75,13 @@
         </a>
     </li>
 
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
+        </a>
+    </li>
+
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
             <i class="fas fa-fw fa-file-upload"></i>
@@ -85,12 +96,6 @@
         </a>
     </li>
 
-    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
-        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
-            <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat</span>
-        </a>
-    </li>
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-fw fa-sign-out-alt"></i>
@@ -100,3 +105,32 @@
 
 </ul>
 <!-- End of Sidebar -->
+
+<script>
+// Script for mobile off-canvas sidebar close behavior
+document.addEventListener('DOMContentLoaded', function() {
+    var closeBtn = document.getElementById('sidebarCloseMobile');
+    
+    if(closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.remove('sidebar-toggled');
+            document.querySelector('.sidebar').classList.remove('toggled');
+        });
+    }
+
+    // Close when clicking outside the sidebar (on the backdrop overlay)
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && document.body.classList.contains('sidebar-toggled')) {
+            var sidebar = document.getElementById('accordionSidebar');
+            var toggleTop = document.getElementById('sidebarToggleTop');
+            
+            // If click is outside sidebar and not on the toggle button
+            if (!sidebar.contains(e.target) && (!toggleTop || !toggleTop.contains(e.target))) {
+                document.body.classList.remove('sidebar-toggled');
+                sidebar.classList.remove('toggled');
+            }
+        }
+    });
+});
+</script>

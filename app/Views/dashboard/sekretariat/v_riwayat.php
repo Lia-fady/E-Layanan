@@ -35,6 +35,14 @@
 </div>
 <?php endif; ?>
 
+<!-- Page Description -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Riwayat</h5>
+    <p style="color:#667085; font-size:0.9rem; margin:0;">
+        Lihat riwayat permohonan magang yang telah selesai diproses.
+    </p>
+</div>
+
 <!-- Search & Filter -->
 <div class="verifikasi-search-bar">
     <div style="position:relative; flex:1; max-width:450px;">
@@ -58,7 +66,7 @@
             <tr>
                 <th width="5%" class="text-center">NO</th>
                 <th>Nama</th>
-                <th>Universitas</th>
+                <th>Instansi</th>
                 <th>Jenis</th>
                 <th>Tanggal Pengajuan</th>
                 <th class="text-center">Status</th>

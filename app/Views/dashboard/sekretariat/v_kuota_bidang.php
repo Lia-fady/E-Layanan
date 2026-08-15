@@ -7,10 +7,6 @@ Monitoring Kuota Bidang
 <?= $this->section('content') ?>
 
 <style>
-    .quota-card { border-radius: 12px; border: 1px solid #E2E8F0; }
-    .table-quota th { background-color: #F8FAFC; color: #475569; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #E2E8F0; padding: 1rem; }
-    .table-quota td { padding: 1rem; vertical-align: middle; color: #1E293B; border-bottom: 1px solid #E2E8F0; }
-    
     .btn-detail {
         background-color: #F8FAFC;
         color: #0F172A;
@@ -107,11 +103,9 @@ Monitoring Kuota Bidang
         </div>
     <?php endif; ?>
 
-    <div class="card shadow-sm quota-card bg-white mb-4">
-        <div class="card-body p-4">
-            <div class="table-responsive">
-                <table class="table table-quota mb-0" id="tabel_bidang" width="100%">
-                    <thead>
+    <div class="table-responsive">
+        <table class="riwayat-table" id="tabel_bidang" width="100%">
+            <thead>
                         <tr>
                             <th width="5%" class="text-center">No</th>
                             <th width="75%">Nama Bidang</th>
@@ -136,10 +130,8 @@ Monitoring Kuota Bidang
                                 <td colspan="3" class="text-center text-muted">Belum ada data bidang.</td>
                             </tr>
                         <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -185,18 +177,16 @@ Monitoring Kuota Bidang
         </select>
     </div>
 
-    <div class="card shadow-sm quota-card bg-white mb-4">
-        <div class="card-body p-4">
-            <div class="mb-4" style="background:#F8FAFC; padding:1.5rem; border-radius:12px; border:1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h5 style="font-weight:700; color:#1E293B; margin-bottom:0.8rem; font-size:1.1rem; display: flex; align-items: center;">
-                    <i class="fas fa-calendar-check text-primary mr-2" style="font-size: 1.2rem;"></i> Bulan Terpakai
-                </h5>
-                <div style="font-size:1rem; color:#334155; line-height: 1.6; font-weight: 500;" id="val-bulan-terpakai">Memuat...</div>
-            </div>
+    <div class="mb-4" style="background:#F8FAFC; padding:1.5rem; border-radius:12px; border:1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <h5 style="font-weight:700; color:#1E293B; margin-bottom:0.8rem; font-size:1.1rem; display: flex; align-items: center;">
+            <i class="fas fa-calendar-check text-primary mr-2" style="font-size: 1.2rem;"></i> Bulan Terpakai
+        </h5>
+        <div style="font-size:1rem; color:#334155; line-height: 1.6; font-weight: 500;" id="val-bulan-terpakai">Memuat...</div>
+    </div>
 
-            <div class="table-responsive">
-                <table class="table table-quota mb-0" id="tabel_detail" width="100%">
-                    <thead>
+    <div class="table-responsive">
+        <table class="riwayat-table" id="tabel_detail" width="100%">
+            <thead>
                         <tr>
                             <th width="35%">Bulan</th>
                             <th width="15%" class="text-center">Batas Kuota</th>
@@ -207,10 +197,8 @@ Monitoring Kuota Bidang
                     </thead>
                     <tbody id="body-detail">
                         <!-- Data will be populated here by JS -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -241,6 +229,7 @@ $(document).ready(function() {
                 "sPrevious": "<"
             }
         },
+        "dom": '<"d-flex justify-content-between align-items-center mb-3"<""l><""f>>rt<"d-flex justify-content-between align-items-center mt-3"<""i><""p>>',
         "ordering": false
     });
 
@@ -361,13 +350,14 @@ function fetchDetail(id_bidang, tahun, btn, originalText) {
                         "sInfoEmpty":    "",
                         "sInfoFiltered": "",
                         "oPaginate": {
-                            "sFirst":    "Pertama",
-                            "sLast":     "Terakhir",
-                            "sNext":     ">",
-                            "sPrevious": "<"
-                        }
+                        "sFirst":    "Pertama",
+                        "sLast":     "Terakhir",
+                        "sNext":     ">",
+                        "sPrevious": "<"
                     }
-                });
+                },
+                "dom": '<"d-flex justify-content-between align-items-center mb-3"<""l><""f>>rt<"d-flex justify-content-between align-items-center mt-3"<""i><""p>>'
+            });
 
                 // Switch State
                 $('#state-daftar').addClass('d-none');

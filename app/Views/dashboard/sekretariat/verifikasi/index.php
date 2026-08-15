@@ -25,6 +25,14 @@
 </div>
 <?php endif; ?>
 
+<!-- Page Description -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Verifikasi Permohonan</h5>
+    <p style="color:#667085; font-size:0.9rem; margin:0;">
+        Periksa dan verifikasi kelengkapan serta status permohonan magang yang diajukan mahasiswa.
+    </p>
+</div>
+
 <!-- Section Daftar Permohonan -->
 <div id="sectionList">
     <?= $this->include('dashboard/sekretariat/verifikasi/_list') ?>

@@ -18,9 +18,12 @@
 
 <?= $this->section('content') ?>
 
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><?= $title ?></h1>
+<!-- Page Description -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Status Permohonan</h5>
+    <p style="color:#667085; font-size:0.9rem; margin:0;">
+        Pantau status verifikasi, disposisi, dan penempatan permohonan magang secara detail.
+    </p>
 </div>
 
 <!-- DataTable Card -->

@@ -18,6 +18,14 @@
 
 <?= $this->section('content') ?>
 
+<!-- Page Description -->
+<div class="mb-4">
+    <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Monitoring Status</h5>
+    <p style="color:#667085; font-size:0.9rem; margin:0;">
+        Pantau status permohonan magang dan proses penempatan mahasiswa secara keseluruhan.
+    </p>
+</div>
+
 <!-- Search & Filter -->
 <div class="chart-card mb-4">
     <div class="row align-items-center">
