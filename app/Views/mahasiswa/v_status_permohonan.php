@@ -406,7 +406,7 @@
                                         $badgeClass = 'pending'; $statusText = 'Perbaikan';
                                     } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'SELESAI') {
                                         $badgeClass = 'success'; $statusText = 'Selesai';
-                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU') {
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU' && $p['status_penempatan'] != 'DIBATALKAN' && $p['status_penempatan'] != '0') {
                                         $badgeClass = 'approved'; $statusText = 'Disetujui';
                                     }
                             ?>

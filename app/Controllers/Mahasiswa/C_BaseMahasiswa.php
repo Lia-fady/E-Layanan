@@ -47,7 +47,7 @@ class C_BaseMahasiswa extends BaseController
                 $state = 1;
             } else {
                 if ($permohonan['status_persetujuan'] == 'DITOLAK') {
-                    $state = 3; 
+                    $state = 1; 
                     $catatan = $permohonan['catatan_persetujuan'];
                 } elseif ($permohonan['status_persetujuan'] == 'PERBAIKAN_BERKAS') {
                     $state = 6; 
@@ -60,8 +60,7 @@ class C_BaseMahasiswa extends BaseController
                         if ($permohonan['status_penempatan'] == 'SELESAI') {
                             $state = 5; 
                         } elseif ($permohonan['status_penempatan'] == 'DIBATALKAN') {
-                            $state = 3; 
-                            $catatan = !empty($permohonan['catatan_penempatan']) ? $permohonan['catatan_penempatan'] : 'Penempatan Dibatalkan/Ditolak oleh Kepala Bidang';
+                            $state = 2; 
                         } else {
                             $state = 4; // BERJALAN
                         }

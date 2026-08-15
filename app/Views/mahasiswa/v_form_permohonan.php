@@ -97,9 +97,9 @@ if(session()->getFlashdata('permohonan_sent')):
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 20px;">
         <i class="bi bi-hourglass-split"></i>
     </div>
-    <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI' && isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
+    <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
         <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah selesai diperiksa dan dinyatakan sesuai. Permohonan Anda Telah diteruskan untuk proses persetujuan. Silahkan pantau halaman status secara berkala</p>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah selesai diperiksa dan dinyatakan sesuai. Permohonan Anda telah diteruskan untuk proses persetujuan akhir. Silakan pantau halaman status secara berkala.</p>
     <?php else: ?>
         <h5 class="fw-bold text-dark mb-2">Permohonan Sedang Diproses</h5>
         <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi administrasi. Silakan pantau halaman status secara berkala.</p>
@@ -121,13 +121,8 @@ if(session()->getFlashdata('permohonan_sent')):
 
 
 <?php else: ?>
-<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 3/6 - DITOLAK/PERLU REVISI) ============ -->
-<?php if($state == 3): ?>
-<div class="alert alert-danger p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
-    <i class="bi bi-x-circle-fill text-danger me-2"></i>
-    <strong>Permohonan Sebelumnya Ditolak:</strong> Anda dapat mengajukan permohonan ulang dengan data yang baru.
-</div>
-<?php elseif(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
+<!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 6 - PERLU REVISI) ============ -->
+<?php if(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
 <div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
     <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
     <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan oleh Sekretariat. Silakan perbaiki data/file Anda dan ajukan kembali.

@@ -106,7 +106,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 </div>
 
 <div class="tw-container">
-
     <!-- ================================================================ -->
     <!-- FEED 1: PENGAJUAN (MAHASISWA)                                    -->
     <!-- ================================================================ -->
@@ -282,7 +281,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                 <span class="tw-header-actor">Sekretariat</span> <?= $feedText ?>
                 <span class="tw-header-time">
                     <?php 
-                        $waktuSekre = !empty($p['waktu_sekretariat']) ? $p['waktu_sekretariat'] : (!empty($p['waktu_sekretariat_fallback']) ? $p['waktu_sekretariat_fallback'] : '');
+                        $waktuSekre = !empty($p['tanggal_persetujuan']) ? $p['tanggal_persetujuan'] : (!empty($p['tanggal_persetujuan_fallback']) ? $p['tanggal_persetujuan_fallback'] : (!empty($p['waktu_persetujuan_created']) ? $p['waktu_persetujuan_created'] : ''));
                         if(!empty($waktuSekre)): 
                     ?>
                         <?= tgl_indo($waktuSekre, true) ?> WIB
@@ -349,10 +348,10 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                             </div>
                         </td>
                         <td style="vertical-align: middle;">
-                            <?php if(($file['status_verifikasi'] ?? '') === 'VALID'): ?>
-                                <span style="color:#22c55e; font-weight:600;"><i class="bi bi-check-circle-fill me-1"></i>Valid</span>
-                            <?php elseif(($file['status_verifikasi'] ?? '') === 'TIDAK_VALID'): ?>
-                                <span style="color:#ef4444; font-weight:600;"><i class="bi bi-x-circle-fill me-1"></i>Tidak Valid</span>
+                            <?php if(($file['status_verifikasi'] ?? '') === 'SESUAI' || ($file['status_verifikasi'] ?? '') === 'VALID'): ?>
+                                <span style="color:#22c55e; font-weight:600;"><i class="bi bi-check-circle-fill me-1"></i>Sesuai</span>
+                            <?php elseif(($file['status_verifikasi'] ?? '') === 'TIDAK_SESUAI' || ($file['status_verifikasi'] ?? '') === 'TIDAK_VALID'): ?>
+                                <span style="color:#ef4444; font-weight:600;"><i class="bi bi-x-circle-fill me-1"></i>Tidak Sesuai</span>
                             <?php else: ?>
                                 <span style="color:#9ca3af;">Belum dicek</span>
                             <?php endif; ?>
@@ -387,15 +386,11 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
        $jenisPermohonanKabid = strtolower(trim($p['jenis_permohonan'] ?? 'permohonan'));
        $jenisPermohonanKabid = preg_replace('/\s+/', ' ', $jenisPermohonanKabid);
 
-       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0');
-       $isKabidBatal = ($p['status_penempatan'] == 'DIBATALKAN');
+       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0' || $p['status_penempatan'] == 'DIBATALKAN');
        $isKabidJalan = ($p['status_penempatan'] == 'BERJALAN');
        $isKabidSelesai = ($p['status_penempatan'] == 'SELESAI');
        
-       if ($isKabidBatal) {
-           $kBadge = 'ditolak'; $kText = 'ditolak';
-           $kHeader = 'menolak/membatalkan penempatan permohonan ' . $jenisPermohonanKabid . ' anda.';
-       } elseif ($isKabidSelesai) {
+       if ($isKabidSelesai) {
            $kBadge = 'disetujui'; $kText = 'selesai';
            $kHeader = 'telah menyatakan selesai untuk kegiatan ' . $jenisPermohonanKabid . ' anda.';
        } elseif ($isKabidJalan) {
