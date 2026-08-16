@@ -26,7 +26,7 @@
         <span class="welcome-badge welcome-badge-date"><?= esc($tanggal_formatted) ?></span>
         <?php if ($total_verifikasi > 0) : ?>
             <span class="welcome-badge welcome-badge-alert">
-                <i class="fas fa-exclamation-triangle"></i> <?= $total_verifikasi ?> berkas menunggu verifikasi
+                <i class="fas fa-exclamation-triangle"></i> <?= $total_verifikasi ?> berkas menunggu diverifikasi
             </span>
         <?php endif; ?>
     </div>
@@ -61,7 +61,7 @@
                 <div class="stat-card-title">Menunggu Verifikasi</div>
             </div>
             <div class="stat-card-value"><?= esc($total_verifikasi) ?></div>
-            <div class="stat-card-desc">Pemohon perlu diverifikasi</div>
+            <div class="stat-card-desc">Pemohon perlu Diverifikasi</div>
             <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link yellow">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
@@ -125,8 +125,8 @@
 
     <!-- Permohonan Menunggu Verifikasi Berkas -->
     <div class="col-lg-7 mb-4">
-        <div class="chart-card">
-            <div class="card-title mb-3">Permohonan Menunggu Verifikasi berkas</div>
+        <div class="chart-card mb-4">
+            <div class="card-title mb-3">Permohonan Menunggu Verifikasi</div>
 
             <?php if (!empty($permohonan_pending)) : ?>
                 <?php foreach ($permohonan_pending as $p) : ?>
@@ -151,9 +151,30 @@
             <?php else : ?>
                 <div class="text-center py-4 text-muted">
                     <i class="fas fa-check-circle fa-2x mb-2"></i>
-                    <p class="mb-0">Tidak ada permohonan yang menunggu verifikasi.</p>
+                    <p class="mb-0">Tidak ada permohonan yang perlu diverifikasi.</p>
                 </div>
             <?php endif; ?>
+        </div>
+
+        <!-- Ringkasan Hari Ini -->
+        <div class="summary-card mb-4">
+            <div class="card-title">Ringkasan Hari Ini</div>
+            <div class="summary-item">
+                <span class="summary-label">Permohonan masuk baru</span>
+                <span class="summary-value blue"><?= $ringkasan['masuk'] ?></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Berkas diverifikasi</span>
+                <span class="summary-value green"><?= $ringkasan['verifikasi'] ?></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Didisposisi ke bidang</span>
+                <span class="summary-value teal"><?= $ringkasan['disposisi'] ?></span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Perbaikan Berkas</span>
+                <span class="summary-value red"><?= $ringkasan['ditolak'] ?></span>
+            </div>
         </div>
     </div>
 
@@ -184,26 +205,7 @@
             </ul>
         </div>
 
-        <!-- Ringkasan Hari Ini -->
-        <div class="summary-card mb-4">
-            <div class="card-title">Ringkasan Hari Ini</div>
-            <div class="summary-item">
-                <span class="summary-label">Permohonan masuk baru</span>
-                <span class="summary-value blue"><?= $ringkasan['masuk'] ?></span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Berkas diverifikasi</span>
-                <span class="summary-value green"><?= $ringkasan['verifikasi'] ?></span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Didisposisi ke bidang</span>
-                <span class="summary-value teal"><?= $ringkasan['disposisi'] ?></span>
-            </div>
-            <div class="summary-item">
-                <span class="summary-label">Perbaikan Berkas</span>
-                <span class="summary-value red"><?= $ringkasan['ditolak'] ?></span>
-            </div>
-        </div>
+
     </div>
 </div>
 
