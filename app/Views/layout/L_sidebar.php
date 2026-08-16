@@ -78,7 +78,7 @@
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
             <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat</span>
+            <span>Riwayat Permohonan</span>
         </a>
     </li>
 
