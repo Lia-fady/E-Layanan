@@ -18,9 +18,9 @@ const JENIS_CFG = {
         ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
-            'Surat izin penelitian menggunakan kop resmi kampus dan ditandatangani pejabat berwenang',
-            'Wajib melampirkan <strong>Proposal / Sinopsis Penelitian</strong> pada kolom yang disediakan',
-            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+            'Siapkan <strong>surat izin penelitian</strong> resmi yang dikeluarkan oleh pihak kampus.',
+            'Lampirkan <strong>Proposal atau Sinopsis Penelitian</strong> pada kolom yang disediakan.',
+            'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
     '2': {
@@ -33,8 +33,8 @@ const JENIS_CFG = {
         ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: false,
         panduan: [
-            'Surat pengantar observasi/pengambilan data resmi dari kampus',
-            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+            'Siapkan <strong>surat pengantar observasi atau pengambilan data</strong> resmi dari pihak kampus.',
+            'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
     '3': {
@@ -47,9 +47,9 @@ const JENIS_CFG = {
         ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
-            'Surat pengantar magang ditandatangani pejabat berwenang (Kampus)',
-            'Wajib melampirkan <strong>Curriculum Vitae (CV)</strong> terbaru (gabungkan dengan portfolio jika ada)',
-            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+            'Siapkan <strong>surat pengantar magang</strong> resmi dari pihak kampus.',
+            'Lampirkan <strong>Curriculum Vitae (CV)</strong> terbaru. Silakan gabungkan dengan portofolio karyamu jika ada.',
+            'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
     '5': {
@@ -62,9 +62,9 @@ const JENIS_CFG = {
         ktm: 'Kartu Pelajar',
         showCv: true,
         panduan: [
-            'Surat pengantar PKL ditandatangani pejabat berwenang (Sekolah)',
-            'Wajib melampirkan <strong>Curriculum Vitae (CV)</strong> terbaru (gabungkan dengan portfolio jika ada)',
-            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+            'Siapkan <strong>surat pengantar PKL</strong> resmi dari pihak sekolah.',
+            'Lampirkan <strong>Curriculum Vitae (CV)</strong> terbaru. Silakan gabungkan dengan portofolio karyamu jika ada.',
+            'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
     '4': {
@@ -77,9 +77,9 @@ const JENIS_CFG = {
         ktm: 'Kartu Tanda Mahasiswa (KTM)',
         showCv: true,
         panduan: [
-            'Surat pengantar uji coba produk resmi dari kampus',
-            'Wajib melampirkan <strong>Dokumen Profil / Panduan Singkat Produk</strong>',
-            'Pastikan file tidak terproteksi kata sandi (password-protected)'
+            'Siapkan <strong>surat pengantar uji coba produk</strong> resmi dari pihak kampus.',
+            'Lampirkan <strong>Dokumen Profil atau Panduan Singkat</strong> dari produk yang ingin diuji.',
+            'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     }
 };
@@ -168,6 +168,52 @@ function applyJenisCfg(val) {
             infoBoxList.appendChild(li);
         });
     }
+
+    // Disable/Enable tanggal berdasarkan jenis permohonan
+    var isTglDisabled = !val;
+    var tM = document.getElementById('tgl_mulai');
+    var tS = document.getElementById('tgl_selesai');
+    
+    function toggleDateInput(el, forceDisable, placeholderTxt) {
+        if (!el) return;
+        el.disabled = forceDisable;
+        if (el._flatpickr && el._flatpickr.altInput) {
+            el._flatpickr.altInput.disabled = forceDisable;
+            if (forceDisable) {
+                el._flatpickr.altInput.style.backgroundColor = '#e9ecef';
+                el._flatpickr.altInput.placeholder = placeholderTxt || 'Pilih jenis permohonan dulu...';
+            } else {
+                el._flatpickr.altInput.style.backgroundColor = '#fff';
+                el._flatpickr.altInput.placeholder = '';
+            }
+        } else {
+            if (forceDisable) {
+                el.style.backgroundColor = '#e9ecef';
+            } else {
+                el.style.backgroundColor = '#fff';
+            }
+        }
+    }
+
+    // tgl_mulai hanya butuh jenis permohonan dipilih
+    toggleDateInput(tM, isTglDisabled, 'Pilih jenis permohonan dulu...');
+    
+    // tgl_selesai butuh tgl_mulai dipilih juga
+    var hasTglMulai = tM && tM.value.trim() !== '';
+    var disableSelesai = isTglDisabled || !hasTglMulai;
+    var phSelesai = isTglDisabled ? 'Pilih jenis permohonan dulu...' : 'Pilih tanggal mulai dulu...';
+    toggleDateInput(tS, disableSelesai, phSelesai);
+
+    // Event listener untuk update tgl_selesai saat tgl_mulai berubah
+    if (tM && !tM.dataset.listenerAdded) {
+        tM.dataset.listenerAdded = 'true';
+        tM.addEventListener('change', function() {
+            var j = document.querySelector('input[name="id_jenis_permohonan"]:checked');
+            var dis = !j || !j.value;
+            var hasVal = this.value.trim() !== '';
+            toggleDateInput(tS, dis || !hasVal, dis ? 'Pilih jenis permohonan dulu...' : 'Pilih tanggal mulai dulu...');
+        });
+    }
 }
 
 // Fungsi untuk mengosongkan isian saat jenis permohonan diganti
@@ -223,8 +269,11 @@ if (selJenis) {
 }
 
 var oldJenis = document.querySelector('input[name="id_jenis_permohonan"]:checked');
-if (oldJenis) applyJenisCfg(oldJenis.value);
-
+if (oldJenis) {
+    applyJenisCfg(oldJenis.value);
+} else {
+    applyJenisCfg('');
+}
 /* ============ Upload Zone ============ */
 // Upload elements are now standard inputs, so custom drag-and-drop logic is no longer needed.
 
@@ -479,12 +528,12 @@ function submitPermohonan(type) {
     if (type === 'draft') {
         Swal.fire({
             title: 'Simpan sebagai Draft?',
-            text: 'Data Anda akan disimpan dan dapat Anda edit kembali nanti melalui halaman Status.',
+            text: 'Perubahan akan disimpan dan dapat dilanjutkan kapan saja.',
             icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Simpan Draft',
+            confirmButtonText: 'Simpan',
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -497,12 +546,12 @@ function submitPermohonan(type) {
     } else {
         Swal.fire({
             title: 'Kirim Permohonan?',
-            text: 'Pastikan semua data dan dokumen yang Anda unggah sudah benar.',
+            text: 'Pastikan semua data dan dokumen yang Anda isi sudah sesuai.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: '<i class="bi bi-send-fill"></i> Ya, Kirim Sekarang',
+            confirmButtonText: '</i>Kirim',
             cancelButtonText: 'Cek Kembali'
         }).then((result) => {
             if (result.isConfirmed) {

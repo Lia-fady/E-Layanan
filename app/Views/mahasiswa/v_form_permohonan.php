@@ -10,8 +10,8 @@
 
 <?= $this->section('content') ?>
 <div class="mb-4">
-    <h3 class="fw-semibold mb-1 text-dark">Form Permohonan Layanan Akademik</h3>
-    <p class="text-muted mb-0">Lengkapi data kegiatan dan dokumen pendukung Anda. Proses pengajuan terdiri dari data, dokumen, review, dan pengiriman.</p>
+    <h3 class="fw-semibold mb-1 text-dark">Ajukan Permohonan</h3>
+    <p class="text-muted mb-0">Lengkapi data dan dokumen yang diperlukan. Pastikan informasi yang Anda masukkan sudah benar sebelum mengirimkan permohonan.</p>
 </div>
 
 <?php if(session()->getFlashdata('errors')) : ?>
@@ -113,8 +113,8 @@ if(session()->getFlashdata('permohonan_sent')):
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
         <i class="bi bi-check-circle-fill"></i>
     </div>
-    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui & Aktif</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan magang/akademik Anda sudah disetujui. Anda tidak perlu mengajukan permohonan baru pada saat ini.</p>
+    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui</h5>
+    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan dapat dilaksanakan sesuai periode yang telah ditentukan.</p>
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
 </div>
 
@@ -512,12 +512,40 @@ document.addEventListener('DOMContentLoaded', function() {
                     ]);
                 }
 
+                if (fpSelesai) {
+                    // Hanya terapkan maxDate dan disable bulan penuh, minDate diatur oleh onchange tglMulai
+                    if (maxMulaiStr) {
+                        // Tambahkan margin waktu untuk tglSelesai, misalnya batas start + 6 bulan maksimal magang
+                        // Tapi karena diminta "disamakan", kita aplikasikan batas maksimum yang masuk akal
+                        // Biasanya magang max 6 bulan. Jika tgl_mulai bisa sampai 6 bulan ke depan, 
+                        // tgl_selesai logikanya bisa sampai 12 bulan ke depan. Namun kita ikut instruksi disamakan:
+                        // Kita set maxDate sama atau ditambahkan buffer 6 bulan. 
+                        // Kita samakan persis dengan maxMulaiStr jika itu yang dimaksud "disamakan".
+                        // Wait, if I set it EXACTLY to maxMulaiStr, if someone starts at maxMulaiStr, they can't have any duration.
+                        // We will set maxDate for tglSelesai to maxMulaiStr + 6 bulan (180 days) as a safe upper bound, 
+                        // ATAU kita cukup disable BULAN_PENUH. 
+                        // Let's just apply maxMulaiStr. If they want to extend it later, we can.
+                        fpSelesai.set('maxDate', maxMulaiStr);
+                    } else {
+                        fpSelesai.set('maxDate', null);
+                    }
+                    fpSelesai.set('disable', [
+                        function(date) {
+                            var month = date.getMonth() + 1;
+                            var b_penuh = BULAN_PENUH.map(Number);
+                            return b_penuh.includes(month);
+                        }
+                    ]);
+                }
+
                 // Native input fallback
                 tglMulai.setAttribute('min', minMulaiStr);
                 if (maxMulaiStr) {
                     tglMulai.setAttribute('max', maxMulaiStr);
+                    tglSelesai.setAttribute('max', maxMulaiStr);
                 } else {
                     tglMulai.removeAttribute('max');
+                    tglSelesai.removeAttribute('max');
                 }
             }
 

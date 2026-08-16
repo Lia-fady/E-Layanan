@@ -223,7 +223,7 @@
         ?>
         <div class="mb-4">
             <h3 class="fw-semibold mb-1 text-dark">Logbook Kegiatan</h3>
-            <p class="text-muted mb-0">Catat pekerjaan harian dengan ringkas dan pantau hasil review dari Bidang terkait.</p>
+            <p class="text-muted mb-0"> Catat kegiatan dan pekerjaan yang Anda lakukan.</p>
         </div>
         
         <div class="page-header-card">

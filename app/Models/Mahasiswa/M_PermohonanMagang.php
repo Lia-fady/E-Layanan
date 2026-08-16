@@ -72,7 +72,9 @@ class M_PermohonanMagang extends Model
                 t_instansi_mahasiswa.semester,
                 t_instansi_mahasiswa.id_jenjang_pendidikan,
                 t_instansi_mahasiswa.angkatan_tahun,
-                m_jenis_permohonan.jenis_permohonan
+                m_jenis_permohonan.jenis_permohonan,
+                m_kelas.nama_kelas as kelas,
+                m_jenjang_pendidikan.nama_jenjang as jenjang_pendidikan
             ')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
@@ -83,6 +85,8 @@ class M_PermohonanMagang extends Model
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
             ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
+            ->join('m_kelas', 'm_kelas.id_kelas = t_instansi_mahasiswa.id_kelas', 'left')
+            ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = t_instansi_mahasiswa.id_jenjang_pendidikan', 'left')
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
             ->groupBy('t_permohonan_magang.id_permohonan_magang')
             ->orderBy('t_permohonan_magang.created_at', 'DESC');

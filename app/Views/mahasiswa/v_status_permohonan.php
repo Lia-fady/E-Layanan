@@ -299,7 +299,7 @@
         <div id="sectionList">
         <div class="mb-4">
             <h3 class="fw-semibold mb-1 text-dark">Riwayat Permohonan</h3>
-            <p class="text-muted mb-0">Daftar riwayat dan status pengajuan permohonan Anda.</p>
+            <p class="text-muted mb-0">Lihat status dan perkembangan setiap permohonan yang telah Anda ajukan.</p>
         </div>
 
         <!-- Alert Flashdata Feedback Notifikasi -->
@@ -331,8 +331,8 @@
                         <span class="small text-muted fw-medium">baris</span>
                     </div>
 
-                    <!-- TENGAH: Filters -->
-                    <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1 justify-content-center">
+                    <!-- KANAN: Filters & Search -->
+                    <div class="d-flex flex-wrap align-items-center gap-2">
                         <select id="filter-jenis" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 170px; border-radius: 6px;">
                             <option value="">Semua Jenis Layanan</option>
                             <option value="Penelitian / Skripsi">Penelitian / Skripsi</option>
@@ -350,13 +350,11 @@
                             <option value="Selesai">Selesai</option>
                             <option value="Ditolak">Ditolak</option>
                         </select>
-                    </div>
-
-                    <!-- KANAN: Search -->
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="small text-muted fw-medium">Cari:</span>
-                        <div style="position: relative;">
-                            <input type="text" id="dt-search" class="form-control form-control-sm shadow-none" style="border-radius: 6px; width: 180px;">
+                        <div class="d-flex align-items-center gap-2 ms-md-2 mt-2 mt-md-0">
+                            <span class="small text-muted fw-medium">Cari:</span>
+                            <div style="position: relative;">
+                                <input type="text" id="dt-search" class="form-control form-control-sm shadow-none" style="border-radius: 6px; width: 180px;">
+                            </div>
                         </div>
                     </div>
                 </div>

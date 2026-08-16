@@ -114,13 +114,22 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
         <div class="tw-header">
             <div class="tw-header-text">
                 <span class="tw-header-actor"><?= esc($p['nama_mahasiswa'] ?? 'Mahasiswa') ?></span> mengajukan permohonan <?= strtolower(esc($p['jenis_permohonan'] ?? 'magang')) ?>.
-                <span class="tw-header-time"><?= !empty($p['created_at']) ? tgl_indo($p['created_at'], true) . ' WIB' : '-' ?></span>
+                <span class="tw-header-time">
+                    <?php 
+                        if (($p['posting_data'] ?? '') === 'draft') {
+                            echo '-';
+                        } else {
+                            $waktuPengajuan = !empty($p['updated_at']) ? $p['updated_at'] : (!empty($p['created_at']) ? $p['created_at'] : '');
+                            echo !empty($waktuPengajuan) ? tgl_indo($waktuPengajuan, true) . ' WIB' : '-';
+                        }
+                    ?>
+                </span>
             </div>
             <div class="tw-badge pengajuan">pengajuan</div>
         </div>
         
         <div class="tw-profile-wrapper">
-            <?php $isSiswa = (isset($p['jenjang_pendidikan']) && stripos($p['jenjang_pendidikan'], 'SM') !== false) || (isset($p['id_jenis_permohonan']) && $p['id_jenis_permohonan'] == 5); ?>
+            <?php $isSiswa = (isset($p['id_jenjang_pendidikan']) && $p['id_jenjang_pendidikan'] == 1) || (isset($p['id_jenis_permohonan']) && $p['id_jenis_permohonan'] == 5); ?>
             <div class="tw-section-title">Data Diri Pemohon</div>
             
             <div class="tw-card">
@@ -173,7 +182,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     </tr>
                     <tr>
                         <th><?= $isSiswa ? 'Kelas' : 'Semester' ?></th>
-                        <td><?= esc(!empty($p['kelas']) ? $p['kelas'] : ($p['semester'] ?? '-')) ?></td>
+                        <td><?= esc($isSiswa ? ($p['kelas'] ?? '-') : ($p['semester'] ?? '-')) ?></td>
                     </tr>
                     <?php if(!$isSiswa): ?>
                     <tr>
@@ -281,7 +290,10 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                 <span class="tw-header-actor">Sekretariat</span> <?= $feedText ?>
                 <span class="tw-header-time">
                     <?php 
-                        $waktuSekre = !empty($p['tanggal_persetujuan']) ? $p['tanggal_persetujuan'] : (!empty($p['tanggal_persetujuan_fallback']) ? $p['tanggal_persetujuan_fallback'] : (!empty($p['waktu_persetujuan_created']) ? $p['waktu_persetujuan_created'] : ''));
+                        $waktuSekre = '';
+                        if (isset($p['status_persetujuan']) && $p['status_persetujuan'] !== 'MENUNGGU') {
+                            $waktuSekre = !empty($p['tanggal_persetujuan']) ? $p['tanggal_persetujuan'] : (!empty($p['tanggal_persetujuan_fallback']) ? $p['tanggal_persetujuan_fallback'] : (!empty($p['waktu_persetujuan_created']) ? $p['waktu_persetujuan_created'] : ''));
+                        }
                         if(!empty($waktuSekre)): 
                     ?>
                         <?= tgl_indo($waktuSekre, true) ?> WIB
