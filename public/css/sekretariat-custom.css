@@ -17,7 +17,8 @@ body {
    + .sidebar min-height:100vh → dua konteks scroll saat konten > viewport.
    Solusi: Kunci #wrapper ke viewport, biarkan #content-wrapper yang scroll.
    =================================================================== */
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
 }
@@ -28,14 +29,17 @@ html, body {
 }
 
 .sidebar {
-    min-height: 0;        /* Override SB Admin 2's min-height: 100vh */
+    min-height: 0;
+    /* Override SB Admin 2's min-height: 100vh */
     height: 100vh;
-    overflow-y: auto;     /* Sidebar bisa scroll jika menu melebihi layar */
+    overflow-y: auto;
+    /* Sidebar bisa scroll jika menu melebihi layar */
 }
 
 #content-wrapper {
     height: 100vh;
-    overflow-y: scroll;     /* Memaksa scrollbar selalu muncul agar layout tidak geser */
+    overflow-y: scroll;
+    /* Memaksa scrollbar selalu muncul agar layout tidak geser */
 }
 
 
@@ -118,23 +122,29 @@ html, body {
 .sidebar.toggled .sidebar-user-info {
     display: none;
 }
+
 .sidebar.toggled .sidebar-user-profile {
     padding: 0.8rem 0;
     justify-content: center;
 }
+
 .sidebar.toggled .sidebar-brand-text {
     display: none !important;
 }
+
 .sidebar.toggled .sidebar-brand-icon {
     margin: 0 auto;
 }
+
 .sidebar.toggled .nav-item .nav-link span {
     display: none !important;
 }
+
 .sidebar.toggled .nav-item .nav-link {
     justify-content: center;
     padding: 1rem 0 !important;
 }
+
 .sidebar.toggled .nav-item .nav-link i {
     margin-right: 0 !important;
     font-size: 1.1rem;
@@ -154,12 +164,14 @@ html, body {
     cursor: pointer;
     z-index: 1051;
 }
+
 .sidebar-close-btn:hover {
     color: #fff;
     outline: none;
 }
 
 @media (max-width: 768px) {
+
     /* Mobile Off-canvas Sidebar */
     .sidebar {
         position: fixed !important;
@@ -171,12 +183,12 @@ html, body {
         display: flex !important;
         transition: left 0.3s ease-in-out !important;
     }
-    
+
     .sidebar.toggled {
         left: 0 !important;
         width: 280px !important;
     }
-    
+
     .sidebar-close-btn {
         display: block;
     }
@@ -186,38 +198,44 @@ html, body {
     .sidebar.toggled .sidebar-brand-text {
         display: block !important;
     }
+
     .sidebar.toggled .nav-item .nav-link span {
         display: inline-block !important;
         font-size: 0.9rem !important;
         line-height: 1.4 !important;
     }
-    
+
     .sidebar.toggled .sidebar-brand-icon,
     .sidebar.toggled .sidebar-user-profile,
     .sidebar.toggled .nav-item .nav-link {
         justify-content: flex-start !important;
     }
+
     .sidebar.toggled .sidebar-brand {
         padding: 1.2rem 2.5rem 1.2rem 1.2rem !important;
     }
+
     .sidebar.toggled .sidebar-user-profile {
         padding: 1rem 1.2rem !important;
     }
-    
+
     .sidebar.toggled .nav-item {
         margin-bottom: 0.2rem;
     }
+
     .sidebar.toggled .nav-item .nav-link {
         padding: 0.85rem 1.2rem !important;
         width: 100% !important;
         max-width: 100% !important;
     }
+
     .sidebar.toggled .nav-item.active .nav-link {
         margin: 4px 1rem !important;
         padding: 0.85rem 1rem !important;
         width: calc(100% - 2rem) !important;
         max-width: calc(100% - 2rem) !important;
     }
+
     .sidebar.toggled .nav-item .nav-link i {
         margin-right: 1rem !important;
         font-size: 1.1rem !important;
@@ -233,7 +251,7 @@ html, body {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
         z-index: 1040;
     }
 }
@@ -357,7 +375,7 @@ html, body {
     right: -5%;
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
     border-radius: 50%;
 }
 
@@ -411,7 +429,7 @@ html, body {
     padding: 1.2rem 1.3rem;
     border: 1px solid #e5e7eb;
     transition: all 0.2s ease;
-    height: 100%;
+    height: auto;
     text-decoration: none !important;
     display: block;
 }
@@ -439,11 +457,30 @@ html, body {
     flex-shrink: 0;
 }
 
-.stat-card-icon.blue { background-color: #e8f4fd; color: #1a73e8; }
-.stat-card-icon.yellow { background-color: #fef3cd; color: #f5a623; }
-.stat-card-icon.green { background-color: #d4edda; color: #28a745; }
-.stat-card-icon.teal { background-color: #d1f0e8; color: #1a8a6a; }
-.stat-card-icon.purple { background-color: #e8def8; color: #7c3aed; }
+.stat-card-icon.blue {
+    background-color: #e8f4fd;
+    color: #1a73e8;
+}
+
+.stat-card-icon.yellow {
+    background-color: #fef3cd;
+    color: #f5a623;
+}
+
+.stat-card-icon.green {
+    background-color: #d4edda;
+    color: #28a745;
+}
+
+.stat-card-icon.teal {
+    background-color: #d1f0e8;
+    color: #1a8a6a;
+}
+
+.stat-card-icon.purple {
+    background-color: #e8def8;
+    color: #7c3aed;
+}
 
 .stat-card-title {
     color: #667085;
@@ -478,11 +515,25 @@ html, body {
     width: 100%;
 }
 
-.stat-card-link.blue { color: #1a73e8; }
-.stat-card-link.yellow { color: #f5a623; }
-.stat-card-link.green { color: #28a745; }
-.stat-card-link.teal { color: #1a8a6a; }
-.stat-card-link.purple { color: #7c3aed; }
+.stat-card-link.blue {
+    color: #1a73e8;
+}
+
+.stat-card-link.yellow {
+    color: #f5a623;
+}
+
+.stat-card-link.green {
+    color: #28a745;
+}
+
+.stat-card-link.teal {
+    color: #1a8a6a;
+}
+
+.stat-card-link.purple {
+    color: #7c3aed;
+}
 
 /* ===================================================================
    PENDING LIST
@@ -621,7 +672,7 @@ html, body {
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     padding: 1.3rem;
-    height: 100%;
+    height: auto;
 }
 
 .chart-card .card-title {
@@ -701,10 +752,21 @@ html, body {
     font-size: 0.9rem;
 }
 
-.summary-value.blue { color: #1a73e8; }
-.summary-value.green { color: #28a745; }
-.summary-value.teal { color: #1a8a6a; }
-.summary-value.red { color: #f04438; }
+.summary-value.blue {
+    color: #1a73e8;
+}
+
+.summary-value.green {
+    color: #28a745;
+}
+
+.summary-value.teal {
+    color: #1a8a6a;
+}
+
+.summary-value.red {
+    color: #f04438;
+}
 
 /* ===================================================================
    VERIFIKASI CARD-BASED LAYOUT
@@ -1522,16 +1584,20 @@ html, body {
     .welcome-card {
         padding: 1.2rem;
     }
+
     .welcome-card .welcome-name {
         font-size: 1.2rem;
     }
+
     .stat-card {
         margin-bottom: 0.75rem;
     }
+
     .detail-header {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .detail-header-box {
         border-left: none;
         border-top: 1px solid #e5e7eb;
@@ -1539,6 +1605,7 @@ html, body {
         padding-top: 1rem;
         margin-top: 1rem;
     }
+
     .navbar-brand-center {
         position: relative;
         left: auto;
