@@ -419,7 +419,7 @@
             <div class="badge-portal">PORTAL PESERTA</div>
 
             <h1 class="form-title">Masuk Akun</h1>
-            <p class="form-desc">Silakan gunakan Username dan password terdaftar Anda untuk mengakses portal.</p>
+            <p class="form-desc">Silakan masuk menggunakan username dan password Anda.</p>
 
             <a href="<?= base_url('/') ?>" class="btn-back">Kembali ke Beranda</a>
 
@@ -442,7 +442,7 @@
 
                 <div class="form-group">
                     <label class="auth-label">Username</label>
-                    <input type="text" name="username" class="auth-input" placeholder="Masukkan Username terdaftar" required autocomplete="username">
+                    <input type="text" name="username" class="auth-input" placeholder="Masukkan Username" required autocomplete="username">
                 </div>
 
                 <div class="form-group">
@@ -466,7 +466,7 @@
                     <div class="g-recaptcha" data-sitekey="<?= getenv('RECAPTCHA_SITE_KEY') ?>"></div>
                 </div>
 
-                <button type="submit" class="btn-masuk">Masuk Sekarang</button>
+                <button type="submit" class="btn-masuk">Masuk</button>
             </form>
 
             <div class="auth-footer">

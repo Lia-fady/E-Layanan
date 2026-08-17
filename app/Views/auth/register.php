@@ -272,20 +272,20 @@
         <!-- STEP 1: IDENTITAS DIRI          -->
         <!-- =============================== -->
         <div class="step-panel on" id="step1">
-            <div class="sec-label">Identitas Diri</div>
-            <div class="sec-desc">Lengkapi biodata diri Anda sesuai dengan identitas resmi.</div>
+            <div class="sec-label">Informasi Pribadi / Data Diri</div>
+            <div class="sec-desc">Lengkapi data diri Anda untuk membuat akun E-Layanan.</div>
 
 
 
             <div class="field">
                 <label>Nomor Induk Kependudukan (NIK) <span class="req">*</span></label>
-                <input type="text" name="nik" id="nik" placeholder="16 digit NIK" value="<?= old('nik') ?>" required minlength="16" maxlength="16" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['nik']) ? 'err' : '' ?>">
+                <input type="text" name="nik" id="nik" placeholder="Masukkan Nomor Induk Kependudukan Anda" value="<?= old('nik') ?>" required minlength="16" maxlength="16" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['nik']) ? 'err' : '' ?>">
                 <?php if(isset($ve['nik'])): ?><div class="err-msg"><?= $ve['nik'] ?></div><?php endif; ?>
             </div>
 
             <div class="field">
                 <label>Nama Lengkap <span class="req">*</span></label>
-                <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" placeholder="Nama lengkap Anda" value="<?= old('nama_mahasiswa') ?>" required minlength="3" maxlength="100" class="<?= isset($ve['nama_mahasiswa']) ? 'err' : '' ?>">
+                <input type="text" name="nama_mahasiswa" id="nama_mahasiswa" placeholder="Masukkan nama lengkap Anda sesuai KTP" value="<?= old('nama_mahasiswa') ?>" required minlength="3" maxlength="100" class="<?= isset($ve['nama_mahasiswa']) ? 'err' : '' ?>">
                 <?php if(isset($ve['nama_mahasiswa'])): ?><div class="err-msg"><?= $ve['nama_mahasiswa'] ?></div><?php endif; ?>
             </div>
 
@@ -310,19 +310,19 @@
 
             <div class="field">
                 <label>Email <span class="req">*</span></label>
-                <input type="email" name="email" id="email" placeholder="contoh@email.com" value="<?= old('email') ?>" required maxlength="100" class="<?= isset($ve['email']) ? 'err' : '' ?>">
+                <input type="email" name="email" id="email" placeholder="Masukkan alamat email aktif" value="<?= old('email') ?>" required maxlength="100" class="<?= isset($ve['email']) ? 'err' : '' ?>">
                 <?php if(isset($ve['email'])): ?><div class="err-msg"><?= $ve['email'] ?></div><?php endif; ?>
             </div>
             
             <div class="field">
-                <label>Nomor WhatsApp Aktif <span class="req">*</span></label>
-                <input type="text" name="no_telp" id="no_telp" placeholder="Contoh: 081234567890" value="<?= old('no_telp') ?>" required minlength="10" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['no_telp']) ? 'err' : '' ?>">
+                <label>Nomor WhatsApp <span class="req">*</span></label>
+                <input type="text" name="no_telp" id="no_telp" placeholder="Masukkan nomor WhatsApp aktif" value="<?= old('no_telp') ?>" required minlength="10" maxlength="15" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['no_telp']) ? 'err' : '' ?>">
                 <?php if(isset($ve['no_telp'])): ?><div class="err-msg"><?= $ve['no_telp'] ?></div><?php endif; ?>
             </div>
 
             <div class="btn-row">
                 <div></div>
-                <button type="button" class="btn-next" onclick="go(2)">Lanjutkan</button>
+                <button type="button" class="btn-next" onclick="go(2)">Selanjutnya</button>
             </div>
         </div>
 
@@ -331,7 +331,7 @@
         <!-- =============================== -->
         <div class="step-panel" id="step2">
             <div class="sec-label">Data Pendidikan</div>
-            <div class="sec-desc">Masukkan informasi mengenai institusi pendidikan Anda saat ini.</div>
+            <div class="sec-desc">Masukkan data pendidikan terakhir atau yang sedang Anda tempuh saat ini.</div>
 
             <!-- Jenis Pendaftar -->
 
@@ -359,7 +359,7 @@
                         <?php endforeach; endif; ?>
                     </select>
                     <select name="id_instansi_pendidikan" id="kampus_select" required class="<?= isset($ve['id_instansi_pendidikan']) ? 'err' : '' ?>">
-                        <option value="" data-jenjang="">-- Pilih Instansi --</option>
+                        <option value="" data-jenjang="">-- Pilih Instansi Pendidikan --</option>
                         <?php if(!empty($kampus)): foreach($kampus as $k): ?>
                             <option value="<?= $k['id_instansi_pendidikan'] ?>" data-jenjang="<?= $k['id_jenjang_pendidikan'] ?>" <?= old('id_instansi_pendidikan')==$k['id_instansi_pendidikan']?'selected':'' ?>><?= esc($k['instansi_pendidikan']) ?></option>
                         <?php endforeach; endif; ?>
@@ -378,7 +378,7 @@
                 <div class="field">
                     <label id="lbl_jurusan">Jurusan <span class="req">*</span></label>
                     <select name="id_prodi" id="prodi_select" required disabled data-old="<?= old('id_prodi') ?>" class="<?= isset($ve['id_prodi']) ? 'err' : '' ?>">
-                        <option value="">-- Pilih Prodi --</option>
+                        <option value="">-- Pilih Jurusan --</option>
                     </select>
                     <select name="jurusan_smk" id="jurusan_smk" style="display:none;" disabled class="<?= isset($ve['jurusan_smk']) ? 'err' : '' ?>">
                         <option value="" data-jenjang="">-- Pilih Jurusan --</option>
@@ -391,19 +391,19 @@
 
                 <div class="field">
                     <label id="lbl_nim">Nomor Induk Mahasiswa (NIM) <span class="req">*</span></label>
-                    <input type="text" name="nim" id="nim" required placeholder="Contoh: 12345678" value="<?= old('nim') ?>" class="<?= isset($ve['nim']) ? 'err' : '' ?>" maxlength="50" oninput="this.value=this.value.replace(/\D/g,'')">
+                    <input type="text" name="nim" id="nim" required placeholder="Masukkan NIM atau NISN" value="<?= old('nim') ?>" class="<?= isset($ve['nim']) ? 'err' : '' ?>" maxlength="50" oninput="this.value=this.value.replace(/\D/g,'')">
                     <?php if(isset($ve['nim'])): ?><div class="err-msg"><?= $ve['nim'] ?></div><?php endif; ?>
                 </div>
 
                 <div class="field" id="grp_angkatan_tahun">
                     <label>Tahun Angkatan <span class="req">*</span></label>
-                    <input type="number" name="angkatan_tahun" id="angkatan_tahun" required placeholder="Contoh: 2021" value="<?= old('angkatan_tahun') ?>" class="<?= isset($ve['angkatan_tahun']) ? 'err' : '' ?>" min="2000" max="2100">
+                    <input type="number" name="angkatan_tahun" id="angkatan_tahun" required placeholder="Masukkan tahun angkatan" value="<?= old('angkatan_tahun') ?>" class="<?= isset($ve['angkatan_tahun']) ? 'err' : '' ?>" min="2000" max="2100">
                     <?php if(isset($ve['angkatan_tahun'])): ?><div class="err-msg"><?= $ve['angkatan_tahun'] ?></div><?php endif; ?>
                 </div>
 
                 <div class="field">
                     <label id="lbl_semester">Semester Saat Ini <span class="req">*</span></label>
-                    <input type="number" name="semester" id="semester" required placeholder="Contoh: 5" value="<?= old('semester') ?>" class="<?= isset($ve['semester']) ? 'err' : '' ?>" min="1" max="14">
+                    <input type="number" name="semester" id="semester" required placeholder="Masukkan semester saat ini" value="<?= old('semester') ?>" class="<?= isset($ve['semester']) ? 'err' : '' ?>" min="1" max="14">
                     <select name="id_kelas" id="id_kelas" style="display:none;" required disabled class="<?= isset($ve['id_kelas']) ? 'err' : '' ?>">
                         <option value="">-- Pilih Kelas --</option>
                         <?php if(!empty($kelas)): foreach($kelas as $kls): ?>
@@ -416,7 +416,7 @@
 
                 <div class="field" id="grp_tahun_akademik">
                     <label>Tahun Akademik <span class="req">*</span></label>
-                    <input type="text" name="tahun_akademik" id="tahun_akademik" required placeholder="Contoh: 2023/2024" value="<?= old('tahun_akademik') ?>" class="<?= isset($ve['tahun_akademik']) ? 'err' : '' ?>" maxlength="20">
+                    <input type="text" name="tahun_akademik" id="tahun_akademik" required placeholder="Masukkan tahun akademik" value="<?= old('tahun_akademik') ?>" class="<?= isset($ve['tahun_akademik']) ? 'err' : '' ?>" maxlength="20">
                     <?php if(isset($ve['tahun_akademik'])): ?><div class="err-msg"><?= $ve['tahun_akademik'] ?></div><?php endif; ?>
                 </div>
             </div>
@@ -424,7 +424,7 @@
             <!-- Panel Siswa Dihapus karena digabung ke atas -->
             <div class="btn-row">
                 <button type="button" class="btn-back" onclick="go(1)">Kembali</button>
-                <button type="button" class="btn-next" onclick="go(3)">Lanjutkan</button>
+                <button type="button" class="btn-next" onclick="go(3)">Selanjutnya</button>
             </div>
         </div>
 
@@ -433,7 +433,7 @@
         <!-- =============================== -->
         <div class="step-panel" id="step3">
             <div class="sec-label">Alamat Domisili</div>
-            <div class="sec-desc">Lengkapi alamat tempat tinggal Anda saat ini dengan mendetail.</div>
+            <div class="sec-desc">Masukkan alamat tempat tinggal Anda saat ini.</div>
 
             <div class="field">
                 <label>Provinsi <span class="req">*</span></label>
@@ -483,14 +483,14 @@
                 </div>
                 <div class="field" style="flex:3;">
                     <label>Detail Alamat <span class="req">*</span></label>
-                    <input type="text" name="alamat" id="alamat" placeholder="Contoh: Jl. Merdeka No. 10, Blok A" value="<?= old('alamat') ?>" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>">
+                    <input type="text" name="alamat" id="alamat" placeholder="Masukan Detail Alamat" value="<?= old('alamat') ?>" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>">
                     <?php if(isset($ve['alamat'])): ?><div class="err-msg"><?= $ve['alamat'] ?></div><?php endif; ?>
                 </div>
             </div>
 
             <div class="btn-row">
                 <button type="button" class="btn-back" onclick="go(2)">Kembali</button>
-                <button type="button" class="btn-next" onclick="go(4)">Lanjutkan</button>
+                <button type="button" class="btn-next" onclick="go(4)">Selanjutnya</button>
             </div>
         </div>
 
@@ -506,7 +506,7 @@
             </div>
 
             <div class="sec-label">Informasi Akun</div>
-            <div class="sec-desc">Buat username dan kata sandi untuk keamanan akun Anda.</div>
+            <div class="sec-desc">Buat username dan kata sandi untuk mengakses akun Anda.</div>
 
             <div class="field">
                 <label>Username <span class="req">*</span></label>
@@ -534,7 +534,7 @@
             </div>
 
 
-            <button type="button" class="btn-register" id="btnDaftar" onclick="submitReg()">DAFTARKAN AKUN</button>
+            <button type="button" class="btn-register" id="btnDaftar" onclick="submitReg()">Daftar Akun</button>
 
             <div class="btn-row" style="border:none; margin-top:12px; padding-top:0;">
                 <button type="button" class="btn-back" onclick="go(3)">Kembali</button>
@@ -748,7 +748,7 @@ function review_data() {
     };
 
     // Title 1
-    h += '<div style="font-weight:700; font-size:1.05rem; margin-bottom:12px; color:#1e293b;">Biodata Diri</div>';
+    h += '<div style="font-weight:700; font-size:1.05rem; margin-bottom:12px; color:#1e293b;">Data Diri</div>';
     h += '<table style="width:100%; font-size:0.9rem; margin-bottom:28px; border-collapse:collapse;">';
     h += tr('NIK', g('nik'));
     h += tr('Nama Lengkap', g('nama_mahasiswa'));
