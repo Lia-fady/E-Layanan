@@ -103,6 +103,7 @@ $routes->group('sekretariat', ['filter' => 'authSekretariat'], static function (
     $routes->match(['get', 'post'], 'verifikasi', '\App\Controllers\Sekretariat\C_Verifikasi::index');
     $routes->get('verifikasi/detail/(:num)', '\App\Controllers\Sekretariat\C_Verifikasi::detailStandalone/$1');
     $routes->post('verifikasi/prosesModal', '\App\Controllers\Sekretariat\C_Verifikasi::prosesModal');
+    $routes->post('verifikasi/tolakCepat', '\App\Controllers\Sekretariat\C_Verifikasi::tolakCepat');
     // Riwayat
     $routes->get('riwayat', '\App\Controllers\Sekretariat\C_Riwayat::index');
     $routes->post('riwayat/delete', '\App\Controllers\Sekretariat\C_Riwayat::delete');

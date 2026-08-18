@@ -37,19 +37,27 @@ class Log extends BaseController
             $m = (int)date('n', $t);
             $log['tanggal_format'] = date('d', $t) . ' ' . $bulanIndo[$m] . ' ' . date('Y, H:i', $t);
             
-            // Tentukan warna ikon berdasarkan aksi
             $aksi = strtolower($log['aksi']);
             if (strpos($aksi, 'ditolak') !== false || strpos($aksi, 'dibatalkan') !== false) {
                 $log['color_class'] = 'danger';
                 $log['icon'] = 'bi-x-circle-fill';
-            } elseif (strpos($aksi, 'disetujui') !== false || strpos($aksi, 'selesai') !== false || strpos($aksi, 'valid') !== false) {
+            } elseif (strpos($aksi, 'mengirimkan perbaikan') !== false) {
+                $log['color_class'] = 'primary';
+                $log['icon'] = 'bi-arrow-up-circle-fill';
+            } elseif (strpos($aksi, 'diperbaiki') !== false || strpos($aksi, 'perbaikan') !== false) {
+                $log['color_class'] = 'warning text-dark';
+                $log['icon'] = 'bi-exclamation-triangle-fill';
+            } elseif (strpos($aksi, 'disetujui') !== false || strpos($aksi, 'selesai') !== false || strpos($aksi, 'berhasil') !== false || strpos($aksi, 'valid') !== false) {
                 $log['color_class'] = 'success';
                 $log['icon'] = 'bi-check-circle-fill';
-            } elseif (strpos($aksi, 'draft') !== false) {
+            } elseif (strpos($aksi, 'draf') !== false || strpos($aksi, 'draft') !== false) {
                 $log['color_class'] = 'secondary';
-                $log['icon'] = 'bi-file-earmark-fill';
-            } else {
+                $log['icon'] = 'bi-file-earmark-text-fill';
+            } elseif (strpos($aksi, 'mengirimkan') !== false || strpos($aksi, 'pengajuan') !== false) {
                 $log['color_class'] = 'primary';
+                $log['icon'] = 'bi-send-fill';
+            } else {
+                $log['color_class'] = 'info text-dark';
                 $log['icon'] = 'bi-info-circle-fill';
             }
         }

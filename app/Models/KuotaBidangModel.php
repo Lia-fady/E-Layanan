@@ -232,7 +232,7 @@ class KuotaBidangModel extends Model
             ];
             
             if ($terpakai > 0) {
-                $bulanTerpakaiArr[] = $nama_bulan[$i] . ' &middot; ' . $terpakai;
+                $bulanTerpakaiArr[] = '<div class="d-inline-flex align-items-center bg-white border rounded px-3 py-2 mr-2 mb-2 shadow-sm" style="border-color:#e2e8f0!important;"><span class="font-weight-bold text-dark mr-2" style="font-size:0.95rem;">' . $nama_bulan[$i] . '</span><span class="badge badge-primary px-2 py-1" style="font-size:0.85rem; background:#3b82f6;">' . $terpakai . '</span></div>';
             }
         }
         
@@ -253,7 +253,7 @@ class KuotaBidangModel extends Model
         
         $total_sisa = max(0, $total_kuota - $total_terpakai);
         
-        $str_bulan_terpakai = !empty($bulanTerpakaiArr) ? implode(', ', $bulanTerpakaiArr) : 'Belum ada kuota yang terpakai';
+        $str_bulan_terpakai = !empty($bulanTerpakaiArr) ? '<div class="d-flex flex-wrap mt-2">' . implode('', $bulanTerpakaiArr) . '</div>' : '<span class="text-muted mt-2 d-block"><i class="fas fa-info-circle mr-1"></i> Belum ada kuota yang terpakai</span>';
 
         return [
             'kuota_bulan' => $hasilBulan,

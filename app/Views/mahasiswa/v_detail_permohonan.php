@@ -246,7 +246,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         <div class="tw-file-row">
                             <i class="bi bi-paperclip tw-file-icon"></i>
                             <span class="tw-file-name"><?= esc($file['nama_file']) ?></span>
-                            <a href="<?= base_url('mahasiswa/view-file/' . $file['id_file_permohonan_magang']) ?>" target="_blank" class="tw-file-link">Download</a>
+                            <a href="<?= base_url('mahasiswa/view-file/' . $file['id_file_permohonan_magang']) ?>" target="_blank" class="tw-file-link">Lihat Berkas</a>
                         </div>
                         <?php endforeach; ?>
                     </td>

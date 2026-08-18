@@ -771,7 +771,7 @@ function review_data() {
     
     var p = gt('provinsi'), kb = gt('kab_kota'), kc = gt('kecamatan'), kl = gt('kelurahan');
     var al = g('alamat') + ' RT '+g('rt')+'/RW '+g('rw')+', Kel. '+kl+', Kec. '+kc+', '+kb+', '+p;
-    h += tr('Alamat', al);
+    h += tr('Alamat Lengkap', al);
     h += '</table>';
 
     // Title 2
