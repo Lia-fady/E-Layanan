@@ -284,6 +284,12 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        // Validasi tambahan: Tanggal lahir tidak boleh di masa depan
+        $tgl_lahir = $this->request->getPost('tgl_lahir');
+        if (!empty($tgl_lahir) && strtotime($tgl_lahir) > time()) {
+            return redirect()->back()->withInput()->with('errors', ['tgl_lahir' => 'Tanggal lahir tidak logis (tidak boleh lebih dari hari ini).']);
+        }
+
         // 2. Mulai Database Transaction agar data aman berantai (LOGIKA UTUH PUNYA KELOMPOKMU)
         $db = \Config\Database::connect();
         $db->transStart();

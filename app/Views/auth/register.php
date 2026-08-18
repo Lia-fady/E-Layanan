@@ -304,7 +304,7 @@
             
             <div class="field">
                 <label>Tanggal Lahir <span class="req">*</span></label>
-                <input type="date" name="tgl_lahir" id="tgl_lahir" class="<?= isset($ve['tgl_lahir']) ? 'err' : '' ?>" value="<?= old('tgl_lahir') ?>" required onkeydown="return false" style="background-color: #fff; width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 11px 14px; font-family: inherit; color: #222;">
+                <input type="date" name="tgl_lahir" id="tgl_lahir" class="<?= isset($ve['tgl_lahir']) ? 'err' : '' ?>" value="<?= old('tgl_lahir') ?>" required max="<?= date('Y-m-d') ?>" onkeydown="return false" style="background-color: #fff; width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 11px 14px; font-family: inherit; color: #222;">
                 <?php if(isset($ve['tgl_lahir'])): ?><div class="err-msg"><?= $ve['tgl_lahir'] ?></div><?php endif; ?>
             </div>
 

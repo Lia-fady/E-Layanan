@@ -309,9 +309,6 @@
                 </button>
             </form>
 
-            <div class="auth-footer">
-                Mahasiswa Magang? <a href="<?= base_url('login') ?>">Masuk di sini</a>
-            </div>
         </div>
 
         <div class="copyright">

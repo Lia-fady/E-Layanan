@@ -154,6 +154,7 @@ if(session()->getFlashdata('permohonan_sent')):
             <i class="bi bi-card-list text-primary"></i> Data Permohonan
         </div>
 
+        <?php if (!isset($permohonan_aktif) || $permohonan_aktif['status_persetujuan'] !== 'PERBAIKAN_BERKAS'): ?>
         <!-- FAQ / Panduan Jenis Permohonan -->
         <div class="alert alert-warning mb-4 shadow-sm" style="border-radius:10px; padding:16px 20px; border-left: 5px solid #ffc107;">
             <div class="fw-bold text-dark mb-2" style="font-size:0.9rem;"><i class="bi bi-info-circle-fill text-warning me-2"></i> Informasi Layanan Akademik</div>
@@ -165,6 +166,7 @@ if(session()->getFlashdata('permohonan_sent')):
                 <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
             </ul>
         </div>
+        <?php endif; ?>
 
         <!-- Jenis Permohonan & Tujuan -->
         <div class="row g-3 mb-3">

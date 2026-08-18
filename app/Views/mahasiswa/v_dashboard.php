@@ -574,7 +574,7 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Pengajuan</span>
-                    <span class="info-value"><?= date('d M Y, H:i', strtotime($permohonan_aktif['created_at'])) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['created_at'], true) ?></span>
                 </div>
                 <div class="mt-3">
                     <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
