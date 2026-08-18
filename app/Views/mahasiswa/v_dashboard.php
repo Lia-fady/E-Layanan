@@ -454,8 +454,6 @@
                 $step2_class = 'rejected'; $step2_icon = '<i class="bi bi-pencil-square"></i>'; 
             } elseif (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
                 $step2_class = 'completed'; $step2_icon = '<i class="bi bi-check-lg"></i>';
-            } elseif (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DITOLAK') {
-                $step2_class = 'rejected'; $step2_icon = '<i class="bi bi-x-lg"></i>';
             } elseif ($state == 2) {
                 $step2_class = 'current';
             } elseif ($state >= 4) {

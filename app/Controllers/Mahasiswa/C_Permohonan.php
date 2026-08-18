@@ -373,11 +373,11 @@ class C_Permohonan extends C_BaseMahasiswa
         }
 
         if ($action_type === 'draft') {
-            catat_log($id_permohonan_baru, 'Mahasiswa', 'Menyimpan Draft Permohonan', 'Permohonan disimpan sebagai draf sementara.');
+            catat_log($id_permohonan_baru, 'Mahasiswa', 'Menyimpan Draf', 'Permohonan berhasil disimpan sebagai draf dan belum dikirimkan.');
             session()->setFlashdata('success', 'Permohonan berhasil disimpan sebagai Draft.');
             return redirect()->to(base_url('mahasiswa/status'));
         } else {
-            catat_log($id_permohonan_baru, 'Mahasiswa', 'Mengajukan Permohonan', 'Permohonan baru diajukan dan menunggu verifikasi Sekretariat.');
+            catat_log($id_permohonan_baru, 'Mahasiswa', 'Mengirimkan Permohonan', 'Permohonan berhasil dikirim dan sedang menunggu verifikasi oleh Sekretariat.');
             session()->setFlashdata('permohonan_sent', true);
             session()->setFlashdata('success', 'Permohonan dan berkas PDF berhasil terkirim dan tercatat di sistem.');
             return redirect()->to(base_url('mahasiswa/status'));
@@ -454,6 +454,8 @@ class C_Permohonan extends C_BaseMahasiswa
         if (!$draft || ($draft['posting_data'] !== 'draft' && $draft['status_persetujuan'] !== 'PERBAIKAN_BERKAS')) {
             return redirect()->to(base_url('mahasiswa/status'))->with('error', 'Permohonan tidak ditemukan atau tidak dapat diedit.');
         }
+        
+        $statusAwal = $draft['status_persetujuan'];
 
         $rules = [
             'id_jenis_permohonan' => ['rules' => 'required'],
@@ -788,14 +790,14 @@ class C_Permohonan extends C_BaseMahasiswa
             ]);
         }
 
-        if ($action_type === 'draft' && $draft['status_persetujuan'] !== 'PERBAIKAN_BERKAS') {
-            catat_log($id_permohonan, 'Mahasiswa', 'Memperbarui Draft', 'Draft permohonan telah diperbarui.');
+        if ($action_type === 'draft') {
+            catat_log($id_permohonan, 'Mahasiswa', 'Memperbarui Draf', 'Draf permohonan berhasil diperbarui.');
             return redirect()->to(base_url('mahasiswa/status'))->with('success', 'Perubahan pada Draft berhasil disimpan.');
         } else {
-            if ($draft['status_persetujuan'] === 'PERBAIKAN_BERKAS') {
-                catat_log($id_permohonan, 'Mahasiswa', 'Mengirim Ulang Revisi Berkas', 'Mahasiswa telah memperbaiki berkas/data sesuai catatan Sekretariat.');
+            if ($statusAwal === 'PERBAIKAN_BERKAS') {
+                catat_log($id_permohonan, 'Mahasiswa', 'Mengirimkan Perbaikan Berkas', 'Berkas yang perlu diperbaiki telah dikirim ulang dan sedang menunggu verifikasi Sekretariat.');
             } else {
-                catat_log($id_permohonan, 'Mahasiswa', 'Mengirim Permohonan', 'Draft permohonan telah dikirim dan menunggu verifikasi Sekretariat.');
+                catat_log($id_permohonan, 'Mahasiswa', 'Mengirimkan Permohonan', 'Permohonan berhasil dikirim dan sedang menunggu verifikasi oleh Sekretariat.');
             }
             return redirect()->to(base_url('mahasiswa/status'))->with('success', 'Permohonan berhasil dikirim dan sedang dalam proses verifikasi.');
         }

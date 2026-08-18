@@ -253,10 +253,12 @@ class C_Verifikasi extends BaseController
                 $bidangRow = $db->table('m_bidang')->where('id_bidang', $id_bidang)->get()->getRow();
                 $namaBidang = $bidangRow ? $bidangRow->bidang : 'Bidang Tujuan';
                 
-                catat_log($id_permohonan, 'Sekretariat', 'Verifikasi & Disposisi', 'Berkas dinyatakan VALID dan didisposisikan ke ' . $namaBidang);
+                catat_log($id_permohonan, 'Sekretariat', 'Verifikasi Berhasil', 'Berkas telah dinyatakan lengkap dan permohonan diteruskan ke ' . $namaBidang . '.');
             }
+        } elseif ($overallStatus == 'DITOLAK') {
+            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan tidak dapat diproses lebih lanjut. Catatan Sekretariat: ' . $catatan);
         } else {
-            catat_log($id_permohonan, 'Sekretariat', 'Verifikasi Berkas Ditolak', 'Permohonan dikembalikan untuk perbaikan. Catatan: ' . $catatan);
+            catat_log($id_permohonan, 'Sekretariat', 'Perlu Diperbaiki', 'Terdapat berkas yang harus diperbaiki. Catatan Sekretariat: ' . $catatan);
         }
 
         if ($result) {
@@ -314,7 +316,7 @@ class C_Verifikasi extends BaseController
         $result = $this->verifikasiModel->simpanVerifikasi($data);
 
         if ($result) {
-            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan ditolak. Catatan: ' . $catatan);
+            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan tidak dapat diproses lebih lanjut. Catatan Sekretariat: ' . $catatan);
             return $this->response->setJSON(['success' => true, 'message' => 'Permohonan berhasil ditolak.']);
         }
 

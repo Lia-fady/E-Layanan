@@ -607,7 +607,7 @@
                                 <div class="v-timeline-icon" style="display:flex; justify-content:center; align-items:center;">
                                     <i class="bi ${log.icon} text-white" style="font-size:0.75rem;"></i>
                                 </div>
-                                <span class="v-timeline-date">${log.tanggal_format} <span class="text-muted ms-1">Oleh: ${log.aktor}</span></span>
+                                <span class="v-timeline-date">${log.tanggal_format}</span>
                                 <div class="v-timeline-title">${log.aksi}</div>
                                 ${log.catatan ? `<div class="v-timeline-content mt-1 py-2 px-3 border-0 bg-light text-dark small rounded" style="font-size:0.8rem;">${log.catatan}</div>` : ''}
                             </div>

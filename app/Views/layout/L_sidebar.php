@@ -49,16 +49,10 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- User Profile -->
-    <div class="sidebar-user-profile">
-        <div class="sidebar-user-avatar">
-            <i class="fas fa-user"></i>
-        </div>
-        <div class="sidebar-user-info">
-            <div class="sidebar-user-name"><?= esc(!empty(session('nama_user')) ? session('nama_user') : (!empty(session('nama')) ? session('nama') : 'User')) ?></div>
-            <div class="sidebar-user-role"><?= esc(!empty(session('kode_unor')) ? session('kode_unor') : (!empty(session('role_name')) ? session('role_name') : (!empty(session('role')) ? session('role') : 'Sekretariat'))) ?></div>
-        </div>
-    </div>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0 mb-2">
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'dashboard') ? 'active' : '' ?>">
@@ -67,6 +61,14 @@
             <span>Dashboard</span>
         </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Manajemen Permohonan
+    </div>
 
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
@@ -89,12 +91,23 @@
         </a>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Informasi & Data
+    </div>
+
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'kuota') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('sekretariat/kuota') ?>">
             <i class="fas fa-fw fa-chart-pie"></i>
             <span>Kuota Bidang</span>
         </a>
     </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
     <li class="nav-item">
         <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">

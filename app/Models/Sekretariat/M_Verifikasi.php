@@ -137,7 +137,7 @@ class M_Verifikasi extends Model
             jp.jenis_permohonan,
             jn.nama_jenjang AS jenjang_pendidikan,
             ip.instansi_pendidikan,
-            pr.nama_prodi,
+            COALESCE(pr.nama_prodi, im.jurusan) AS nama_prodi,
             fk.fakultas AS nama_fakultas,
             im.semester,
             im.angkatan_tahun,

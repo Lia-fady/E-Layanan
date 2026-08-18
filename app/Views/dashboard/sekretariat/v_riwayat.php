@@ -19,6 +19,69 @@
 
 <?= $this->section('content') ?>
 
+<style>
+    /* Custom Timeline CSS */
+    .v-timeline {
+        position: relative;
+        padding-left: 20px;
+        margin-top: 20px;
+    }
+    .v-timeline::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 26px;
+        height: 100%;
+        width: 2px;
+        background: #e2e8f0;
+    }
+    .v-timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+        padding-left: 20px;
+    }
+    .v-timeline-item:last-child {
+        margin-bottom: 0;
+    }
+    .v-timeline-icon {
+        position: absolute;
+        top: 0;
+        left: -21px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        box-shadow: 0 0 0 4px #fff;
+    }
+    .v-timeline-item.success .v-timeline-icon { border-color: #10b981; background: #10b981; }
+    .v-timeline-item.warning .v-timeline-icon { border-color: #f59e0b; background: #f59e0b; }
+    .v-timeline-item.danger .v-timeline-icon { border-color: #ef4444; background: #ef4444; }
+    .v-timeline-item.primary .v-timeline-icon { border-color: #3b82f6; background: #3b82f6; }
+    .v-timeline-item.info .v-timeline-icon { border-color: #0dcaf0; background: #0dcaf0; }
+    .v-timeline-date {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 4px;
+        display: block;
+    }
+    .v-timeline-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 6px;
+    }
+    .v-timeline-content {
+        font-size: 0.85rem;
+        color: #475569;
+        line-height: 1.5;
+        background: #f8fafc;
+        padding: 12px;
+        border-radius: 8px;
+    }
+</style>
+
 <!-- Flash Messages -->
 <?php if (session()->getFlashdata('success')) : ?>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -137,6 +200,15 @@
                                 <i class="fas fa-eye"></i>
                             </a>
 
+                            <!-- Log Riwayat Permohonan -->
+                            <button type="button"
+                                    class="riwayat-action-btn"
+                                    title="Lihat Log Riwayat"
+                                    onclick="showLogRiwayat(<?= $row->id_permohonan_magang ?>)"
+                                    style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#EFF6FF; color:#3B82F6; border-radius:6px; text-decoration:none; border:none; cursor:pointer;">
+                                <i class="fas fa-history"></i>
+                            </button>
+
                             <!-- Hapus Data Riwayat Permohonan -->
                             <button type="button"
                                     class="riwayat-action-btn btn-delete-riwayat"
@@ -155,10 +227,69 @@
     </table>
 </div>
 
+<!-- MODAL LOG RIWAYAT -->
+<div class="modal fade" id="modalLogRiwayat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow" style="border-radius: 8px;">
+            <div class="modal-header bg-white border-bottom py-3">
+                <h6 class="modal-title fw-bold text-dark m-0"><i class="fas fa-history me-2 text-info"></i> Riwayat Proses</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+            </div>
+            <div class="modal-body p-4 bg-white" id="logRiwayatContainer">
+                <!-- Log content will be loaded here via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script>
+function showLogRiwayat(idPermohonan) {
+    $('#modalLogRiwayat').modal('show');
+    
+    const container = document.getElementById('logRiwayatContainer');
+    container.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-2 small">Memuat riwayat aktivitas...</p>
+        </div>`;
+        
+    fetch(`<?= base_url('api/log/riwayat/') ?>${idPermohonan}`)
+        .then(response => response.json())
+        .then(res => {
+            if(res.status === 'success') {
+                if(res.data.length === 0) {
+                    container.innerHTML = `<div class="text-center text-muted small py-4">Belum ada riwayat aktivitas yang tercatat.</div>`;
+                    return;
+                }
+                
+                let html = '<div class="v-timeline">';
+                res.data.forEach(log => {
+                    html += `
+                        <div class="v-timeline-item ${log.color_class}">
+                            <div class="v-timeline-icon" style="display:flex; justify-content:center; align-items:center;">
+                                <i class="bi ${log.icon} text-white" style="font-size:0.75rem;"></i>
+                            </div>
+                            <span class="v-timeline-date">${log.tanggal_format} <span class="text-muted ms-1">Oleh: ${log.aktor}</span></span>
+                            <div class="v-timeline-title">${log.aksi}</div>
+                            ${log.catatan ? `<div class="v-timeline-content mt-1 py-2 px-3 border-0 bg-light text-dark small rounded" style="font-size:0.8rem;">${log.catatan}</div>` : ''}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = `<div class="alert alert-danger p-2 small">Gagal memuat log riwayat.</div>`;
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            container.innerHTML = `<div class="alert alert-danger p-2 small">Terjadi kesalahan jaringan.</div>`;
+        });
+}
+
 $(document).ready(function() {
     var table = $('#tabelRiwayat').DataTable({
         "language": {
