@@ -249,7 +249,7 @@
         
         <div class="menu-group">Keluar</div>
         <a href="#" id="btn-logout" class="nav-link logout-link">
-            <i class="bi bi-box-arrow-left"></i> Logout Akun
+            <i class="bi bi-box-arrow-left"></i> Keluar
         </a>
     </div>
 </div>

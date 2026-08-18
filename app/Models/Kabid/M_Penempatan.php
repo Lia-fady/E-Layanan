@@ -58,7 +58,14 @@ class M_Penempatan extends Model
             mhs.jenis_kelamin,
             mhs.email,
             mhs.no_telp,
+            mhs.tgl_lahir,
             im.semester,
+            im.angkatan_tahun,
+            im.id_jenjang_pendidikan,
+            kls.nama_kelas as kelas,
+            jur.nama_jurusan as jurusan,
+            jnj.nama_jenjang as jenjang_pendidikan,
+            pm.id_jenis_permohonan,
             bd.bidang,
             pm.deskripsi_keahlian,
             pm.tgl_mulai,
@@ -77,16 +84,22 @@ class M_Penempatan extends Model
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
-
+        $builder->join('m_jurusan as jur', 'jur.id_jurusan = im.id_jurusan', 'left');
+        $builder->join('m_kelas as kls', 'kls.id_kelas = im.id_kelas', 'left');
+        $builder->join('m_jenjang_pendidikan as jnj', 'jnj.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         if ($id_bidang !== null) {
             $builder->where('pn.id_bidang', $id_bidang);
         }
 
         if ($status_penempatan !== null) {
-            $builder->where('pn.status_penempatan', $status_penempatan);
+            if (is_array($status_penempatan)) {
+                $builder->whereIn('pn.status_penempatan', $status_penempatan);
+            } else {
+                $builder->where('pn.status_penempatan', $status_penempatan);
+            }
         }
 
-        $builder->orderBy('pn.created_at', 'DESC');
+        $builder->orderBy('pn.created_at', 'ASC');
 
         return $builder->get()->getResult();
     }
@@ -105,17 +118,36 @@ class M_Penempatan extends Model
         $builder->select('
             pn.*,
             mhs.nim,
+            mhs.nik,
             mhs.nama_mahasiswa,
             mhs.jenis_kelamin,
             mhs.email,
             mhs.no_telp,
+            mhs.tgl_lahir,
+            mhs.alamat,
+            mhs.rt,
+            mhs.rw,
+            kel.nama_kelurahan as kelurahan,
+            kec.nama_kecamatan as kecamatan,
+            kab.nama_kabupaten as kabupaten,
+            prov.nama_provinsi as provinsi,
+            im.semester,
+            im.angkatan_tahun,
+            im.id_jenjang_pendidikan,
+            im.jurusan as jurusan_siswa,
+            kls.nama_kelas as kelas,
+            jur.nama_jurusan as jurusan,
+            jnj.nama_jenjang as jenjang_pendidikan,
+            pm.id_jenis_permohonan,
+            pr.nama_prodi as prodi,
             bd.bidang,
             pm.deskripsi_keahlian,
             pm.tgl_mulai,
             pm.tgl_selesai,
             jp.jenis_permohonan,
             ip.instansi_pendidikan,
-            ps.catatan as catatan_sekretariat
+            ps.catatan as catatan_sekretariat,
+            ps.tanggal_persetujuan
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pn.id_mahasiswa', 'left');
         $builder->join('m_bidang as bd', 'bd.id_bidang = pn.id_bidang', 'left');
@@ -124,6 +156,14 @@ class M_Penempatan extends Model
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
+        $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
+        $builder->join('m_jurusan as jur', 'jur.id_jurusan = im.id_jurusan', 'left');
+        $builder->join('m_kelas as kls', 'kls.id_kelas = im.id_kelas', 'left');
+        $builder->join('m_jenjang_pendidikan as jnj', 'jnj.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
+        $builder->join('m_kelurahan as kel', 'kel.id_kelurahan = mhs.id_kelurahan', 'left');
+        $builder->join('m_kecamatan as kec', 'kec.id_kecamatan = kel.id_kecamatan', 'left');
+        $builder->join('m_kabupaten as kab', 'kab.id_kabupaten = kec.id_kabupaten', 'left');
+        $builder->join('m_provinsi as prov', 'prov.id_provinsi = kab.id_provinsi', 'left');
         $builder->where('pn.id_penempatan_magang', $id_penempatan);
 
         return $builder->get()->getRow();

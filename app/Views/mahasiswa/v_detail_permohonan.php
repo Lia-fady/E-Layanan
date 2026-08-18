@@ -227,7 +227,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <td><?= $tglSelesai ?></td>
                 </tr>
                 <?php
-                    $labelKeahlian = 'Keahlian / Kompetensi';
+                    $labelKeahlian = 'Keahlian Utama';
                     $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
                 ?>
                 <tr>
@@ -259,35 +259,36 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
 
     <!-- ================================================================ -->
-    <!-- FEED 2: VERIFIKASI SEKRETARIAT                                   -->
+    <!-- FEED 2: VERIFIKASI BERKAS                                        -->
     <!-- ================================================================ -->
     <?php if ($p['posting_data'] == 'kirim'): ?>
     <?php
         $jenisPermohonanText = strtolower(trim($p['jenis_permohonan'] ?? 'permohonan'));
         $jenisPermohonanText = preg_replace('/\s+/', ' ', $jenisPermohonanText);
 
-        // LOGIC SEKRETARIAT
+        // LOGIC VERIFIKASI BERKAS
         $isRevisi = ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS');
         $hasPenempatan = (!empty($p['status_penempatan']) && !$isRevisi);
         if ($p['status_persetujuan'] == 'DITOLAK') {
             $tagClass = 'ditolak'; $tagText = 'ditolak';
-            $feedText = 'menolak permohonan ' . $jenisPermohonanText . ' anda.';
+            $feedText = 'Permohonan tidak dapat diproses lebih lanjut.';
         } elseif ($isRevisi) {
             $tagClass = 'menunggu'; $tagText = 'perbaikan';
-            $feedText = 'mengembalikan berkas permohonan ' . $jenisPermohonanText . ' anda untuk direvisi.';
+            $feedText = 'Terdapat berkas yang perlu diperbaiki. Silakan periksa catatan di bawah.';
         } elseif ($p['status_persetujuan'] == 'DISETUJUI') {
-            $tagClass = 'disetujui'; $tagText = 'disetujui';
-            $feedText = 'telah menyetujui tahap verifikasi permohonan ' . $jenisPermohonanText . ' anda.';
+            $tagClass = 'disetujui'; $tagText = 'sesuai';
+            $feedText = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai.';
         } else {
             $tagClass = 'menunggu'; $tagText = 'menunggu';
-            $feedText = 'sedang memproses verifikasi berkas permohonan ' . $jenisPermohonanText . ' anda.';
+            $feedText = 'Berkas permohonan sedang dalam proses verifikasi.';
         }
     ?>
     <div class="tw-item">
         
         <div class="tw-header">
             <div class="tw-header-text">
-                <span class="tw-header-actor">Sekretariat</span> <?= $feedText ?>
+                <span class="tw-header-actor">Verifikasi Berkas</span>
+                <div style="margin-top: 4px; color: #6b7280; font-size: 0.88rem;"><?= $feedText ?></div>
                 <span class="tw-header-time">
                     <?php 
                         $waktuSekre = '';
@@ -298,7 +299,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     ?>
                         <?= tgl_indo($waktuSekre, true) ?> WIB
                     <?php else: ?>
-                        Menunggu Proses
+                        Sedang diproses
                     <?php endif; ?>
                 </span>
             </div>
@@ -315,9 +316,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         $jenisPermohonanText = preg_replace('/\s+/', ' ', $jenisPermohonanText);
                     ?>
                     <div style="margin-bottom: 12px; font-style: italic; color: #374151;">
-                        Mohon maaf, permohonan <?= esc($jenisPermohonanText) ?> Anda tidak dapat kami setujui/proses lebih lanjut saat ini. Terima kasih atas ketertarikan Anda untuk melaksanakan <?= esc($jenisPermohonanText) ?> di instansi kami.
+                        Mohon maaf, permohonan <?= esc($jenisPermohonanText) ?> Anda tidak dapat diproses lebih lanjut saat ini. Terima kasih atas ketertarikan Anda.
                     </div>
-                    <div style="margin-bottom: 2px; color: #4b5563;">Catatan:</div>
+                    <div style="margin-bottom: 2px; color: #4b5563;">Alasan:</div>
                     <div style="font-style: italic; color: #4b5563;">
                         <?php 
                             $catatanSekre = esc($p['catatan_sekretariat']);
@@ -325,7 +326,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         ?>
                     </div>
                 <?php else: ?>
-                    <div style="font-weight: 600; margin-bottom: 6px; color: #111827;">Catatan verifikasi:</div>
+                    <div style="font-weight: 600; margin-bottom: 6px; color: #111827;">Catatan :</div>
                     <?php 
                         $catatanSekre = esc($p['catatan_sekretariat']);
                         if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
@@ -363,7 +364,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                             <?php if(($file['status_verifikasi'] ?? '') === 'SESUAI' || ($file['status_verifikasi'] ?? '') === 'VALID'): ?>
                                 <span style="color:#22c55e; font-weight:600;"><i class="bi bi-check-circle-fill me-1"></i>Sesuai</span>
                             <?php elseif(($file['status_verifikasi'] ?? '') === 'TIDAK_SESUAI' || ($file['status_verifikasi'] ?? '') === 'TIDAK_VALID'): ?>
-                                <span style="color:#ef4444; font-weight:600;"><i class="bi bi-x-circle-fill me-1"></i>Tidak Sesuai</span>
+                                <span style="color:#ef4444; font-weight:600;"><i class="bi bi-x-circle-fill me-1"></i>Perlu Diperbaiki</span>
                             <?php else: ?>
                                 <span style="color:#9ca3af;">Belum dicek</span>
                             <?php endif; ?>
@@ -388,7 +389,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
 
     <!-- ================================================================ -->
-    <!-- FEED 3: PENEMPATAN (KEPALA BIDANG)                               -->
+    <!-- FEED 3: PENEMPATAN & KEGIATAN                                    -->
     <!-- ================================================================ -->
     <?php 
        $isRevisiSekre = ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS');
@@ -404,26 +405,27 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
        
        if ($isKabidSelesai) {
            $kBadge = 'disetujui'; $kText = 'selesai';
-           $kHeader = 'telah menyatakan selesai untuk kegiatan ' . $jenisPermohonanKabid . ' anda.';
+           $kHeader = 'Kegiatan ' . $jenisPermohonanKabid . ' telah dinyatakan selesai.';
        } elseif ($isKabidJalan) {
            $kBadge = 'disetujui'; $kText = 'disetujui';
-           $kHeader = 'menyetujui penempatan permohonan ' . $jenisPermohonanKabid . ' anda.';
+           $kHeader = 'Permohonan telah disetujui dan kegiatan sedang berjalan.';
         } else {
             $kBadge = 'menunggu'; $kText = 'menunggu';
-            $kHeader = 'sedang meninjau permohonan penempatan ' . $jenisPermohonanKabid . ' anda.';
+            $kHeader = 'Permohonan sedang menunggu persetujuan penempatan.';
         }
     ?>
     <div class="tw-item">
         
         <div class="tw-header">
             <div class="tw-header-text">
-                <span class="tw-header-actor">Unit Bidang</span> <?= $kHeader ?>
+                <span class="tw-header-actor">Persetujuan & Penempatan</span>
+                <div style="margin-top: 4px; color: #6b7280; font-size: 0.88rem;"><?= $kHeader ?></div>
                 <span class="tw-header-time">
                     <?php $waktuKabid = !empty($p['waktu_kabid']) ? $p['waktu_kabid'] : (!empty($p['waktu_kabid_fallback']) ? $p['waktu_kabid_fallback'] : ''); ?>
                     <?php if(!empty($waktuKabid) && !$isKabidMenunggu): ?>
                         <?= tgl_indo($waktuKabid, true) ?> WIB
                     <?php else: ?>
-                        Menunggu Proses
+                        Sedang diproses
                     <?php endif; ?>
                 </span>
             </div>
@@ -435,9 +437,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
             <?php if($isKabidJalan || $isKabidSelesai): ?>
             <div class="tw-message">
                 <?php if ($isKabidSelesai): ?>
-                    <p>Kegiatan anda telah dinyatakan <strong>selesai</strong> pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong>. Terima kasih atas partisipasinya.</p>
+                    <p>Kegiatan Anda pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong> telah dinyatakan selesai. Terima kasih atas partisipasi dan kontribusinya.</p>
                 <?php else: ?>
-                    <p>Permohonan anda telah disetujui sepenuhnya. Anda telah ditempatkan pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong>.</p>
+                    <p>Permohonan Anda telah disetujui. Anda ditempatkan pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong>.</p>
                 <?php endif; ?>
             </div>
 
@@ -456,7 +458,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
             <?php if(!empty($p['catatan']) && $p['catatan'] != 'Disposisi dari Verifikasi'): ?>
             <div class="tw-attachment-note" <?= $isKabidBatal ? 'style="padding-top: 18px;"' : '' ?>>
-                <span style="display: block; color: #6b7280; font-size: 0.8rem; margin-bottom: 2px;">Catatan Unit Bidang:</span>
+                <span style="display: block; color: #6b7280; font-size: 0.8rem; margin-bottom: 2px;">Catatan:</span>
                 <?= nl2br(esc($p['catatan'])) ?>
             </div>
             <?php endif; ?>

@@ -57,6 +57,32 @@ class C_DisposisiMasuk extends BaseController
                 ->get()->getResult();
         }
 
+        // AJAX Handler for getting detail
+        if ($this->request->isAJAX() && $this->request->getPost('action') === 'get_detail') {
+            $id_penempatan = $this->request->getPost('id_penempatan');
+            
+            $penempatanDetail = $this->penempatanModel->getDetailPenempatan($id_penempatan);
+            
+            if (!$penempatanDetail) {
+                return $this->response->setJSON(['error' => true, 'message' => 'Data tidak ditemukan']);
+            }
+
+            // Ambil data file untuk permohonan ini
+            $files = $db->table('t_file_permohonan_magang f')
+                ->select('f.id_file_permohonan, f.nama_file, f.path_file as file_path, m.nama_file as jenis_file')
+                ->join('m_file_permohonan mfp', 'mfp.id_file_permohonan = f.id_file_permohonan', 'left')
+                ->join('m_file m', 'm.id_file = mfp.id_file', 'left')
+                ->where('f.id_permohonan_magang', $penempatanDetail->id_permohonan_magang ?? null)
+                ->get()->getResult();
+
+            $dataDetail = [
+                'p' => $penempatanDetail,
+                'files' => $files
+            ];
+
+            return view('dashboard/kabid/disposisi/_detail', $dataDetail);
+        }
+
         $data = [
             'title'         => 'Data Mahasiswa Bidang',
             'active_menu'   => 'disposisi',
@@ -64,7 +90,7 @@ class C_DisposisiMasuk extends BaseController
             'status_filter' => $status_filter ?? 'all'
         ];
 
-        return view('dashboard/kabid/v_disposisi_masuk', $data);
+        return view('dashboard/kabid/disposisi/index', $data);
     }
 
     /**
