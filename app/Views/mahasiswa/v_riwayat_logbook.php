@@ -246,7 +246,7 @@
                     <div class="ph-stat-icon amber"><i class="bi bi-clock-history"></i></div>
                     <div>
                         <div class="ph-stat-value"><?= $totalActivity - $approvedActivity ?></div>
-                        <div class="ph-stat-label">Pending</div>
+                        <div class="ph-stat-label">Menunggu</div>
                     </div>
                 </div>
             </div>

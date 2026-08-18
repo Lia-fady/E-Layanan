@@ -11,7 +11,7 @@
 <?= $this->section('content') ?>
 <div class="mb-4">
     <h3 class="fw-semibold mb-1 text-dark">Ajukan Permohonan</h3>
-    <p class="text-muted mb-0">Lengkapi data dan dokumen yang diperlukan. Pastikan informasi yang Anda masukkan sudah benar sebelum mengirimkan permohonan.</p>
+    <p class="text-muted mb-0">Lengkapi data dan unggah berkas yang diperlukan. Pastikan informasi yang Anda masukkan sudah benar sebelum mengirimkan permohonan.</p>
 </div>
 
 <?php if(session()->getFlashdata('errors')) : ?>
@@ -52,7 +52,7 @@ $isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $sta
             <div class="step-circle <?= $isFinished ? 'is-done' : '' ?>" id="sc-2"><i class="bi bi-check-lg <?= $isFinished ? '' : 'd-none' ?>" id="si-2"></i><span class="<?= $isFinished ? 'd-none' : '' ?>" id="sn-2">2</span></div>
             <div class="step-info">
                 <div class="step-label-num <?= $isFinished ? 'is-done' : '' ?>" id="sl-num-2">Langkah 2</div>
-                <div class="step-label-title <?= $isFinished ? 'is-done' : '' ?>" id="sl-title-2">Unggah Dokumen</div>
+                <div class="step-label-title <?= $isFinished ? 'is-done' : '' ?>" id="sl-title-2">Unggah Berkas</div>
             </div>
         </li>
         <div class="step-connector"><div class="step-connector-fill" id="sf-2" style="width: <?= $isFinished ? '100%' : '0%' ?>;"></div></div>
@@ -61,7 +61,7 @@ $isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $sta
             <div class="step-circle <?= $isFinished ? 'is-done' : '' ?>" id="sc-3"><i class="bi bi-check-lg <?= $isFinished ? '' : 'd-none' ?>" id="si-3"></i><span class="<?= $isFinished ? 'd-none' : '' ?>" id="sn-3">3</span></div>
             <div class="step-info">
                 <div class="step-label-num <?= $isFinished ? 'is-done' : '' ?>" id="sl-num-3">Langkah 3</div>
-                <div class="step-label-title <?= $isFinished ? 'is-done' : '' ?>" id="sl-title-3">Review</div>
+                <div class="step-label-title <?= $isFinished ? 'is-done' : '' ?>" id="sl-title-3">Tinjau Data</div>
             </div>
         </li>
         <div class="step-connector"><div class="step-connector-fill" id="sf-3" style="width: <?= $isFinished ? '100%' : '0%' ?>;"></div></div>
@@ -99,7 +99,7 @@ if(session()->getFlashdata('permohonan_sent')):
     </div>
     <?php if (isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI'): ?>
         <h5 class="fw-bold text-dark mb-2">Menunggu Persetujuan</h5>
-        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah selesai diperiksa dan dinyatakan sesuai. Permohonan Anda telah diteruskan untuk proses persetujuan akhir. Silakan pantau halaman status secara berkala.</p>
+        <p class="text-muted mx-auto mb-4" style="max-width:400px;">Berkas permohonan Anda telah dinyatakan sesuai dan kini sedang dalam proses persetujuan. Silakan pantau perkembangan permohonan Anda secara berkala.</p>
     <?php else: ?>
         <h5 class="fw-bold text-dark mb-2">Permohonan Sedang Diproses</h5>
         <p class="text-muted mx-auto mb-4" style="max-width:400px;">Permohonan Anda saat ini sedang dalam antrean verifikasi administrasi. Silakan pantau halaman status secara berkala.</p>
@@ -125,10 +125,10 @@ if(session()->getFlashdata('permohonan_sent')):
 <?php if(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
 <div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
     <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-    <strong>Perbaikan Berkas:</strong> Berkas permohonan Anda dikembalikan oleh Sekretariat. Silakan perbaiki data/file Anda dan ajukan kembali.
+    <strong>Terdapat Berkas yang Perlu Diperbaiki:</strong> Silakan periksa catatan di bawah ini, lalu perbaiki data atau unggah ulang berkas yang diminta sebelum mengajukan kembali.
     <?php if(!empty($draft['catatan_sekretariat'])): ?>
         <hr class="my-2" style="border-color: #fde047;">
-        <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Revisi:</div>
+        <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Perbaikan:</div>
         <div style="font-style: italic; color: #a16207;">
             <?php 
                 $catatanSekre = esc($draft['catatan_sekretariat']);
@@ -232,7 +232,7 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <!-- Deskripsi Keahlian -->
         <div class="mb-3">
-            <label class="wz-form-label" id="lbl-keahlian">Keahlian / Kompetensi <span class="text-danger">*</span></label>
+            <label class="wz-form-label" id="lbl-keahlian">Keahlian Utama <span class="text-danger">*</span></label>
             <textarea class="wz-form-control" name="deskripsi_keahlian" id="deskripsi_keahlian" rows="3" placeholder="Jelaskan keahlian atau kompetensi yang Anda miliki saat ini..." required maxlength="500" oninput="countChars(this,'cc-keahlian')"><?= old('deskripsi_keahlian', $draft['deskripsi_keahlian'] ?? '') ?></textarea>
             <div class="char-counter"><span id="cc-keahlian">0</span>/500 karakter</div>
         </div>
@@ -254,7 +254,7 @@ if(session()->getFlashdata('permohonan_sent')):
     <!-- ============ STEP 2: UNGGAH DOKUMEN ============ -->
     <div class="wizard-card wizard-step" id="step-2">
         <div class="wz-section-title">
-            <i class="bi bi-file-earmark-arrow-up text-primary"></i> Unggah Dokumen
+            <i class="bi bi-file-earmark-arrow-up text-primary"></i> Unggah Berkas
         </div>
         <p class="text-muted mb-4" style="font-size:0.84rem;line-height:1.7;margin-top:-8px;">
             Unggah dokumen dalam format <strong>PDF</strong>, ukuran maksimal <strong>2 MB</strong> per file.
@@ -332,14 +332,14 @@ if(session()->getFlashdata('permohonan_sent')):
             <i class="bi bi-clipboard2-check text-primary"></i> Periksa Kembali Data
         </div>
         <p class="text-muted mb-4" style="font-size:0.84rem;margin-top:-8px;">
-            Periksa kembali data yang telah Anda isi sebelum mengirim permohonan.
+            Pastikan seluruh data yang Anda masukkan sudah benar sebelum mengirimkan permohonan.
         </p>
 
         <div class="row g-4 mb-4">
             <!-- Review: Identitas Pemohon -->
             <div class="col-lg-6">
                 <div class="review-data-card h-100 mb-0">
-                    <div class="rv-title">Identitas Pribadi</div>
+                    <div class="rv-title">Data Diri</div>
                     <table class="rv-table">
                         <?php 
                             $isSiswa = (isset($instansi['jenjang_pendidikan']) && stripos($instansi['jenjang_pendidikan'], 'SM') !== false) || (isset($instansi['id_jenjang_pendidikan']) && $instansi['id_jenjang_pendidikan'] == 3);
@@ -349,7 +349,7 @@ if(session()->getFlashdata('permohonan_sent')):
                         ?>
                         <tr><td style="width:140px;">Nama Lengkap</td><td class="rv-sep">:</td><td class="text-dark"><?= esc($mhs['nama_mahasiswa'] ?? '-') ?></td></tr>
                         <tr><td>Jenis Kelamin</td><td class="rv-sep">:</td><td><?= esc(isset($mhs['jenis_kelamin']) ? ($mhs['jenis_kelamin'] === 'L' ? 'Laki-laki' : ($mhs['jenis_kelamin'] === 'P' ? 'Perempuan' : '-')) : '-') ?></td></tr>
-                        <tr><td>Tanggal Lahir</td><td class="rv-sep">:</td><td><?= esc(!empty($mhs['tgl_lahir']) ? date('d F Y', strtotime($mhs['tgl_lahir'])) : '-') ?></td></tr>
+                        <tr><td>Tanggal Lahir</td><td class="rv-sep">:</td><td><?= esc(!empty($mhs['tgl_lahir']) ? tgl_indo($mhs['tgl_lahir']) : '-') ?></td></tr>
                         <tr><td id="lbl-rv-nim"><?= $labelNim ?></td><td class="rv-sep">:</td><td><?= esc($mhs['nim'] ?? '-') ?></td></tr>
                         <tr><td>NIK</td><td class="rv-sep">:</td><td><?= esc($mhs['nik'] ?? '-') ?></td></tr>
                         <tr><td>Nomor WhatsApp</td><td class="rv-sep">:</td><td><?= esc($mhs['no_telp'] ?? '-') ?></td></tr>
@@ -373,7 +373,7 @@ if(session()->getFlashdata('permohonan_sent')):
                         <tr><td style="width:140px;">Jenis Permohonan</td><td class="rv-sep">:</td><td id="rv-jenis" class="text-dark">—</td></tr>
                         <tr><td>Tanggal Pelaksanaan</td><td class="rv-sep">:</td><td><span id="rv-tgl-mulai" class="text-dark">—</span> <span class="text-muted mx-1">s.d.</span> <span id="rv-tgl-selesai" class="text-dark">—</span></td></tr>
                         <tr><td>Lokasi Kegiatan</td><td class="rv-sep">:</td><td class="text-dark">Dinas Kominfo Kota Tangerang</td></tr>
-                        <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Keahlian / Kompetensi</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
+                        <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Keahlian Utama</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
                         <tr><td id="rv-magang-label" style="vertical-align:top; padding-top:10px;">Apa yang ingin Anda kerjakan?</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-magang" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
                     </table>
                 </div>
@@ -383,13 +383,13 @@ if(session()->getFlashdata('permohonan_sent')):
         <!-- Review: Dokumen -->
         <div class="mb-4">
             <div class="fw-bold text-dark mb-3" style="font-size:0.88rem;">
-                <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Dokumen yang Diunggah
+                <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Berkas yang Diunggah
             </div>
             <table class="rv-doc-table">
                 <thead>
                     <tr>
                         <th style="width:56px;">No</th>
-                        <th>Dokumen yang Diunggah</th>
+                        <th>Berkas yang Diunggah</th>
                         <th class="text-end" style="width:230px;">File</th>
                     </tr>
                 </thead>

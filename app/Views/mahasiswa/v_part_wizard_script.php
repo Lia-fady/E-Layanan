@@ -38,7 +38,7 @@ const JENIS_CFG = {
         ]
     },
     '3': {
-        keahlian: 'Keahlian / Kompetensi',
+        keahlian: 'Keahlian Utama',
         phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai (contoh: Pemrograman Web, Desain Grafis, Administrasi)...',
         magang: 'Apa yang ingin Anda kerjakan?',
         phM: 'Ceritakan rencana kegiatan, fokus bidang, atau posisi yang kamu harapkan selama magang...',
@@ -53,7 +53,7 @@ const JENIS_CFG = {
         ]
     },
     '5': {
-        keahlian: 'Keahlian / Kompetensi',
+        keahlian: 'Keahlian Utama',
         phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai (contoh: Jaringan, Desain Grafis, Administrasi)...',
         magang: 'Apa yang ingin Anda kerjakan?',
         phM: 'Ceritakan rencana kegiatan, fokus bidang, atau posisi yang kamu harapkan selama PKL...',
@@ -100,7 +100,7 @@ function applyJenisCfg(val) {
     // Default fallback jika tidak ada yang dipilih (opsi default)
     if (!cfg) {
         cfg = {
-            keahlian: 'Keahlian / Kompetensi',
+            keahlian: 'Keahlian Utama',
             phK: 'Sebutkan keahlian atau kompetensi teknis yang Anda kuasai...',
             magang: 'Apa yang ingin Anda kerjakan?',
             phM: 'Jelaskan maksud, tujuan, atau rencana kegiatan yang ingin Anda ajukan...',
@@ -442,7 +442,7 @@ function fillReview() {
     document.getElementById('rv-jenis').textContent = j ? JENIS_LABELS[jVal] : '—';
     document.getElementById('rv-tgl-mulai').textContent = fmtDate(document.getElementById('tgl_mulai').value);
     document.getElementById('rv-tgl-selesai').textContent = fmtDate(document.getElementById('tgl_selesai').value);
-    document.getElementById('rv-keahlian-label').textContent = cfg ? cfg.keahlian : 'Keahlian / Kompetensi';
+    document.getElementById('rv-keahlian-label').textContent = cfg ? cfg.keahlian : 'Keahlian Utama';
     document.getElementById('rv-keahlian').textContent = document.getElementById('deskripsi_keahlian').value || '—';
     document.getElementById('rv-magang-label').textContent = cfg ? cfg.magang : 'Apa yang ingin dikerjakan';
     document.getElementById('rv-magang').textContent = document.getElementById('deskripsi').value || '—';

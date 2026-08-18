@@ -389,12 +389,12 @@
 
 <?php
     $documentCount = (!empty($file_penerimaan) ? 1 : 0) + (!empty($file_sertifikat) ? 1 : 0) + (!empty($file_piagam) ? 1 : 0);
-    $summaryLogbook = (in_array($state, [4, 5])) ? ($total_logbook . ' entri') : 'Belum dimulai';
+    $summaryLogbook = (in_array($state, [4, 5])) ? ($total_logbook . ' catatan') : 'Belum dimulai';
 ?>
 <div class="dashboard-summary" aria-label="Ringkasan aktivitas mahasiswa">
     <div class="summary-tile">
         <span class="summary-icon"><i class="bi bi-activity"></i></span>
-        <div class="summary-label">Status layanan</div>
+        <div class="summary-label">Status</div>
         <div class="summary-value"><?= esc($statusText) ?></div>
     </div>
     <div class="summary-tile">

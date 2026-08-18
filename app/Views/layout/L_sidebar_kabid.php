@@ -59,6 +59,14 @@
         </a>
     </li>
 
+    <!-- Nav Item - Riwayat Penempatan -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('kabid/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat </span>
+        </a>
+    </li>
+
     <!-- Nav Item - Logbook -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'logbook') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('kabid/logbook') ?>">

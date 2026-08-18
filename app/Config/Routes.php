@@ -167,10 +167,12 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->get('dashboard', '\App\Controllers\Kabid\C_DashboardKabid::index');
 
     // 1. Disposisi Masuk
-    $routes->get('disposisi', '\App\Controllers\Kabid\C_DisposisiMasuk::index');
+    $routes->match(['get', 'post'], 'disposisi', '\App\Controllers\Kabid\C_DisposisiMasuk::index');
     $routes->post('disposisi/setujui', '\App\Controllers\Kabid\C_DisposisiMasuk::setujui');
     $routes->post('disposisi/tolak', '\App\Controllers\Kabid\C_DisposisiMasuk::tolak');
     $routes->post('disposisi/selesaikan', '\App\Controllers\Kabid\C_DisposisiMasuk::selesaikan');
+
+    $routes->match(['get', 'post'], 'riwayat', '\App\Controllers\Kabid\C_RiwayatKabid::index');
 
     // 2. Logbook (Approval)
     // 2. Logbook (Approval)

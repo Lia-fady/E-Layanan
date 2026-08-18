@@ -419,7 +419,7 @@
             <div class="badge-portal">PORTAL PESERTA</div>
 
             <h1 class="form-title">Masuk Akun</h1>
-            <p class="form-desc">Silakan masuk menggunakan username dan password Anda.</p>
+            <p class="form-desc">Silakan masuk menggunakan data yang Anda masukkan saat pendaftaran.</p>
 
             <a href="<?= base_url('/') ?>" class="btn-back">Kembali ke Beranda</a>
 
@@ -448,7 +448,7 @@
                 <div class="form-group">
                     <label class="auth-label">Password</label>
                     <div class="input-pw-wrap">
-                        <input type="password" id="password" name="password" class="auth-input" placeholder="Masukkan kata sandi" required autocomplete="current-password">
+                        <input type="password" id="password" name="password" class="auth-input" placeholder="Masukkan Password" required autocomplete="current-password">
                         <button type="button" class="pw-toggle" onclick="togglePassword()" aria-label="Toggle password">
                             <i class="bi bi-eye" id="eyeIcon"></i>
                         </button>
