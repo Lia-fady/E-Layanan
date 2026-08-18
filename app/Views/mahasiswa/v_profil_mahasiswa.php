@@ -163,7 +163,15 @@
                 <div class="col-12 border-bottom py-3 d-flex flex-column flex-sm-row align-items-sm-center">
                     <div class="text-muted fw-bold mb-1 mb-sm-0 col-sm-4" style="font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase;">Semester / Kelas</div>
                     <div class="fw-semibold text-dark col-sm-8" style="font-size: 0.95rem;">
-                        <?= !empty($i['semester']) ? esc($i['semester']) : '<span class="text-muted fst-italic">-</span>' ?>
+                        <?php 
+                            if (!empty($i['kelas'])) {
+                                echo esc($i['kelas']);
+                            } elseif (!empty($i['semester'])) {
+                                echo esc($i['semester']);
+                            } else {
+                                echo '<span class="text-muted fst-italic">-</span>';
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="col-12 py-3 d-flex flex-column flex-sm-row align-items-sm-center">

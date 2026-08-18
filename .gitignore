@@ -29,7 +29,7 @@ $RECYCLE.BIN/
 
 # Linux
 *~
-
+test*.php
 # KDE directory preferences
 .directory
 

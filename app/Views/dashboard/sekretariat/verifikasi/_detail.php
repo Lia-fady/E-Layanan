@@ -129,12 +129,32 @@ if ($statusPersetujuan === 'DITOLAK') {
                             </div>
                             <div class="row">
                                 <div class="col-sm-6 detail-pemohon__field">
-                                    <span class="detail-pemohon__label">Universitas / Institusi</span>
+                                    <span class="detail-pemohon__label">Universitas / Institusi / Sekolah</span>
                                     <span class="detail-pemohon__value"><?= esc($permohonan->instansi_pendidikan ?? '-') ?></span>
                                 </div>
                                 <div class="col-sm-6 detail-pemohon__field">
+                                    <span class="detail-pemohon__label">Jenjang Pendidikan</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->jenjang_pendidikan ?? '-') ?></span>
+                                </div>
+                                <?php if (!empty($permohonan->nama_fakultas)) : ?>
+                                <div class="col-sm-6 detail-pemohon__field mt-2">
+                                    <span class="detail-pemohon__label">Fakultas</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->nama_fakultas) ?></span>
+                                </div>
+                                <?php endif; ?>
+                                <div class="col-sm-6 detail-pemohon__field mt-2">
                                     <span class="detail-pemohon__label">Jurusan / Program Studi</span>
                                     <span class="detail-pemohon__value"><?= esc($permohonan->nama_prodi ?? '-') ?></span>
+                                </div>
+                                <?php if (!empty($permohonan->angkatan_tahun)) : ?>
+                                <div class="col-sm-6 detail-pemohon__field mt-2">
+                                    <span class="detail-pemohon__label">Tahun Angkatan</span>
+                                    <span class="detail-pemohon__value"><?= esc($permohonan->angkatan_tahun) ?></span>
+                                </div>
+                                <?php endif; ?>
+                                <div class="col-sm-6 detail-pemohon__field mt-2">
+                                    <span class="detail-pemohon__label"><?= (!empty($permohonan->kelas)) ? 'Kelas' : 'Semester' ?></span>
+                                    <span class="detail-pemohon__value"><?= esc(!empty($permohonan->kelas) ? $permohonan->kelas : ($permohonan->semester ?? '-')) ?></span>
                                 </div>
                             </div>
                         </div>
