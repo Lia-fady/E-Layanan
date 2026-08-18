@@ -30,7 +30,7 @@ class C_KuotaBidang extends BaseController
         $bulan_terpakai = !empty($bulanTerpakaiArr) ? implode(', ', $bulanTerpakaiArr) : 'Belum ada kuota yang terpakai';
 
         // Dapatkan daftar tahun yang tersedia
-        $available_years = $kuotaModel->getAvailableYears($id_bidang);
+        $available_years = $kuotaModel->getAvailableYears($id_bidang, $tahun);
 
         $data = [
             'title'           => 'Kuota Magang Bidang',
@@ -136,5 +136,24 @@ class C_KuotaBidang extends BaseController
         }
 
         return redirect()->to(base_url('kabid/kuota/' . $tahun . '/' . $bulan))->with('success', 'Kuota berhasil disimpan.');
+    }
+
+    /**
+     * Hapus semua data kuota untuk tahun tertentu.
+     */
+    public function deleteTahun()
+    {
+        $id_bidang = session('id_bidang');
+        $tahun = (int)$this->request->getPost('tahun');
+
+        if (!$id_bidang || !$tahun) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Data tidak valid.']);
+        }
+
+        $kuotaModel = new KuotaBidangModel();
+        // Hapus semua data bulan untuk tahun tersebut
+        $kuotaModel->where('id_bidang', $id_bidang)->where('tahun', $tahun)->delete();
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Tahun berhasil dihapus.']);
     }
 }

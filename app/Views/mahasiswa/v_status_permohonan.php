@@ -665,7 +665,7 @@
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, Lanjutkan!',
+            confirmButtonText: 'Simpan',
             cancelButtonText: 'Batal',
             border_radius: '15px'
         }).then((result) => {

@@ -184,7 +184,8 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->get('kuota', '\App\Controllers\Kabid\C_KuotaBidang::index');
     $routes->get('kuota/(:num)/(:num)', '\App\Controllers\Kabid\C_KuotaBidang::detail/$1/$2');
     $routes->post('kuota/update', '\App\Controllers\Kabid\C_KuotaBidang::update');
-
+    $routes->post('kuota/deleteTahun', '\App\Controllers\Kabid\C_KuotaBidang::deleteTahun');
+    
     // 5. Upload Dokumen Magang
     // 3. Upload Surat Tugas / Dokumen
     $routes->match(['get', 'post'], 'upload-dokumen', '\App\Controllers\Kabid\C_UploadDokumen::index');

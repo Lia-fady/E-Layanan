@@ -248,13 +248,13 @@ $(document).ready(function() {
 
         // Konfirmasi sebelum simpan
         Swal.fire({
-            title: 'Simpan Kuota?',
-            text: 'Batas kuota akan diatur menjadi ' + batasBaru + ' mahasiswa.',
+            title: 'Perbarui Batas Kuota?',
+            text: 'Batas kuota akan diubah menjadi ' + batasBaru + ' mahasiswa.',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#1E40AF',
             cancelButtonColor: '#64748B',
-            confirmButtonText: 'Ya, Simpan',
+            confirmButtonText: 'Ya, Perbarui',
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {

@@ -79,11 +79,17 @@ Manajemen Kuota Bidang
 <!-- Filter Tahun -->
 <div class="d-flex align-items-center mb-4">
     <label for="filterTahun" class="mr-2 mb-0" style="font-weight:600; color:#475569; font-size:0.9rem;">Tahun</label>
-    <select id="filterTahun" class="filter-tahun-select">
+    <select id="filterTahun" class="filter-tahun-select mr-3">
         <?php foreach ($available_years as $y): ?>
             <option value="<?= $y ?>" <?= ($y == $tahun) ? 'selected' : '' ?>><?= $y ?></option>
         <?php endforeach; ?>
     </select>
+    <button type="button" id="btnTambahTahun" class="btn btn-primary btn-sm" style="border-radius: 6px; font-weight: 600;">
+        <i class="fas fa-plus mr-1"></i> Tambah Tahun
+    </button>
+    <button type="button" id="btnHapusTahun" class="btn btn-outline-danger btn-sm ml-2" style="border-radius: 6px; font-weight: 600;" data-tahun="<?= $tahun ?>">
+        <i class="fas fa-trash-alt mr-1"></i> Hapus Tahun Ini
+    </button>
 </div>
 
 <!-- Rincian Kuota -->
@@ -194,7 +200,93 @@ $(document).ready(function() {
     // Filter Tahun — redirect saat berubah
     $('#filterTahun').on('change', function() {
         var tahun = $(this).val();
+        Swal.fire({
+            title: 'Memuat data...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         window.location.href = '<?= base_url("kabid/kuota") ?>?tahun=' + tahun;
+    });
+
+    // Tambah Tahun menggunakan SweetAlert Input
+    $('#btnTambahTahun').on('click', function() {
+        Swal.fire({
+            title: 'Tambah Tahun Kuota',
+            text: 'Masukkan tahun baru (misal: 2028):',
+            input: 'number',
+            inputPlaceholder: 'Tahun...',
+            showCancelButton: true,
+            confirmButtonColor: '#1D4ED8',
+            cancelButtonColor: '#aaa',
+            confirmButtonText: 'Tampilkan',
+            cancelButtonText: 'Batal',
+            inputValidator: (value) => {
+                if (!value || value.length !== 4) {
+                    return 'Silakan masukkan tahun yang valid (4 digit angka)!';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Memuat tahun ' + result.value + '...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                window.location.href = '<?= base_url("kabid/kuota") ?>?tahun=' + result.value;
+            }
+        });
+    });
+
+    // Hapus Tahun menggunakan SweetAlert
+    $('#btnHapusTahun').on('click', function() {
+        var tahunHapus = $(this).data('tahun');
+        
+        Swal.fire({
+            title: 'Hapus Tahun ' + tahunHapus + '?',
+            text: 'Seluruh pengaturan batas kuota (12 bulan) untuk tahun ini akan dihapus dan di-reset menjadi "Belum Diatur".',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#64748B',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tampilkan loading
+                Swal.fire({
+                    title: 'Menghapus...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    url: '<?= base_url("kabid/kuota/deleteTahun") ?>',
+                    type: 'POST',
+                    data: {
+                        tahun: tahunHapus,
+                        <?= csrf_token() ?>: '<?= csrf_hash() ?>'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire('Berhasil!', response.message, 'success').then(() => {
+                                window.location.href = '<?= base_url("kabid/kuota") ?>';
+                            });
+                        } else {
+                            Swal.fire('Error!', response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Terjadi kesalahan pada server.', 'error');
+                    }
+                });
+            }
+        });
     });
 });
 </script>

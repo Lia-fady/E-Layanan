@@ -212,13 +212,13 @@ $(document).ready(function() {
         }
 
         Swal.fire({
-            title: $('#action_type').val() === 'TOLAK' ? 'Tolak Permohonan?' : 'Simpan Keputusan?',
-            text: $('#action_type').val() === 'TOLAK' ? "Apakah Anda yakin ingin menolak permohonan ini secara permanen?" : "Apakah Anda yakin ingin menyimpan hasil verifikasi ini?",
+            title: $('#action_type').val() === 'TOLAK' ? 'Tolak Permohonan?' : 'Simpan Hasil Verifikasi?',
+            text: $('#action_type').val() === 'TOLAK' ? "Permohonan ini akan ditolak secara permanen dan tindakan ini tidak dapat dibatalkan." : "Pastikan seluruh data verifikasi sudah sesuai sebelum disimpan.",
             icon: $('#action_type').val() === 'TOLAK' ? 'warning' : 'question',
             showCancelButton: true,
             confirmButtonColor: $('#action_type').val() === 'TOLAK' ? '#d33' : '#3085d6',
             cancelButtonColor: '#aaa',
-            confirmButtonText: 'Ya, Lanjutkan!',
+            confirmButtonText: $('#action_type').val() === 'TOLAK' ? 'Tolak Permohonan' : 'Simpan',
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -301,14 +301,14 @@ $(document).ready(function() {
         
         Swal.fire({
             title: 'Tolak Permohonan?',
-            text: 'Masukkan alasan penolakan untuk dikirim ke mahasiswa:',
+            text: 'Berikan alasan penolakan yang akan dikirimkan kepada mahasiswa:',
             input: 'textarea',
-            inputPlaceholder: 'Tuliskan alasan penolakan di sini...',
+            inputPlaceholder: 'Contoh: Kuota Penuh...',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#aaa',
-            confirmButtonText: 'Tolak',
+            confirmButtonText: 'Kirim & Tolak',
             cancelButtonText: 'Batal',
             inputValidator: (value) => {
                 if (!value || value.trim() === '') {

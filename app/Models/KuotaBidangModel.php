@@ -309,7 +309,7 @@ class KuotaBidangModel extends Model
      * Mendapatkan daftar tahun yang tersedia dari database + tahun berjalan + tahun berikutnya.
      * Jika $id_bidang diberikan, filter per bidang.
      */
-    public function getAvailableYears($id_bidang = null)
+    public function getAvailableYears($id_bidang = null, $requestedYear = null)
     {
         $db = \Config\Database::connect();
         $builder = $db->table('m_kuota')->select('tahun')->distinct()->orderBy('tahun', 'ASC');
@@ -328,6 +328,10 @@ class KuotaBidangModel extends Model
         }
         if (!in_array($currentYear + 1, $years)) {
             $years[] = $currentYear + 1;
+        }
+        
+        if ($requestedYear && !in_array((int)$requestedYear, $years)) {
+            $years[] = (int)$requestedYear;
         }
         
         sort($years);
