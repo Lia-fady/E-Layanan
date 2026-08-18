@@ -472,9 +472,6 @@
             <div class="auth-footer">
                 Belum punya akun? <a href="<?= base_url('register') ?>">Daftar Sekarang</a>
             </div>
-
-            <a href="<?= base_url('pegawai/login') ?>" class="portal-pegawai">Portal Pegawai</a>
-
         </div>
     </div>
 
