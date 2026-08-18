@@ -179,7 +179,7 @@
                                         <div class="text-dark" id="det_prodi">-</div>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <div class="text-muted small mb-1"><i class="fas fa-calendar-alt mr-2"></i> Semester</div>
+                                        <div class="text-muted small mb-1"><i class="fas fa-calendar-alt mr-2"></i> Kelas / Semester</div>
                                         <div class="text-dark" id="det_semester">-</div>
                                     </div>
                                 </div>
@@ -384,7 +384,7 @@ $(document).ready(function() {
         
         $('#det_instansi').text(mhs.instansi_pendidikan || '-');
         $('#det_prodi').text(mhs.prodi || '-');
-        $('#det_semester').text(mhs.semester || '-');
+        $('#det_semester').text(mhs.kelas ? mhs.kelas : (mhs.semester || '-'));
         $('#det_jenis').text(mhs.jenis_permohonan || '-');
         $('#det_bidang').text(mhs.bidang || '-');
 

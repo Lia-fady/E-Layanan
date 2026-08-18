@@ -42,7 +42,10 @@
                     <tr>
                         <th width="5%" class="text-center">No</th>
                         <th>Nama</th>
+                        <th>NIM</th>
+                        <th>Asal Instansi</th>
                         <th>Jenis Permohonan</th>
+                        <th>Periode</th>
                         <th>Status Penempatan</th>
                         <th class="text-center">Status Surat</th>
                         <th width="15%" class="text-center">Aksi</th>
@@ -55,7 +58,21 @@
                             <tr>
                                 <td class="text-center"><?= $no++ ?></td>
                                 <td><?= esc($p->nama_mahasiswa ?? '-') ?></td>
-                                <td><?= esc($p->jenis_permohonan ?? '-') ?></td>
+                                <td><?= esc($p->nim ?? '-') ?></td>
+                                <td>
+                                    <?= esc($p->instansi_pendidikan ?? '-') ?><br>
+                                    <small class="text-muted"><?= esc($p->nama_prodi ?? '-') ?></small>
+                                </td>
+                                <td>
+                                    <span class="badge badge-info"><?= esc($p->jenis_permohonan ?? '-') ?></span>
+                                </td>
+                                <td>
+                                    <?php
+                                        $mulai = !empty($p->tgl_mulai) ? date('d M Y', strtotime($p->tgl_mulai)) : '-';
+                                        $selesai = !empty($p->tgl_selesai) ? date('d M Y', strtotime($p->tgl_selesai)) : '-';
+                                    ?>
+                                    <?= $mulai ?> s/d <?= $selesai ?>
+                                </td>
                                 <td class="text-center">
                                     <?php if (($p->status_penempatan ?? 'MENUNGGU') === 'BERJALAN') : ?>
                                         <span class="badge badge-success">BERJALAN</span>

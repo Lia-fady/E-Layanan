@@ -24,19 +24,21 @@ class C_Profil extends C_BaseMahasiswa
             ->where('id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
         
-        // Data Akademik + join ke m_instansi_pendidikan, m_prodi, m_fakultas
+        // Data Akademik + join ke m_instansi_pendidikan, m_prodi, m_fakultas, m_kelas
         $instansi = $db->table('t_instansi_mahasiswa')
             ->select('
                 t_instansi_mahasiswa.*,
                 m_instansi_pendidikan.instansi_pendidikan as nama_instansi,
                 m_prodi.nama_prodi as prodi,
                 m_fakultas.fakultas,
-                m_jenjang_pendidikan.nama_jenjang
+                m_jenjang_pendidikan.nama_jenjang,
+                m_kelas.nama_kelas as kelas
             ')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = m_prodi.id_fakultas', 'left')
             ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = t_instansi_mahasiswa.id_jenjang_pendidikan', 'left')
+            ->join('m_kelas', 'm_kelas.id_kelas = t_instansi_mahasiswa.id_kelas', 'left')
             ->where('t_instansi_mahasiswa.id_mahasiswa', $id_mahasiswa)
             ->get()->getRowArray();
 

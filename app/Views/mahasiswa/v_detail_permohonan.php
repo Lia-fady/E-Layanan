@@ -182,7 +182,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     </tr>
                     <tr>
                         <th><?= $isSiswa ? 'Kelas' : 'Semester' ?></th>
-                        <td><?= esc($isSiswa ? ($p['kelas'] ?? '-') : ($p['semester'] ?? '-')) ?></td>
+                        <td><?= esc(!empty($p['kelas']) ? $p['kelas'] : ($p['semester'] ?? '-')) ?></td>
                     </tr>
                     <?php if(!$isSiswa): ?>
                     <tr>
