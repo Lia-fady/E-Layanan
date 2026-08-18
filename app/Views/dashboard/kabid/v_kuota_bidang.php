@@ -220,7 +220,7 @@ $(document).ready(function() {
             showCancelButton: true,
             confirmButtonColor: '#1D4ED8',
             cancelButtonColor: '#aaa',
-            confirmButtonText: 'Tampilkan',
+            confirmButtonText: 'Tambah Tahun',
             cancelButtonText: 'Batal',
             inputValidator: (value) => {
                 if (!value || value.length !== 4) {
@@ -229,14 +229,28 @@ $(document).ready(function() {
             }
         }).then((result) => {
             if (result.isConfirmed) {
+                var inputTahun = result.value;
                 Swal.fire({
-                    title: 'Memuat tahun ' + result.value + '...',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
+                    title: 'Tambah Pengaturan Tahun ' + inputTahun + '?',
+                    text: 'Data kuota bulanan untuk tahun ' + inputTahun + ' akan dibuat.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1D4ED8',
+                    cancelButtonColor: '#64748B',
+                    confirmButtonText: 'Ya, Tambah',
+                    cancelButtonText: 'Batal'
+                }).then((confirmResult) => {
+                    if (confirmResult.isConfirmed) {
+                        Swal.fire({
+                            title: 'Memuat tahun ' + inputTahun + '...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        window.location.href = '<?= base_url("kabid/kuota") ?>?tahun=' + inputTahun;
                     }
                 });
-                window.location.href = '<?= base_url("kabid/kuota") ?>?tahun=' + result.value;
             }
         });
     });
