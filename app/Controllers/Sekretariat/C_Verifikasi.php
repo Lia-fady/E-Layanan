@@ -202,12 +202,19 @@ class C_Verifikasi extends BaseController
 
             $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
             $catatanManual = $this->request->getPost('catatan_manual');
+            
+            if ($overallStatus === 'PERBAIKAN_BERKAS' && empty(trim($catatanManual))) {
+                return $this->response->setJSON([
+                    'success' => false, 
+                    'message' => 'Catatan Verifikasi wajib diisi untuk menjelaskan detail berkas yang perlu diperbaiki oleh mahasiswa!'
+                ]);
+            }
+
             if (!empty(trim($catatanManual))) {
                 $catatan = trim($catatanManual);
             } else {
-                $catatan = $anyInvalid ? 'Ada berkas yang tidak valid' : 'Semua berkas valid';
+                $catatan = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai. Permohonan Anda disetujui dan akan diproses ke tahap selanjutnya.';
             }
-
             // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
             if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
                 return $this->response->setJSON([

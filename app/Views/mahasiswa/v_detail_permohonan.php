@@ -155,7 +155,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         <td><?= !empty($p['tgl_lahir']) ? tgl_indo($p['tgl_lahir']) : '-' ?></td>
                     </tr>
                     <tr>
-                        <th>Alamat Email</th>
+                        <th>Email</th>
                         <td><?= esc($p['email'] ?? '-') ?></td>
                     </tr>
                     <tr>
@@ -191,7 +191,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     </tr>
                     <?php endif; ?>
                     <tr>
-                        <th>Alamat Domisili</th>
+                        <th>Alamat Lengkap</th>
                         <td>
                             <?php
                                 $alamatParts = [];

@@ -183,14 +183,7 @@ $alamatLengkap = !empty($alamatParts) ? implode(', ', $alamatParts) : '-';
                 </div>
 
                 <div id="acc_fields" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; padding:20px; border-radius:8px; margin-bottom:16px;">
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold" style="color:#166534; font-size:14px;">Pemohon Wajib Mengisi Logbook Harian?</label>
-                        <select name="is_log_book" class="form-control" style="max-width:380px; border-radius:6px; font-size:14px; height:42px;">
-                            <option value="Ya" selected>Ya, Wajib</option>
-                            <option value="Tidak">Tidak Wajib</option>
-                        </select>
-                        <small class="text-success d-block mt-2">Umumnya pemohon diwajibkan untuk mengisi logbook selama masa magang.</small>
-                    </div>
+                    <input type="hidden" name="is_log_book" value="Ya">
                     <div class="form-group mb-0">
                         <label class="font-weight-bold" style="color:#166534; font-size:14px;">Catatan Persetujuan (Opsional)</label>
                         <textarea name="catatan_setuju" class="form-control" rows="3" placeholder="Contoh: Ditempatkan di tim analis data..." style="border-radius:6px; font-size:14px;"></textarea>
@@ -234,10 +227,39 @@ $(document).ready(function() {
             $('#btnSubmitKeputusan').removeClass('btn-primary').addClass('btn-danger').html('<i class="fas fa-times mr-1"></i> Tolak Pemohon');
         }
     });
+
     $('#formDisposisiAksi').on('submit', function(e) {
-        if ($('#decision_status').val() === 'tolak' && $('#catatan_keputusan').val().trim() === '') {
-            e.preventDefault(); Swal.fire('Peringatan', 'Alasan penolakan wajib diisi.', 'warning'); return false;
+        e.preventDefault();
+        
+        var decision = $('#decision_status').val();
+        if (decision === 'tolak' && $('#catatan_keputusan').val().trim() === '') {
+            Swal.fire('Peringatan', 'Alasan penolakan wajib diisi untuk diinformasikan ke pemohon.', 'warning'); 
+            return false;
         }
+
+        var titleText = decision === 'setujui' ? 'Terima Pemohon?' : 'Tolak Pemohon?';
+        var descText = decision === 'setujui' 
+            ? 'Pemohon akan resmi diterima dan mulai magang di bidang Anda. Pastikan keputusan Anda sudah tepat.' 
+            : 'Permohonan akan ditolak dan dikembalikan ke Sekretariat. Keputusan ini tidak dapat dibatalkan.';
+        var confirmBtnText = decision === 'setujui' ? 'Ya, Terima' : 'Ya, Tolak';
+        var confirmBtnColor = decision === 'setujui' ? '#16a34a' : '#dc2626';
+
+        Swal.fire({
+            title: titleText,
+            text: descText,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: confirmBtnColor,
+            cancelButtonColor: '#64748b',
+            confirmButtonText: confirmBtnText,
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gunakan native submit agar tidak trigger event ini lagi
+                this.submit();
+            }
+        });
     });
 });
 </script>

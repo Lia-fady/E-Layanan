@@ -657,17 +657,22 @@
     }
 
     function confirmBatalkan(id_permohonan, posting_data) {
-        let actionText = (posting_data === 'draft') ? 'menghapus draft ini' : 'membatalkan permohonan ini';
+        let isDraft = (posting_data === 'draft');
+        let titleText = isDraft ? 'Hapus Draft Permohonan?' : 'Batalkan Permohonan?';
+        let descText = isDraft 
+            ? 'Draft permohonan yang dihapus tidak dapat dikembalikan.' 
+            : 'Permohonan yang dibatalkan tidak dapat dilanjutkan atau ditarik kembali.';
+        let btnText = isDraft ? 'Ya, Hapus Draft' : 'Ya, Batalkan';
+
         Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Anda akan " + actionText + "? Data yang dibatalkan tidak dapat dikembalikan.",
+            title: titleText,
+            text: descText,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Simpan',
-            cancelButtonText: 'Batal',
-            border_radius: '15px'
+            cancelButtonColor: '#858796',
+            confirmButtonText: btnText,
+            cancelButtonText: 'Kembali'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = `<?= base_url('mahasiswa/batalkan-permohonan/') ?>${id_permohonan}`;

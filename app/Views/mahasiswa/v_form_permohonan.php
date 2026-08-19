@@ -123,24 +123,43 @@ if(session()->getFlashdata('permohonan_sent')):
 <?php else: ?>
 <!-- ============ TAMPILAN FORM (STATE 1 - BARU, ATAU STATE 6 - PERLU REVISI) ============ -->
 <?php if(isset($draft['status_persetujuan']) && $draft['status_persetujuan'] == 'PERBAIKAN_BERKAS'): ?>
-<div class="alert alert-warning p-3 mb-4" style="font-size: 0.85rem; border-radius: 10px;">
-    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-    <strong>Terdapat Berkas yang Perlu Diperbaiki:</strong> Silakan periksa catatan di bawah ini, lalu perbaiki data atau unggah ulang berkas yang diminta sebelum mengajukan kembali.
-    <?php if(!empty($draft['catatan_sekretariat'])): ?>
-        <hr class="my-2" style="border-color: #fde047;">
-        <div style="font-weight: 600; color: #854d0e; margin-bottom: 4px;">Catatan Perbaikan:</div>
-        <div style="font-style: italic; color: #a16207;">
-            <?php 
-                $catatanSekre = esc($draft['catatan_sekretariat']);
-                if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
-                    $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
-                    echo nl2br(trim($parts[0]));
-                } else {
-                    echo nl2br($catatanSekre);
-                }
-            ?>
+<div class="card mb-4 border-0 shadow-sm" style="border-left: 4px solid #f59e0b !important; border-radius: 8px;">
+    <div class="card-body p-4">
+        <div class="d-flex align-items-start">
+            <div class="me-3 mt-1">
+                <div style="width: 38px; height: 38px; border-radius: 50%; background-color: #fef3c7; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i>
+                </div>
+            </div>
+            <div class="w-100">
+                <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">Mohon Perbaiki Berkas Anda</h6>
+                <p class="text-muted mb-3" style="font-size: 0.85rem; line-height: 1.6;">
+                    Permohonan Anda dikembalikan karena terdapat berkas atau data yang belum sesuai. Silakan lengkapi atau perbaiki bagian yang diminta, lalu kirim ulang permohonan.
+                </p>
+                
+                <?php if(!empty($draft['catatan_sekretariat'])): ?>
+                    <div class="p-3" style="background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef;">
+                        <div style="font-size: 0.75rem; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+                            <i class="bi bi-chat-left-text me-1"></i> Catatan Perbaikan
+                        </div>
+                        <div style="font-size: 0.85rem; color: #212529; font-weight: 500; line-height: 1.5;">
+                            <?php 
+                                $catatanSekre = esc($draft['catatan_sekretariat']);
+                                if (strpos($catatanSekre, '[DIKEMBALIKAN KABID]') !== false) {
+                                    $parts = explode('[DIKEMBALIKAN KABID]', $catatanSekre);
+                                    echo nl2br(trim($parts[0]));
+                                    echo '<div class="mt-3" style="font-size: 0.75rem; font-weight: 700; color: #495057; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;"><i class="bi bi-chat-left-text me-1"></i> Catatan Tambahan</div>';
+                                    echo nl2br(trim($parts[1]));
+                                } else {
+                                    echo nl2br($catatanSekre);
+                                }
+                            ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
-    <?php endif; ?>
+    </div>
 </div>
 <?php endif; ?>
 
