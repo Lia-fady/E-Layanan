@@ -1823,3 +1823,18 @@ body {
         font-size: 2rem;
     }
 }
+
+/* ===================================================================
+   FIX DATATABLES FOUC (Mencegah tabel lompat/naik turun)
+   =================================================================== */
+.table-responsive {
+    opacity: 0;
+    animation: smoothTableLoad 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+}
+
+@keyframes smoothTableLoad {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
