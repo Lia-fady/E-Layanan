@@ -17,7 +17,7 @@ class M_Jurusan_SuperAdmin extends Model
     public function getAllJurusan()
     {
         return $this->db->table($this->table)
-            ->select('m_jurusan.*, m_jenjang_pendidikan.jenjang_pendidikan')
+            ->select('m_jurusan.*, m_jenjang_pendidikan.nama_jenjang')
             ->join('m_jenjang_pendidikan', 'm_jenjang_pendidikan.id_jenjang_pendidikan = m_jurusan.id_jenjang_pendidikan', 'left')
             ->orderBy('m_jurusan.nama_jurusan', 'ASC')
             ->get()->getResultArray();
