@@ -14,6 +14,7 @@ use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\AuthSekretariat;
 use App\Filters\AuthKabid;
+use App\Filters\AuthSuperAdmin;
 
 class Filters extends BaseFilters
 {
@@ -38,6 +39,7 @@ class Filters extends BaseFilters
         'performance'       => PerformanceMetrics::class,
         'authSekretariat'   => AuthSekretariat::class,
         'authKabid'         => AuthKabid::class,
+        'authSuperAdmin'    => AuthSuperAdmin::class,
     ];
 
     /**

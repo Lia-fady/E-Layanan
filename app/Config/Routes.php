@@ -196,6 +196,115 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('upload-dokumen/delete/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::delete/$1');
     $routes->get('upload-dokumen/download/(:num)', '\App\Controllers\Kabid\C_UploadDokumen::download/$1');
 });
+// =========================================================================
+// Super Admin Route Group (dilindungi filter authSuperAdmin)
+// =========================================================================
+$routes->group('superadmin', ['filter' => 'authSuperAdmin', 'namespace' => 'App\Controllers\SuperAdmin'], static function ($routes) {
+    $routes->get('/', 'C_Dashboard_SuperAdmin::index');
+    $routes->get('dashboard', 'C_Dashboard_SuperAdmin::index');
+
+    // Manajemen Pengguna
+    $routes->get('manajemen-pengguna', 'C_ManajemenPengguna_SuperAdmin::index');
+    $routes->post('manajemen-pengguna/store', 'C_ManajemenPengguna_SuperAdmin::store');
+    $routes->post('manajemen-pengguna/update/(:num)', 'C_ManajemenPengguna_SuperAdmin::update/$1');
+    $routes->post('manajemen-pengguna/delete/(:num)', 'C_ManajemenPengguna_SuperAdmin::delete/$1');
+
+    // Manajemen Menu
+    $routes->get('manajemen-menu', 'C_ManajemenMenu_SuperAdmin::index');
+    $routes->post('manajemen-menu/store', 'C_ManajemenMenu_SuperAdmin::store');
+    $routes->post('manajemen-menu/update/(:num)', 'C_ManajemenMenu_SuperAdmin::update/$1');
+    $routes->post('manajemen-menu/delete/(:num)', 'C_ManajemenMenu_SuperAdmin::delete/$1');
+
+    // Instansi Pendidikan
+    $routes->get('instansi-pendidikan', 'C_InstansiPendidikan_SuperAdmin::index');
+    $routes->get('instansi-pendidikan/create', 'C_InstansiPendidikan_SuperAdmin::create');
+    $routes->get('instansi-pendidikan/edit/(:num)', 'C_InstansiPendidikan_SuperAdmin::edit/$1');
+    $routes->get('instansi-pendidikan/detail/(:num)', 'C_InstansiPendidikan_SuperAdmin::detail/$1');
+    $routes->post('instansi-pendidikan/store', 'C_InstansiPendidikan_SuperAdmin::store');
+    $routes->post('instansi-pendidikan/update/(:num)', 'C_InstansiPendidikan_SuperAdmin::update/$1');
+    $routes->post('instansi-pendidikan/delete/(:num)', 'C_InstansiPendidikan_SuperAdmin::delete/$1');
+
+    // Fakultas
+    $routes->get('fakultas', 'C_Fakultas_SuperAdmin::index');
+    $routes->get('fakultas/create', 'C_Fakultas_SuperAdmin::create');
+    $routes->get('fakultas/edit/(:num)', 'C_Fakultas_SuperAdmin::edit/$1');
+    $routes->get('fakultas/detail/(:num)', 'C_Fakultas_SuperAdmin::detail/$1');
+    $routes->post('fakultas/store', 'C_Fakultas_SuperAdmin::store');
+    $routes->post('fakultas/update/(:num)', 'C_Fakultas_SuperAdmin::update/$1');
+    $routes->post('fakultas/delete/(:num)', 'C_Fakultas_SuperAdmin::delete/$1');
+
+    // Program Studi
+    $routes->get('program-studi', 'C_Prodi_SuperAdmin::index');
+    $routes->get('program-studi/create', 'C_Prodi_SuperAdmin::create');
+    $routes->get('program-studi/edit/(:num)', 'C_Prodi_SuperAdmin::edit/$1');
+    $routes->get('program-studi/detail/(:num)', 'C_Prodi_SuperAdmin::detail/$1');
+    $routes->post('program-studi/store', 'C_Prodi_SuperAdmin::store');
+    $routes->post('program-studi/update/(:num)', 'C_Prodi_SuperAdmin::update/$1');
+    $routes->post('program-studi/delete/(:num)', 'C_Prodi_SuperAdmin::delete/$1');
+
+    // Jenis Permohonan
+    $routes->get('jenis-permohonan', 'C_JenisPermohonan_SuperAdmin::index');
+    $routes->get('jenis-permohonan/create', 'C_JenisPermohonan_SuperAdmin::create');
+    $routes->get('jenis-permohonan/edit/(:num)', 'C_JenisPermohonan_SuperAdmin::edit/$1');
+    $routes->get('jenis-permohonan/detail/(:num)', 'C_JenisPermohonan_SuperAdmin::detail/$1');
+    $routes->post('jenis-permohonan/store', 'C_JenisPermohonan_SuperAdmin::store');
+    $routes->post('jenis-permohonan/update/(:num)', 'C_JenisPermohonan_SuperAdmin::update/$1');
+    $routes->post('jenis-permohonan/delete/(:num)', 'C_JenisPermohonan_SuperAdmin::delete/$1');
+
+    // File Persyaratan
+    $routes->get('file-persyaratan', 'C_FilePersyaratan_SuperAdmin::index');
+    $routes->get('file-persyaratan/create', 'C_FilePersyaratan_SuperAdmin::create');
+    $routes->get('file-persyaratan/edit/(:num)', 'C_FilePersyaratan_SuperAdmin::edit/$1');
+    $routes->get('file-persyaratan/detail/(:num)', 'C_FilePersyaratan_SuperAdmin::detail/$1');
+    $routes->post('file-persyaratan/store', 'C_FilePersyaratan_SuperAdmin::store');
+    $routes->post('file-persyaratan/update/(:num)', 'C_FilePersyaratan_SuperAdmin::update/$1');
+    $routes->post('file-persyaratan/delete/(:num)', 'C_FilePersyaratan_SuperAdmin::delete/$1');
+
+    // OPD
+    $routes->get('opd', 'C_Opd_SuperAdmin::index');
+    $routes->get('opd/create', 'C_Opd_SuperAdmin::create');
+    $routes->get('opd/edit/(:num)', 'C_Opd_SuperAdmin::edit/$1');
+    $routes->get('opd/detail/(:num)', 'C_Opd_SuperAdmin::detail/$1');
+    $routes->post('opd/store', 'C_Opd_SuperAdmin::store');
+    $routes->post('opd/update/(:num)', 'C_Opd_SuperAdmin::update/$1');
+    $routes->post('opd/delete/(:num)', 'C_Opd_SuperAdmin::delete/$1');
+
+    // Bidang
+    $routes->get('bidang', 'C_Bidang_SuperAdmin::index');
+    $routes->get('bidang/create', 'C_Bidang_SuperAdmin::create');
+    $routes->get('bidang/edit/(:num)', 'C_Bidang_SuperAdmin::edit/$1');
+    $routes->get('bidang/detail/(:num)', 'C_Bidang_SuperAdmin::detail/$1');
+    $routes->post('bidang/store', 'C_Bidang_SuperAdmin::store');
+    $routes->post('bidang/update/(:num)', 'C_Bidang_SuperAdmin::update/$1');
+    $routes->post('bidang/delete/(:num)', 'C_Bidang_SuperAdmin::delete/$1');
+
+    // Kuota
+    $routes->get('kuota', 'C_Kuota_SuperAdmin::index');
+    $routes->get('kuota/create', 'C_Kuota_SuperAdmin::create');
+    $routes->get('kuota/edit/(:num)', 'C_Kuota_SuperAdmin::edit/$1');
+    $routes->get('kuota/detail/(:num)', 'C_Kuota_SuperAdmin::detail/$1');
+    $routes->post('kuota/store', 'C_Kuota_SuperAdmin::store');
+    $routes->post('kuota/update/(:num)', 'C_Kuota_SuperAdmin::update/$1');
+    $routes->post('kuota/delete/(:num)', 'C_Kuota_SuperAdmin::delete/$1');
+
+    // Mahasiswa
+    $routes->get('mahasiswa', 'C_Mahasiswa_SuperAdmin::index');
+    $routes->get('mahasiswa/create', 'C_Mahasiswa_SuperAdmin::create');
+    $routes->get('mahasiswa/edit/(:num)', 'C_Mahasiswa_SuperAdmin::edit/$1');
+    $routes->get('mahasiswa/detail/(:num)', 'C_Mahasiswa_SuperAdmin::detail/$1');
+    $routes->post('mahasiswa/store', 'C_Mahasiswa_SuperAdmin::store');
+    $routes->post('mahasiswa/update/(:num)', 'C_Mahasiswa_SuperAdmin::update/$1');
+    $routes->post('mahasiswa/delete/(:num)', 'C_Mahasiswa_SuperAdmin::delete/$1');
+
+    // User Mahasiswa
+    $routes->get('user-mahasiswa', 'C_UserMahasiswa_SuperAdmin::index');
+    $routes->get('user-mahasiswa/create', 'C_UserMahasiswa_SuperAdmin::create');
+    $routes->get('user-mahasiswa/edit/(:num)', 'C_UserMahasiswa_SuperAdmin::edit/$1');
+    $routes->get('user-mahasiswa/detail/(:num)', 'C_UserMahasiswa_SuperAdmin::detail/$1');
+    $routes->post('user-mahasiswa/store', 'C_UserMahasiswa_SuperAdmin::store');
+    $routes->post('user-mahasiswa/update/(:num)', 'C_UserMahasiswa_SuperAdmin::update/$1');
+    $routes->post('user-mahasiswa/delete/(:num)', 'C_UserMahasiswa_SuperAdmin::delete/$1');
+});
 
 // --- API ROUTES FOR DROPDOWNS ---
 $routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');

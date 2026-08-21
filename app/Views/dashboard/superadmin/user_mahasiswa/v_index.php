@@ -1,0 +1,241 @@
+<?= $this->extend('layout/L_master_superadmin') ?>
+
+<?= $this->section('title') ?><?= esc($title ?? 'user_mahasiswa index') ?><?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
+<style>
+    .status-switch .form-check-input {
+        width: 44px;
+        height: 22px;
+        background-color: #ced4da;
+        border-color: #ced4da;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, background-position 0.15s ease-in-out;
+    }
+    .status-switch .form-check-input:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .status-switch .form-check-input:focus {
+        box-shadow: none;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Master Data User Mahasiswa</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="<?= base_url('superadmin/dashboard') ?>">Master Data</a></li>
+                    <li class="breadcrumb-item active">User Mahasiswa</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        
+        <?php if(session()->getFlashdata('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        <?php if(session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
+        <div class="card shadow-sm mb-4 d-none" id="editContainer">
+            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit User Mahasiswa</h3>
+                <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
+            </div>
+            <form id="formEditInline" action="" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_mahasiswa" class="form-label fw-bold">Mahasiswa</label>
+                            <input type="text" class="form-control" id="edit_mahasiswa" name="mahasiswa" readonly>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit_username" name="username" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_password" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" id="edit_password" name="password" placeholder="Kosongkan jika tidak diubah">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold d-block">Status</label>
+                            <div class="form-check form-switch mt-2">
+                                <input type="hidden" name="status" value="NONAKTIF">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="AKTIF">
+                                <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary btn-cancel-edit"><i class="fas fa-times me-1"></i> Batal</button>
+                    <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-1"></i> Update Data</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card shadow-sm" id="tableContainer">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0"><i class="fas fa-list me-2"></i> Daftar User Mahasiswa</h3>
+                <div class="card-tools ms-auto d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="location.reload();">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <a href="<?= base_url('superadmin/user-mahasiswa/create') ?>" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> Tambah User Mahasiswa
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm" id="limitData">
+                            <option value="10">10 Baris</option>
+                            <option value="25">25 Baris</option>
+                            <option value="50">50 Baris</option>
+                            <option value="100">100 Baris</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-2 text-end">
+                        <select class="form-select form-select-sm" id="filterStatus">
+                            <option value="all">Semua Status</option>
+                            <option value="AKTIF">Aktif</option>
+                            <option value="NONAKTIF">Nonaktif</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Cari data..." id="searchBox">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>Username</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($userMahasiswaList)) : ?>
+                                <?php foreach ($userMahasiswaList as $key => $row) : ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= esc($row['nama_mahasiswa'] ?? '-') ?></td>
+                                        <td><?= esc($row['username']) ?></td>
+                                        <td>
+                                            <div class="form-check form-switch status-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'AKTIF' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1 justify-content-center">
+                                                <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
+                                                    data-id="<?= $row['id_user_mahasiswa'] ?>" 
+                                                    data-nama="<?= esc($row['nama_mahasiswa'] ?? '-') ?>" 
+                                                    data-username="<?= esc($row['username']) ?>" 
+                                                    data-status="<?= $row['status'] ?>" 
+                                                    title="Edit"><i class="fas fa-edit"></i></button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-hapus" 
+                                                    data-id="<?= $row['id_user_mahasiswa'] ?>" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteModal" 
+                                                    title="Hapus"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="5" class="text-center">Belum ada data user mahasiswa.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inline Edit Logic
+    const editButtons = document.querySelectorAll('.btn-edit');
+    const editContainer = document.getElementById('editContainer');
+    const tableContainer = document.getElementById('tableContainer');
+    const formEditInline = document.getElementById('formEditInline');
+    const cancelEditBtns = document.querySelectorAll('.btn-cancel-edit');
+    
+    // Inputs
+    const editMahasiswa = document.getElementById('edit_mahasiswa');
+    const editUsername = document.getElementById('edit_username');
+    const editPassword = document.getElementById('edit_password');
+    const editStatus = document.getElementById('edit_status');
+
+    editButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const nama = this.getAttribute('data-nama');
+            const username = this.getAttribute('data-username');
+            const status = this.getAttribute('data-status');
+
+            // Set Form Action
+            formEditInline.action = `<?= base_url('superadmin/user-mahasiswa/update') ?>/${id}`;
+
+            // Populate Data
+            editMahasiswa.value = nama;
+            editUsername.value = username;
+            editPassword.value = ''; // Kosongkan saat diedit
+            
+            if (status === 'AKTIF' || status == '1') {
+                editStatus.checked = true;
+            } else {
+                editStatus.checked = false;
+            }
+
+            // Show Edit Container
+            editContainer.classList.remove('d-none');
+            editContainer.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    cancelEditBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            editContainer.classList.add('d-none');
+            formEditInline.reset();
+        });
+    });
+
+    
+    });
+</script>
+
+<?= $this->endSection() ?>

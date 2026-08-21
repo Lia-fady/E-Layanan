@@ -565,7 +565,7 @@ class AuthController extends BaseController
                 session()->set($sessionData);
 
                 if ($sessionData['id_user_group'] == 1) {
-                    return redirect()->to(base_url('admin/dashboard'))->with('success', 'Selamat datang Super Admin, ' . $userPegawai['nama']);
+                    return redirect()->to(base_url('superadmin/dashboard'))->with('success', 'Selamat datang Super Admin, ' . $userPegawai['nama']);
                 } elseif ($sessionData['id_user_group'] == 2) {
                     return redirect()->to(base_url('sekretariat/dashboard'))->with('success', 'Selamat bertugas di Ruang Sekretariat, ' . $userPegawai['nama']);
                 } else {
