@@ -81,10 +81,10 @@
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th>NIM</th>
+                                <th>NIM/NIS</th>
                                 <th>NIK</th>
                                 <th>Nama</th>
-                                <th>Jurusan / Program Studi</th>
+                                <th>Jurusan</th>
                                 <th>Instansi</th>
                                 <th>Email</th>
                                 <th class="col-aksi">Aksi</th>
