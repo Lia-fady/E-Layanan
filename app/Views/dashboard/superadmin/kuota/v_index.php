@@ -65,8 +65,8 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold d-block">Status</label>
                             <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status_aktif" value="nonaktif">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="aktif">
+                                <input type="hidden" name="status" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="1">
                                 <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                         <td><?= esc($row['kuota']) ?> Orang</td>
                                         <td class="col-status">
                                             <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == 'aktif' || $row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
+                                                <input class="form-check-input" type="checkbox" role="switch" <?= (isset($row['status']) && ($row['status'] == 'aktif' || $row['status'] == '1')) ? 'checked' : '' ?> disabled>
                                             </div>
                                         </td>
                                         <td class="col-aksi">
@@ -146,7 +146,7 @@
                                                     data-id="<?= $row['id_kuota'] ?>" 
                                                     data-id-bidang="<?= esc($row['id_bidang'] ?? '') ?>"
                                                     data-kuota="<?= esc($row['kuota']) ?>" 
-                                                    data-status="<?= $row['status_aktif'] ?>" 
+                                                    data-status="<?= $row['status'] ?? '' ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
                                                     data-id="<?= $row['id_kuota'] ?>" 

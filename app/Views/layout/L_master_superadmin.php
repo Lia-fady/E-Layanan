@@ -38,13 +38,11 @@
 
 <body id="page-top">
 
-    <!-- Navbar -->
-    <?= $this->include('layout/L_navbar') ?>
-    <!-- /.navbar -->
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <!-- Main Sidebar Container -->
-    <?= $this->include('layout/L_sidebar_superadmin') ?>
-        <!-- End of Sidebar -->
+        <!-- Sidebar Super Admin -->
+        <?= $this->include('layout/L_sidebar_superadmin') ?>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">

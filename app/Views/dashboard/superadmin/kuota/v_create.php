@@ -54,8 +54,8 @@
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
                                 <div class="form-check form-switch">
-                                    <input type="hidden" name="status_aktif" value="nonaktif">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="aktif">
+                                    <input type="hidden" name="status" value="0">
+                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="1">
                                     <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
                                 </div>
                             </div>
