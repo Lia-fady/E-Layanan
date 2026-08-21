@@ -39,14 +39,14 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active fw-bold" id="prodi-tab" data-bs-toggle="tab" data-bs-target="#prodi" type="button" role="tab" aria-controls="prodi" aria-selected="true">
+                <a class="nav-link active fw-bold" id="prodi-tab" data-toggle="tab" data-bs-toggle="tab" href="#prodi" role="tab" aria-controls="prodi" aria-selected="true">
                     <i class="fas fa-graduation-cap me-1"></i> Program Studi (Universitas)
-                </button>
+                </a>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link fw-bold" id="jurusan-tab" data-bs-toggle="tab" data-bs-target="#jurusan" type="button" role="tab" aria-controls="jurusan" aria-selected="false">
+                <a class="nav-link fw-bold" id="jurusan-tab" data-toggle="tab" data-bs-toggle="tab" href="#jurusan" role="tab" aria-controls="jurusan" aria-selected="false">
                     <i class="fas fa-tools me-1"></i> Jurusan (SMK/Sederajat)
-                </button>
+                </a>
             </li>
         </ul>
 
@@ -175,11 +175,20 @@
                     <form id="formCreateJurusan" action="<?= base_url('superadmin/program-studi/storeJurusan') ?>" method="post">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="create_id_instansi_jurusan" class="form-label fw-bold">Sekolah (SMK) <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="create_id_instansi_jurusan" name="id_instansi_pendidikan" required>
+                                        <option value="">-- Pilih Sekolah --</option>
+                                        <?php if(isset($smkList)): foreach($smkList as $smk): ?>
+                                        <option value="<?= $smk['id_instansi_pendidikan'] ?>"><?= esc($smk['instansi_pendidikan']) ?></option>
+                                        <?php endforeach; endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
                                     <label for="create_nama_jurusan" class="form-label fw-bold">Nama Jurusan <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="create_nama_jurusan" name="nama_jurusan" required placeholder="Contoh: Rekayasa Perangkat Lunak">
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label fw-bold d-block">Status</label>
                                     <div class="form-check form-switch mt-2">
                                         <input type="hidden" name="status" value="0">
@@ -205,11 +214,20 @@
                     <form id="formEditInlineJurusan" action="" method="post">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="edit_id_instansi_jurusan" class="form-label fw-bold">Sekolah (SMK) <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="edit_id_instansi_jurusan" name="id_instansi_pendidikan" required>
+                                        <option value="">-- Pilih Sekolah --</option>
+                                        <?php if(isset($smkList)): foreach($smkList as $smk): ?>
+                                        <option value="<?= $smk['id_instansi_pendidikan'] ?>"><?= esc($smk['instansi_pendidikan']) ?></option>
+                                        <?php endforeach; endif; ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
                                     <label for="edit_nama_jurusan" class="form-label fw-bold">Nama Jurusan <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="edit_nama_jurusan" name="nama_jurusan" required>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label fw-bold d-block">Status</label>
                                     <div class="form-check form-switch mt-2">
                                         <input type="hidden" name="status" value="0">
@@ -244,6 +262,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="col-no">No</th>
+                                        <th>Sekolah</th>
                                         <th>Nama Jurusan</th>
                                         <th class="col-status">Status</th>
                                         <th class="col-aksi">Aksi</th>
@@ -254,6 +273,7 @@
                                         <?php foreach ($jurusanList as $key => $row) : ?>
                                             <tr>
                                                 <td class="col-no"><?= $key + 1 ?></td>
+                                                <td><?= esc($row['instansi_pendidikan'] ?? '-') ?></td>
                                                 <td><?= esc($row['nama_jurusan']) ?></td>
                                                 <td class="col-status">
                                                     <div class="form-check form-switch status-switch">
@@ -264,6 +284,7 @@
                                                     <div class="d-flex gap-1 justify-content-center">
                                                         <button type="button" class="btn btn-sm btn-warning text-white btn-edit-jurusan" 
                                                             data-id="<?= $row['id_jurusan'] ?>" 
+                                                            data-idinstansi="<?= $row['id_instansi_pendidikan'] ?>"
                                                             data-jurusan="<?= esc($row['nama_jurusan']) ?>" 
                                                             data-status="<?= $row['status'] ?>" 
                                                             title="Edit"><i class="fas fa-edit"></i></button>
@@ -420,17 +441,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const formEditInlineJurusan = document.getElementById('formEditInlineJurusan');
     const cancelEditBtnsJurusan = document.querySelectorAll('.btn-cancel-edit-jurusan');
     
+    const editIdInstansiJurusan = document.getElementById('edit_id_instansi_jurusan');
     const editNamaJurusan = document.getElementById('edit_nama_jurusan');
     const editStatusJurusan = document.getElementById('edit_status_jurusan');
 
     editBtnsJurusan.forEach(btn => {
         btn.addEventListener('click', function() {
             const id = this.getAttribute('data-id');
+            const idInstansi = this.getAttribute('data-idinstansi');
             const jurusan = this.getAttribute('data-jurusan');
             const status = this.getAttribute('data-status');
 
             formEditInlineJurusan.action = `<?= base_url('superadmin/program-studi/updateJurusan') ?>/${id}`;
 
+            editIdInstansiJurusan.value = idInstansi;
             editNamaJurusan.value = jurusan;
             
             if (status === 'aktif' || status == '1') {

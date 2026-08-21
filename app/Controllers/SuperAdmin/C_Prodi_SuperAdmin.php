@@ -24,10 +24,12 @@ class C_Prodi_SuperAdmin extends BaseController
         $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
         $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
         $jurusanModel = new \App\Models\SuperAdmin\M_Jurusan_SuperAdmin();
+        $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan_SuperAdmin();
 
         $data['prodiList'] = $model->getAllWithRelations();
         $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
         $data['jurusanList'] = $jurusanModel->getAllJurusan();
+        $data['smkList'] = $instansiModel->where('id_jenjang_pendidikan', 1)->whereIn('status', ['aktif', '1', 'AKTIF'])->findAll();
 
         return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi & Jurusan', 'program_studi', $data);
     }
