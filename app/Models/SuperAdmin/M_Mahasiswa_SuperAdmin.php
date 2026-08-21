@@ -23,9 +23,10 @@ class M_Mahasiswa_SuperAdmin extends Model
     public function getAllWithRelations()
     {
         return $this->db->table($this->table)
-            ->select('m_mahasiswa.*, m_prodi.nama_prodi, m_instansi_pendidikan.instansi_pendidikan')
+            ->select('m_mahasiswa.*, t_instansi_mahasiswa.id_prodi, t_instansi_mahasiswa.id_jurusan, m_prodi.nama_prodi, m_jurusan.nama_jurusan, m_instansi_pendidikan.instansi_pendidikan')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')
+            ->join('m_jurusan', 'm_jurusan.id_jurusan = t_instansi_mahasiswa.id_jurusan', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->orderBy('m_instansi_pendidikan.instansi_pendidikan', 'ASC')
             ->orderBy('m_mahasiswa.nama_mahasiswa', 'ASC')

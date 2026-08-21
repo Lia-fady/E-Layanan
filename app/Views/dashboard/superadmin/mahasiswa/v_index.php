@@ -84,7 +84,7 @@
                                 <th>NIM</th>
                                 <th>NIK</th>
                                 <th>Nama</th>
-                                <th>Program Studi</th>
+                                <th>Jurusan / Program Studi</th>
                                 <th>Instansi</th>
                                 <th>Email</th>
                                 <th class="col-aksi">Aksi</th>
@@ -97,7 +97,7 @@
                                         <td><?= esc($row['nim']) ?></td>
                                         <td><?= esc($row['nik']) ?></td>
                                         <td><?= esc($row['nama_mahasiswa']) ?></td>
-                                        <td><?= esc($row['nama_prodi'] ?? '-') ?></td>
+                                        <td><?= esc($row['nama_jurusan'] ?? $row['nama_prodi'] ?? '-') ?></td>
                                         <td><?= esc($row['instansi_pendidikan'] ?? '-') ?></td>
                                         <td><?= esc($row['email']) ?></td>
                                         <td class="col-aksi">
