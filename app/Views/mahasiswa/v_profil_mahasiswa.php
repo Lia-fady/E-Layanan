@@ -201,7 +201,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
-            <form action="<?= base_url('mahasiswa/profil/update') ?>" method="POST" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Perubahan?', text: 'Data profil Anda akan diperbarui di sistem.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi'}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
+            <form action="<?= base_url('mahasiswa/profil/update') ?>" method="POST" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Perubahan?', text: 'Data profil Anda akan diperbarui di sistem.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi', reverseButtons: true}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
                 <div class="modal-body p-0 bg-white">
                     <?php if (session()->getFlashdata('error')) : ?>
                         <div class="alert alert-danger mx-4 mt-3 mb-0" style="font-size: 0.85rem; border-radius: 10px;">

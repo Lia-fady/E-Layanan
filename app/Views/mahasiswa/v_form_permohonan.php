@@ -175,9 +175,9 @@ if(session()->getFlashdata('permohonan_sent')):
 
         <?php if (!isset($permohonan_aktif) || $permohonan_aktif['status_persetujuan'] !== 'PERBAIKAN_BERKAS'): ?>
         <!-- FAQ / Panduan Jenis Permohonan -->
-        <div class="alert alert-warning mb-4 shadow-sm" style="border-radius:10px; padding:16px 20px; border-left: 5px solid #ffc107;">
-            <div class="fw-bold text-dark mb-2" style="font-size:0.9rem;"><i class="bi bi-info-circle-fill text-warning me-2"></i> Informasi Layanan Akademik</div>
-            <ul class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.8;">
+        <div class="mb-4" style="background-color: #fef9c3; border-radius: 4px; padding: 16px 20px;">
+            <div class="fw-bold mb-2" style="font-size:0.9rem; color: #854d0e;">Informasi Layanan Akademik :</div>
+            <ul class="mb-0 ps-3" style="font-size:0.85rem; line-height:1.8; color: #713f12;">
                 <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
                 <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
                 <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>

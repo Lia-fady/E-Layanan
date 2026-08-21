@@ -672,7 +672,8 @@
             confirmButtonColor: '#d33',
             cancelButtonColor: '#858796',
             confirmButtonText: btnText,
-            cancelButtonText: 'Kembali'
+            cancelButtonText: 'Kembali',
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = `<?= base_url('mahasiswa/batalkan-permohonan/') ?>${id_permohonan}`;

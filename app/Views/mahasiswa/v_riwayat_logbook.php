@@ -323,37 +323,39 @@
         <div class="row g-4">
             <div class="col-12">
                 <div class="card-flat h-100">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom pb-3" style="border-color: #edf2f7 !important;">
-                        <div class="section-title border-0 pb-0 mb-0 m-0"><i class="bi bi-clock-history me-1 text-primary"></i> Riwayat Aktivitas</div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 pb-3" style="border-bottom: 2px solid #f1f5f9;">
                         
-                        <div class="d-flex flex-wrap gap-2 align-items-center mt-3 mt-md-0">
-                            <!-- Tombol Tambah Logbook (muncul jika BERJALAN) -->
+                        <!-- Kiri: Judul dan Tombol Aksi -->
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <div class="section-title border-0 pb-0 mb-0 m-0 me-2"><i class="bi bi-clock-history me-1 text-primary"></i> Riwayat Aktivitas</div>
+                            
                             <?php if(!empty($penempatan) && $penempatan['status_penempatan'] == 'BERJALAN' && (!isset($is_log_book) || strtolower($is_log_book) != 'tidak')): ?>
-                                <button type="button" class="btn btn-sm btn-primary shadow-sm px-3" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.78rem;">
-                                    <i class="bi bi-plus-lg me-1"></i> Tambah Catatan Harian
+                                <button type="button" class="btn btn-sm btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.82rem; padding: 7px 16px; background-color: #0ea5e9 !important; border-color: #0ea5e9 !important;">
+                                    <i class="bi bi-plus-lg me-1"></i> Tambah Catatan
                                 </button>
                             <?php endif; ?>
 
                             <?php if(!empty($penempatan)): ?>
-                                <a href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank" class="btn btn-sm btn-danger shadow-sm px-3" style="font-size: 0.78rem;">
+                                <a href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank" class="btn btn-sm shadow-sm" style="font-size: 0.82rem; padding: 7px 16px; background-color: #fef2f2; border: 1px solid #fee2e2; color: #dc2626;">
                                     <i class="bi bi-file-earmark-pdf-fill me-1"></i> Cetak PDF
                                 </a>
                             <?php endif; ?>
+                        </div>
 
-                            <!-- Filter Client-Side -->
-                            <div class="d-flex flex-wrap gap-2 align-items-center">
-                                <select id="filter-status-lb" class="form-select form-select-sm shadow-none" style="width: 130px; font-size: 0.78rem; border-color: #e2e8f0; color: #64748b; background-color: #f8fafc;">
-                                    <option value="">Semua Status</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Disetujui">Disetujui</option>
-                                    <option value="Dikembalikan">Dikembalikan</option>
-                                </select>
-                                <div style="position: relative;">
-                                    <i class="bi bi-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.75rem;"></i>
-                                    <input type="text" id="dt-search-lb" class="form-control form-control-sm shadow-none" placeholder="Cari..." style="padding-left: 28px; border-radius: 8px; width: 160px; font-size: 0.78rem;">
-                                </div>
+                        <!-- Kanan: Filter & Pencarian -->
+                        <div class="d-flex flex-wrap gap-2 align-items-center mt-3 mt-lg-0">
+                            <select id="filter-status-lb" class="form-select form-select-sm shadow-none" style="width: 140px; font-size: 0.8rem; border-color: #e2e8f0; color: #64748b; background-color: #f8fafc; height: 34px;">
+                                <option value="">Semua Status</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Disetujui">Disetujui</option>
+                                <option value="Dikembalikan">Dikembalikan</option>
+                            </select>
+                            <div style="position: relative;">
+                                <i class="bi bi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.75rem;"></i>
+                                <input type="text" id="dt-search-lb" class="form-control form-control-sm shadow-none" placeholder="Cari..." style="padding-left: 32px; border-radius: 8px; width: 170px; font-size: 0.8rem; height: 34px;">
                             </div>
                         </div>
+
                     </div>
                     
                     <div class="table-responsive">
@@ -434,7 +436,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4 bg-white">
-                <form action="<?= base_url('mahasiswa/simpanLogbook') ?>" method="POST" enctype="multipart/form-data" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Laporan Hari Ini?', text: 'Pastikan uraian aktivitas yang Anda tulis sudah lengkap dan sesuai.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi'}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
+                <form action="<?= base_url('mahasiswa/simpanLogbook') ?>" method="POST" enctype="multipart/form-data" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Simpan Laporan Hari Ini?', text: 'Pastikan uraian aktivitas yang Anda tulis sudah lengkap dan sesuai.', icon: 'question', showCancelButton: true, confirmButtonColor: '#0a1d37', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Simpan', cancelButtonText: 'Periksa Lagi', reverseButtons: true}).then((res) => { if(res.isConfirmed) { form.submit(); } });">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_penempatan_magang" value="<?= $penempatan['id_penempatan_magang'] ?>">
                     
@@ -494,9 +496,9 @@ $(document).ready(function() {
                     <i class="bi bi-journal-text" style="font-size: 3.5rem; color: #bae6fd; position: absolute; transform: rotate(-10deg) translateX(-8px);"></i>
                     <i class="bi bi-pencil-fill text-primary" style="font-size: 2.2rem; position: absolute; transform: rotate(15deg) translate(15px, 15px); filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));"></i>
                 </div>
-                <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">Logbook Masih Kosong</h6>
-                <p class="text-muted small mx-auto" style="max-width: 280px; line-height: 1.6; font-size: 0.85rem;">
-                    Anda belum mencatat kegiatan apapun. Ayo mulai laporkan rutinitas harian Anda dengan menekan tombol Tambah Catatan Harian!
+                <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">Belum Ada Catatan Aktivitas</h6>
+                <p class="text-muted small mx-auto" style="max-width: 320px; line-height: 1.6; font-size: 0.85rem;">
+                    Catatan logbook harian Anda masih kosong. Silakan klik tombol <strong>'Tambah Catatan'</strong> di atas untuk mulai melaporkan pekerjaan Anda.
                 </p>
             </div>`, 
             zeroRecords: 'Tidak ditemukan data yang sesuai.' 

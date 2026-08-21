@@ -528,13 +528,14 @@ function submitPermohonan(type) {
     if (type === 'draft') {
         Swal.fire({
             title: 'Simpan sebagai Draft?',
-            text: 'Perubahan akan disimpan dan dapat dilanjutkan kapan saja.',
+            text: 'Apakah anda yakin ingin menyimpan data ini sebagai draft?',
             icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Simpan',
-            cancelButtonText: 'Batal'
+            cancelButtonText: 'Batal',
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 var btn = document.getElementById('btn-draft');
@@ -551,8 +552,9 @@ function submitPermohonan(type) {
             showCancelButton: true,
             confirmButtonColor: '#0a1d37',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: '</i>Kirim',
-            cancelButtonText: 'Cek Kembali'
+            confirmButtonText: 'Kirim',
+            cancelButtonText: 'Cek Kembali',
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 var btn = document.getElementById('btn-submit');
