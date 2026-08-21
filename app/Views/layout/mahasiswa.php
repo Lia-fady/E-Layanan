@@ -199,11 +199,29 @@
             .content-space { padding: 22px 15px 32px; }
             .card-flat { padding: 18px; border-radius: 10px; }
         }
+
+        /* --- SIDEBAR MINI STATE --- */
+        .sidebar, .main-workspace { transition: margin-left 0.3s ease, width 0.3s ease, transform 0.3s ease; }
+        @media (min-width: 992px) {
+            body.sidebar-mini .sidebar { width: 80px; }
+            body.sidebar-mini .sidebar .brand-area img { margin: 0 auto; display: block; }
+            body.sidebar-mini .sidebar .brand-area div { display: none; }
+            body.sidebar-mini .sidebar .menu-group { display: none; }
+            body.sidebar-mini .sidebar .nav-link { padding: 12px; justify-content: center; }
+            body.sidebar-mini .sidebar .nav-link span { display: none; }
+            body.sidebar-mini .sidebar .nav-link i { margin: 0 !important; font-size: 1.3rem; }
+            body.sidebar-mini .main-workspace { margin-left: 80px; width: calc(100% - 80px); }
+        }
         
         <?= $this->renderSection('extra_css') ?>
     </style>
 </head>
 <body>
+<script>
+    if (localStorage.getItem('sidebar_mini') === 'true') {
+        document.body.classList.add('sidebar-mini');
+    }
+</script>
 
 <button type="button" class="mobile-nav-toggle position-fixed top-0 start-0 m-3 shadow-sm" id="mobile-nav-toggle" aria-label="Buka menu navigasi" aria-controls="student-sidebar" aria-expanded="false">
     <i class="bi bi-list"></i>
@@ -223,33 +241,33 @@
         <div style="line-height: 1.2;">E-LAYANAN AKADEMIK<br><small class="fw-normal text-white-50" style="font-size: 0.72rem;">KOMINFO TANGERANG</small></div>
     </div>
     <div class="nav flex-column mt-2">
-        <a href="<?= base_url('mahasiswa/dashboard') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/dashboard') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-grid-1x2"></i> Dashboard
+        <a href="<?= base_url('mahasiswa/dashboard') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/dashboard') !== false) ? 'active' : '' ?>" title="Dashboard">
+            <i class="bi bi-grid-1x2"></i> <span>Dashboard</span>
         </a>
         
         <div class="menu-group">Layanan Pengajuan</div>
         
-        <a href="<?= base_url('mahasiswa/permohonan') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/permohonan') !== false && strpos($currentURL, 'status') === false) ? 'active' : '' ?>">
-            <i class="bi bi-file-earmark-plus"></i> Ajukan Permohonan
+        <a href="<?= base_url('mahasiswa/permohonan') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/permohonan') !== false && strpos($currentURL, 'status') === false) ? 'active' : '' ?>" title="Ajukan Permohonan">
+            <i class="bi bi-file-earmark-plus"></i> <span>Ajukan Permohonan</span>
         </a>
 
-        <a href="<?= base_url('mahasiswa/status') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/status') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-clock-history"></i> Riwayat Permohonan
+        <a href="<?= base_url('mahasiswa/status') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/status') !== false) ? 'active' : '' ?>" title="Riwayat Permohonan">
+            <i class="bi bi-clock-history"></i> <span>Riwayat Permohonan</span>
         </a>
 
         <div class="menu-group">Kegiatan Akademik</div>
         
-        <a href="<?= base_url('mahasiswa/logbook') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/logbook') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-journal-check"></i> <?= ($stateInfo == 5) ? 'Logbook' : 'Logbook' ?>
+        <a href="<?= base_url('mahasiswa/logbook') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/logbook') !== false) ? 'active' : '' ?>" title="Logbook">
+            <i class="bi bi-journal-check"></i> <span><?= ($stateInfo == 5) ? 'Logbook' : 'Logbook' ?></span>
         </a>
         
-        <a href="<?= base_url('mahasiswa/sertifikat') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/sertifikat') !== false) ? 'active' : '' ?>">
-            <i class="bi bi-download"></i> Unduh Dokumen
+        <a href="<?= base_url('mahasiswa/sertifikat') ?>" class="nav-link <?= (strpos($currentURL, 'mahasiswa/sertifikat') !== false) ? 'active' : '' ?>" title="Unduh Dokumen">
+            <i class="bi bi-download"></i> <span>Unduh Dokumen</span>
         </a>
         
         <div class="menu-group">Keluar</div>
-        <a href="#" id="btn-logout" class="nav-link logout-link">
-            <i class="bi bi-box-arrow-left"></i> Keluar
+        <a href="#" id="btn-logout" class="nav-link logout-link" title="Keluar">
+            <i class="bi bi-box-arrow-left"></i> <span>Keluar</span>
         </a>
     </div>
 </div>
@@ -294,6 +312,16 @@ document.querySelectorAll('.sidebar .nav-link').forEach(function(link) {
     link.addEventListener('click', closeMobileNav);
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const desktopNavToggle = document.getElementById('desktop-nav-toggle');
+    if(desktopNavToggle) {
+        desktopNavToggle.addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-mini');
+            localStorage.setItem('sidebar_mini', document.body.classList.contains('sidebar-mini'));
+        });
+    }
+});
+
 document.querySelectorAll('.locked-menu').forEach(item => {
     item.addEventListener('click', function(e) {
         e.preventDefault();
@@ -312,8 +340,13 @@ document.querySelectorAll('.locked-menu').forEach(item => {
 <div class="main-workspace">
     <!-- TOP BAR -->
     <div class="top-bar d-flex justify-content-between align-items-center">
-        <div style="font-size: 0.95rem;">
-            <?= $this->renderSection('breadcrumb') ?>
+        <div class="d-flex align-items-center gap-3">
+            <button type="button" class="d-none d-lg-flex align-items-center justify-content-center border-0 bg-transparent text-dark p-0" id="desktop-nav-toggle" style="width:36px; height:36px; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+            <div style="font-size: 0.95rem;">
+                <?= $this->renderSection('breadcrumb') ?>
+            </div>
         </div>
         <div class="d-flex align-items-center gap-3">
             <?php
