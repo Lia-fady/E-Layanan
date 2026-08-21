@@ -233,7 +233,7 @@ $routes->group('superadmin', ['filter' => 'authSuperAdmin', 'namespace' => 'App\
     $routes->post('fakultas/update/(:num)', 'C_Fakultas_SuperAdmin::update/$1');
     $routes->post('fakultas/delete/(:num)', 'C_Fakultas_SuperAdmin::delete/$1');
 
-    // Program Studi
+    // Program Studi & Jurusan
     $routes->get('program-studi', 'C_Prodi_SuperAdmin::index');
     $routes->get('program-studi/create', 'C_Prodi_SuperAdmin::create');
     $routes->get('program-studi/edit/(:num)', 'C_Prodi_SuperAdmin::edit/$1');
@@ -241,6 +241,11 @@ $routes->group('superadmin', ['filter' => 'authSuperAdmin', 'namespace' => 'App\
     $routes->post('program-studi/store', 'C_Prodi_SuperAdmin::store');
     $routes->post('program-studi/update/(:num)', 'C_Prodi_SuperAdmin::update/$1');
     $routes->post('program-studi/delete/(:num)', 'C_Prodi_SuperAdmin::delete/$1');
+
+    // Jurusan Routes
+    $routes->post('program-studi/storeJurusan', 'C_Prodi_SuperAdmin::storeJurusan');
+    $routes->post('program-studi/updateJurusan/(:num)', 'C_Prodi_SuperAdmin::updateJurusan/$1');
+    $routes->post('program-studi/deleteJurusan/(:num)', 'C_Prodi_SuperAdmin::deleteJurusan/$1');
 
     // Jenis Permohonan
     $routes->get('jenis-permohonan', 'C_JenisPermohonan_SuperAdmin::index');

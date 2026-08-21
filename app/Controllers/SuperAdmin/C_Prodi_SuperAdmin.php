@@ -23,9 +23,13 @@ class C_Prodi_SuperAdmin extends BaseController
     {
         $model = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
         $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
+        $jurusanModel = new \App\Models\SuperAdmin\M_Jurusan_SuperAdmin();
+
         $data['prodiList'] = $model->getAllWithRelations();
         $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
-        return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi', 'program_studi', $data);
+        $data['jurusanList'] = $jurusanModel->getAllJurusan();
+
+        return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi & Jurusan', 'program_studi', $data);
     }
 
     public function create()
@@ -93,6 +97,63 @@ class C_Prodi_SuperAdmin extends BaseController
             return redirect()->to(base_url('superadmin/program-studi'))->with('success', 'Data berhasil dihapus.');
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
             return redirect()->to(base_url('superadmin/program-studi'))->with('error', 'Data tidak dapat dihapus karena masih digunakan oleh data lain.');
+        } catch (\Exception $e) {
+            return redirect()->to(base_url('superadmin/program-studi'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // ==============================================
+    // FUNGSI CRUD UNTUK JURUSAN
+    // ==============================================
+
+    public function storeJurusan()
+    {
+        $model = new \App\Models\SuperAdmin\M_Jurusan_SuperAdmin();
+        $data = $this->request->getPost();
+        
+        // Atur default jenjang pendidikan ke 1 (contoh: SMK) karena biasanya SMK yang pakai jurusan
+        if (empty($data['id_jenjang_pendidikan'])) {
+            $data['id_jenjang_pendidikan'] = 1; 
+        }
+
+        if (empty($data['nama_jurusan'])) {
+            return redirect()->back()->with('error', 'Nama jurusan tidak boleh kosong.');
+        }
+        try {
+            if ($model->insert($data)) {
+                return redirect()->to(base_url('superadmin/program-studi'))->with('success', 'Data jurusan berhasil ditambahkan.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal menyimpan data jurusan.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function updateJurusan($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Jurusan_SuperAdmin();
+        $data = $this->request->getPost();
+        if (empty($data['nama_jurusan'])) return redirect()->back()->with('error', 'Nama jurusan tidak boleh kosong.');
+        try {
+            if ($model->update($id, $data)) {
+                return redirect()->to(base_url('superadmin/program-studi'))->with('success', 'Data jurusan berhasil diupdate.');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Gagal mengupdate data jurusan.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteJurusan($id)
+    {
+        $model = new \App\Models\SuperAdmin\M_Jurusan_SuperAdmin();
+        try {
+            $model->delete($id);
+            return redirect()->to(base_url('superadmin/program-studi'))->with('success', 'Data jurusan berhasil dihapus.');
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            return redirect()->to(base_url('superadmin/program-studi'))->with('error', 'Data jurusan tidak dapat dihapus karena masih digunakan.');
         } catch (\Exception $e) {
             return redirect()->to(base_url('superadmin/program-studi'))->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
