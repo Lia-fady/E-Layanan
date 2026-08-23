@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah Mahasiswa</h3>
             </div>
-            <form id="formTambah" action="<?= base_url('superadmin/mahasiswa/store') ?>" method="post">
+            <form id="formTambah" class="form-confirm-create" action="<?= base_url('superadmin/mahasiswa/store') ?>" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
@@ -133,67 +133,34 @@
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 $(function () {
     $('#formTambah').on('submit', function(e) {
-        e.preventDefault();
-        
         let form = $(this);
-        let url = form.attr('action');
-        let formData = new FormData(this);
-        
-        // Basic frontend validation for required fields
         let isValid = true;
         form.find('[required]').each(function() {
             if($(this).val().trim() === '') {
                 isValid = false;
                 $(this).addClass('is-invalid');
+                $(this).siblings('.invalid-feedback').removeClass('d-none');
             } else {
                 $(this).removeClass('is-invalid');
+                $(this).siblings('.invalid-feedback').addClass('d-none');
             }
         });
         
-        if(!isValid) return;
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if(response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/mahasiswa') ?>";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message
-                    });
-                }
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Tidak dapat terhubung ke server.'
-                });
-            }
-        });
+        if(!isValid) {
+            e.preventDefault(); // Prevent SweetAlert confirmation if invalid
+            return false;
+        }
     });
 
+    // Remove validation warning on input
     $('#formTambah input, #formTambah select, #formTambah textarea').on('input change', function() {
         if($(this).val().trim() !== '') {
             $(this).removeClass('is-invalid');
+            $(this).siblings('.invalid-feedback').addClass('d-none');
         }
     });
 });

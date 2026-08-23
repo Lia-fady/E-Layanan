@@ -86,6 +86,13 @@
         </div>
     </li>
 
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'wilayah') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('superadmin/wilayah') ?>">
+            <i class="fas fa-fw fa-map-marker-alt"></i>
+            <span>Data Wilayah</span>
+        </a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

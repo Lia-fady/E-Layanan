@@ -27,9 +27,9 @@ class C_Prodi_SuperAdmin extends BaseController
         $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan_SuperAdmin();
 
         $data['prodiList'] = $model->getAllWithRelations();
-        $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['fakultasList'] = $fakultasModel->where('status', 'AKTIF')->findAll();
         $data['jurusanList'] = $jurusanModel->getAllJurusan();
-        $data['smkList'] = $instansiModel->where('id_jenjang_pendidikan', 1)->whereIn('status', ['aktif', '1', 'AKTIF'])->findAll();
+        $data['smkList'] = $instansiModel->where('id_jenjang_pendidikan', 1)->where('status', 'AKTIF')->findAll();
 
         return $this->renderPage('dashboard/superadmin/prodi/v_index', 'Master Data Program Studi & Jurusan', 'program_studi', $data);
     }
@@ -37,7 +37,7 @@ class C_Prodi_SuperAdmin extends BaseController
     public function create()
     {
         $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
-        $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['fakultasList'] = $fakultasModel->where('status', 'AKTIF')->findAll();
         return $this->renderPage('dashboard/superadmin/prodi/v_create', 'Tambah Program Studi', 'program_studi', $data);
     }
 
@@ -45,7 +45,7 @@ class C_Prodi_SuperAdmin extends BaseController
     {
         $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
         $prodiModel = new \App\Models\SuperAdmin\M_Prodi_SuperAdmin();
-        $data['fakultasList'] = $fakultasModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['fakultasList'] = $fakultasModel->where('status', 'AKTIF')->findAll();
         $data['prodi'] = $prodiModel->find($id);
         return $this->renderPage('dashboard/superadmin/prodi/v_edit', 'Edit Program Studi', 'program_studi', $data);
     }

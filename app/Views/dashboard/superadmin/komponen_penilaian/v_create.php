@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah Komponen Penilaian</h3>
             </div>
-            <form action="<?= base_url('superadmin/komponen-penilaian/store') ?>" method="post">
+            <form action="<?= base_url('superadmin/komponen-penilaian/store') ?>" class="form-confirm-create" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
@@ -40,12 +40,11 @@
                             </div>
                             
                             <div class="mb-4">
-                                <label class="form-label fw-bold d-block">Status</label>
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="1">
-                                    <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
-                                </div>
+                                <label class="form-label fw-bold d-block">Status <span class="text-danger">*</span></label>
+                                <select class="form-select" id="statusAktif" name="status_aktif" required>
+                                    <option value="1" selected>Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-4">

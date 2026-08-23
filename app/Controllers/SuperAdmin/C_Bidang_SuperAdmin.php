@@ -24,14 +24,14 @@ class C_Bidang_SuperAdmin extends BaseController
         $model = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
         $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
         $data['bidangList'] = $model->getAllWithRelations();
-        $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
+        $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
         return $this->renderPage('dashboard/superadmin/bidang/v_index', 'Master Data Bidang', 'bidang', $data);
     }
 
     public function create()
     {
         $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
-        $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
+        $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
         return $this->renderPage('dashboard/superadmin/bidang/v_create', 'Tambah Bidang', 'bidang', $data);
     }
 
@@ -39,7 +39,7 @@ class C_Bidang_SuperAdmin extends BaseController
     {
         $opdModel = new \App\Models\SuperAdmin\M_Opd_SuperAdmin();
         $bidangModel = new \App\Models\SuperAdmin\M_Bidang_SuperAdmin();
-        $data['opdList'] = $opdModel->where('status_aktif', 'aktif')->orWhere('status_aktif', '1')->findAll();
+        $data['opdList'] = $opdModel->where('status_aktif', '1')->findAll();
         $data['bidang'] = $bidangModel->find($id);
         return $this->renderPage('dashboard/superadmin/bidang/v_edit', 'Edit Bidang', 'bidang', $data);
     }

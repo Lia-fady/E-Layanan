@@ -29,7 +29,7 @@ class C_Fakultas_SuperAdmin extends BaseController
         
         // Get instansi list for inline edit modal
         $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan_SuperAdmin();
-        $data['instansiList'] = $instansiModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['instansiList'] = $instansiModel->where('status', 'AKTIF')->findAll();
         
         return $this->renderPage('dashboard/superadmin/fakultas/v_index', 'Master Data Fakultas', 'fakultas', $data);
     }
@@ -37,7 +37,7 @@ class C_Fakultas_SuperAdmin extends BaseController
     public function create()
     {
         $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan_SuperAdmin();
-        $data['instansiList'] = $instansiModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['instansiList'] = $instansiModel->where('status', 'AKTIF')->findAll();
         return $this->renderPage('dashboard/superadmin/fakultas/v_create', 'Tambah Fakultas', 'fakultas', $data);
     }
 
@@ -45,7 +45,7 @@ class C_Fakultas_SuperAdmin extends BaseController
     {
         $instansiModel = new \App\Models\SuperAdmin\M_InstansiPendidikan_SuperAdmin();
         $fakultasModel = new \App\Models\SuperAdmin\M_Fakultas_SuperAdmin();
-        $data['instansiList'] = $instansiModel->where('status', 'aktif')->orWhere('status', '1')->findAll();
+        $data['instansiList'] = $instansiModel->where('status', 'AKTIF')->findAll();
         $data['fakultas'] = $fakultasModel->find($id);
         return $this->renderPage('dashboard/superadmin/fakultas/v_edit', 'Edit Fakultas', 'fakultas', $data);
     }

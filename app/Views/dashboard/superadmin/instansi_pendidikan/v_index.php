@@ -39,57 +39,60 @@
 
 <section class="content">
     <div class="container-fluid">
-        
-        <?php if(session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
-        <div class="card shadow-sm mb-4 d-none" id="editContainer">
-            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+        <!-- ============================================ -->
+        <!-- EDIT VIEW (Full Page - Hidden by default) -->
+        <!-- ============================================ -->
+        <div class="card shadow-sm d-none" id="editContainer">
+            <div class="card-header bg-warning text-white">
                 <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Instansi Pendidikan</h3>
-                <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
             </div>
-            <form id="formEditInline" action="" method="post">
+            <form id="formEditInline" class="form-confirm-update" action="" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="edit_instansi_pendidikan" class="form-label fw-bold">Nama Instansi <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_instansi_pendidikan" name="instansi_pendidikan" required>
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="edit_instansi_pendidikan" class="form-label fw-bold">Nama Instansi <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit_instansi_pendidikan" name="instansi_pendidikan" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_jenis_instansi" class="form-label fw-bold">Jenis Instansi <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit_jenis_instansi" name="jenis_instansi" required>
+                                    <option value="">-- Pilih Jenis --</option>
+                                    <option value="negeri">Negeri</option>
+                                    <option value="swasta">Swasta</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-block">Status</label>
+                                <select class="form-select" id="edit_status" name="status" required>
+    <option value="AKTIF">AKTIF</option>
+    <option value="NONAKTIF">Tidak Aktif</option>
+</select>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="edit_jenis_instansi" class="form-label fw-bold">Jenis Instansi <span class="text-danger">*</span></label>
-                            <select class="form-select" id="edit_jenis_instansi" name="jenis_instansi" required>
-                                <option value="">-- Pilih Jenis --</option>
-                                <option value="negeri">Negeri</option>
-                                <option value="swasta">Swasta</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold d-block">Status</label>
-                            <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="1">
-                                <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info">
+                                <h5><i class="icon fas fa-info"></i> Informasi</h5>
+                                Pastikan data yang diubah sudah benar sebelum menyimpan perubahan.
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-light d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary btn-cancel-edit"><i class="fas fa-times me-1"></i> Batal</button>
-                    <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-1"></i> Update Data</button>
+                <div class="card-footer bg-light d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-cancel-edit">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                    </button>
+                    <button type="submit" class="btn btn-warning text-white ms-auto">
+                        <i class="fas fa-save me-1"></i> Update Data
+                    </button>
                 </div>
             </form>
         </div>
 
+        <!-- ============================================ -->
+        <!-- LIST VIEW (Table) -->
+        <!-- ============================================ -->
         <div class="card shadow-sm" id="tableContainer">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0"><i class="fas fa-list me-2"></i> Daftar Instansi Pendidikan</h3>
@@ -103,31 +106,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm" id="limitData">
-                            <option value="10">10 Baris</option>
-                            <option value="25">25 Baris</option>
-                            <option value="50">50 Baris</option>
-                            <option value="100">100 Baris</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6"></div>
-                    <div class="col-md-2 text-end">
-                        <select class="form-select form-select-sm" id="filterStatus">
-                            <option value="all">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="Cari data..." id="searchBox">
-                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-light">
@@ -147,9 +125,11 @@
                                         <td><?= esc($row['instansi_pendidikan']) ?></td>
                                         <td><?= esc($row['jenis_instansi']) ?></td>
                                         <td>
-                                            <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
-                                            </div>
+                                            <?php if($row['status'] == 'AKTIF'): ?>
+    <span class="badge bg-success">Aktif</span>
+<?php else: ?>
+    <span class="badge bg-danger">Tidak Aktif</span>
+<?php endif; ?>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
@@ -160,9 +140,7 @@
                                                     data-status="<?= $row['status'] ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
-                                                    data-id="<?= $row['id_instansi_pendidikan'] ?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal" 
+                                                    data-url="<?= base_url('superadmin/instansi-pendidikan/delete/' . $row['id_instansi_pendidikan']) ?>" 
                                                     title="Hapus"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </td>
@@ -176,64 +154,36 @@
                         </tbody>
                     </table>
                 </div>
-                
-                
             </div>
         </div>
     </div>
 </section>
 
+<?= $this->endSection() ?>
 
-
+<?= $this->section('scripts') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inline Edit Logic
-    const editButtons = document.querySelectorAll('.btn-edit');
-    const editContainer = document.getElementById('editContainer');
-    const tableContainer = document.getElementById('tableContainer');
-    const formEditInline = document.getElementById('formEditInline');
-    const cancelEditBtns = document.querySelectorAll('.btn-cancel-edit');
-    
-    // Inputs
-    const editInstansi = document.getElementById('edit_instansi_pendidikan');
-    const editJenis = document.getElementById('edit_jenis_instansi');
-    const editStatus = document.getElementById('edit_status');
-
-    editButtons.forEach(btn => {
+    // Edit button handler - populate form and show full-page edit
+    document.querySelectorAll('.btn-edit').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const instansi = this.getAttribute('data-instansi');
-            const jenis = this.getAttribute('data-jenis');
-            const status = this.getAttribute('data-status');
+            var id = this.getAttribute('data-id');
+            var instansi = this.getAttribute('data-instansi');
+            var jenis = this.getAttribute('data-jenis');
+            var status = this.getAttribute('data-status');
 
-            // Set Form Action
-            formEditInline.action = `<?= base_url('superadmin/instansi-pendidikan/update') ?>/${id}`;
-
-            // Populate Data
-            editInstansi.value = instansi;
-            editJenis.value = jenis;
-            
-            if (status === 'aktif' || status == '1') {
-                editStatus.checked = true;
+            document.getElementById('formEditInline').action = '<?= base_url('superadmin/instansi-pendidikan/update') ?>/' + id;
+            document.getElementById('edit_instansi_pendidikan').value = instansi;
+            document.getElementById('edit_jenis_instansi').value = jenis;
+            if (status === 'AKTIF' || status == '1') {
+                document.getElementById('edit_status').value = 'AKTIF';
             } else {
-                editStatus.checked = false;
+                document.getElementById('edit_status').value = 'NONAKTIF';
             }
 
-            // Show Edit Container
-            editContainer.classList.remove('d-none');
-            editContainer.scrollIntoView({ behavior: 'smooth' });
+            showEditState();
         });
     });
-
-    cancelEditBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            editContainer.classList.add('d-none');
-            formEditInline.reset();
-        });
-    });
-
-    
-    });
+});
 </script>
-
 <?= $this->endSection() ?>
