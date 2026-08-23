@@ -527,7 +527,7 @@ function submitPermohonan(type) {
 
     if (type === 'draft') {
         Swal.fire({
-            title: 'Simpan sebagai Draft?',
+            title: 'Konfirmasi',
             text: 'Apakah anda yakin ingin menyimpan data ini sebagai draft?',
             icon: 'info',
             showCancelButton: true,

@@ -6,9 +6,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Mahasiswa/Siswa</h5>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Kegiatan</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Pantau dan setujui catatan aktivitas harian mahasiswa/siswa di bidang Anda.
+            Tinjau dan setujui kegiatan yang telah dicatat.
         </p>
     </div>
 </div>
@@ -30,18 +30,7 @@
             </div>
             
             <div class="d-flex align-items-center" style="gap: 10px;">
-                <select id="filterJenisPermohonan" class="form-control form-control-sm custom-select custom-select-sm" style="width: 180px;">
-                    <option value="">Semua Jenis</option>
-                    <?php if (isset($list_jenis)): ?>
-                        <?php foreach($list_jenis as $j): ?>
-                            <option value="<?= esc($j['jenis_permohonan']) ?>">
-                                <?= esc($j['jenis_permohonan']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
-
-                <select id="filterStatus" class="form-control form-control-sm custom-select custom-select-sm" style="width: 140px;">
+                <!-- Filter Jenis Permohonan dihapus -->                <select id="filterStatus" class="form-control form-control-sm custom-select custom-select-sm" style="width: 140px;">
                     <option value="">Semua Status</option>
                     <option value="Disetujui">Disetujui</option>
                     <option value="Sedang Berjalan">Sedang Berjalan</option>
@@ -63,10 +52,9 @@
                     <tr>
                         <th width="5%" class="text-center align-middle">No</th>
                         <th width="20%" class="text-center align-middle">Nama</th>
-                        <th width="20%" class="text-center align-middle">Instansi / Jurusan</th>
-                        <th width="15%" class="text-center align-middle">Jenis Permohonan</th>
-                        <th width="15%" class="text-center align-middle">Periode</th>
-                        <th width="10%" class="text-center align-middle">Status</th>
+                        <th width="25%" class="text-center align-middle">Instansi Pendidikan</th>
+                        <th width="20%" class="text-center align-middle">Periode Kegiatan</th>
+                        <th width="15%" class="text-center align-middle">Status</th>
                         <th width="15%" class="text-center align-middle">Aksi</th>
                     </tr>
                 </thead>
@@ -76,19 +64,18 @@
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
                             <td>
-                                <strong><?= esc($mhs->nama_mahasiswa) ?></strong><br>
-                                <small class="text-muted"><?= esc($mhs->nim) ?></small>
+                                <strong><?= esc($mhs->nama_mahasiswa) ?></strong>
                             </td>
                             <td>
-                                <?= esc($mhs->instansi_pendidikan) ?><br>
-                                <small class="text-muted"><?= esc($mhs->prodi) ?></small>
+                                <?= esc($mhs->instansi_pendidikan) ?>
                             </td>
-                            <td>
-                                <span class="badge badge-info"><?= esc($mhs->jenis_permohonan ?? 'Belum Ditentukan') ?></span>
-                            </td>
-                            <td>
-                                <?= date('d M Y', strtotime($mhs->tgl_mulai)) ?> s.d.<br>
-                                <?= date('d M Y', strtotime($mhs->tgl_selesai)) ?>
+                            <td class="text-center">
+                                <?php 
+                                    $bln = [1=>'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+                                    $tglM = date('j', strtotime($mhs->tgl_mulai)) . ' ' . $bln[(int)date('m', strtotime($mhs->tgl_mulai))] . ' ' . date('y', strtotime($mhs->tgl_mulai));
+                                    $tglS = date('j', strtotime($mhs->tgl_selesai)) . ' ' . $bln[(int)date('m', strtotime($mhs->tgl_selesai))] . ' ' . date('y', strtotime($mhs->tgl_selesai));
+                                    echo $tglM . ' -<br>' . $tglS;
+                                ?>
                             </td>
                             <td>
                                 <?php if (($mhs->status_penempatan ?? '') == 'DIBATALKAN'): ?>
@@ -103,7 +90,7 @@
                             </td>
                             <td class="text-center">
                                 <button type="button" class="btn btn-sm btn-info btn-detail-logbook" data-id="<?= $mhs->id_penempatan_magang ?>" title="Lihat & Approve Logbook">
-                                    <i class="fas fa-book-open"></i> Logbook
+                                    <i class="fas fa-book-open"></i> Lihat Logbook
                                 </button>
                             </td>
                         </tr>
@@ -142,14 +129,9 @@ $(document).ready(function() {
         table.page.len(this.value).draw();
     });
 
-    // Custom Filter Jenis Permohonan
-    $('#filterJenisPermohonan').on('change', function() {
-        table.column(3).search(this.value).draw();
-    });
-
     // Custom Filter Status
     $('#filterStatus').on('change', function() {
-        table.column(5).search(this.value).draw();
+        table.column(4).search(this.value).draw();
     });
 
     $(document).on('click', '.btn-detail-logbook', function(e) {

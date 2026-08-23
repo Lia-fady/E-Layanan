@@ -105,7 +105,7 @@ $(document).ready(function() {
     $.fn.dataTable.ext.search.push(
         function(settings, data, dataIndex) {
             var selectedStatus = $('#filterStatusCustom').val().toLowerCase();
-            var rowStatus = data[4].toLowerCase(); 
+            var rowStatus = data[5].toLowerCase(); 
             if (selectedStatus === "" || rowStatus.includes(selectedStatus)) {
                 return true;
             }
@@ -165,15 +165,14 @@ function showLogRiwayatKabid(id_permohonan) {
     $('#modalLogRiwayat').modal('show');
 
     $.ajax({
-        url: "<?= base_url('sekretariat/get-log-riwayat') ?>",
-        type: "POST",
-        data: { id_permohonan: id_permohonan },
+        url: "<?= base_url('api/log/riwayat/') ?>" + id_permohonan,
+        type: "GET",
         dataType: "json",
         success: function(response) {
-            if(response.success) {
+            if(response.status === 'success') {
                 renderLogTimelineKabid(response.data);
             } else {
-                $('#logRiwayatContainerKabid').html('<div class="text-center my-5 text-danger"><i class="fas fa-exclamation-triangle fa-2x mb-2"></i><p>' + response.message + '</p></div>');
+                $('#logRiwayatContainerKabid').html('<div class="text-center my-5 text-danger"><i class="fas fa-exclamation-triangle fa-2x mb-2"></i><p>' + (response.message || 'Gagal memuat log') + '</p></div>');
             }
         },
         error: function() {
@@ -192,39 +191,33 @@ function renderLogTimelineKabid(logs) {
     html += '<div style="position:absolute; left: 45px; top: 30px; bottom: 30px; width: 2px; background: #e2e8f0;"></div>';
 
     logs.forEach(function(log, index) {
-        var isFirst = (index === 0);
-        var isLast = (index === logs.length - 1);
-        
-        var iconStr = '<i class="fas fa-check"></i>';
-        var bgClass = 'bg-primary';
-        var textClass = 'text-white';
-        
-        var action = log.action ? log.action.toUpperCase() : '';
-        if(action.includes('TOLAK') || action.includes('BATAL')) { bgClass = 'bg-danger'; iconStr = '<i class="fas fa-times"></i>'; }
-        else if(action.includes('SETUJU') || action.includes('SELESAI')) { bgClass = 'bg-success'; }
-        else if(action.includes('PERBAIKAN')) { bgClass = 'bg-warning'; textClass = 'text-dark'; iconStr = '<i class="fas fa-exclamation"></i>'; }
-        else if(action.includes('KIRIM') || action.includes('PENGAJUAN')) { bgClass = 'bg-info'; iconStr = '<i class="fas fa-paper-plane"></i>'; }
-        else if(action.includes('DISPOSISI')) { bgClass = 'bg-purple'; iconStr = '<i class="fas fa-share"></i>'; }
+        var faIcon = 'fas fa-info';
+        if (log.icon && log.icon.includes('send')) faIcon = 'fas fa-paper-plane';
+        else if (log.icon && log.icon.includes('file')) faIcon = 'fas fa-file-alt';
+        else if (log.icon && log.icon.includes('check')) faIcon = 'fas fa-check';
+        else if (log.icon && log.icon.includes('pencil')) faIcon = 'fas fa-edit';
+        else if (log.icon && log.icon.includes('x-circle')) faIcon = 'fas fa-times';
 
-        if(bgClass === 'bg-purple') bgClass = 'bg-secondary'; // fallback
-
-        var dateObj = new Date(log.created_at);
-        var dateStr = dateObj.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'});
-        var timeStr = dateObj.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+        var bgClass = log.color_class || 'bg-secondary';
+        var textClass = bgClass.includes('warning') || bgClass.includes('light') ? 'text-dark' : 'text-white';
+        // Some color_classes from API might include 'text-dark' string already
+        bgClass = bgClass.replace('text-dark', '').trim();
 
         html += '<div class="d-flex mb-4" style="position:relative; z-index:2;">';
         
         html += '<div class="flex-shrink-0 mr-3" style="width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; box-shadow: 0 0 0 4px #f8f9fa; z-index: 2;" class="' + bgClass + ' ' + textClass + '">';
-        html += iconStr;
+        html += '<i class="' + faIcon + '"></i>';
         html += '</div>';
         
         html += '<div class="flex-grow-1 bg-white p-3 shadow-sm border" style="border-radius: 10px;">';
         html += '<div class="d-flex justify-content-between align-items-center mb-1">';
-        html += '<h6 class="mb-0 font-weight-bold" style="color:#1e293b; font-size:0.95rem;">' + (log.action || 'Sistem Update') + '</h6>';
-        html += '<small class="text-muted"><i class="far fa-clock mr-1"></i>' + dateStr + ' ' + timeStr + '</small>';
+        html += '<h6 class="mb-0 font-weight-bold" style="color:#1e293b; font-size:0.95rem;">' + (log.aksi || 'Sistem Update') + '</h6>';
+        html += '<small class="text-muted"><i class="far fa-clock mr-1"></i>' + log.tanggal_format + '</small>';
         html += '</div>';
-        html += '<p class="mb-1 text-muted" style="font-size:0.88rem;">' + (log.catatan || 'Tidak ada catatan') + '</p>';
-        html += '<div class="mt-2" style="font-size:0.75rem; color:#94a3b8;"><i class="far fa-user mr-1"></i>Oleh: ' + (log.nama_aktor || 'Sistem') + ' (' + (log.role_aktor || 'System') + ')</div>';
+        if (log.catatan && log.catatan.trim() !== '') {
+            html += '<p class="mb-1 text-muted" style="font-size:0.88rem;">' + log.catatan + '</p>';
+        }
+        html += '<div class="mt-2" style="font-size:0.75rem; color:#94a3b8;"><i class="far fa-user mr-1"></i>Oleh: ' + (log.aktor || 'Sistem') + '</div>';
         html += '</div>';
         
         html += '</div>';

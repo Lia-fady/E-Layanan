@@ -179,6 +179,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     // 2. Logbook (Approval)
     $routes->match(['get', 'post'], 'logbook', '\App\Controllers\Kabid\C_LogbookKabid::index');
     $routes->post('logbook/approve', '\App\Controllers\Kabid\C_LogbookKabid::approve');
+    $routes->post('logbook/reject', '\App\Controllers\Kabid\C_LogbookKabid::reject');
     $routes->post('logbook/bulkApprove', '\App\Controllers\Kabid\C_LogbookKabid::bulkApprove');
 
     // 3. Riwayat Selesai Magang

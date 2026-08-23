@@ -176,7 +176,7 @@
         .sidebar .nav-link.active::before { content: ''; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: #66c2ee; }
         .main-workspace { margin-left: 268px; width: calc(100% - 268px); }
         .top-bar { height: 76px; padding: 0 38px; border-bottom-color: #dce5ec; box-shadow: 0 2px 12px rgba(16,42,67,0.035); }
-        .content-space { padding: 34px 38px 46px; }
+        .content-space { padding: 34px 38px 46px; max-width: 1400px; margin: 0 auto; }
         .card-flat { border-color: #dce5ec; border-radius: 12px; box-shadow: 0 10px 28px rgba(16,42,67,0.07); }
         .card-flat:hover { box-shadow: 0 14px 34px rgba(16,42,67,0.12); }
         .mobile-nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid #dce5ec; border-radius: 8px; background: #fff; color: #102a43; font-size: 1.15rem; }
@@ -278,14 +278,15 @@ document.getElementById('btn-logout').addEventListener('click', function(e) {
     e.preventDefault();
 
     Swal.fire({
-        title: 'Yakin ingin Keluar?',
-        text: "Sesi login Anda di sistem E-Layanan akan diselesaikan.",
+        title: 'Keluar Aplikasi?',
+        text: 'Sesi Anda saat ini akan diakhiri dan Anda harus masuk kembali untuk mengakses layanan.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#e1d600',
-        cancelButtonColor: '#dc3545', 
-        confirmButtonText: 'Ya, Keluar!',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d', 
+        confirmButtonText: 'Ya, Keluar',
         cancelButtonText: 'Batal',
+        reverseButtons: true,
         background: '#ffffff',
         customClass: {
             title: 'fw-bold text-dark'

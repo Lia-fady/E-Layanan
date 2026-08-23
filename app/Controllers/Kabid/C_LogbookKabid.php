@@ -156,6 +156,29 @@ class C_LogbookKabid extends BaseController
         return $this->response->setJSON(['success' => true, 'message' => 'Logbook berhasil disetujui.']);
     }
 
+    public function reject()
+    {
+        $id_logbook = $this->request->getPost('id_logbook_magang');
+        $id_penempatan = $this->request->getPost('id_penempatan_magang');
+        $catatan_revisi = $this->request->getPost('catatan_revisi');
+
+        if (empty($catatan_revisi)) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Catatan revisi tidak boleh kosong.']);
+        }
+
+        $updateData = [
+            'status_logbook'    => 'ditolak',
+            'catatan_revisi'    => $catatan_revisi,
+            'disetujui_oleh'    => null, // Reset if previously approved
+            'tgl_disetujui'     => null,
+            'file_tanda_tangan' => null
+        ];
+
+        $this->logbookModel->update($id_logbook, $updateData);
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Logbook berhasil ditolak.']);
+    }
+
     public function bulkApprove()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');

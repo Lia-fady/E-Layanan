@@ -128,82 +128,6 @@
         border-radius: 6px;
         border: 1px solid #fee2e2;
     }
-    /* === PAGE HEADER === */
-    .page-header-top {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 20px;
-        margin-top: 5px;
-    }
-    .page-header-top h4 {
-        font-weight: 800;
-        color: #1a2b3c;
-        margin: 0;
-        font-size: 1.4rem;
-        letter-spacing: -0.3px;
-    }
-    .page-header-top .sub-text {
-        color: #64748b;
-        font-size: 0.9rem;
-        margin: 4px 0 0;
-        line-height: 1.5;
-    }
-    .page-header-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    }
-    .page-header-stats {
-        display: flex;
-        gap: 12px;
-    }
-    .ph-stat {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 18px;
-        background: #f8fafc;
-        border: 1px solid #edf2f7;
-        border-radius: 10px;
-        transition: border-color 0.2s;
-    }
-    .ph-stat:hover { border-color: #cbd5e1; }
-    .ph-stat-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 9px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        flex-shrink: 0;
-    }
-    .ph-stat-icon.blue { background: #dbeafe; color: #2563eb; }
-    .ph-stat-icon.green { background: #dcfce7; color: #16a34a; }
-    .ph-stat-icon.amber { background: #fef3c7; color: #d97706; }
-    .ph-stat-value {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #1e293b;
-        line-height: 1;
-    }
-    .ph-stat-label {
-        font-size: 0.72rem;
-        color: #94a3b8;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.3px;
-        margin-top: 2px;
-    }
-    @media (max-width: 575.98px) {
-        .page-header-stats { flex-direction: column; }
-        .page-header-top { flex-direction: column; align-items: flex-start; }
-    }
 </style>
 <?= $this->endSection() ?>
 
@@ -214,148 +138,117 @@
 <?= $this->section('content') ?>
         
         
-        <?php
-            $totalActivity = count($logbook ?? []);
-            $approvedActivity = 0;
-            foreach (($logbook ?? []) as $activityItem) {
-                if (($activityItem['status_logbook'] ?? '') === 'disetujui' || !empty($activityItem['disetujui_oleh'])) $approvedActivity++;
-            }
-        ?>
+        <!-- AREA HEADER LUAR KARTU -->
         <div class="mb-4">
             <h3 class="fw-semibold mb-1 text-dark">Logbook Kegiatan</h3>
-            <p class="text-muted mb-0"> Catat kegiatan dan pekerjaan yang Anda lakukan.</p>
+            <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Catat kegiatan dan pekerjaan yang Anda lakukan.</p>
         </div>
-        
-        <div class="page-header-card">
-            <div class="page-header-stats">
-                <div class="ph-stat">
-                    <div class="ph-stat-icon blue"><i class="bi bi-journal-text"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $totalActivity ?></div>
-                        <div class="ph-stat-label">Total Catatan</div>
-                    </div>
-                </div>
-                <div class="ph-stat">
-                    <div class="ph-stat-icon green"><i class="bi bi-check2-circle"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $approvedActivity ?></div>
-                        <div class="ph-stat-label">Disetujui</div>
-                    </div>
-                </div>
-                <div class="ph-stat">
-                    <div class="ph-stat-icon amber"><i class="bi bi-clock-history"></i></div>
-                    <div>
-                        <div class="ph-stat-value"><?= $totalActivity - $approvedActivity ?></div>
-                        <div class="ph-stat-label">Menunggu</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <?php if (session()->getFlashdata('success')) : ?>
-            <div class="alert alert-success border-0 small py-2.5 mb-4 shadow-sm" role="alert" style="background-color: #f0fdf4; color: #15803d; border-left: 4px solid #16a34a !important;">
-                <i class="bi bi-check-circle-fill me-1"></i> <?= session()->getFlashdata('success') ?>
-            </div>
-        <?php endif; ?>
-        <?php if (session()->getFlashdata('error')) : ?>
-            <div class="alert alert-danger border-0 small py-2.5 mb-4 shadow-sm" role="alert" style="background-color: #fef2f2; color: #dc2626; border-left: 4px solid #dc2626 !important;">
-                <i class="bi bi-exclamation-triangle-fill me-1"></i> <?= session()->getFlashdata('error') ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- INFORMASI KEGIATAN & CONTEXT SWITCHER -->
-        <?php if (!empty($penempatan)): ?>
-        <div class="card-flat mb-4" style="padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
-            <div class="row align-items-center">
-                <div class="col-md-7">
-                    <h6 class="fw-bold text-dark mb-1" style="font-size: 1.1rem;"><?= esc($penempatan['nama_jenis'] ?? 'Kegiatan Magang') ?></h6>
-                    <div class="text-muted" style="font-size: 0.88rem; margin-top: 4px;">
-                        Periode: <?= tgl_indo($penempatan['tgl_mulai']) ?> &ndash; <?= tgl_indo($penempatan['tgl_selesai']) ?>
-                        <span class="mx-2 text-black-50">|</span>
-                        Status: <strong class="<?= $penempatan['status_penempatan'] == 'BERJALAN' ? 'text-success' : 'text-secondary' ?>"><?= esc($penempatan['status_penempatan']) ?></strong>
-                    </div>
-                </div>
-                <?php if (count($semuaPenempatan) > 1): ?>
-                <div class="col-md-5 mt-3 mt-md-0">
-                    <label class="form-label mb-1 fw-bold text-dark" style="font-size: 0.75rem;">Pilih Riwayat Kegiatan:</label>
-                    <form id="formGantiPenempatan" method="POST" action="<?= base_url('mahasiswa/logbook') ?>">
-                        <?= csrf_field() ?>
-                        <select name="id_penempatan" class="form-select shadow-none border-primary" style="background-color: #fff;" onchange="document.getElementById('formGantiPenempatan').submit()">
-                            <?php foreach($semuaPenempatan as $p): ?>
-                                <option value="<?= $p['id_penempatan_magang'] ?>" <?= ($penempatan['id_penempatan_magang'] == $p['id_penempatan_magang']) ? 'selected' : '' ?>>
-                                    <?= esc($p['nama_jenis']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </form>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-        <?php endif; ?>
-
-        <?php if (empty($penempatan)): ?>
-            <div class="alert alert-warning border-0 p-3 mb-4 shadow-sm" style="border-radius: 8px;">
-                <div class="d-flex gap-2">
-                    <i class="bi bi-lock-fill fs-5 mt-1"></i>
-                    <div>
-                        <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
-                        <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                            Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        <?php elseif (isset($is_log_book) && strtolower($is_log_book) == 'tidak'): ?>
-            <div class="alert alert-secondary border-0 p-3 mb-4 shadow-sm" style="border-radius: 8px;">
-                <div class="d-flex gap-2">
-                    <i class="bi bi-info-circle-fill fs-5 mt-1"></i>
-                    <div>
-                        <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Logbook Tidak Diwajibkan</span>
-                        <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                            Berdasarkan pengaturan dari Bidang, kegiatan magang Anda tidak mewajibkan pengisian logbook harian.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
 
         <div class="row g-4">
             <div class="col-12">
-                <div class="card-flat h-100">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 pb-3" style="border-bottom: 2px solid #f1f5f9;">
-                        
-                        <!-- Kiri: Judul dan Tombol Aksi -->
-                        <div class="d-flex flex-wrap align-items-center gap-3">
-                            <div class="section-title border-0 pb-0 mb-0 m-0 me-2"><i class="bi bi-clock-history me-1 text-primary"></i> Riwayat Aktivitas</div>
-                            
-                            <?php if(!empty($penempatan) && $penempatan['status_penempatan'] == 'BERJALAN' && (!isset($is_log_book) || strtolower($is_log_book) != 'tidak')): ?>
-                                <button type="button" class="btn btn-sm btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.82rem; padding: 7px 16px; background-color: #0ea5e9 !important; border-color: #0ea5e9 !important;">
-                                    <i class="bi bi-plus-lg me-1"></i> Tambah Catatan
-                                </button>
+                <div class="card-flat h-100" style="padding: 24px;">
+                    
+                    <!-- AREA TOMBOL KARTU -->
+                    <div class="d-flex flex-wrap justify-content-end align-items-center pb-3 mb-3" style="border-bottom: 1px solid #edf2f7;">
+                        <div class="d-flex flex-wrap gap-2 align-items-center mt-3 mt-lg-0">
+                            <?php if (count($semuaPenempatan) > 1): ?>
+                                <form id="formGantiPenempatan" method="POST" action="<?= base_url('mahasiswa/logbook') ?>" class="m-0">
+                                    <?= csrf_field() ?>
+                                    <select name="id_penempatan" class="form-select form-select-sm shadow-sm border-0" style="background-color: #f8fafc; font-weight: 500; min-width: 180px; padding: 7.5px 30px 7.5px 12px; height: 36px; border-radius: 8px;" onchange="document.getElementById('formGantiPenempatan').submit()">
+                                        <?php foreach($semuaPenempatan as $p): ?>
+                                            <option value="<?= $p['id_penempatan_magang'] ?>" <?= ($penempatan['id_penempatan_magang'] == $p['id_penempatan_magang']) ? 'selected' : '' ?>>
+                                                <?= esc($p['nama_jenis']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </form>
                             <?php endif; ?>
 
                             <?php if(!empty($penempatan)): ?>
-                                <a href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank" class="btn btn-sm shadow-sm" style="font-size: 0.82rem; padding: 7px 16px; background-color: #fef2f2; border: 1px solid #fee2e2; color: #dc2626;">
-                                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Cetak PDF
-                                </a>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm shadow-sm d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.85rem; padding: 0 16px; height: 36px; background-color: #f8fafc; border: 1px solid #e2e8f0; color: #475569; border-radius: 6px; font-weight: 500;">
+                                        <i class="bi bi-download me-2"></i> Export <i class="bi bi-chevron-down ms-2" style="font-size: 0.7rem;"></i>
+                                    </button>
+                                    <ul class="dropdown-menu shadow-sm border-0" style="border-radius: 8px; font-size: 0.85rem;">
+                                        <li><a class="dropdown-item py-2" href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> PDF</a></li>
+                                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Excel</a></li>
+                                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-filetype-csv text-info me-2"></i> CSV</a></li>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if(!empty($penempatan) && $penempatan['status_penempatan'] == 'BERJALAN' && (!isset($is_log_book) || strtolower($is_log_book) != 'tidak')): ?>
+                                <button type="button" class="btn btn-sm btn-primary shadow-sm fw-medium d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.85rem; padding: 0 18px; height: 36px; background-color: #4f46e5 !important; border-color: #4f46e5 !important; border-radius: 6px;">
+                                    <i class="bi bi-plus-lg me-1"></i> Tambah Kegiatan
+                                </button>
                             <?php endif; ?>
                         </div>
+                    </div>
 
-                        <!-- Kanan: Filter & Pencarian -->
-                        <div class="d-flex flex-wrap gap-2 align-items-center mt-3 mt-lg-0">
-                            <select id="filter-status-lb" class="form-select form-select-sm shadow-none" style="width: 140px; font-size: 0.8rem; border-color: #e2e8f0; color: #64748b; background-color: #f8fafc; height: 34px;">
-                                <option value="">Semua Status</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Disetujui">Disetujui</option>
-                                <option value="Dikembalikan">Dikembalikan</option>
-                            </select>
-                            <div style="position: relative;">
-                                <i class="bi bi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 0.75rem;"></i>
-                                <input type="text" id="dt-search-lb" class="form-control form-control-sm shadow-none" placeholder="Cari..." style="padding-left: 32px; border-radius: 8px; width: 170px; font-size: 0.8rem; height: 34px;">
+                    <!-- FLASH MESSAGES -->
+                    <?php if (session()->getFlashdata('success')) : ?>
+                        <div class="alert alert-success border-0 small py-2.5 mb-4 shadow-sm" role="alert" style="background-color: #f0fdf4; color: #15803d; border-left: 4px solid #16a34a !important;">
+                            <i class="bi bi-check-circle-fill me-1"></i> <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <div class="alert alert-danger border-0 small py-2.5 mb-4 shadow-sm" role="alert" style="background-color: #fef2f2; color: #dc2626; border-left: 4px solid #dc2626 !important;">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> <?= session()->getFlashdata('error') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (empty($penempatan)): ?>
+                        <div class="alert alert-warning border-0 p-3 mb-4 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-lock-fill fs-5 mt-1"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    <?php elseif (isset($is_log_book) && strtolower($is_log_book) == 'tidak'): ?>
+                        <div class="alert alert-secondary border-0 p-3 mb-4 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-info-circle-fill fs-5 mt-1"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Logbook Tidak Diwajibkan</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Berdasarkan pengaturan dari Bidang, kegiatan magang Anda tidak mewajibkan pengisian logbook harian.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <!-- FILTER -->
+                    <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+                        <select id="filter-status-lb" class="form-select form-select-sm shadow-none" style="width: 250px; font-size: 0.85rem; color: #475569; border-radius: 6px; height: 38px; border: 1px solid #e2e8f0;">
+                            <option value="">Semua Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Dikembalikan">Dikembalikan</option>
+                        </select>
+                        <button class="btn btn-sm shadow-sm px-4 fw-semibold d-flex align-items-center justify-content-center" style="height: 38px; border-radius: 6px; background-color: #1e293b; border-color: #1e293b; color: #fff; font-size: 0.85rem; min-width: 80px;">Filter</button>
+                    </div>
 
+                    <!-- SHOW ENTRIES & SEARCH -->
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="font-size: 0.82rem; color: #6b7280;">
+                        <div class="d-flex align-items-center gap-1">
+                            Show
+                            <select id="custom-length-lb" class="form-select form-select-sm shadow-none mx-1" style="width: 60px; border-radius: 4px; border: 1px solid #e2e8f0; padding: 3px 8px; color: #475569; font-size: 0.82rem; height: 30px;">
+                                <option value="10">10</option>
+                                <option value="30" selected>30</option>
+                                <option value="50">50</option>
+                                <option value="-1">All</option>
+                            </select>
+                            entries
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            Search:
+                            <input type="text" id="custom-search-lb" class="form-control form-control-sm shadow-none ms-1" style="width: 180px; border-radius: 4px; border: 1px solid #e2e8f0; padding: 4px 10px; color: #475569; font-size: 0.82rem; height: 30px;" placeholder="Pencarian">
+                        </div>
                     </div>
                     
                     <div class="table-responsive">
@@ -364,8 +257,8 @@
                                 <tr>
                                     <th style="width: 50px;">No</th>
                                     <th style="width: 120px;">Tanggal</th>
-                                    <th>Deskripsi Kegiatan</th>
-                                    <th style="width: 120px;" class="text-center">Bukti</th>
+                                    <th>Kegiatan</th>
+                                    <th style="width: 120px;" class="text-center">Dokumentasi</th>
                                     <th style="width: 120px;" class="text-center">Status</th>
                                 </tr>
                             </thead>
@@ -416,10 +309,10 @@
                         </table>
                     </div>
 
-                    <!-- Custom Pagination -->
-                    <div class="custom-dt-footer" id="lbPagination">
-                        <span class="dt-info-text" id="lbInfoText">Menampilkan 0 data</span>
-                        <div class="dt-page-buttons" id="lbPageButtons"></div>
+                    <!-- FOOTER TABEL: INFO & PAGINATION -->
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mt-3 pt-3" style="border-top: 1px solid #f1f5f9; font-size: 0.82rem; color: #6b7280;">
+                        <div id="custom-info-lb">Showing 0 entries</div>
+                        <div id="custom-pagination-lb" class="d-flex align-items-center gap-1"></div>
                     </div>
 
                 </div>
@@ -485,10 +378,10 @@
 $(document).ready(function() {
     var table = $('#tabelLogbook').DataTable({
         paging: true, lengthChange: false, searching: true, ordering: true,
-        info: false, autoWidth: false, pageLength: 10,
+        info: false, autoWidth: false, pageLength: 30,
         order: [[1, 'desc']],
         dom: 'rt',
-        language: { 
+        language: {
             emptyTable: `<div class="text-center py-5">
                 <div class="mx-auto mb-4" style="width: 120px; height: 120px; background-color: #f0f9ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; border: 4px solid #ffffff; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1);">
                     <div style="position: absolute; top: -5px; right: 10px; width: 25px; height: 25px; background-color: #e0f2fe; border-radius: 50%;"></div>
@@ -496,37 +389,52 @@ $(document).ready(function() {
                     <i class="bi bi-journal-text" style="font-size: 3.5rem; color: #bae6fd; position: absolute; transform: rotate(-10deg) translateX(-8px);"></i>
                     <i class="bi bi-pencil-fill text-primary" style="font-size: 2.2rem; position: absolute; transform: rotate(15deg) translate(15px, 15px); filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));"></i>
                 </div>
-                <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">Belum Ada Catatan Aktivitas</h6>
+                <h6 class="fw-bold text-dark mb-2" style="font-size: 1rem;">Belum Ada Kegiatan</h6>
                 <p class="text-muted small mx-auto" style="max-width: 320px; line-height: 1.6; font-size: 0.85rem;">
-                    Catatan logbook harian Anda masih kosong. Silakan klik tombol <strong>'Tambah Catatan'</strong> di atas untuk mulai melaporkan pekerjaan Anda.
+                    Belum ada kegiatan yang dicatat. Silakan klik tombol <strong>'+ Tambah Kegiatan'</strong> di atas untuk mulai mengisi logbook.
                 </p>
-            </div>`, 
-            zeroRecords: 'Tidak ditemukan data yang sesuai.' 
+            </div>`,
+            zeroRecords: 'Tidak ditemukan data yang sesuai.'
         },
         columnDefs: [{ orderable: false, targets: [3] }]
     });
 
-    // Custom pagination
-    function renderPagination() {
+    // Custom controls
+    function renderFooter() {
         var info = table.page.info();
-        var start = info.start + 1, end = info.end, total = info.recordsDisplay, page = info.page, pages = info.pages;
-        $('#lbInfoText').text(total === 0 ? 'Tidak ada data' : 'Menampilkan ' + start + ' - ' + end + ' dari ' + total + ' data');
-        var html = '<span class="dt-page-btn ' + (page === 0 ? 'disabled' : '') + '" data-page="prev">&lsaquo;</span>';
-        for (var i = 0; i < pages; i++) { html += '<span class="dt-page-btn ' + (i === page ? 'active' : '') + '" data-page="' + i + '">' + (i+1) + '</span>'; }
-        html += '<span class="dt-page-btn ' + (page >= pages-1 ? 'disabled' : '') + '" data-page="next">&rsaquo;</span>';
-        $('#lbPageButtons').html(html);
+        var total = info.recordsDisplay;
+        if (total === 0) {
+            $('#custom-info-lb').text('No entries');
+        } else {
+            $('#custom-info-lb').text('Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' + total + ' entries');
+        }
+        // Pagination - always show
+        var page = info.page, pages = info.pages;
+        var html = '';
+        html += '<button class="btn btn-sm border px-3 py-0 ' + (page === 0 ? 'disabled text-muted' : 'text-dark') + '" data-page="prev" style="font-size:0.8rem;height:32px;border-radius:5px;border-color:#e2e8f0;">Previous</button>';
+        for (var i = 0; i < Math.max(pages, 1); i++) {
+            if (i === page) {
+                html += '<button class="btn btn-sm text-white px-2 py-0" data-page="' + i + '" style="font-size:0.8rem;height:32px;min-width:32px;border-radius:5px;background:#334155;border:none;">' + (i+1) + '</button>';
+            } else {
+                html += '<button class="btn btn-sm border text-dark px-2 py-0" data-page="' + i + '" style="font-size:0.8rem;height:32px;min-width:32px;border-radius:5px;border-color:#e2e8f0;">' + (i+1) + '</button>';
+            }
+        }
+        html += '<button class="btn btn-sm border px-3 py-0 ' + (page >= Math.max(pages-1, 0) ? 'disabled text-muted' : 'text-dark') + '" data-page="next" style="font-size:0.8rem;height:32px;border-radius:5px;border-color:#e2e8f0;">Next</button>';
+        $('#custom-pagination-lb').html(html);
     }
-    $('#lbPageButtons').on('click', '.dt-page-btn:not(.disabled)', function() {
+
+    $('#custom-pagination-lb').on('click', 'button:not(.disabled)', function() {
         var p = $(this).data('page');
         if (p === 'prev') table.page('previous').draw('page');
         else if (p === 'next') table.page('next').draw('page');
         else table.page(parseInt(p)).draw('page');
     });
-    table.on('draw', function() { renderPagination(); });
-    renderPagination();
 
-    // Search
-    $('#dt-search-lb').on('keyup', function() { table.search(this.value).draw(); });
+    $('#custom-search-lb').on('keyup', function() { table.search(this.value).draw(); });
+    $('#custom-length-lb').on('change', function() { table.page.len(parseInt(this.value)).draw(); });
+
+    table.on('draw', function() { renderFooter(); });
+    renderFooter();
 
     // Filter Status (kolom 4)
     $('#filter-status-lb').on('change', function() {

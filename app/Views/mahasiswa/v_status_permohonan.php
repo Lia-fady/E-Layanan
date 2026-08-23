@@ -450,10 +450,10 @@
                 </table>
             </div> <!-- /.table-responsive -->
 
-            <!-- Custom Pagination Footer -->
-            <div class="custom-dt-footer" id="customPagination">
-                <span class="dt-info-text" id="dtInfoText">Menampilkan 0 data</span>
-                <div class="dt-page-buttons" id="dtPageButtons"></div>
+            <!-- Footer Tabel: Info & Pagination -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between mt-3 pt-3" style="border-top: 1px solid #f1f5f9; font-size: 0.82rem; color: #6b7280;">
+                <div id="dtInfoText">Showing 0 entries</div>
+                <div id="dtPageButtons" class="d-flex align-items-center gap-1"></div>
             </div>
 
         </div>
@@ -516,34 +516,32 @@
         // === Custom Pagination ===
         function renderPagination() {
             var info = table.page.info();
-            var start = info.start + 1;
-            var end   = info.end;
             var total = info.recordsDisplay;
-            var page  = info.page;
-            var pages = info.pages;
 
             // Info text
             if (total === 0) {
-                $('#dtInfoText').text('Showing 0 to 0 of 0 entries');
+                $('#dtInfoText').text('No entries');
             } else {
-                $('#dtInfoText').text('Showing ' + start + ' to ' + end + ' of ' + total + ' entries');
+                $('#dtInfoText').text('Showing ' + (info.start + 1) + ' to ' + info.end + ' of ' + total + ' entries');
             }
 
-            // Page buttons
+            // Pagination buttons - always show
+            var page = info.page, pages = info.pages;
             var html = '';
-            // Prev
-            html += '<span class="dt-page-btn ' + (page === 0 ? 'disabled' : '') + '" data-page="prev">Previous</span>';
-            // Page numbers
-            for (var i = 0; i < pages; i++) {
-                html += '<span class="dt-page-btn ' + (i === page ? 'active' : '') + '" data-page="' + i + '">' + (i + 1) + '</span>';
+            html += '<button class="btn btn-sm border px-3 py-0 ' + (page === 0 ? 'disabled text-muted' : 'text-dark') + '" data-page="prev" style="font-size:0.8rem;height:32px;border-radius:5px;border-color:#e2e8f0;">Previous</button>';
+            for (var i = 0; i < Math.max(pages, 1); i++) {
+                if (i === page) {
+                    html += '<button class="btn btn-sm text-white px-2 py-0" data-page="' + i + '" style="font-size:0.8rem;height:32px;min-width:32px;border-radius:5px;background:#334155;border:none;">' + (i+1) + '</button>';
+                } else {
+                    html += '<button class="btn btn-sm border text-dark px-2 py-0" data-page="' + i + '" style="font-size:0.8rem;height:32px;min-width:32px;border-radius:5px;border-color:#e2e8f0;">' + (i+1) + '</button>';
+                }
             }
-            // Next
-            html += '<span class="dt-page-btn ' + (page >= pages - 1 ? 'disabled' : '') + '" data-page="next">Next</span>';
+            html += '<button class="btn btn-sm border px-3 py-0 ' + (page >= Math.max(pages-1, 0) ? 'disabled text-muted' : 'text-dark') + '" data-page="next" style="font-size:0.8rem;height:32px;border-radius:5px;border-color:#e2e8f0;">Next</button>';
             $('#dtPageButtons').html(html);
         }
 
         // Event: klik tombol halaman
-        $('#dtPageButtons').on('click', '.dt-page-btn:not(.disabled)', function() {
+        $('#dtPageButtons').on('click', 'button:not(.disabled)', function() {
             var p = $(this).data('page');
             if (p === 'prev') table.page('previous').draw('page');
             else if (p === 'next') table.page('next').draw('page');
@@ -658,11 +656,11 @@
 
     function confirmBatalkan(id_permohonan, posting_data) {
         let isDraft = (posting_data === 'draft');
-        let titleText = isDraft ? 'Hapus Draft Permohonan?' : 'Batalkan Permohonan?';
+        let titleText = isDraft ? 'Hapus Draft?' : 'Batalkan Permohonan?';
         let descText = isDraft 
             ? 'Draft permohonan yang dihapus tidak dapat dikembalikan.' 
             : 'Permohonan yang dibatalkan tidak dapat dilanjutkan atau ditarik kembali.';
-        let btnText = isDraft ? 'Ya, Hapus Draft' : 'Ya, Batalkan';
+        let btnText = isDraft ? 'Ya, Hapus' : 'Ya, Batalkan';
 
         Swal.fire({
             title: titleText,

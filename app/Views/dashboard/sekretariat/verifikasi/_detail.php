@@ -9,17 +9,17 @@
 
 $jenisPermohonanText = strtolower(trim($permohonan->jenis_permohonan ?? ''));
 if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermohonanText, 'skripsi') !== false || strpos($jenisPermohonanText, 'ta') !== false) {
-    $labelKeahlian = 'Deskripsi Judul Skripsi / TA';
-    $labelDeskripsi = 'Deskripsi Rencana Topik / Rumusan Masalah';
+    $labelKeahlian = 'Judul atau Topik Skripsi/TA';
+    $labelDeskripsi = 'Fokus Penelitian / Data yang Dicari';
 } elseif (strpos($jenisPermohonanText, 'observasi') !== false || strpos($jenisPermohonanText, 'pengambilan data') !== false) {
-    $labelKeahlian = 'Deskripsi Latar Belakang Observasi';
-    $labelDeskripsi = 'Deskripsi Daftar Kebutuhan Data';
+    $labelKeahlian = 'Tujuan Observasi / Nama Mata Kuliah';
+    $labelDeskripsi = 'Daftar Kebutuhan Data';
 } elseif (strpos($jenisPermohonanText, 'uji coba') !== false || strpos($jenisPermohonanText, 'prototype') !== false) {
-    $labelKeahlian = 'Deskripsi Profil Aplikasi / Sistem';
-    $labelDeskripsi = 'Deskripsi Skenario Uji Coba / Metode';
+    $labelKeahlian = 'Nama dan Profil Singkat Sistem';
+    $labelDeskripsi = 'Skenario Pengujian / Target Pengguna';
 } else {
-    $labelKeahlian = 'Deskripsi Keahlian / Skill';
-    $labelDeskripsi = 'Deskripsi Rencana Magang / Kegiatan';
+    $labelKeahlian = 'Keahlian Utama';
+    $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
 }
 
 /**

@@ -35,10 +35,11 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th width="5%" class="text-center align-middle">No</th>
-                        <th width="25%" class="text-center align-middle">Nama</th>
-                        <th width="25%" class="text-center align-middle">Instansi / Jurusan</th>
+                        <th width="20%" class="text-center align-middle">Nama</th>
+                        <th width="20%" class="text-center align-middle">Instansi Pendidikan</th>
                         <th width="15%" class="text-center align-middle">Jenis Permohonan</th>
-                        <th width="15%" class="text-center align-middle">Status</th>
+                        <th width="15%" class="text-center align-middle">Periode Kegiatan</th>
+                        <th width="10%" class="text-center align-middle">Status</th>
                         <th width="15%" class="text-center align-middle">Aksi</th>
                     </tr>
                 </thead>
@@ -48,15 +49,23 @@
                         <tr>
                             <td class="text-center"><?= $no++ ?></td>
                             <td>
-                                <strong><?= esc($row->nama_mahasiswa) ?></strong><br>
-                                <small class="text-muted"><?= esc($row->nim ?? '-') ?></small>
+                                <strong><?= esc($row->nama_mahasiswa) ?></strong>
                             </td>
                             <td>
-                                <?= esc($row->instansi_pendidikan ?? '-') ?><br>
-                                <small class="text-muted"><?= esc($row->prodi ?? '-') ?></small>
+                                <?= esc($row->instansi_pendidikan ?? '-') ?>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <span class="badge badge-info"><?= esc($row->jenis_permohonan ?? '-') ?></span>
+                            </td>
+                            <td class="text-center">
+                                <small class="text-muted">
+                                    <?php 
+                                        $bln = [1=>'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+                                        $tglM = date('j', strtotime($row->tgl_mulai)) . ' ' . $bln[(int)date('m', strtotime($row->tgl_mulai))] . ' ' . date('y', strtotime($row->tgl_mulai));
+                                        $tglS = date('j', strtotime($row->tgl_selesai)) . ' ' . $bln[(int)date('m', strtotime($row->tgl_selesai))] . ' ' . date('y', strtotime($row->tgl_selesai));
+                                        echo $tglM . ' -<br>' . $tglS;
+                                    ?>
+                                </small>
                             </td>
                             <td>
                                 <?php if ($row->status_penempatan == 'MENUNGGU'): ?>
