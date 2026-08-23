@@ -1,12 +1,14 @@
 <!-- Sidebar Super Admin -->
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark-navy sidebar-dark accordion d-flex flex-column" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('superadmin/dashboard') ?>">
+    <a class="sidebar-brand d-flex align-items-center" href="<?= base_url('superadmin/dashboard') ?>">
         <div class="sidebar-brand-icon">
-            <i class="fas fa-university"></i>
+            <img src="<?= base_url('images/kota tng_nobg.png'); ?>" alt="Logo" style="width: 40px; height: 40px;">
         </div>
-        <div class="sidebar-brand-text mx-3">E-Layanan <sup>Magang</sup></div>
+        <div class="sidebar-brand-text mx-2">
+            <span class="font-weight-bold">KOTA TANGERANG</span>
+        </div>
     </a>
 
     <!-- Divider -->

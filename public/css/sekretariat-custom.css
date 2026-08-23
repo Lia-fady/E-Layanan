@@ -276,9 +276,19 @@ body {
     margin: 0;
     box-sizing: border-box;
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    height: auto !important;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-dark-navy .nav-item .nav-link span {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    display: inline-block;
+    line-height: 1.2;
+    vertical-align: middle;
 }
 
 .sidebar-dark-navy .nav-item .nav-link:hover {
@@ -303,6 +313,7 @@ body {
     text-align: center;
     margin-right: 0.4rem;
     opacity: 0.8;
+    flex-shrink: 0;
 }
 
 .sidebar-dark-navy .nav-item.active .nav-link i {
@@ -314,6 +325,15 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin: 0.3rem 1rem;
 }
+
+/* Sidebar Collapse Submenu Header - prevent text overflow */
+.sidebar .collapse-inner .collapse-header {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 0.6rem;
+}
+
 
 /* ===================================================================
    NAVBAR
