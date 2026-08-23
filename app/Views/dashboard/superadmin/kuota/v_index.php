@@ -4,7 +4,6 @@
 
 <?= $this->section('content') ?>
 
-
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -23,62 +22,61 @@
 
 <section class="content">
     <div class="container-fluid">
-        
-        <?php if(session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
-        <div class="card shadow-sm mb-4 d-none" id="editContainer">
-            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+        <!-- EDIT VIEW (Full Page) -->
+        <div class="card shadow-sm d-none" id="editContainer">
+            <div class="card-header bg-warning text-white">
                 <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Kuota</h3>
-                <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
             </div>
-            <form id="formEditInline" action="" method="post">
+            <form id="formEditInline" class="form-confirm-update" action="" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="edit_id_bidang" class="form-label fw-bold">Bidang <span class="text-danger">*</span></label>
-                            <select class="form-select" id="edit_id_bidang" name="id_bidang" required>
-                                <option value="">-- Pilih Bidang --</option>
-                                <?php if (!empty($bidangList)) : ?>
-                                    <?php foreach ($bidangList as $bidang) : ?>
-                                        <option value="<?= $bidang['id_bidang']; ?>">
-                                            <?= esc($bidang['bidang']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </select>
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="edit_id_bidang" class="form-label fw-bold">Bidang <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit_id_bidang" name="id_bidang" required>
+                                    <option value="">-- Pilih Bidang --</option>
+                                    <?php if (!empty($bidangList)) : ?>
+                                        <?php foreach ($bidangList as $bidang) : ?>
+                                            <option value="<?= $bidang['id_bidang']; ?>">
+                                                <?= esc($bidang['bidang']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_kuota" class="form-label fw-bold">Jumlah Kuota <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="edit_kuota" name="kuota" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-block">Status</label>
+                                <select class="form-select" id="edit_status" name="status" required>
+    <option value="AKTIF">AKTIF</option>
+    <option value="NONAKTIF">Tidak Aktif</option>
+</select>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="edit_kuota" class="form-label fw-bold">Jumlah Kuota <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="edit_kuota" name="kuota" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold d-block">Status</label>
-                            <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="1">
-                                <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info">
+                                <h5><i class="icon fas fa-info"></i> Informasi</h5>
+                                Pastikan data yang diubah sudah benar sebelum menyimpan perubahan.
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-light d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary btn-cancel-edit"><i class="fas fa-times me-1"></i> Batal</button>
-                    <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-1"></i> Update Data</button>
+                <div class="card-footer bg-light d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-cancel-edit">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                    </button>
+                    <button type="submit" class="btn btn-warning text-white ms-auto">
+                        <i class="fas fa-save me-1"></i> Update Data
+                    </button>
                 </div>
             </form>
         </div>
 
+        <!-- LIST VIEW -->
         <div class="card shadow-sm" id="tableContainer">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0"><i class="fas fa-list me-2"></i> Daftar Kuota</h3>
@@ -92,31 +90,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm" id="limitData">
-                            <option value="10">10 Baris</option>
-                            <option value="25">25 Baris</option>
-                            <option value="50">50 Baris</option>
-                            <option value="100">100 Baris</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6"></div>
-                    <div class="col-md-2 text-end">
-                        <select class="form-select form-select-sm" id="filterStatus">
-                            <option value="all">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="Cari data..." id="searchBox">
-                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-light">
@@ -136,9 +109,11 @@
                                         <td><?= esc($row['bidang'] ?? '-') ?></td>
                                         <td><?= esc($row['kuota']) ?> Orang</td>
                                         <td class="col-status">
-                                            <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= (isset($row['status']) && ($row['status'] == 'aktif' || $row['status'] == '1')) ? 'checked' : '' ?> disabled>
-                                            </div>
+                                            <?php if(isset($row['status']) && $row['status'] == 'AKTIF'): ?>
+    <span class="badge bg-success">Aktif</span>
+<?php else: ?>
+    <span class="badge bg-danger">Tidak Aktif</span>
+<?php endif; ?>
                                         </td>
                                         <td class="col-aksi">
                                             <div class="d-flex gap-1 justify-content-center">
@@ -149,9 +124,7 @@
                                                     data-status="<?= $row['status'] ?? '' ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
-                                                    data-id="<?= $row['id_kuota'] ?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal" 
+                                                    data-url="<?= base_url('superadmin/kuota/delete/' . $row['id_kuota']) ?>" 
                                                     title="Hapus"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </td>
@@ -165,64 +138,35 @@
                         </tbody>
                     </table>
                 </div>
-                
-                
             </div>
         </div>
     </div>
 </section>
 
+<?= $this->endSection() ?>
 
-
+<?= $this->section('scripts') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inline Edit Logic
-    const editButtons = document.querySelectorAll('.btn-edit');
-    const editContainer = document.getElementById('editContainer');
-    const tableContainer = document.getElementById('tableContainer');
-    const formEditInline = document.getElementById('formEditInline');
-    const cancelEditBtns = document.querySelectorAll('.btn-cancel-edit');
-    
-    // Inputs
-    const editBidang = document.getElementById('edit_id_bidang');
-    const editKuota = document.getElementById('edit_kuota');
-    const editStatus = document.getElementById('edit_status');
-
-    editButtons.forEach(btn => {
+    document.querySelectorAll('.btn-edit').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const idBidang = this.getAttribute('data-id-bidang');
-            const kuota = this.getAttribute('data-kuota');
-            const status = this.getAttribute('data-status');
+            var id = this.getAttribute('data-id');
+            var idBidang = this.getAttribute('data-id-bidang');
+            var kuota = this.getAttribute('data-kuota');
+            var status = this.getAttribute('data-status');
 
-            // Set Form Action
-            formEditInline.action = `<?= base_url('superadmin/kuota/update') ?>/${id}`;
-
-            // Populate Data
-            editBidang.value = idBidang;
-            editKuota.value = kuota;
-            
-            if (status === 'aktif' || status === 'Aktif' || status == '1') {
-                editStatus.checked = true;
+            document.getElementById('formEditInline').action = '<?= base_url('superadmin/kuota/update') ?>/' + id;
+            document.getElementById('edit_id_bidang').value = idBidang;
+            document.getElementById('edit_kuota').value = kuota;
+            if (status === 'AKTIF' || status == '1') {
+                document.getElementById('edit_status').value = 'AKTIF';
             } else {
-                editStatus.checked = false;
+                document.getElementById('edit_status').value = 'NONAKTIF';
             }
 
-            // Show Edit Container
-            editContainer.classList.remove('d-none');
-            editContainer.scrollIntoView({ behavior: 'smooth' });
+            showEditState();
         });
     });
-
-    cancelEditBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            editContainer.classList.add('d-none');
-            formEditInline.reset();
-        });
-    });
-
-    
-    });
+});
 </script>
-
 <?= $this->endSection() ?>

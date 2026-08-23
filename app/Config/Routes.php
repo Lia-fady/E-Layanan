@@ -310,6 +310,36 @@ $routes->group('superadmin', ['filter' => 'authSuperAdmin', 'namespace' => 'App\
     $routes->post('user-mahasiswa/store', 'C_UserMahasiswa_SuperAdmin::store');
     $routes->post('user-mahasiswa/update/(:num)', 'C_UserMahasiswa_SuperAdmin::update/$1');
     $routes->post('user-mahasiswa/delete/(:num)', 'C_UserMahasiswa_SuperAdmin::delete/$1');
+
+    // Wilayah
+    $routes->group('wilayah', function($routes) {
+        $routes->get('/', 'C_Wilayah_SuperAdmin::index');
+        
+        // Provinsi
+        $routes->post('store-provinsi', 'C_Wilayah_SuperAdmin::storeProvinsi');
+        $routes->post('update-provinsi/(:num)', 'C_Wilayah_SuperAdmin::updateProvinsi/$1');
+        $routes->post('delete-provinsi/(:num)', 'C_Wilayah_SuperAdmin::deleteProvinsi/$1');
+
+        // Kabupaten
+        $routes->post('store-kabupaten', 'C_Wilayah_SuperAdmin::storeKabupaten');
+        $routes->post('update-kabupaten/(:num)', 'C_Wilayah_SuperAdmin::updateKabupaten/$1');
+        $routes->post('delete-kabupaten/(:num)', 'C_Wilayah_SuperAdmin::deleteKabupaten/$1');
+
+        // Kecamatan
+        $routes->post('store-kecamatan', 'C_Wilayah_SuperAdmin::storeKecamatan');
+        $routes->post('update-kecamatan/(:num)', 'C_Wilayah_SuperAdmin::updateKecamatan/$1');
+        $routes->post('delete-kecamatan/(:num)', 'C_Wilayah_SuperAdmin::deleteKecamatan/$1');
+
+        // Kelurahan
+        $routes->post('store-kelurahan', 'C_Wilayah_SuperAdmin::storeKelurahan');
+        $routes->post('update-kelurahan/(:num)', 'C_Wilayah_SuperAdmin::updateKelurahan/$1');
+        $routes->post('delete-kelurahan/(:num)', 'C_Wilayah_SuperAdmin::deleteKelurahan/$1');
+
+        // AJAX Dropdowns
+        $routes->get('get-kabupaten/(:num)', 'C_Wilayah_SuperAdmin::getKabupatenByProvinsi/$1');
+        $routes->get('get-kecamatan/(:num)', 'C_Wilayah_SuperAdmin::getKecamatanByKabupaten/$1');
+        $routes->get('get-kelurahan/(:num)', 'C_Wilayah_SuperAdmin::getKelurahanByKecamatan/$1');
+    });
 });
 
 // --- API ROUTES FOR DROPDOWNS ---

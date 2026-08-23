@@ -26,7 +26,7 @@
             <div class="card-header">
                 <h3 class="card-title">Form Tambah File Persyaratan</h3>
             </div>
-            <form id="formTambah" action="<?= base_url('superadmin/file-persyaratan/store') ?>" method="post">
+            <form id="formTambah" class="form-confirm-create" action="<?= base_url('superadmin/file-persyaratan/store') ?>" method="post">
                 <?= csrf_field(); ?>
                 
                 <div class="card-body">
@@ -70,11 +70,10 @@
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="status_aktif" value="nonaktif">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status_aktif" checked value="aktif">
-                                    <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
-                                </div>
+                                <select class="form-select" id="statusAktif" name="status_aktif" required>
+    <option value="AKTIF" selected>AKTIF</option>
+    <option value="NONAKTIF">Tidak Aktif</option>
+</select>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -101,16 +100,11 @@
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 $(function () {
     $('#formTambah').on('submit', function(e) {
-        e.preventDefault();
-        
         let form = $(this);
-        let url = form.attr('action');
-        let formData = new FormData(this);
-        
         let isValid = true;
         form.find('[required]').each(function() {
             if($(this).val().trim() === '') {
@@ -123,43 +117,13 @@ $(function () {
             }
         });
         
-        if(!isValid) return;
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if(response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/file-persyaratan') ?>";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message
-                    });
-                }
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Tidak dapat terhubung ke server.'
-                });
-            }
-        });
+        if(!isValid) {
+            e.preventDefault(); // Prevent SweetAlert confirmation if invalid
+            return false;
+        }
     });
 
+    // Remove validation warning on input
     $('#formTambah input, #formTambah select, #formTambah textarea').on('input change', function() {
         if($(this).val().trim() !== '') {
             $(this).removeClass('is-invalid');

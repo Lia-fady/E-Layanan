@@ -3,23 +3,7 @@
 <?= $this->section('title') ?><?= esc($title ?? 'komponen_penilaian index') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<style>
-    .status-switch .form-check-input {
-        width: 44px;
-        height: 22px;
-        background-color: #ced4da;
-        border-color: #ced4da;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease, background-position 0.15s ease-in-out;
-    }
-    .status-switch .form-check-input:checked {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-    .status-switch .form-check-input:focus {
-        box-shadow: none;
-    }
-</style>
+
 
 <div class="content-header">
     <div class="container-fluid">
@@ -58,7 +42,7 @@
                 <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Komponen Penilaian</h3>
                 <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
             </div>
-            <form id="formEditInline" action="" method="post">
+            <form id="formEditInline" class="form-confirm-update" action="" method="post">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -66,12 +50,11 @@
                             <input type="text" class="form-control" id="edit_komponen" name="komponen_penilaian" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold d-block">Status</label>
-                            <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status_aktif" value="0">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="1">
-                                <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
-                            </div>
+                            <label class="form-label fw-bold d-block">Status <span class="text-danger">*</span></label>
+                            <select class="form-select mt-2" id="edit_status" name="status_aktif" required>
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -108,8 +91,8 @@
                     <div class="col-md-2 text-end">
                         <select class="form-select form-select-sm" id="filterStatus">
                             <option value="all">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
+                            <option value="1">Aktif</option>
+                            <option value="0">NONAKTIF</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -137,9 +120,11 @@
                                         <td><?= $key + 1 ?></td>
                                         <td><?= esc($row['komponen_penilaian']) ?></td>
                                         <td>
-                                            <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
-                                            </div>
+                                            <?php if($row['status_aktif'] == '1'): ?>
+                                                <span class="badge bg-success">Aktif</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-danger">Tidak Aktif</span>
+                                            <?php endif; ?>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
@@ -199,10 +184,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Populate Data
             editKomponen.value = komponen;
             
-            if (status === '1') {
-                editStatus.checked = true;
+            if (status === '1' || status === 'AKTIF') {
+                editStatus.value = '1';
             } else {
-                editStatus.checked = false;
+                editStatus.value = '0';
             }
 
             // Show Edit Container

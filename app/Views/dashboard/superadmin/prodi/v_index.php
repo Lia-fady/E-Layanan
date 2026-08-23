@@ -62,7 +62,7 @@
                         <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Program Studi</h3>
                         <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
                     </div>
-                    <form id="formEditInline" action="" method="post">
+                    <form id="formEditInline" class="form-confirm-update" action="" method="post">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 mb-3">
@@ -79,12 +79,11 @@
                                     <input type="text" class="form-control" id="edit_prodi" name="nama_prodi" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label fw-bold d-block">Status</label>
-                                    <div class="form-check form-switch mt-2">
-                                        <input type="hidden" name="status" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="1">
-                                        <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
-                                    </div>
+                                    <label class="form-label fw-bold d-block">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select mt-2" id="edit_status" name="status" required>
+                                        <option value="AKTIF">AKTIF</option>
+                                        <option value="NONAKTIF">Tidak Aktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -127,9 +126,11 @@
                                                 <td><?= esc($row['fakultas'] ?? '-') ?></td>
                                                 <td><?= esc($row['nama_prodi']) ?></td>
                                                 <td class="col-status">
-                                                    <div class="form-check form-switch status-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
-                                                    </div>
+                                                    <?php if($row['status'] == 'AKTIF'): ?>
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-danger">Tidak Aktif</span>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <td class="col-aksi">
                                                     <div class="d-flex gap-1 justify-content-center">
@@ -172,7 +173,7 @@
                         <h3 class="card-title mb-0"><i class="fas fa-plus me-2"></i> Tambah Jurusan Baru</h3>
                         <button type="button" class="btn-close btn-close-white btn-cancel-create-jurusan" aria-label="Close"></button>
                     </div>
-                    <form id="formCreateJurusan" action="<?= base_url('superadmin/program-studi/storeJurusan') ?>" method="post">
+                    <form id="formCreateJurusan" class="form-confirm-create" action="<?= base_url('superadmin/program-studi/storeJurusan') ?>" method="post">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 mb-3">
@@ -189,12 +190,11 @@
                                     <input type="text" class="form-control" id="create_nama_jurusan" name="nama_jurusan" required placeholder="Contoh: Rekayasa Perangkat Lunak">
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label fw-bold d-block">Status</label>
-                                    <div class="form-check form-switch mt-2">
-                                        <input type="hidden" name="status" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="create_status_jurusan" name="status" value="1" checked>
-                                        <label class="form-check-label" for="create_status_jurusan">Aktif / Nonaktif</label>
-                                    </div>
+                                    <label class="form-label fw-bold d-block">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select mt-2" id="create_status_jurusan" name="status" required>
+                                        <option value="AKTIF" selected>AKTIF</option>
+                                        <option value="NONAKTIF">Tidak Aktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +211,7 @@
                         <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Jurusan</h3>
                         <button type="button" class="btn-close btn-close-white btn-cancel-edit-jurusan" aria-label="Close"></button>
                     </div>
-                    <form id="formEditInlineJurusan" action="" method="post">
+                    <form id="formEditInlineJurusan" class="form-confirm-update" action="" method="post">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4 mb-3">
@@ -228,12 +228,11 @@
                                     <input type="text" class="form-control" id="edit_nama_jurusan" name="nama_jurusan" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label fw-bold d-block">Status</label>
-                                    <div class="form-check form-switch mt-2">
-                                        <input type="hidden" name="status" value="0">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="edit_status_jurusan" name="status" value="1">
-                                        <label class="form-check-label" for="edit_status_jurusan">Aktif / Nonaktif</label>
-                                    </div>
+                                    <label class="form-label fw-bold d-block">Status <span class="text-danger">*</span></label>
+                                    <select class="form-select mt-2" id="edit_status_jurusan" name="status" required>
+                                        <option value="AKTIF">AKTIF</option>
+                                        <option value="NONAKTIF">Tidak Aktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -276,9 +275,11 @@
                                                 <td><?= esc($row['instansi_pendidikan'] ?? '-') ?></td>
                                                 <td><?= esc($row['nama_jurusan']) ?></td>
                                                 <td class="col-status">
-                                                    <div class="form-check form-switch status-switch">
-                                                        <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'aktif' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
-                                                    </div>
+                                                    <?php if($row['status'] == 'AKTIF'): ?>
+                                                        <span class="badge bg-success">Aktif</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-danger">Tidak Aktif</span>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <td class="col-aksi">
                                                     <div class="d-flex gap-1 justify-content-center">
@@ -388,10 +389,10 @@ document.addEventListener('DOMContentLoaded', function() {
             editIdFakultas.value = idFakultas;
             editProdi.value = prodi;
             
-            if (status === 'aktif' || status == '1') {
-                editStatus.checked = true;
+            if (status === 'AKTIF' || status === '1') {
+                editStatus.value = 'AKTIF';
             } else {
-                editStatus.checked = false;
+                editStatus.value = 'NONAKTIF';
             }
 
             editContainer.classList.remove('d-none');
@@ -457,10 +458,10 @@ document.addEventListener('DOMContentLoaded', function() {
             editIdInstansiJurusan.value = idInstansi;
             editNamaJurusan.value = jurusan;
             
-            if (status === 'aktif' || status == '1') {
-                editStatusJurusan.checked = true;
+            if (status === 'AKTIF' || status === '1') {
+                editStatusJurusan.value = 'AKTIF';
             } else {
-                editStatusJurusan.checked = false;
+                editStatusJurusan.value = 'NONAKTIF';
             }
 
             createContainerJurusan.classList.add('d-none'); // Hide create if open

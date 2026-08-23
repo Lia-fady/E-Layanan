@@ -4,7 +4,6 @@
 
 <?= $this->section('content') ?>
 
-
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -23,21 +22,57 @@
 
 <section class="content">
     <div class="container-fluid">
-        
-        <?php if(session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
-        <!-- Container Tabel -->
+        <!-- EDIT VIEW (Full Page) -->
+        <div class="card shadow-sm d-none" id="editContainer">
+            <div class="card-header bg-warning text-white">
+                <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit Bidang</h3>
+            </div>
+            <form id="formEditInline" class="form-confirm-update" action="" method="post">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="edit_id_opd" class="form-label fw-bold">OPD <span class="text-danger">*</span></label>
+                                <select class="form-select" id="edit_id_opd" name="id_opd" required>
+                                    <option value="">-- Pilih OPD --</option>
+                                    <?php foreach ($opdList as $opd) : ?>
+                                        <option value="<?= $opd['id_opd'] ?>"><?= esc($opd['opd']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_nama_bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit_nama_bidang" name="bidang" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-block">Status</label>
+                                <select class="form-select" id="edit_status" name="status_aktif" required>
+    <option value="1">Aktif</option>
+    <option value="0">Tidak Aktif</option>
+</select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info">
+                                <h5><i class="icon fas fa-info"></i> Informasi</h5>
+                                Pastikan data yang diubah sudah benar sebelum menyimpan perubahan.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-cancel-edit">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                    </button>
+                    <button type="submit" class="btn btn-warning text-white ms-auto">
+                        <i class="fas fa-save me-1"></i> Update Data
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- LIST VIEW -->
         <div class="card shadow-sm" id="tableContainer">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0"><i class="fas fa-list me-2"></i> Daftar Bidang</h3>
@@ -51,31 +86,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm" id="limitData">
-                            <option value="10">10 Baris</option>
-                            <option value="25">25 Baris</option>
-                            <option value="50">50 Baris</option>
-                            <option value="100">100 Baris</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6"></div>
-                    <div class="col-md-2 text-end">
-                        <select class="form-select form-select-sm" id="filterStatus">
-                            <option value="all">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="Cari data..." id="searchBox">
-                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-light">
@@ -95,19 +105,23 @@
                                         <td><?= esc($row['opd']) ?></td>
                                         <td><?= esc($row['bidang']) ?></td>
                                         <td class="col-status">
-                                            <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status_aktif'] == 'aktif' || $row['status_aktif'] == '1') ? 'checked' : '' ?> disabled>
-                                            </div>
+                                            <?php if($row['status_aktif'] == '1'): ?>
+    <span class="badge bg-success">Aktif</span>
+<?php else: ?>
+    <span class="badge bg-danger">Tidak Aktif</span>
+<?php endif; ?>
                                         </td>
                                         <td class="col-aksi">
                                             <div class="d-flex gap-1 justify-content-center">
-                                                <button type="button" class="btn btn-sm btn-warning text-white btn-edit-inline" 
+                                                <button type="button" class="btn btn-sm btn-warning text-white btn-edit" 
                                                     data-id="<?= $row['id_bidang'] ?>" 
                                                     data-opd="<?= $row['id_opd'] ?>"
                                                     data-nama="<?= esc($row['bidang']) ?>"
                                                     data-status="<?= $row['status_aktif'] ?>"
                                                     title="Edit"><i class="fas fa-edit"></i></button>
-                                                <button type="button" class="btn btn-sm btn-danger btn-hapus" data-id="<?= $row['id_bidang'] ?>" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Hapus"><i class="fas fa-trash"></i></button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-hapus" 
+                                                    data-url="<?= base_url('superadmin/bidang/delete/' . $row['id_bidang']) ?>" 
+                                                    title="Hapus"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -120,85 +134,34 @@
                         </tbody>
                     </table>
                 </div>
-                
-                
             </div>
         </div>
-
-        <!-- Container Edit Form (Disembunyikan secara default) -->
-        <div class="card shadow-sm d-none" id="editContainer">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-edit me-2"></i> Edit Bidang</h3>
-            </div>
-            <form id="formEditInline" action="" method="post">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="edit_id_opd" class="form-label fw-bold">OPD <span class="text-danger">*</span></label>
-                        <select class="form-select" id="edit_id_opd" name="id_opd" required>
-                            <option value="">-- Pilih OPD --</option>
-                            <?php foreach ($opdList as $opd) : ?>
-                                <option value="<?= $opd['id_opd'] ?>"><?= esc($opd['opd']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_nama_bidang" class="form-label fw-bold">Nama Bidang <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="edit_nama_bidang" name="bidang" required>
-                    </div>
-                    <div class="mb-3 form-check form-switch">
-                        <input type="hidden" name="status_aktif" value="nonaktif">
-                        <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status_aktif" value="aktif">
-                        <label class="form-check-label" for="edit_status">Aktif</label>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-top border-light">
-                    <button type="button" class="btn btn-secondary btn-batal-edit"><i class="fas fa-arrow-left me-2"></i> Kembali</button>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Simpan</button>
-                </div>
-            </form>
-        </div>
-
     </div>
 </section>
-
-
 
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
-    $('.btn-edit-inline').on('click', function() {
-        // Ambil data dari atribut tombol
-        let id = $(this).data('id');
-        let opd = $(this).data('opd');
-        let nama = $(this).data('nama');
-        let status = $(this).data('status');
+    $('.btn-edit').on('click', function() {
+        var id = $(this).data('id');
+        var opd = $(this).data('opd');
+        var nama = $(this).data('nama');
+        var status = $(this).data('status');
         
-        // Isi form
         $('#edit_id_opd').val(opd);
         $('#edit_nama_bidang').val(nama);
-        if(status === 'aktif' || status === 'Aktif' || status == '1') {
-            $('#edit_status').prop('checked', true);
-        } else {
-            $('#edit_status').prop('checked', false);
-        }
+        if (status === 'AKTIF' || status == '1') {
+                $('#edit_status').val('1');
+            } else {
+                $('#edit_status').val('0');
+            }
         
-        // Update form action
         $('#formEditInline').attr('action', '<?= base_url('superadmin/bidang/update/') ?>' + id);
         
-        // Toggle visibility
-        $('#tableContainer').addClass('d-none');
-        $('#editContainer').removeClass('d-none');
+        showEditState();
     });
-
-    $('.btn-batal-edit').on('click', function() {
-        $('#editContainer').addClass('d-none');
-        $('#tableContainer').removeClass('d-none');
-    });
-
-    // Delete Modal Logic
-    
 });
 </script>
 <?= $this->endSection() ?>

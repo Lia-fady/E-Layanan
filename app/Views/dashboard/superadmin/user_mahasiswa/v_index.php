@@ -3,23 +3,6 @@
 <?= $this->section('title') ?><?= esc($title ?? 'user_mahasiswa index') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<style>
-    .status-switch .form-check-input {
-        width: 44px;
-        height: 22px;
-        background-color: #ced4da;
-        border-color: #ced4da;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease, background-position 0.15s ease-in-out;
-    }
-    .status-switch .form-check-input:checked {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-    .status-switch .form-check-input:focus {
-        box-shadow: none;
-    }
-</style>
 
 <div class="content-header">
     <div class="container-fluid">
@@ -39,57 +22,56 @@
 
 <section class="content">
     <div class="container-fluid">
-        
-        <?php if(session()->getFlashdata('success')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> <?= session()->getFlashdata('success') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> <?= session()->getFlashdata('error') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
-        <div class="card shadow-sm mb-4 d-none" id="editContainer">
-            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+        <!-- EDIT VIEW (Full Page) -->
+        <div class="card shadow-sm d-none" id="editContainer">
+            <div class="card-header bg-warning text-white">
                 <h3 class="card-title mb-0"><i class="fas fa-edit me-2"></i> Edit User Mahasiswa</h3>
-                <button type="button" class="btn-close btn-close-white btn-cancel-edit" aria-label="Close"></button>
             </div>
-            <form id="formEditInline" action="" method="post">
+            <form id="formEditInline" class="form-confirm-update" action="" method="post">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label for="edit_mahasiswa" class="form-label fw-bold">Mahasiswa</label>
-                            <input type="text" class="form-control" id="edit_mahasiswa" name="mahasiswa" readonly>
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label for="edit_mahasiswa" class="form-label fw-bold">Mahasiswa</label>
+                                <input type="text" class="form-control" id="edit_mahasiswa" name="mahasiswa" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="edit_username" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_password" class="form-label fw-bold">Password</label>
+                                <input type="password" class="form-control" id="edit_password" name="password" placeholder="Kosongkan jika tidak diubah">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold d-block">Status</label>
+                                <select class="form-select" id="edit_status" name="status" required>
+    <option value="AKTIF">AKTIF</option>
+    <option value="NONAKTIF">Tidak Aktif</option>
+</select>
+                            </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="edit_username" class="form-label fw-bold">Username <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit_username" name="username" required>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="edit_password" class="form-label fw-bold">Password</label>
-                            <input type="password" class="form-control" id="edit_password" name="password" placeholder="Kosongkan jika tidak diubah">
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label fw-bold d-block">Status</label>
-                            <div class="form-check form-switch mt-2">
-                                <input type="hidden" name="status" value="NONAKTIF">
-                                <input class="form-check-input" type="checkbox" role="switch" id="edit_status" name="status" value="AKTIF">
-                                <label class="form-check-label" for="edit_status">Aktif / Nonaktif</label>
+                        <div class="col-lg-4">
+                            <div class="alert alert-info">
+                                <h5><i class="icon fas fa-info"></i> Informasi</h5>
+                                Kosongkan field password jika tidak ingin mengubah password user.
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-light d-flex justify-content-end gap-2">
-                    <button type="button" class="btn btn-secondary btn-cancel-edit"><i class="fas fa-times me-1"></i> Batal</button>
-                    <button type="submit" class="btn btn-warning text-white"><i class="fas fa-save me-1"></i> Update Data</button>
+                <div class="card-footer bg-light d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-cancel-edit">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                    </button>
+                    <button type="submit" class="btn btn-warning text-white ms-auto">
+                        <i class="fas fa-save me-1"></i> Update Data
+                    </button>
                 </div>
             </form>
         </div>
 
+        <!-- LIST VIEW -->
         <div class="card shadow-sm" id="tableContainer">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3 class="card-title mb-0"><i class="fas fa-list me-2"></i> Daftar User Mahasiswa</h3>
@@ -103,31 +85,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row mb-3 align-items-center">
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm" id="limitData">
-                            <option value="10">10 Baris</option>
-                            <option value="25">25 Baris</option>
-                            <option value="50">50 Baris</option>
-                            <option value="100">100 Baris</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6"></div>
-                    <div class="col-md-2 text-end">
-                        <select class="form-select form-select-sm" id="filterStatus">
-                            <option value="all">Semua Status</option>
-                            <option value="AKTIF">Aktif</option>
-                            <option value="NONAKTIF">Nonaktif</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="Cari data..." id="searchBox">
-                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover align-middle">
                         <thead class="table-light">
@@ -147,9 +104,11 @@
                                         <td><?= esc($row['nama_mahasiswa'] ?? '-') ?></td>
                                         <td><?= esc($row['username']) ?></td>
                                         <td>
-                                            <div class="form-check form-switch status-switch">
-                                                <input class="form-check-input" type="checkbox" role="switch" <?= ($row['status'] == 'AKTIF' || $row['status'] == '1') ? 'checked' : '' ?> disabled>
-                                            </div>
+                                            <?php if($row['status'] == 'AKTIF' || $row['status'] == '1'): ?>
+    <span class="badge bg-success">Aktif</span>
+<?php else: ?>
+    <span class="badge bg-danger">Tidak Aktif</span>
+<?php endif; ?>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1 justify-content-center">
@@ -160,9 +119,7 @@
                                                     data-status="<?= $row['status'] ?>" 
                                                     title="Edit"><i class="fas fa-edit"></i></button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-hapus" 
-                                                    data-id="<?= $row['id_user_mahasiswa'] ?>" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#deleteModal" 
+                                                    data-url="<?= base_url('superadmin/user-mahasiswa/delete/' . $row['id_user_mahasiswa']) ?>" 
                                                     title="Hapus"><i class="fas fa-trash"></i></button>
                                             </div>
                                         </td>
@@ -176,66 +133,32 @@
                         </tbody>
                     </table>
                 </div>
-                
-                
             </div>
         </div>
     </div>
 </section>
 
+<?= $this->endSection() ?>
 
-
+<?= $this->section('scripts') ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inline Edit Logic
-    const editButtons = document.querySelectorAll('.btn-edit');
-    const editContainer = document.getElementById('editContainer');
-    const tableContainer = document.getElementById('tableContainer');
-    const formEditInline = document.getElementById('formEditInline');
-    const cancelEditBtns = document.querySelectorAll('.btn-cancel-edit');
-    
-    // Inputs
-    const editMahasiswa = document.getElementById('edit_mahasiswa');
-    const editUsername = document.getElementById('edit_username');
-    const editPassword = document.getElementById('edit_password');
-    const editStatus = document.getElementById('edit_status');
-
-    editButtons.forEach(btn => {
+    document.querySelectorAll('.btn-edit').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-id');
-            const nama = this.getAttribute('data-nama');
-            const username = this.getAttribute('data-username');
-            const status = this.getAttribute('data-status');
+            var id = this.getAttribute('data-id');
+            var nama = this.getAttribute('data-nama');
+            var username = this.getAttribute('data-username');
+            var status = this.getAttribute('data-status');
 
-            // Set Form Action
-            formEditInline.action = `<?= base_url('superadmin/user-mahasiswa/update') ?>/${id}`;
+            document.getElementById('formEditInline').action = '<?= base_url('superadmin/user-mahasiswa/update') ?>/' + id;
+            document.getElementById('edit_mahasiswa').value = nama;
+            document.getElementById('edit_username').value = username;
+            document.getElementById('edit_password').value = '';
+            document.getElementById('edit_status').checked = (status === 'AKTIF' || status == '1');
 
-            // Populate Data
-            editMahasiswa.value = nama;
-            editUsername.value = username;
-            editPassword.value = ''; // Kosongkan saat diedit
-            
-            if (status === 'AKTIF' || status == '1') {
-                editStatus.checked = true;
-            } else {
-                editStatus.checked = false;
-            }
-
-            // Show Edit Container
-            editContainer.classList.remove('d-none');
-            editContainer.scrollIntoView({ behavior: 'smooth' });
+            showEditState();
         });
     });
-
-    cancelEditBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            editContainer.classList.add('d-none');
-            formEditInline.reset();
-        });
-    });
-
-    
-    });
+});
 </script>
-
 <?= $this->endSection() ?>

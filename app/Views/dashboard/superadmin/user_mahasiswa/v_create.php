@@ -30,7 +30,7 @@
     <div class="alert alert-warning">Tidak ada mahasiswa yang tersedia untuk ditambahkan sebagai user.</div>
     <a href="<?= base_url('superadmin/user-mahasiswa') ?>" class="btn btn-secondary">Kembali</a>
 <?php else: ?>
-<form id="formTambah" action="<?= base_url('superadmin/user-mahasiswa/store') ?>" method="post">
+<form id="formTambah" class="form-confirm-create" action="<?= base_url('superadmin/user-mahasiswa/store') ?>" method="post">
     <div class="card-body">
         <div class="row">
             <div class="col-lg-8">
@@ -65,11 +65,10 @@
                             
                             <div class="mb-4">
                                 <label class="form-label fw-bold d-block">Status</label>
-                                <div class="form-check form-switch">
-                                    <input type="hidden" name="status" value="NONAKTIF">
-                                <input class="form-check-input" type="checkbox" role="switch" id="statusAktif" name="status" checked value="AKTIF">
-                                    <label class="form-check-label" for="statusAktif">Aktif / Nonaktif</label>
-                                </div>
+                                <select class="form-select" id="statusAktif" name="status" required>
+    <option value="AKTIF" selected>AKTIF</option>
+    <option value="NONAKTIF">Tidak Aktif</option>
+</select>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -98,24 +97,13 @@
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 $(function () {
-    $('#mahasiswa').select2({
-        placeholder: '-- Pilih Mahasiswa --',
-        allowClear: true,
-        width: '100%'
-    });
     $('#formTambah').on('submit', function(e) {
-        e.preventDefault();
-        
         let form = $(this);
-        let url = form.attr('action');
-        let formData = new FormData(this);
-        
-        // Basic frontend validation for required fields
         let isValid = true;
         form.find('[required]').each(function() {
             if($(this).val().trim() === '') {
@@ -128,41 +116,10 @@ $(function () {
             }
         });
         
-        if(!isValid) return;
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if(response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.href = "<?= base_url('superadmin/user-mahasiswa') ?>";
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: response.message
-                    });
-                }
-            },
-            error: function(xhr) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Tidak dapat terhubung ke server.'
-                });
-            }
-        });
+        if(!isValid) {
+            e.preventDefault(); // Prevent SweetAlert confirmation if invalid
+            return false;
+        }
     });
 
     // Remove validation warning on input
