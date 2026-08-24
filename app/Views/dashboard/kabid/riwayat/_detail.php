@@ -192,10 +192,20 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
     </div>
     <?php endif; ?>
 
-    <div class="d-flex justify-content-end mt-2">
+    <div class="d-flex justify-content-end mt-2 gap-2">
         <button type="button" class="btn btn-light border px-4" onclick="$('#btnKembali').click()" style="border-radius:6px; font-weight:500;">
-            <i class="fas fa-arrow-left mr-1"></i> Kembali ke Daftar
+            <i class="fas fa-arrow-left mr-1"></i> Kembali
         </button>
+        
+        <?php if ($p->status_penempatan == 'BERJALAN'): ?>
+        <form method="POST" action="<?= base_url('kabid/disposisi/selesaikan') ?>" style="display:inline;" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Selesaikan Kegiatan?', text: 'Apakah Anda yakin ingin menyatakan kegiatan pemohon ini telah selesai?', icon: 'question', showCancelButton: true, confirmButtonColor: '#16a34a', cancelButtonColor: '#64748b', confirmButtonText: 'Ya, Selesai', cancelButtonText: 'Batal', reverseButtons: true}).then((result) => { if (result.isConfirmed) form.submit(); });">
+            <?= csrf_field() ?>
+            <input type="hidden" name="id_penempatan_magang" value="<?= esc($p->id_penempatan_magang) ?>">
+            <button type="submit" class="btn btn-success px-4" style="border-radius:6px; font-weight:500; background-color: #16a34a; border-color: #16a34a;">
+                <i class="fas fa-check-circle mr-1"></i> Selesaikan Kegiatan
+            </button>
+        </form>
+        <?php endif; ?>
     </div>
 
 </div>

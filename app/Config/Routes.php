@@ -86,6 +86,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->post('logbook/simpan', 'C_Logbook::simpanLogbook');
     $routes->post('simpanLogbook', 'C_Logbook::simpanLogbook');
     $routes->get('logbook/cetak', 'C_Logbook::cetakLogbook');
+    $routes->get('logbook/cetak-excel', 'C_Logbook::cetakExcel');
 
     $routes->get('sertifikat', 'C_Sertifikat::sertifikat');
     $routes->get('sertifikat/file/(:num)', 'C_Sertifikat::serveFile/$1');

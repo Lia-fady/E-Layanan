@@ -171,8 +171,7 @@
                                     </button>
                                     <ul class="dropdown-menu shadow-sm border-0" style="border-radius: 8px; font-size: 0.85rem;">
                                         <li><a class="dropdown-item py-2" href="<?= base_url('mahasiswa/logbook/cetak') ?>?id_penempatan=<?= $penempatan['id_penempatan_magang'] ?>" target="_blank"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> PDF</a></li>
-                                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Excel</a></li>
-                                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-filetype-csv text-info me-2"></i> CSV</a></li>
+                                        <li><a class="dropdown-item py-2" href="<?= base_url('mahasiswa/logbook/cetak-excel') ?>?id_penempatan=<?= $penempatan['id_penempatan_magang'] ?>"><i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Excel</a></li>
                                     </ul>
                                 </div>
                             <?php endif; ?>

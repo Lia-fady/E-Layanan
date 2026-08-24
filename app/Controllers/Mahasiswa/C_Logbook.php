@@ -138,4 +138,37 @@ class C_Logbook extends C_BaseMahasiswa
 
         return view('mahasiswa/v_cetak_logbook', $data);
     }
+
+    public function cetakExcel()
+    {
+        $id_mahasiswa = session()->get('id_mahasiswa');
+        if (!$id_mahasiswa) return redirect()->to(base_url('login'));
+
+        $id_penempatan_get = $this->request->getGet('id_penempatan');
+        $penempatan = $id_penempatan_get ? $this->logbookModel->db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan_get)->get()->getRowArray() : $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
+        if (!$penempatan) return redirect()->to(base_url('mahasiswa/logbook'))->with('error', 'Data tidak ditemukan.');
+
+        $logbookDisetujui = $this->logbookModel->where('id_penempatan_magang', $penempatan['id_penempatan_magang'])
+                                ->where('disetujui_oleh IS NOT NULL', null, false)
+                                ->orderBy('tgl_logbook', 'ASC')->findAll();
+
+        $filename = "Logbook_" . date('Ymd') . ".xls";
+        header("Content-Type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        
+        echo '<table border="1">';
+        echo '<tr><th>No</th><th>Tanggal</th><th>Jam</th><th>Kegiatan</th><th>Status</th></tr>';
+        $no = 1;
+        foreach ($logbookDisetujui as $row) {
+            echo '<tr>';
+            echo '<td>' . $no++ . '</td>';
+            echo '<td>' . $row['tgl_logbook'] . '</td>';
+            echo '<td>' . $row['jam_logbook'] . '</td>';
+            echo '<td>' . esc($row['logbook_magang']) . '</td>';
+            echo '<td>' . $row['status_logbook'] . '</td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+        exit;
+    }
 }
