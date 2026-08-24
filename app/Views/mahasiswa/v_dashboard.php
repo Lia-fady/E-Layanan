@@ -377,6 +377,18 @@
         elseif ($jenis_permohonan == 5) $jenisLabel = 'Praktik Kerja Lapangan (PKL)';
         elseif ($jenis_permohonan == 4) $jenisLabel = 'Uji Coba Produk (Prototype)';
     }
+
+    $is_selesai_banner = false;
+    if ($state == 5) {
+        $is_selesai_banner = true;
+        $state = 1; // Reset tampilan ke State 1
+        $statusText  = 'Belum Mengajukan';
+        $statusClass = 'st-belum';
+        $statusIcon  = 'bi-dash-circle';
+        $jenisLabel  = 'Belum Dipilih';
+        $file_penerimaan = null; // Hide current cycle docs
+        $permohonan_aktif = null; // Reset aktif permohonan agar tidak bocor ke stepper
+    }
 ?>
 
 <!-- ============================================
@@ -389,6 +401,9 @@
 
 <?php
     $documentCount = (!empty($file_penerimaan) ? 1 : 0) + (!empty($file_sertifikat) ? 1 : 0) + (!empty($file_piagam) ? 1 : 0);
+    // Jika reset state, dokumen anggap 0 (atau hide sertifikat)
+    if ($is_selesai_banner) $documentCount = 0;
+    
     $summaryLogbook = (in_array($state, [4, 5])) ? ($total_logbook . ' catatan') : 'Belum dimulai';
 ?>
 <div class="dashboard-summary" aria-label="Ringkasan aktivitas mahasiswa">
@@ -500,7 +515,7 @@
      ============================================ -->
 
 <?php if ($state == 1): ?>
-<!-- ===================== STATE 1: BELUM MENGAJUKAN ===================== -->
+<!-- ===================== STATE 1 & 5: BELUM MENGAJUKAN / RESET ===================== -->
 <div class="row g-4">
     <div class="col-12 col-lg-7">
         <div class="card-flat h-100">
@@ -796,67 +811,6 @@
     </div>
 </div>
 
-
-<?php elseif ($state == 5): ?>
-<!-- ===================== STATE 5: SELESAI ===================== -->
-<div class="row g-4">
-    <div class="col-12">
-        <div class="alert-card alert-success">
-            <i class="bi bi-trophy-fill alert-icon"></i>
-            <div>
-                <strong>Selamat!</strong> Kegiatan Anda telah dinyatakan <strong>selesai</strong>. Terima kasih atas partisipasi dan kontribusi Anda selama berkegiatan di Dinas Kominfo Kota Tangerang.
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg-7">
-        <div class="card-flat h-100">
-            <div class="card-label"><i class="bi bi-clipboard-check me-1"></i> Ringkasan Kegiatan</div>
-            <?php if (isset($permohonan_aktif) && $permohonan_aktif): ?>
-                <div class="info-row">
-                    <span class="info-label">Jenis Kegiatan</span>
-                    <span class="info-value"><?= $jenisLabel ?></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Periode</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
-                </div>
-                <?php if (in_array($jenis_permohonan, [3, 5])): ?>
-                <div class="info-row">
-                    <span class="info-label">Total Logbook</span>
-                    <span class="info-value"><?= $total_logbook ?? 0 ?> entri</span>
-                </div>
-                <?php endif; ?>
-            <?php endif; ?>
-        </div>
-    </div>
-    <div class="col-12 col-lg-5">
-        <div class="card-flat h-100 d-flex flex-column">
-            <div class="card-label"><i class="bi bi-download me-1"></i> Dokumen Akhir & Aksi</div>
-            <p class="text-muted mb-3" style="font-size:0.84rem;">Anda dapat mengunduh dokumen sertifikat yang telah diterbitkan oleh Bidang terkait.</p>
-            <div class="mt-auto d-flex flex-column gap-2">
-                <?php if (!empty($file_sertifikat)): ?>
-                <a href="<?= base_url($file_sertifikat) ?>" target="_blank" class="btn-action primary w-100 justify-content-center">
-                    <i class="bi bi-award-fill"></i> Unduh Sertifikat
-                </a>
-                <?php else: ?>
-                <button class="btn-action primary w-100 justify-content-center" disabled style="opacity:0.6">
-                    <i class="bi bi-award-fill"></i> Sertifikat Belum Tersedia
-                </button>
-                <?php endif; ?>
-                <?php if (in_array($jenis_permohonan, [3, 5])): ?>
-                <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn-action outline w-100 justify-content-center">
-                    <i class="bi bi-journal-check"></i> Lihat Riwayat Logbook
-                </a>
-                <?php endif; ?>
-                <hr style="border-color: #e2e8f0; margin: 10px 0;">
-                <p class="text-muted text-center mb-1" style="font-size: 0.78rem;">Ingin kembali ke Dinas Kominfo?</p>
-                <a href="<?= base_url('mahasiswa/permohonan') ?>" class="btn-action w-100 justify-content-center" style="background: #102a43; color: #fff; border: 1px solid #0a1d37;">
-                    <i class="bi bi-rocket-takeoff-fill"></i> Mulai Pengajuan Baru
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php endif; ?>
 

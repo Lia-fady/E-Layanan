@@ -107,8 +107,8 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
 
-<?php elseif($state == 4 || $state == 5): ?>
-<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4 ATAU 5) ============ -->
+<?php elseif($state == 4): ?>
+<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4) ============ -->
 <div class="wizard-card text-center py-5">
     <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
         <i class="bi bi-check-circle-fill"></i>
