@@ -229,7 +229,6 @@
                             <option value="Disetujui">Disetujui</option>
                             <option value="Dikembalikan">Dikembalikan</option>
                         </select>
-                        <button id="btn-filter-lb" class="btn btn-sm shadow-sm px-4 fw-semibold d-flex align-items-center justify-content-center" style="height: 38px; border-radius: 6px; background-color: #1e293b; border-color: #1e293b; color: #fff; font-size: 0.85rem; min-width: 80px;">Filter</button>
                     </div>
 
                     <!-- SHOW ENTRIES & SEARCH -->
@@ -438,12 +437,6 @@ $(document).ready(function() {
     // Filter Status (kolom 4)
     $('#filter-status-lb').on('change', function() {
         var val = this.value;
-        table.column(4).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
-    });
-    
-    // Tombol Filter
-    $('#btn-filter-lb').on('click', function() {
-        var val = $('#filter-status-lb').val();
         table.column(4).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
     });
 });
