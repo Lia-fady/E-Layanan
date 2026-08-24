@@ -1,0 +1,823 @@
+DEBUG - 2026-07-04 13:25:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:25:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:29:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:29:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:30:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:30:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:35:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:35:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:35:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:35:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:42:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:42:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:43:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:43:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:43:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:43:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-04 13:46:51 --> Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:52 --> CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+[Method: POST, Route: kabid/setujui-logbook/6]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 2 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:52 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 4 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:52 --> [Caused by] mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:51\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+ERROR - 2026-07-04 13:46:57 --> Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:57 --> CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+[Method: POST, Route: kabid/setujui-logbook/6]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 2 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:57 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 4 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:46:57 --> [Caused by] mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:46:57\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 13:48:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-04 13:49:05 --> Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:49:05 --> CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+[Method: POST, Route: kabid/setujui-logbook/6]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 2 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:49:05 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 4 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:49:05 --> [Caused by] mysqli_sql_exception: Cannot add or update a child row: a foreign key constraint fails (`db_elayanan_akademik_kominfo`.`t_logbook_magang`, CONSTRAINT `t_logbook_magang_disetujui_oleh_foreign` FOREIGN KEY (`disetujui_oleh`) REFERENCES `c_user_pegawai` (`id_user_pegawai`) ON DELETE)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `t_logbook_magang` SET `disetujui_oleh` = 1, `tgl_disetujui` = \'2026-07-04\', `created_at` = \'2026-07-04 13:49:05\'
+WHERE `id_logbook_magang` = \'6\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2519): CodeIgniter\Database\BaseConnection->query('UPDATE `t_logbook_magang` SET `disetujui_oleh` = :disetujui_oleh:, `tgl_disetujui` = :tgl_disetujui:, `created_at` = :created_at:
+WHERE `id_logbook_magang` = :id_logbook_magang:', [...], false)
+ 5 APPPATH\Controllers\KabidController.php(192): CodeIgniter\Database\BaseBuilder->update([...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->setujuiLogbook('6')
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 13:52:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-04 13:55:19 --> Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 5 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:19 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+[Method: GET, Route: kabid/penilaian]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 2 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:19 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 4 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:19 --> [Caused by] mysqli_sql_exception: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 5 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+ERROR - 2026-07-04 13:55:23 --> Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 5 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:23 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+[Method: GET, Route: kabid/penilaian]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 2 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:23 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 4 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 13:55:23 --> [Caused by] mysqli_sql_exception: Unknown column 't_penempatan_magang.id_permohonan_magang' in 'on clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_penempatan_magang`.*, `m_mahasiswa`.`nama_mahasiswa`, `m_mahasiswa`.`nim`, `m_bidang`.`bidang`
+FROM `t_penempatan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_penempatan_magang`.`id_mahasiswa`
+JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_penempatan_magang`.`id_permohonan_magang`
+JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_penempatan_magang`.`id_bidang`', [], false)
+ 5 APPPATH\Controllers\KabidController.php(228): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\KabidController->penilaianMagang()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\KabidController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 13:58:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 13:59:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:00:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:01:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:01:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:01:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:03:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:05:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:06:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:06:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:06:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:06:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:06:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:08:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:08:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:10:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:11:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:11:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:12:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:14:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:15:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:17:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:27:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:32:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:32:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:32:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:32:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:32:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:36:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:37:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:37:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:37:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:37:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:38:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:38:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:54:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:54:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:54:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 14:54:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:04:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:04:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:18:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:19:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:20:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:22:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:23:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:23:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:25:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:25:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:32:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:33:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:33:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:35:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:39:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:40:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:43:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:43:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:43:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:43:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:44:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:44:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:58:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2026-07-04 15:58:35 --> ErrorException: Undefined variable $p
+[Method: GET, Route: mahasiswa/status]
+in APPPATH\Views\mahasiswa\status.php on line 58.
+ 1 APPPATH\Views\mahasiswa\status.php(58): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $p', 'C:\\Users\\lenovo\\Downloads\\Projectmagang\\app\\Views\\mahasiswa\\status.php', 58)
+ 2 SYSTEMPATH\View\View.php(240): include('C:\\Users\\lenovo\\Downloads\\Projectmagang\\app\\Views\\mahasiswa\\status.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1254): CodeIgniter\View\View->render('mahasiswa/status', [], true)
+ 5 APPPATH\Controllers\MahasiswaController.php(173): view('mahasiswa/status', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 15:58:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:58:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 15:58:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:00:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:01:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:01:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:05:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:05:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:06:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:07:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:13:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:13:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:13:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:26:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-04 16:26:30 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 5 APPPATH\Controllers\MahasiswaController.php(158): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:26:30 --> CodeIgniter\Database\Exceptions\DatabaseException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ...' at line 1
+[Method: GET, Route: mahasiswa/status]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 2 APPPATH\Controllers\MahasiswaController.php(158): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:26:30 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 4 APPPATH\Controllers\MahasiswaController.php(158): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:26:30 --> [Caused by] mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `t_persetujuan_magang`.`catatan`, `-- Catatan persetujuan/penolakan sekretariat` `m_bidang`.`bidang`, `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 5 APPPATH\Controllers\MahasiswaController.php(158): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 16:27:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:27:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:27:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:28:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:28:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:28:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:29:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:29:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:29:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:29:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:30:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:32:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2026-07-04 16:32:41 --> You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mah...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 5 APPPATH\Controllers\MahasiswaController.php(166): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:32:41 --> CodeIgniter\Database\Exceptions\DatabaseException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mah...' at line 1
+[Method: GET, Route: mahasiswa/status]
+in SYSTEMPATH\Database\BaseConnection.php on line 863.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 2 APPPATH\Controllers\MahasiswaController.php(166): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 4 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 5 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ 9 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:32:41 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mah...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 310.
+ 1 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 4 APPPATH\Controllers\MahasiswaController.php(166): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 6 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 7 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+11 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+CRITICAL - 2026-07-04 16:32:41 --> [Caused by] mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mah...' at line 1
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 300.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(300): mysqli->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(908): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(825): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = 1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1647): CodeIgniter\Database\BaseConnection->query('SELECT `t_permohonan_magang`.*, `t_persetujuan_magang`.`status_persetujuan`, `t_persetujuan_magang`.`id_bidang`, `m_bidang`.`bidang`, `t_penempatan_magang`.`catatan`, `-- KUNCI: Catatan ini dikembalikan dari t_penempatan_magang milik Kabid` `m_mahasiswa`.`nim`
+FROM `t_permohonan_magang`
+JOIN `m_mahasiswa` ON `m_mahasiswa`.`id_mahasiswa` = `t_permohonan_magang`.`id_mahasiswa`
+LEFT JOIN `t_persetujuan_magang` ON `t_persetujuan_magang`.`id_permohonan_magang` = `t_permohonan_magang`.`id_permohonan_magang`
+LEFT JOIN `m_bidang` ON `m_bidang`.`id_bidang` = `t_persetujuan_magang`.`id_bidang`
+LEFT JOIN `t_penempatan_magang` ON `t_penempatan_magang`.`id_persetujuan_magang` = `t_persetujuan_magang`.`id_persetujuan_magang`
+WHERE `t_permohonan_magang`.`id_mahasiswa` = :t_permohonan_magang.id_mahasiswa:', [...], false)
+ 5 APPPATH\Controllers\MahasiswaController.php(166): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\CodeIgniter.php(974): App\Controllers\MahasiswaController->statusPermohonan()
+ 7 SYSTEMPATH\CodeIgniter.php(520): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MahasiswaController))
+ 8 SYSTEMPATH\CodeIgniter.php(363): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+12 SYSTEMPATH\rewrite.php(44): require_once('C:\\Users\\lenovo\\Downloads\\Projectmagang\\public\\index.php')
+DEBUG - 2026-07-04 16:33:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2026-07-04 16:35:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

@@ -1,0 +1,95 @@
+<?php
+/**
+ * Kode    : L_sidebar.php
+ * Path    : app/Views/layout/L_sidebar.php
+ * Deskripsi : Komponen sidebar navigasi sesuai desain mockup.
+ *             Menggunakan warna dark navy blue dengan menu navigasi
+ *             modul Sekretariat: Dashboard, Verifikasi Berkas,
+ *             Pilih Bidang Tujuan, dan Riwayat.
+ */
+?>
+
+<style>
+    /* CSS: wrap teks panjang di sidebar (menghindari nama terlalu panjang terpotong jika di-ellipsis) */
+    .sidebar .nav-item .nav-link span {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        display: inline-block;
+        line-height: 1.2;
+        vertical-align: middle;
+    }
+    .sidebar .nav-item .nav-link {
+        height: auto !important;
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<!-- Sidebar -->
+<ul class="navbar-nav sidebar sidebar-dark-navy sidebar-dark accordion d-flex flex-column" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center" href="<?= base_url('sekretariat/dashboard') ?>">
+        <div class="sidebar-brand-icon">
+            <img src="<?= base_url('images/kota tng_nobg.png'); ?>" alt="Logo" style="width: 40px; height: 40px;">
+        </div>
+        <div class="sidebar-brand-text mx-2">
+            <span class="font-weight-bold">KOTA TANGERANG</span>
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- User Profile -->
+    <div class="sidebar-user-profile">
+        <div class="sidebar-user-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="sidebar-user-info">
+            <div class="sidebar-user-name"><?= esc(!empty(session('nama')) ? session('nama') : 'User') ?></div>
+            <div class="sidebar-user-role"><?= esc(!empty(session('kode_unor')) ? session('kode_unor') : (!empty(session('role_name')) ? session('role_name') : (!empty(session('role')) ? session('role') : 'Sekretariat'))) ?></div>
+        </div>
+    </div>
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'dashboard') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/dashboard') ?>">
+            <i class="fas fa-fw fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'verifikasi') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/verifikasi') ?>">
+            <i class="fas fa-fw fa-clipboard-check"></i>
+            <span>Verifikasi Permohonan</span>
+        </a>
+    </li>
+
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_surat_penerimaan') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/upload-surat-penerimaan') ?>">
+            <i class="fas fa-fw fa-file-upload"></i>
+            <span>Upload Surat Penerimaan</span>
+        </a>
+    </li>
+
+    <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= base_url('sekretariat/riwayat') ?>">
+            <i class="fas fa-fw fa-history"></i>
+            <span>Riwayat</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('auth/logout') ?>" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-fw fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </li>
+
+</ul>
+<!-- End of Sidebar -->
