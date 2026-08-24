@@ -207,6 +207,15 @@ class M_Penempatan extends Model
     {
         $db = \Config\Database::connect();
 
+        // Ambil data penempatan untuk mendapatkan id_persetujuan_magang
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->get()->getRow();
+
+        if (!$penempatan) {
+            return false;
+        }
+
         // Update status di t_penempatan_magang menjadi DIBATALKAN
         $db->table('t_penempatan_magang')
             ->where('id_penempatan_magang', $id_penempatan)
@@ -216,9 +225,13 @@ class M_Penempatan extends Model
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
 
-        // (Opsional) Jika perlu mengembalikan ke Sekretariat, uncomment baris bawah.
-        // Sesuai permintaan "Data tetap berada pada halaman ini, hanya statusnya yang berubah menjadi Dibatalkan",
-        // kita tidak perlu me-reset disposisi di t_persetujuan_magang agar tidak terduplikasi.
+        // Kembalikan status persetujuan ke MENUNGGU agar bisa didisposisi ulang
+        $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)
+            ->update([
+                'status_persetujuan' => 'MENUNGGU',
+                'updated_at'         => date('Y-m-d H:i:s'),
+            ]);
 
         return true;
     }
