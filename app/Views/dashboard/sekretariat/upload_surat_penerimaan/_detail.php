@@ -45,7 +45,7 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <td><strong><?= esc($persetujuan->nama_mahasiswa ?? '-') ?></strong></td>
                     </tr>
                     <tr>
-                        <td class="text-muted">NIK</td>
+                        <td class="text-muted">NIK/NIS</td>
                         <td>:</td>
                         <td><?= esc($persetujuan->nik ?? '-') ?></td>
                     </tr>
@@ -55,12 +55,12 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <td><?= esc($persetujuan->no_telp ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <td class="text-muted">Prodi / Fakultas</td>
+                        <td class="text-muted">Program Studi / Jurusan</td>
                         <td>:</td>
-                        <td><?= esc($persetujuan->prodi ?? '-') ?> / <?= esc($persetujuan->fakultas ?? '-') ?></td>
+                        <td><?= esc($persetujuan->nama_prodi ?? $persetujuan->nama_jurusan ?? $persetujuan->jurusan_text ?? '-') ?> / <?= esc($persetujuan->nama_fakultas ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <td class="text-muted">Universitas</td>
+                        <td class="text-muted">Asal Instansi</td>
                         <td>:</td>
                         <td><?= esc($persetujuan->instansi_pendidikan ?? '-') ?></td>
                     </tr>
