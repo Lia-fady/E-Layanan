@@ -104,9 +104,6 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
         </button>
     </div>
 
-    <div class="alert <?= $statusClass ?> mb-4" style="border-radius: 8px; font-size: 0.9rem; border: none;">
-        <i class="fas <?= $statusIcon ?> mr-2"></i> Status Keputusan: <strong><?= $statusText ?></strong>
-    </div>
 
     <div class="dispo-card">
         <div class="dispo-card-head"><i class="fas fa-user"></i> Informasi Pemohon</div>

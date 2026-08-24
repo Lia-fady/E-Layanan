@@ -84,23 +84,12 @@ class C_DashboardKabid extends BaseController
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->where('p.id_bidang', $id_bidang)
-            ->where('l.disetujui_oleh', null)
+            ->where('l.status_logbook', 'menunggu')
             ->orderBy('l.tgl_logbook', 'ASC') // yang terlama dulu
             ->limit(5)
             ->get()->getResult();
 
-        $semua_penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang);
-        
-        $penempatan_menunggu = array_filter($semua_penempatan, function($p) {
-            return $p->status_penempatan == 'MENUNGGU';
-        });
-        $penempatan_menunggu = array_slice($penempatan_menunggu, 0, 5);
-
-        // Ambil daftar penempatan berjalan (untuk list kecil di kanan atas/bawah)
-        $penempatan_berjalan = array_filter($semua_penempatan, function($p) {
-            return $p->status_penempatan == 'BERJALAN';
-        });
-        $penempatan_berjalan = array_slice($penempatan_berjalan, 0, 5);
+        $penempatan_menunggu = $this->penempatanModel->getPenempatanTerbaruMasuk($id_bidang, 5);
 
         // Format tanggal Indonesia
         $namaBulan = [
@@ -126,7 +115,6 @@ class C_DashboardKabid extends BaseController
             'total_selesai'        => $total_selesai,
             'bidang_info'          => $bidang_info,
             'penempatan_menunggu'  => $penempatan_menunggu,
-            'penempatan_berjalan'  => $penempatan_berjalan,
             'sisa_kuota'           => $sisa_kuota,
             'logbook_list'         => $logbook_list,
             'tanggal_formatted'    => $tanggalFormatted,

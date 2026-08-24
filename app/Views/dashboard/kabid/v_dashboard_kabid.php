@@ -71,7 +71,7 @@
                     </div>
                     <span class="badge badge-primary bg-light text-primary border border-primary" style="padding: 0.4rem 0.6rem;">Total Aktif</span>
                 </div>
-                <div class="stat-title mt-3">Mahasiswa/Siswa Aktif</div>
+                <div class="stat-title mt-3">Pemohon Aktif</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $total_berjalan ?></div>
                     <div class="stat-desc">Sedang berjalan</div>
@@ -107,7 +107,7 @@
                         <i class="fas fa-check-circle fa-lg text-white"></i>
                     </div>
                 </div>
-                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Telah Selesai Kegiatan</div>
+                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Selesai Magang/Praktik</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number text-white"><?= $total_selesai ?></div>
                 </div>
@@ -131,8 +131,8 @@
                         <thead style="background-color: #F8FAFC;">
                             <tr>
                                 <th>PEMOHON</th>
-                                <th>INSTITUSI</th>
-                                <th>LAYANAN</th>
+                                <th>INSTANSI PENDIDIKAN</th>
+                                <th>JENIS PERMOHONAN</th>
                                 <th>STATUS</th>
                                 <th class="text-center">AKSI</th>
                             </tr>

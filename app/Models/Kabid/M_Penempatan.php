@@ -254,12 +254,52 @@ class M_Penempatan extends Model
         $db = \Config\Database::connect();
 
         $builder = $db->table('t_penempatan_magang');
-        $builder->where('status_penempatan', '0');
+        $builder->where('status_penempatan', 'MENUNGGU');
 
         if ($id_bidang !== null) {
             $builder->where('id_bidang', $id_bidang);
         }
 
         return $builder->countAllResults();
+    }
+
+    /**
+     * Ambil data penempatan magang terbaru berdasarkan status.
+     *
+     * @param int|null $id_bidang
+     * @param int $limit
+     * @return array
+     */
+    public function getPenempatanTerbaruMasuk($id_bidang = null, $limit = 5)
+    {
+        $db = \Config\Database::connect();
+        
+        $builder = $db->table('t_penempatan_magang as pn');
+        $builder->select('
+            pn.id_penempatan_magang,
+            pn.id_bidang,
+            pn.status_penempatan,
+            mhs.nim,
+            mhs.nama_mahasiswa,
+            ip.instansi_pendidikan,
+            jp.jenis_permohonan
+        ');
+        $builder->join('t_persetujuan_magang as ps', 'ps.id_persetujuan_magang = pn.id_persetujuan_magang', 'left');
+        $builder->join('t_permohonan_magang as pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left');
+        $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
+        $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
+        $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
+        
+        $builder->where('pn.status_penempatan', 'MENUNGGU');
+        
+        if ($id_bidang !== null) {
+            $builder->where('pn.id_bidang', $id_bidang);
+        }
+
+        $builder->orderBy('pn.created_at', 'ASC'); // Yang terlama (menunggu)
+        $builder->limit($limit);
+
+        return $builder->get()->getResult();
     }
 }
