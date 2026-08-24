@@ -45,7 +45,7 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <td><strong><?= esc($persetujuan->nama_mahasiswa ?? '-') ?></strong></td>
                     </tr>
                     <tr>
-                        <td class="text-muted">NIK/NIS</td>
+                        <td class="text-muted">NIK</td>
                         <td>:</td>
                         <td><?= esc($persetujuan->nik ?? '-') ?></td>
                     </tr>
