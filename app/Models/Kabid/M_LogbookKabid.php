@@ -13,13 +13,14 @@ class M_LogbookKabid extends Model
     public function getActiveMahasiswa($id_bidang, $search = null, $jenis_permohonan = null, $status_filter = null)
     {
         $builder = $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
+            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan')
-            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jurusan mj', 'mj.id_jurusan = im.id_jurusan', 'left')
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->where('p.id_bidang', $id_bidang)
             ->whereIn('p.status_penempatan', ['BERJALAN', 'SELESAI', 'DIBATALKAN']);
@@ -58,13 +59,14 @@ class M_LogbookKabid extends Model
     public function getMahasiswaInfo($id_penempatan)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.nama_prodi as prodi, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan')
-            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jurusan mj', 'mj.id_jurusan = im.id_jurusan', 'left')
             ->where('p.id_penempatan_magang', $id_penempatan)
             ->get()->getRow();
     }
@@ -72,13 +74,14 @@ class M_LogbookKabid extends Model
     public function getDetailPenempatan($id_penempatan)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, p.status_penempatan, ps.id_persetujuan_magang, pm.id_permohonan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, jp.jenis_permohonan, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, p.status_penempatan, ps.id_persetujuan_magang, pm.id_permohonan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, jp.jenis_permohonan, pm.tgl_mulai, pm.tgl_selesai')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
             ->join('t_instansi_mahasiswa im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa')
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan')
-            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi')
+            ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
+            ->join('m_jurusan mj', 'mj.id_jurusan = im.id_jurusan', 'left')
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->where('p.id_penempatan_magang', $id_penempatan)
             ->get()->getRow();

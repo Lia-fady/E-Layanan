@@ -163,7 +163,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <?php if ($status === 'menunggu') : ?>
+                                    <?php if ($status === 'menunggu' || $status === 'belum_disetujui') : ?>
                                         <span class="badge badge-warning text-dark p-2"><i class="fas fa-clock mr-1"></i> Menunggu</span>
                                     <?php elseif ($status === 'ditolak') : ?>
                                         <span class="badge badge-danger p-2"><i class="fas fa-times mr-1"></i> Ditolak</span>
@@ -175,7 +175,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <?php if ($status === 'menunggu') : ?>
+                                    <?php if ($status === 'menunggu' || $status === 'belum_disetujui') : ?>
                                         <div class="d-flex align-items-center justify-content-center gap-2">
                                             <button type="button" class="btn btn-success btn-setuju-logbook shadow-sm" data-id="<?= $log['id_logbook_magang'] ?>" style="border-radius:6px; width: 34px; height: 34px; padding: 0;" title="Setujui">
                                                 <i class="fas fa-check"></i>
@@ -189,7 +189,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <?php if ($status === 'menunggu') : ?>
+                                    <?php if ($status === 'menunggu' || $status === 'belum_disetujui') : ?>
                                         <div class="custom-control custom-checkbox" title="Pilih Logbook">
                                             <input type="checkbox" class="custom-control-input pending-logbook-checkbox" id="chk_<?= $log['id_logbook_magang'] ?>" name="selected_ids[]" value="<?= $log['id_logbook_magang'] ?>">
                                             <label class="custom-control-label" for="chk_<?= $log['id_logbook_magang'] ?>" style="cursor:pointer;"></label>
