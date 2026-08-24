@@ -100,7 +100,16 @@ class C_Logbook extends C_BaseMahasiswa
             return redirect()->to(base_url('login'));
         }
 
-        $penempatan = $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
+        $id_penempatan_get = $this->request->getGet('id_penempatan');
+        
+        if ($id_penempatan_get) {
+            $penempatan = $this->logbookModel->db->table('t_penempatan_magang')
+                               ->where('id_penempatan_magang', $id_penempatan_get)
+                               ->get()->getRowArray();
+        } else {
+            $penempatan = $this->logbookModel->cekPenempatanAktif($id_mahasiswa);
+        }
+
         if (!$penempatan) {
             return redirect()->to(base_url('mahasiswa/logbook'))->with('error', 'Tidak ada data penempatan aktif.');
         }

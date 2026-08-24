@@ -170,7 +170,7 @@
                                         <i class="bi bi-download me-2"></i> Export <i class="bi bi-chevron-down ms-2" style="font-size: 0.7rem;"></i>
                                     </button>
                                     <ul class="dropdown-menu shadow-sm border-0" style="border-radius: 8px; font-size: 0.85rem;">
-                                        <li><a class="dropdown-item py-2" href="<?= base_url('mahasiswa/logbook/cetak') ?>" target="_blank"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> PDF</a></li>
+                                        <li><a class="dropdown-item py-2" href="<?= base_url('mahasiswa/logbook/cetak') ?>?id_penempatan=<?= $penempatan['id_penempatan_magang'] ?>" target="_blank"><i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> PDF</a></li>
                                         <li><a class="dropdown-item py-2" href="#"><i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Excel</a></li>
                                         <li><a class="dropdown-item py-2" href="#"><i class="bi bi-filetype-csv text-info me-2"></i> CSV</a></li>
                                     </ul>
@@ -230,7 +230,7 @@
                             <option value="Disetujui">Disetujui</option>
                             <option value="Dikembalikan">Dikembalikan</option>
                         </select>
-                        <button class="btn btn-sm shadow-sm px-4 fw-semibold d-flex align-items-center justify-content-center" style="height: 38px; border-radius: 6px; background-color: #1e293b; border-color: #1e293b; color: #fff; font-size: 0.85rem; min-width: 80px;">Filter</button>
+                        <button id="btn-filter-lb" class="btn btn-sm shadow-sm px-4 fw-semibold d-flex align-items-center justify-content-center" style="height: 38px; border-radius: 6px; background-color: #1e293b; border-color: #1e293b; color: #fff; font-size: 0.85rem; min-width: 80px;">Filter</button>
                     </div>
 
                     <!-- SHOW ENTRIES & SEARCH -->
@@ -325,7 +325,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow" style="border-radius: 12px;">
             <div class="modal-header bg-white border-bottom py-3">
-                <h6 class="modal-title fw-bold text-dark m-0"><i class="bi bi-pencil-square me-2 text-primary"></i>Isi Laporan Harian</h6>
+                <h6 class="modal-title fw-bold text-dark m-0"><i class="bi bi-pencil-square me-2 text-primary"></i>Isi Kegiatan Harian</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4 bg-white">
@@ -439,6 +439,12 @@ $(document).ready(function() {
     // Filter Status (kolom 4)
     $('#filter-status-lb').on('change', function() {
         var val = this.value;
+        table.column(4).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
+    });
+    
+    // Tombol Filter
+    $('#btn-filter-lb').on('click', function() {
+        var val = $('#filter-status-lb').val();
         table.column(4).search(val ? $.fn.dataTable.util.escapeRegex(val) : '', true, false).draw();
     });
 });

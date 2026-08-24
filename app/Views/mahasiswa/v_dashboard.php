@@ -371,8 +371,8 @@
     // Jenis permohonan label
     $jenisLabel = 'Belum Dipilih';
     if (isset($jenis_permohonan) && $state != 1) {
-        if ($jenis_permohonan == 1) $jenisLabel = 'Penelitian Skripsi / TA';
-        elseif ($jenis_permohonan == 2) $jenisLabel = 'Observasi / Ambil Data';
+        if ($jenis_permohonan == 1) $jenisLabel = 'Penelitian Skripsi / Tugas Akhir';
+        elseif ($jenis_permohonan == 2) $jenisLabel = 'Observasi / Pengambilan Data';
         elseif ($jenis_permohonan == 3) $jenisLabel = 'Magang';
         elseif ($jenis_permohonan == 5) $jenisLabel = 'Praktik Kerja Lapangan (PKL)';
         elseif ($jenis_permohonan == 4) $jenisLabel = 'Uji Coba Produk (Prototype)';
@@ -725,8 +725,27 @@
                     <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="mt-3">
-                    <div class="text-muted small mb-1" style="font-size:0.76rem;">Maksud & Tujuan:</div>
-                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? '-') ?></p>
+                    <?php
+                        $idJenis = (int)($permohonan_aktif['id_jenis_permohonan'] ?? ($jenis_permohonan ?? 0));
+                        if ($idJenis === 1) {
+                            $label1 = 'Judul / Topik Skripsi:';
+                            $label2 = 'Fokus Penelitian / Data yang Dicari:';
+                        } elseif ($idJenis === 2) {
+                            $label1 = 'Tujuan Observasi / Mata Kuliah:';
+                            $label2 = 'Daftar Kebutuhan Data:';
+                        } elseif ($idJenis === 4) {
+                            $label1 = 'Nama Sistem / Prototype:';
+                            $label2 = 'Skenario Uji Coba:';
+                        } else {
+                            $label1 = 'Keahlian Utama:';
+                            $label2 = 'Maksud & Tujuan / Rencana:';
+                        }
+                    ?>
+                    <div class="text-muted small mb-1" style="font-size:0.76rem;"><?= $label1 ?></div>
+                    <p class="mb-2" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi_keahlian'] ?? '-') ?></p>
+
+                    <div class="text-muted small mb-1" style="font-size:0.76rem;"><?= $label2 ?></div>
+                    <p class="mb-0" style="font-size:0.86rem; line-height:1.6;"><?= esc($permohonan_aktif['deskripsi'] ?? ($permohonan_aktif['rencana_kegiatan'] ?? '-')) ?></p>
                 </div>
             <?php endif; ?>
 

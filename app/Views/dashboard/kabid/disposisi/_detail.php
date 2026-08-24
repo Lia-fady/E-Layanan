@@ -231,7 +231,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                 <hr class="mt-4 mb-3">
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary px-4 mr-2" id="btnSubmitKeputusan" disabled style="border-radius:6px; font-weight:600;">
-                        <i class="fas fa-save mr-1"></i> Simpan Keputusan
+                        <i class="fas fa-save mr-1"></i> Simpan
                     </button>
                     <button type="button" class="btn btn-light border px-4" onclick="$('#btnKembali').click()" style="border-radius:6px; font-weight:500;">
                         Batal
@@ -251,11 +251,11 @@ $(document).ready(function() {
         if (val === 'setujui') {
             $('#acc_fields').slideDown(); $('#rej_fields').slideUp();
             $('#catatan_keputusan').prop('required', false);
-            $('#btnSubmitKeputusan').removeClass('btn-danger').addClass('btn-primary').html('<i class="fas fa-check mr-1"></i> Terima Pemohon');
+            $('#btnSubmitKeputusan').removeClass('btn-danger').addClass('btn-primary').html('<i class="fas fa-save mr-1"></i> Simpan');
         } else if (val === 'tolak') {
             $('#acc_fields').slideUp(); $('#rej_fields').slideDown();
             $('#catatan_keputusan').prop('required', true);
-            $('#btnSubmitKeputusan').removeClass('btn-primary').addClass('btn-danger').html('<i class="fas fa-times mr-1"></i> Tolak Pemohon');
+            $('#btnSubmitKeputusan').removeClass('btn-primary').addClass('btn-danger').html('<i class="fas fa-save mr-1"></i> Simpan');
         }
     });
 

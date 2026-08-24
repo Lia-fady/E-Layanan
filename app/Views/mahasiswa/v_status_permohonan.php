@@ -334,12 +334,12 @@
                     <!-- KANAN: Filters & Search -->
                     <div class="d-flex flex-wrap align-items-center gap-2">
                         <select id="filter-jenis" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 170px; border-radius: 6px;">
-                            <option value="">Semua Jenis Layanan</option>
-                            <option value="Penelitian / Skripsi">Penelitian / Skripsi</option>
-                            <option value="Observasi / Ambil Data">Observasi / Ambil Data</option>
-                            <option value="Magang">Magang</option>
+                            <option value="">Semua Jenis</option>
+                            <option value="Penelitian Skripsi / Tugas Akhir">Skripsi / Tugas Akhir</option>
+                            <option value="Observasi / Pengambilan Data">Observasi / Pengambilan Data</option>
+                            <option value="Magang">Magang Umum</option>
                             <option value="Praktik Kerja Lapangan (PKL)">Praktik Kerja Lapangan (PKL)</option>
-                            <option value="Uji Coba Produk">Uji Coba Produk</option>
+                            <option value="Uji Coba Produk (Prototype)">Uji Coba Produk (Prototype)</option>
                         </select>
                         <select id="filter-status" class="form-select form-select-sm text-secondary shadow-none" style="width: auto; min-width: 140px; border-radius: 6px;">
                             <option value="">Semua Status</option>
@@ -383,9 +383,9 @@
                                     $tglMulai = date('j', strtotime($p['tgl_mulai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_mulai']))] . ' ' . date('Y', strtotime($p['tgl_mulai']));
                                     $tglSelesai = date('j', strtotime($p['tgl_selesai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_selesai']))] . ' ' . date('Y', strtotime($p['tgl_selesai']));
                                     
-                                    $layanan = '';
-                                    if($p['id_jenis_permohonan'] == 1)      $layanan = 'Penelitian Skripsi / TA';
-                                    elseif($p['id_jenis_permohonan'] == 2)  $layanan = 'Observasi / Ambil Data';
+                                    $layanan = '-';
+                                    if($p['id_jenis_permohonan'] == 1)      $layanan = 'Penelitian Skripsi / Tugas Akhir';
+                                    elseif($p['id_jenis_permohonan'] == 2)  $layanan = 'Observasi / Pengambilan Data';
                                     elseif($p['id_jenis_permohonan'] == 3)  $layanan = 'Magang';
                                     elseif($p['id_jenis_permohonan'] == 5)  $layanan = 'Praktik Kerja Lapangan';
                                     elseif($p['id_jenis_permohonan'] == 4)  $layanan = 'Uji Coba Produk';
