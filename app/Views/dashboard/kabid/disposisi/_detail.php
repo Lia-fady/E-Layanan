@@ -6,14 +6,14 @@
 
 $isSiswa = ($p->id_jenjang_pendidikan == 1 || $p->id_jenis_permohonan == 5);
 
-$jenisPermohonanText = strtolower(trim($p->jenis_permohonan ?? ''));
-if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermohonanText, 'skripsi') !== false || strpos($jenisPermohonanText, 'ta') !== false) {
-    $labelKeahlian = 'Judul atau Topik Skripsi/TA';
+$idJenis = (int)($p->id_jenis_permohonan ?? 0);
+if ($idJenis === 1) {
+    $labelKeahlian = 'Judul atau Topik Skripsi/Tugas Akhir';
     $labelDeskripsi = 'Fokus Penelitian / Data yang Dicari';
-} elseif (strpos($jenisPermohonanText, 'observasi') !== false || strpos($jenisPermohonanText, 'pengambilan data') !== false) {
+} elseif ($idJenis === 2) {
     $labelKeahlian = 'Tujuan Observasi / Nama Mata Kuliah';
     $labelDeskripsi = 'Daftar Kebutuhan Data';
-} elseif (strpos($jenisPermohonanText, 'uji coba') !== false || strpos($jenisPermohonanText, 'prototype') !== false) {
+} elseif ($idJenis === 4) {
     $labelKeahlian = 'Nama dan Profil Singkat Sistem';
     $labelDeskripsi = 'Skenario Pengujian / Target Pengguna';
 } else {

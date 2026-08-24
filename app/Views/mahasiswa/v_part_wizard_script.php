@@ -1,6 +1,6 @@
 <script>
 const JENIS_LABELS = {
-    '1': 'Penelitian Skripsi / TA',
+    '1': 'Penelitian Skripsi / Tugas Akhir',
     '2': 'Observasi / Pengambilan Data',
     '3': 'Magang',
     '5': 'Praktik Kerja Lapangan (PKL)',
@@ -9,7 +9,7 @@ const JENIS_LABELS = {
 
 const JENIS_CFG = {
     '1': {
-        keahlian: 'Judul atau Topik Skripsi/TA',
+        keahlian: 'Judul atau Topik Skripsi/Tugas Akhir',
         phK: 'Tuliskan judul atau gambaran umum topik penelitianmu...',
         magang: 'Fokus Penelitian / Data yang Dicari',
         phM: 'Jelaskan secara spesifik data atau informasi apa yang ingin kamu teliti...',
