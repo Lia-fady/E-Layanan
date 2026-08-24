@@ -75,7 +75,9 @@ class C_UploadSuratPenerimaan extends BaseController
                 mhs.no_telp,
                 ip.instansi_pendidikan, 
                 pr.nama_prodi,
-                fk.fakultas AS nama_fakultas
+                fk.fakultas AS nama_fakultas,
+                mj.nama_jurusan,
+                im.jurusan AS jurusan_text
             ')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
@@ -83,6 +85,7 @@ class C_UploadSuratPenerimaan extends BaseController
             ->join('m_instansi_pendidikan ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left')
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
             ->join('m_fakultas fk', 'fk.id_fakultas = pr.id_fakultas', 'left')
+            ->join('m_jurusan mj', 'mj.id_jurusan = im.id_jurusan', 'left')
             ->where('ps.id_persetujuan_magang', $id_persetujuan)
             ->get()->getRow();
     }
