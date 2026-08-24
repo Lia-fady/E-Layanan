@@ -227,8 +227,20 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <td><?= $tglSelesai ?></td>
                 </tr>
                 <?php
-                    $labelKeahlian = 'Keahlian Utama';
-                    $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
+                    $idJenis = (int)($p['id_jenis_permohonan'] ?? 0);
+                    if ($idJenis === 1) {
+                        $labelKeahlian = 'Judul atau Topik Skripsi/Tugas Akhir';
+                        $labelDeskripsi = 'Fokus Penelitian / Data yang Dicari';
+                    } elseif ($idJenis === 2) {
+                        $labelKeahlian = 'Tujuan Observasi / Nama Mata Kuliah';
+                        $labelDeskripsi = 'Daftar Kebutuhan Data';
+                    } elseif ($idJenis === 4) {
+                        $labelKeahlian = 'Nama dan Profil Singkat Sistem';
+                        $labelDeskripsi = 'Skenario Pengujian / Target Pengguna';
+                    } else {
+                        $labelKeahlian = 'Keahlian Utama';
+                        $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
+                    }
                 ?>
                 <tr>
                     <th><?= $labelKeahlian ?></th>

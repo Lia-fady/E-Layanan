@@ -270,7 +270,7 @@ $(document).ready(function() {
 
         var titleText = decision === 'setujui' ? 'Terima Pemohon?' : 'Tolak Pemohon?';
         var descText = decision === 'setujui' 
-            ? 'Pemohon akan resmi diterima dan mulai magang di bidang Anda. Pastikan keputusan Anda sudah tepat.' 
+            ? 'Pemohon akan resmi diterima dan memulai kegiatannya di bidang Anda. Pastikan keputusan Anda sudah tepat.' 
             : 'Permohonan akan ditolak dan dikembalikan ke Sekretariat. Keputusan ini tidak dapat dibatalkan.';
         var confirmBtnText = decision === 'setujui' ? 'Ya, Terima' : 'Ya, Tolak';
         var confirmBtnColor = decision === 'setujui' ? '#16a34a' : '#dc2626';

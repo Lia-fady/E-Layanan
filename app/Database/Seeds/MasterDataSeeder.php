@@ -19,13 +19,13 @@ class MasterDataSeeder extends Seeder
 
         // 2. Data m_file
         $dataFile = [
-            ['id_file' => 1, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 2, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 3, 'nama_file' => 'Curriculum Vitae (CV)', 'status_aktif' => '1'],
-            ['id_file' => 4, 'nama_file' => 'Proposal / Sinopsis', 'status_aktif' => '1'],
-            ['id_file' => 5, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 6, 'nama_file' => 'Surat Pengantar Resmi Kampus', 'status_aktif' => '1'],
-            ['id_file' => 7, 'nama_file' => 'Proposal Uji Coba Produk', 'status_aktif' => '1'],
+            ['id_file' => 1, 'nama_file' => 'Surat Izin Penelitian Resmi Kampus', 'status_aktif' => '1'],
+            ['id_file' => 2, 'nama_file' => 'Surat Pengantar Resmi', 'status_aktif' => '1'],
+            ['id_file' => 3, 'nama_file' => 'Curriculum Vitae (CV) Terbaru', 'status_aktif' => '1'],
+            ['id_file' => 4, 'nama_file' => 'Proposal / Sinopsis Penelitian Skripsi', 'status_aktif' => '1'],
+            ['id_file' => 5, 'nama_file' => 'Surat Pengantar Kebutuhan Data Kampus', 'status_aktif' => '1'],
+            ['id_file' => 6, 'nama_file' => 'Surat Pengantar Kampus / Sekolah', 'status_aktif' => '1'],
+            ['id_file' => 7, 'nama_file' => 'Skenario Uji Coba / Dokumen Kebutuhan Sistem', 'status_aktif' => '1'],
         ];
         $this->db->table('m_file')->ignore(true)->insertBatch($dataFile);
 
