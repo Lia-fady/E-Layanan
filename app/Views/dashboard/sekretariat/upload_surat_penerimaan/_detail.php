@@ -55,10 +55,9 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <td><?= esc($persetujuan->no_telp ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <td class="text-muted">Program Studi / Jurusan</td>
+                        <td class="text-muted">Jurusan / Fakultas</td>
                         <td>:</td>
                         <td><?= esc($persetujuan->nama_prodi ?? $persetujuan->nama_jurusan ?? $persetujuan->jurusan_text ?? '-') ?> / <?= esc($persetujuan->nama_fakultas ?? '-') ?></td>
-                    </tr>
                     <tr>
                         <td class="text-muted">Asal Instansi</td>
                         <td>:</td>
