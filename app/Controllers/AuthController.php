@@ -9,6 +9,8 @@ use App\Models\InstansiMahasiswaModel;
 use App\Models\InstansiPendidikanModel; 
 use App\Models\MasterKelasModel;
 
+use App\Models\PasswordResetModel;
+
 class AuthController extends BaseController
 {
     protected $mahasiswaModel;
@@ -16,6 +18,7 @@ class AuthController extends BaseController
     protected $instansiMahasiswaModel;
     protected $instansiPendidikanModel;
     protected $masterKelasModel;
+    protected $passwordResetModel;
 
     public function __construct()
     {
@@ -25,6 +28,7 @@ class AuthController extends BaseController
         $this->instansiMahasiswaModel  = new InstansiMahasiswaModel();
         $this->instansiPendidikanModel = new InstansiPendidikanModel();
         $this->masterKelasModel        = new MasterKelasModel();
+        $this->passwordResetModel      = new PasswordResetModel();
     }
 
     // --- TAMPILAN FORM REGISTRASI MAHASISWA ---
@@ -582,5 +586,215 @@ class AuthController extends BaseController
     {
         session()->destroy();
         return redirect()->to(base_url('/'))->with('success', 'Anda berhasil keluar dari sistem.');
+    }
+
+    // =========================================================================
+    // FITUR LUPA PASSWORD (RESET PASSWORD VIA EMAIL)
+    // =========================================================================
+
+    /**
+     * Menampilkan halaman form Lupa Password.
+     * Pengguna diminta memasukkan email yang terdaftar.
+     */
+    public function forgotPassword()
+    {
+        $data['title'] = 'Lupa Password - E-Layanan Akademik';
+        return view('auth/forgot_password', $data);
+    }
+
+    /**
+     * Memproses permintaan lupa password.
+     * Menggunakan teknik Anti-Enumeration: pesan yang ditampilkan
+     * selalu sama, terlepas email ditemukan atau tidak.
+     */
+    public function processForgotPassword()
+    {
+        // Validasi input email
+        $rules = [
+            'email' => [
+                'rules'  => 'required|valid_email',
+                'errors' => [
+                    'required'    => 'Alamat email wajib diisi.',
+                    'valid_email' => 'Format email tidak valid.'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // Validasi Google reCAPTCHA v2
+        $recaptchaResponse = trim((string)$this->request->getPost('g-recaptcha-response'));
+        $recaptchaSecret   = getenv('RECAPTCHA_SECRET_KEY');
+
+        if (!empty($recaptchaSecret)) {
+            if (empty($recaptchaResponse)) {
+                return redirect()->back()->withInput()->with('error', 'Peringatan Keamanan: Silakan centang kotak "I\'m not a robot" (reCAPTCHA) terlebih dahulu.');
+            }
+
+            $verifyUrl      = "https://www.google.com/recaptcha/api/siteverify?secret={$recaptchaSecret}&response={$recaptchaResponse}";
+            $verifyResponse = @file_get_contents($verifyUrl);
+            if ($verifyResponse) {
+                $responseData   = json_decode($verifyResponse);
+                if (!$responseData->success) {
+                    return redirect()->back()->withInput()->with('error', 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.');
+                }
+            }
+        }
+
+        $email = $this->request->getPost('email');
+
+        // Pesan umum (Anti-Enumeration) - selalu ditampilkan
+        $genericMessage = 'Jika email terdaftar di sistem kami, kami akan mengirimkan tautan untuk mengatur ulang password Anda. Silakan cek kotak masuk dan folder spam email Anda.';
+
+        // Cari email di tabel m_mahasiswa
+        $mahasiswa = $this->mahasiswaModel->where('email', $email)->first();
+
+        if ($mahasiswa) {
+            // Email ditemukan — buat token dan kirim email
+            $token = $this->passwordResetModel->createToken($email);
+            $resetLink = base_url("reset-password/{$token}");
+
+            // Kirim email menggunakan CodeIgniter Email Service
+            $this->_sendResetEmail($email, $mahasiswa['nama_mahasiswa'], $resetLink);
+        }
+
+        // Selalu tampilkan pesan yang sama (keamanan anti-enumeration)
+        return redirect()->to(base_url('forgot-password'))->with('info', $genericMessage);
+    }
+
+    /**
+     * Menampilkan halaman form Reset Password.
+     * Memvalidasi token dari URL sebelum menampilkan form.
+     *
+     * @param string $token Token reset dari URL
+     */
+    public function resetPassword($token = null)
+    {
+        if (empty($token)) {
+            return redirect()->to(base_url('login'))->with('error', 'Token reset password tidak valid.');
+        }
+
+        // Validasi token
+        $resetData = $this->passwordResetModel->validateToken($token);
+
+        if (!$resetData) {
+            return redirect()->to(base_url('login'))->with('error', 'Tautan reset password tidak valid atau sudah kadaluarsa. Silakan ajukan permintaan baru.');
+        }
+
+        $data = [
+            'title' => 'Buat Password Baru - E-Layanan Akademik',
+            'token' => $token,
+        ];
+
+        return view('auth/reset_password', $data);
+    }
+
+    /**
+     * Memproses penyimpanan password baru.
+     * Memvalidasi token sekali lagi, lalu update password di database.
+     */
+    public function processResetPassword()
+    {
+        // Validasi input
+        $rules = [
+            'token' => [
+                'rules'  => 'required',
+                'errors' => ['required' => 'Token reset tidak ditemukan.']
+            ],
+            'password' => [
+                'rules'  => 'required|min_length[8]|regex_match[/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/]',
+                'errors' => [
+                    'required'    => 'Password baru wajib diisi.',
+                    'min_length'  => 'Password minimal 8 karakter.',
+                    'regex_match' => 'Password harus mengandung minimal satu huruf besar, huruf kecil, angka, dan simbol khusus (@$!%*?&).'
+                ]
+            ],
+            'password_confirm' => [
+                'rules'  => 'required|matches[password]',
+                'errors' => [
+                    'required' => 'Konfirmasi password wajib diisi.',
+                    'matches'  => 'Konfirmasi password tidak cocok dengan password baru.'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            $token = $this->request->getPost('token');
+            return redirect()->to(base_url("reset-password/{$token}"))->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $token    = $this->request->getPost('token');
+        $password = $this->request->getPost('password');
+
+        // Validasi token sekali lagi (anti-tampering)
+        $resetData = $this->passwordResetModel->validateToken($token);
+
+        if (!$resetData) {
+            return redirect()->to(base_url('login'))->with('error', 'Tautan reset password sudah tidak valid. Silakan ajukan permintaan baru.');
+        }
+
+        // Cari mahasiswa berdasarkan email
+        $mahasiswa = $this->mahasiswaModel->where('email', $resetData['email'])->first();
+
+        if (!$mahasiswa) {
+            return redirect()->to(base_url('login'))->with('error', 'Terjadi kesalahan internal. Silakan coba lagi.');
+        }
+
+        // Update password di tabel m_user_mahasiswa
+        $userMahasiswa = $this->userMahasiswaModel->where('id_mahasiswa', $mahasiswa['id_mahasiswa'])->first();
+
+        if ($userMahasiswa) {
+            $this->userMahasiswaModel->update($userMahasiswa['id_user_mahasiswa'], [
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+            ]);
+        }
+
+        // Tandai token sebagai sudah digunakan
+        $this->passwordResetModel->markAsUsed($resetData['id']);
+
+        return redirect()->to(base_url('login'))->with('success', 'Password Anda berhasil diubah! Silakan masuk dengan password baru Anda.');
+    }
+
+    /**
+     * Mengirimkan email reset password menggunakan layanan email CI4.
+     * Method private, hanya dipanggil dari processForgotPassword().
+     *
+     * @param string $toEmail Email tujuan
+     * @param string $nama Nama penerima
+     * @param string $resetLink Link reset password
+     * @return bool
+     */
+    private function _sendResetEmail(string $toEmail, string $nama, string $resetLink): bool
+    {
+        $config = new \Config\Email();
+        $email = \Config\Services::email();
+
+        // Ambil konfigurasi atau berikan fallback dummy jika .env belum diisi (untuk cegah error no From header)
+        $fromEmail = !empty($config->fromEmail) ? $config->fromEmail : 'no-reply@tangerangkota.go.id';
+        $fromName  = !empty($config->fromName) ? $config->fromName : 'E-Layanan Akademik';
+        
+        $email->setFrom($fromEmail, $fromName);
+        $email->setTo($toEmail);
+        $email->setSubject('Reset Password - E-Layanan Akademik Kominfo Kota Tangerang');
+
+        // Render email template view
+        $message = view('auth/email_reset_password', [
+            'nama'      => $nama,
+            'resetLink' => $resetLink,
+        ]);
+
+        $email->setMessage($message);
+
+        if ($email->send(false)) {
+            return true;
+        }
+
+        // Log error jika gagal kirim (tidak di-expose ke user)
+        log_message('error', 'Gagal mengirim email reset password ke: ' . $toEmail);
+        log_message('error', $email->printDebugger(['headers']));
+
+        return false;
     }
 }

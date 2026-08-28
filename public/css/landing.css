@@ -254,7 +254,7 @@ body {
     background-image: url('../images/gedung puspem landing page.png');
     background-size: cover;
     background-position: center;
-    filter: grayscale(30%) brightness(0.4);
+    filter: grayscale(15%) brightness(0.75);
 }
 
 /* Dark shadow overlay */
@@ -263,9 +263,9 @@ body {
     position: absolute;
     inset: 0;
     background: linear-gradient(170deg,
-            rgba(0, 0, 0, 0.55) 0%,
-            rgba(0, 0, 0, 0.35) 50%,
-            rgba(0, 0, 0, 0.6) 100%);
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.25) 50%,
+            rgba(0, 0, 0, 0.5) 100%);
 }
 
 .lp-hero-content {
