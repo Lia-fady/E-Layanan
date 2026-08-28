@@ -30,26 +30,29 @@ if ($idJenis === 1) {
  * - Status DISETUJUI / PERBAIKAN_BERKAS / DITOLAK = sudah final = LOCKED.
  */
 $isLocked = false;
-$lockMessage = '';
 $statusPersetujuan = $permohonan->status_persetujuan ?? 'MENUNGGU';
 
-if ($statusPersetujuan === 'DITOLAK') {
+if (in_array($statusPersetujuan, ['DITOLAK', 'PERBAIKAN_BERKAS', 'DISETUJUI'])) {
     $isLocked = true;
-    $lockMessage = 'Verifikasi sudah final. Permohonan ini telah <strong>Ditolak secara permanen</strong>.';
-} elseif ($statusPersetujuan === 'PERBAIKAN_BERKAS') {
-    $isLocked = true;
-    $lockMessage = 'Verifikasi sudah final. Berkas dikembalikan ke mahasiswa untuk <strong>Perbaikan</strong>.';
-} elseif ($statusPersetujuan === 'DISETUJUI') {
-    $isLocked = true;
-    $statusPenempatanText = $status_penempatan ?? 'MENUNGGU';
-    if ($statusPenempatanText === 'BERJALAN') {
-        $lockMessage = 'Verifikasi sudah final. Mahasiswa sedang <strong>menjalani magang</strong>.';
-    } elseif ($statusPenempatanText === 'SELESAI') {
-        $lockMessage = 'Verifikasi sudah final. Magang telah <strong>Selesai</strong>.';
-    } else {
-        $lockMessage = 'Verifikasi sudah final. Permohonan <strong>Disetujui</strong> dan sedang menunggu persetujuan bidang.';
-    }
 }
+
+// Mapping status ke label tampilan
+$statusLabels = [
+    'DISETUJUI'        => 'Disetujui',
+    'PERBAIKAN_BERKAS' => 'Perbaikan Berkas',
+    'DITOLAK'          => 'Ditolak',
+    'MENUNGGU'         => 'Menunggu',
+];
+$statusLabel = $statusLabels[$statusPersetujuan] ?? $statusPersetujuan;
+
+// Badge class mapping
+$statusBadgeClass = [
+    'DISETUJUI'        => 'background-color: #dcfce7; color: #166534;',
+    'PERBAIKAN_BERKAS' => 'background-color: #fef3c7; color: #92400e;',
+    'DITOLAK'          => 'background-color: #fee2e2; color: #991b1b;',
+    'MENUNGGU'         => 'background-color: #e0e7ff; color: #3730a3;',
+];
+$badgeStyle = $statusBadgeClass[$statusPersetujuan] ?? 'background-color: #f1f5f9; color: #64748b;';
 ?>
 
 <div class="verifikasi-detail-container pb-4">
@@ -68,9 +71,26 @@ if ($statusPersetujuan === 'DITOLAK') {
         <input type="hidden" name="id_permohonan_magang" value="<?= $permohonan->id_permohonan_magang ?>">
         
         <?php if ($isLocked) : ?>
-            <div class="alert alert-info mb-4" style="border-radius: 8px; border: 1px solid #bae6fd; background-color: #f0f9ff; color: #0369a1; font-size: 13px;">
-                <i class="fas fa-lock mr-2"></i>
-                <?= $lockMessage ?>
+            <div class="alert mb-4" style="border-radius: 8px; border: 1px solid #e2e8f0; background-color: #f8fafc; color: #334155; font-size: 13px; display: flex; align-items: center; gap: 12px;">
+                <span class="px-3 py-1 rounded-pill font-weight-bold" style="<?= $badgeStyle ?> font-size: 12px; white-space: nowrap;">
+                    <?= $statusLabel ?>
+                </span>
+                <?php if ($statusPersetujuan === 'DITOLAK') : ?>
+                    Permohonan ini telah <strong>Ditolak</strong>.
+                <?php elseif ($statusPersetujuan === 'PERBAIKAN_BERKAS') : ?>
+                    Berkas dikembalikan ke mahasiswa untuk <strong>Perbaikan</strong>.
+                <?php elseif ($statusPersetujuan === 'DISETUJUI') : ?>
+                    <?php
+                        $statusPenempatanText = $status_penempatan ?? 'MENUNGGU';
+                        if ($statusPenempatanText === 'BERJALAN') {
+                            echo 'Mahasiswa sedang<strong>menjalani magang</strong>.';
+                        } elseif ($statusPenempatanText === 'SELESAI') {
+                            echo 'Magang telah <strong>Selesai</strong>.';
+                        } else {
+                            echo 'Permohonan<strong>Disetujui</strong>dan sedang menunggu persetujuan bidang.';
+                        }
+                    ?>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
 
@@ -232,141 +252,136 @@ if ($statusPersetujuan === 'DITOLAK') {
             </div>
         </div>
 
-        <!-- Card 2: Dokumen yang Diajukan (full-width) -->
+        <!-- Card 2: Dokumen yang Diajukan (tanpa kolom Aksi/Verifikasi) -->
         <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; overflow: hidden;">
             <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
                 <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Dokumen yang Diajukan</h6>
             </div>
-            <div class="card-body p-0 d-flex flex-column justify-content-between">
-                <div>
-                    <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
-                    <div class="table-responsive">
-                        <table class="table table-borderless m-0" style="font-size: 12px;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
-                                    <th width="5%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NO.</th>
-                                    <th class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NAMA DOKUMEN</th>
-                                    <th width="15%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">FILE</th>
-                                    <th width="40%" class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">VERIFIKASI</th>
+            <div class="card-body p-0">
+                <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
+                <div class="table-responsive">
+                    <table class="table table-borderless m-0" style="font-size: 12px;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <th width="8%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NO.</th>
+                                <th class="py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">NAMA DOKUMEN</th>
+                                <th width="15%" class="text-center py-3 text-uppercase" style="font-size: 12px; font-weight: 600; color: #64748b;">FILE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($files)) : ?>
+                                <?php $no = 1; foreach ($files as $f) : ?>
+                                    <tr style="border-bottom: 1px solid #f8fafc;">
+                                        <td class="text-center align-middle py-3" style="color: #64748b; font-size: 14px;"><?= $no++ ?></td>
+                                        <td class="align-middle py-3 font-weight-500" style="color: #1e293b; font-size: 14px;"><?= esc($f->nama_file_master ?? 'Dokumen') ?></td>
+                                        <td class="text-center align-middle py-3">
+                                            <a href="<?= base_url($f->path_file) ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 py-1" style="font-size: 11px; font-weight: 500;" title="Lihat Berkas">
+                                                Lihat
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted" style="font-size: 13px;">Tidak ada dokumen yang diajukan.</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($files)) : ?>
-                                    <?php $no = 1; foreach ($files as $f) : ?>
-                                        <?php $fStatus = $f->status_verifikasi ?? ''; ?>
-                                        <tr style="border-bottom: 1px solid #f8fafc;">
-                                            <td class="text-center align-middle py-3" style="color: #64748b; font-size: 14px;"><?= $no++ ?></td>
-                                            <td class="align-middle py-3 font-weight-500" style="color: #1e293b; font-size: 14px;"><?= esc($f->nama_file_master ?? 'Dokumen') ?></td>
-                                            <td class="text-center align-middle py-3">
-                                                <a href="<?= base_url($f->path_file) ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill px-3 py-1" style="font-size: 11px; font-weight: 500;" title="Lihat Berkas">
-                                                    Lihat
-                                                </a>
-                                            </td>
-                                            <td class="align-middle py-3">
-                                                <div class="d-flex align-items-center" style="gap: 16px;">
-                                                    <input type="hidden" name="file_status[<?= $f->id_file_permohonan_magang ?>]" value="<?= esc($fStatus) ?>" required>
-                                                    
-                                                    <!-- Using checkbox to preserve existing javascript mechanism -->
-                                                    <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0">
-                                                        <input type="checkbox" class="custom-control-input cb-sesuai" id="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
-                                                        <label class="custom-control-label" for="cb_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
-                                                            Sesuai
-                                                        </label>
-                                                    </div>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                                                    <div class="custom-control custom-checkbox custom-control-inline d-flex align-items-center mb-0 mr-0">
-                                                        <input type="checkbox" class="custom-control-input cb-tidak-sesuai" id="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" data-id="<?= $f->id_file_permohonan_magang ?>" <?= $fStatus === 'TIDAK_SESUAI' ? 'checked' : '' ?> <?= $isLocked ? 'disabled' : '' ?>>
-                                                        <label class="custom-control-label" for="cb_tdk_sesuai_<?= $f->id_file_permohonan_magang ?>" style="padding-top: 2px; cursor: pointer; color: #334155; font-size: 13px;">
-                                                            Tidak Sesuai
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+        <?php if (!$isLocked) : ?>
+        <!-- Card 3: Keputusan Verifikasi (hanya tampil saat belum locked) -->
+        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
+                <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Keputusan Verifikasi</h6>
+            </div>
+            <div class="card-body p-4 pt-2">
+                <!-- Dropdown Keputusan -->
+                <div class="form-group mb-3">
+                    <label for="keputusan_verifikasi" class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Keputusan <span class="text-danger">*</span></label>
+                    <select name="keputusan_verifikasi" id="keputusan_verifikasi" class="form-control form-control-sm border" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; height: 38px; max-width: 400px;">
+                        <option value="">Pilih Keputusan</option>
+                        <option value="DISETUJUI">Disetujui</option>
+                        <option value="PERBAIKAN_BERKAS">Perbaikan Berkas</option>
+                        <option value="DITOLAK">Ditolak</option>
+                    </select>
+                </div>
+
+                <!-- Bidang Tujuan (hanya muncul saat Disetujui) -->
+                <div id="section_bidang_tujuan" style="display: none;">
+                    <div class="form-group mb-3">
+                        <label for="id_bidang" class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Bidang Tujuan <span class="text-danger">*</span></label>
+                        <select name="id_bidang" id="id_bidang" class="form-control form-control-sm border" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; height: 38px; max-width: 400px;">
+                            <option value="" data-kuota="">Pilih bidang yang sesuai...</option>
+                            <?php foreach ($bidang as $b) : ?>
+                                <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" data-bulan-penuh="<?= esc($b->kuota_penuh_di_bulan ?? '') ?>" data-detail-kuota="<?= htmlspecialchars(json_encode($b->detail_kuota ?? []), ENT_QUOTES, 'UTF-8') ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
+                                    <?= esc($b->bidang) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div id="info_kuota_bidang" class="mt-2" style="display: none; font-size: 12px;"></div>
                     </div>
                 </div>
-                <?php if (!$isLocked) : ?>
-                <div class="px-4 py-3" style="background-color: #f8fafc; border-top: 1px solid #f1f5f9; font-size: 11px; color: #64748b;">
-                    <i class="fas fa-info-circle mr-1" style="color: #64748b;"></i> Jika berkas Tidak Sesuai, status menjadi Perbaikan Berkas dan disposisi batal.
+
+                <!-- Catatan (hanya muncul saat Perbaikan Berkas atau Ditolak) -->
+                <div id="section_catatan" style="display: none;">
+                    <div class="form-group mb-0">
+                        <label for="catatan_manual" class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Catatan <span class="text-danger" id="catatan_required_mark">*</span></label>
+                        <textarea name="catatan_manual" id="catatan_manual" class="form-control form-control-sm border" rows="3" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; padding: 10px;" placeholder="Tuliskan catatan untuk pemohon..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php else : ?>
+        <!-- Card 3 Locked: Status dan Catatan (read-only) -->
+        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;">
+            <div class="card-body p-4">
+                <!-- Status -->
+                <div class="form-group mb-3">
+                    <label class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Status</label>
+                    <span class="px-3 py-1 rounded-pill font-weight-bold" style="<?= $badgeStyle ?> font-size: 13px;">
+                        <?= $statusLabel ?>
+                    </span>
+                </div>
+
+                <?php if (!empty($selected_bidang)) : ?>
+                <!-- Bidang Tujuan (read-only) -->
+                <div class="form-group mb-3">
+                    <label class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Bidang Tujuan</label>
+                    <div class="border rounded px-3 py-2 bg-light" style="font-size: 14px; color: #334155; border-color: #e2e8f0 !important;">
+                        <?php foreach ($bidang as $b) : ?>
+                            <?php if ($b->id_bidang == $selected_bidang) : ?>
+                                <?= esc($b->bidang) ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($statusPersetujuan !== 'DISETUJUI' && !empty($permohonan->catatan)) : ?>
+                <!-- Catatan (read-only, hanya tampil jika ada catatan dan bukan Disetujui) -->
+                <div class="form-group mb-0">
+                    <label class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Catatan</label>
+                    <div class="border rounded px-3 py-2 bg-light" style="font-size: 14px; color: #334155; min-height: 40px; border-color: #e2e8f0 !important;">
+                        <?= nl2br(esc($permohonan->catatan)) ?>
+                    </div>
                 </div>
                 <?php endif; ?>
             </div>
         </div>
+        <?php endif; ?>
 
-        <!-- Card 4: Disposisi dan Catatan -->
-        <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;">
-            <div class="card-body p-4">
-                <div class="row">
-                    <div class="col-md-6 mb-4 mb-md-0">
-                        <?php if (!$isLocked) : ?>
-                            <div class="form-group mb-0 pr-md-3">
-                                <label for="id_bidang" class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Pilih Bidang Tujuan <span class="text-danger">*</span></label>
-                                <select name="id_bidang" id="id_bidang" class="form-control form-control-sm border" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; height: 38px;">
-                                    <option value="" data-kuota="">Pilih bidang yang sesuai...</option>
-                                    <?php foreach ($bidang as $b) : ?>
-                                        <option value="<?= $b->id_bidang ?>" data-kuota="<?= $b->sisa_kuota ?>" data-bulan-penuh="<?= esc($b->kuota_penuh_di_bulan ?? '') ?>" <?= (isset($selected_bidang) && $selected_bidang == $b->id_bidang) ? 'selected' : '' ?>>
-                                            <?= esc($b->bidang) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <div id="info_kuota_bidang" class="mt-2" style="display: none; font-size: 12px;"></div>
-                            </div>
-                        <?php else : ?>
-                            <?php if (!empty($selected_bidang)) : ?>
-                                <div class="form-group mb-0 pr-md-3">
-                                    <label class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Bidang Tujuan</label>
-                                    <select class="form-control form-control-sm border bg-light" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; height: 38px;" disabled>
-                                        <?php foreach ($bidang as $b) : ?>
-                                            <?php if ($b->id_bidang == $selected_bidang) : ?>
-                                                <option selected><?= esc($b->bidang) ?></option>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <?php if (!$isLocked) : ?>
-                            <div class="form-group mb-0 pl-md-3">
-                                <label for="catatan_manual" class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Catatan Verifikasi <span class="font-weight-normal text-muted" style="font-size: 13px;">(Opsional)</span></label>
-                                <textarea name="catatan_manual" id="catatan_manual" class="form-control form-control-sm border" rows="3" style="font-size: 14px; border-radius: 4px; border-color: #e2e8f0 !important; padding: 10px;" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
-                            </div>
-                        <?php endif; ?>
-
-                        <?php if ($isLocked && !empty($permohonan->catatan)) : ?>
-                            <div class="form-group mb-0 pl-md-3">
-                                <label class="d-block font-weight-bold mb-2" style="font-size: 14px; color: #0f172a;">Catatan Verifikasi</label>
-                                <div class="border rounded px-3 py-2 bg-light" style="font-size: 14px; color: #334155; min-height: 40px; border-color: #e2e8f0 !important;">
-                                    <?= nl2br(esc($permohonan->catatan)) ?>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Action Buttons - KEPT EXACTLY SAME CLASSES AND IDS -->
+        <!-- Action Buttons -->
         <div class="d-flex justify-content-end mt-4 mb-2">
             <input type="hidden" name="action_type" id="action_type" value="">
             
             <?php if (!$isLocked) : ?>
-                <!-- Order updated: Simpan (kiri), Tolak (tengah), Kembali (kanan) -->
-                <button type="submit" class="btn btn-primary mr-2" id="btnSimpanKeputusan">
-                    <i class="fas fa-save mr-1"></i> Simpan
-                </button>
-                <button type="button" class="btn btn-danger mr-2" id="btnTolakMutlak">
-                    <i class="fas fa-times-circle mr-1"></i> Tolak
-                </button>
-            <?php else : ?>
-                <button type="button" class="btn btn-secondary mr-2" disabled>
-                    <i class="fas fa-lock mr-1"></i> Verifikasi Terkunci
+                <!-- Tombol aksi kontekstual (hidden by default, muncul setelah dropdown dipilih) -->
+                <button type="button" class="btn mr-2" id="btnAksiKeputusan" style="display: none;">
+                    <!-- Label dan warna diubah oleh JavaScript -->
                 </button>
             <?php endif; ?>
             
@@ -379,21 +394,84 @@ if ($statusPersetujuan === 'DITOLAK') {
 
 <script>
     $(document).ready(function() {
+        // Handler kuota bidang
         $('#id_bidang').on('change', function() {
             var selectedOption = $(this).find('option:selected');
             var sisa_kuota = selectedOption.data('kuota');
             var bulan_penuh = selectedOption.data('bulan-penuh');
+            var detail_kuota = selectedOption.data('detail-kuota');
             var infoBox = $('#info_kuota_bidang');
             
             if (sisa_kuota !== undefined && sisa_kuota !== '') {
                 infoBox.show();
+                var html = '';
                 if (sisa_kuota == 1) {
-                    infoBox.html('<i class="fas fa-check-circle text-success mr-1"></i> <span class="text-success">Seluruh bulan pada periode kegiatan <strong>Tersedia</strong></span>');
+                    html += '<div class="mb-1"><i class="fas fa-check-circle text-success mr-1"></i> <span class="text-success">Seluruh bulan pada periode kegiatan <strong>Tersedia</strong></span></div>';
                 } else {
-                    infoBox.html('<i class="fas fa-exclamation-circle text-danger mr-1"></i> <span class="text-danger">Kuota tidak tersedia pada <strong>' + (bulan_penuh || 'bulan tertentu') + '</strong>.</span>');
+                    html += '<div class="mb-1"><i class="fas fa-exclamation-circle text-danger mr-1"></i> <span class="text-danger">Kuota tidak tersedia pada <strong>' + (bulan_penuh || 'bulan tertentu') + '</strong>.</span></div>';
                 }
+
+                if (detail_kuota && Array.isArray(detail_kuota) && detail_kuota.length > 0) {
+                    html += '<div class="mt-2 border rounded p-2" style="background-color: #f8fafc;">';
+                    html += '<div class="font-weight-bold mb-1" style="color: #475569; font-size: 11px;">Ketersediaan Kuota Per Bulan:</div>';
+                    html += '<ul class="pl-3 mb-0" style="color: #475569; margin-bottom: 0;">';
+                    detail_kuota.forEach(function(item) {
+                        var isAvailable = item.sisa > 0;
+                        var colorClass = isAvailable ? 'text-success' : 'text-danger';
+                        var iconClass = isAvailable ? 'fa-check' : 'fa-times';
+                        html += '<li><i class="fas ' + iconClass + ' ' + colorClass + ' mr-1" style="font-size: 10px;"></i> ' + item.bulan + ': <strong>' + item.sisa + '</strong> orang</li>';
+                    });
+                    html += '</ul></div>';
+                }
+                
+                infoBox.html(html);
             } else {
                 infoBox.hide();
+            }
+        });
+
+        // Handler dropdown keputusan
+        $('#keputusan_verifikasi').on('change', function() {
+            var keputusan = $(this).val();
+            var btnAksi = $('#btnAksiKeputusan');
+            var sectionBidang = $('#section_bidang_tujuan');
+            var sectionCatatan = $('#section_catatan');
+
+            // Reset semua
+            btnAksi.hide();
+            sectionBidang.hide();
+            sectionCatatan.hide();
+            $('#action_type').val('');
+
+            if (keputusan === 'DISETUJUI') {
+                // Tampilkan Bidang Tujuan, sembunyikan Catatan
+                sectionBidang.show();
+                sectionCatatan.hide();
+                btnAksi.show()
+                    .removeClass('btn-primary btn-warning btn-danger')
+                    .addClass('btn-primary')
+                    .html('<i class="fas fa-check-circle mr-1"></i> Setujui');
+                $('#action_type').val('SETUJUI');
+            } else if (keputusan === 'PERBAIKAN_BERKAS') {
+                // Tampilkan Catatan, sembunyikan Bidang Tujuan
+                sectionBidang.hide();
+                sectionCatatan.show();
+                $('#catatan_required_mark').show();
+                btnAksi.show()
+                    .removeClass('btn-primary btn-warning btn-danger')
+                    .addClass('btn-warning')
+                    .html('<i class="fas fa-paper-plane mr-1"></i> Kirim Perbaikan');
+                $('#action_type').val('PERBAIKAN');
+            } else if (keputusan === 'DITOLAK') {
+                // Tampilkan Catatan, sembunyikan Bidang Tujuan
+                sectionBidang.hide();
+                sectionCatatan.show();
+                $('#catatan_required_mark').show();
+                btnAksi.show()
+                    .removeClass('btn-primary btn-warning btn-danger')
+                    .addClass('btn-danger')
+                    .html('<i class="fas fa-times-circle mr-1"></i> Tolak');
+                $('#action_type').val('TOLAK');
             }
         });
     });

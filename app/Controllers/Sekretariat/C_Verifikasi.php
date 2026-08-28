@@ -63,6 +63,7 @@ class C_Verifikasi extends BaseController
             foreach ($bidang_list as &$b) {
                 $b->sisa_kuota = 0; // Default
                 $b->kuota_penuh_di_bulan = null;
+                $b->detail_kuota = []; // New
                 
                 // Get kuota for the starting year
                 $kuotaTahunMulai = $kuotaModel->getKuotaPerBulan($b->id_bidang, $tahun_mulai);
@@ -79,21 +80,29 @@ class C_Verifikasi extends BaseController
                         $kuotaBulanData = $kuotaModel->getKuotaPerBulan($b->id_bidang, $curr_y);
                     }
                     
-                    // index is 1-based, array index is 0-based, but getKuotaPerBulan returns standard array
                     // find by bulan_angka
                     $sisaBulanIni = 0;
+                    $namaBulanIni = '';
+                    $namaBulanIniShort = '';
                     foreach ($kuotaBulanData as $kb) {
                         if ($kb['bulan_angka'] == $curr_m) {
                             $sisaBulanIni = $kb['sisa_kuota'];
                             $namaBulanIni = $kb['bulan_nama'] . ' ' . $curr_y;
+                            $namaBulanIniShort = $kb['bulan_nama'];
                             break;
                         }
                     }
                     
+                    $b->detail_kuota[] = [
+                        'bulan' => $namaBulanIniShort . ' ' . $curr_y,
+                        'sisa' => $sisaBulanIni
+                    ];
+                    
                     if ($sisaBulanIni <= 0) {
                         $semuaTersedia = false;
-                        $b->kuota_penuh_di_bulan = $namaBulanIni;
-                        break;
+                        if (!$b->kuota_penuh_di_bulan) {
+                            $b->kuota_penuh_di_bulan = $namaBulanIni;
+                        }
                     }
                     
                     $curr_m++;
@@ -175,53 +184,50 @@ class C_Verifikasi extends BaseController
         if ($existing && $existing->status_persetujuan !== 'MENUNGGU') {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Keputusan verifikasi sudah final dan tidak dapat diubah. Status saat ini: ' . $existing->status_persetujuan
+                'message' => 'Keputusan verifikasi sudah tersimpan dan tidak dapat diubah. Status saat ini: ' . $existing->status_persetujuan
             ]);
         }
 
-        $fileStatuses = $this->request->getPost('file_status') ?? [];
+        $keputusan = $this->request->getPost('keputusan_verifikasi');
         $id_bidang = $this->request->getPost('id_bidang');
-        $action_type = $this->request->getPost('action_type');
+        $catatanManual = $this->request->getPost('catatan_manual');
 
-        if ($action_type === 'TOLAK') {
-            $overallStatus = 'DITOLAK';
-            $catatan = trim($this->request->getPost('catatan_manual'));
+        // Validasi: keputusan harus dipilih
+        if (empty($keputusan) || !in_array($keputusan, ['DISETUJUI', 'PERBAIKAN_BERKAS', 'DITOLAK'])) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Silakan pilih keputusan verifikasi terlebih dahulu.'
+            ]);
+        }
+
+        $overallStatus = $keputusan;
+        $catatan = '';
+
+        if ($overallStatus === 'DITOLAK') {
+            $catatan = trim($catatanManual ?? '');
             if (empty($catatan)) {
                 return $this->response->setJSON([
-                    'success' => false, 
-                    'message' => 'Catatan penolakan wajib diisi jika menolak permohonan secara permanen!'
+                    'success' => false,
+                    'message' => 'Catatan wajib diisi sebelum menolak permohonan.'
                 ]);
             }
-        } else {
-            $allValid = true;
-            $anyInvalid = false;
-            foreach ($fileStatuses as $status) {
-                if ($status !== 'SESUAI') $allValid = false;
-                if ($status === 'TIDAK_SESUAI') $anyInvalid = true;
-            }
-
-            $overallStatus = $anyInvalid ? 'PERBAIKAN_BERKAS' : 'DISETUJUI';
-            $catatanManual = $this->request->getPost('catatan_manual');
-            
-            if ($overallStatus === 'PERBAIKAN_BERKAS' && empty(trim($catatanManual))) {
+        } elseif ($overallStatus === 'PERBAIKAN_BERKAS') {
+            $catatan = trim($catatanManual ?? '');
+            if (empty($catatan)) {
                 return $this->response->setJSON([
-                    'success' => false, 
-                    'message' => 'Catatan Verifikasi wajib diisi untuk menjelaskan detail berkas yang perlu diperbaiki oleh mahasiswa!'
+                    'success' => false,
+                    'message' => 'Catatan wajib diisi sebelum mengirim perbaikan berkas.'
                 ]);
             }
-
-            if (!empty(trim($catatanManual))) {
-                $catatan = trim($catatanManual);
-            } else {
-                $catatan = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai. Permohonan Anda disetujui dan akan diproses ke tahap selanjutnya.';
-            }
-            // Validasi: Jika semua berkas valid (Disetujui), maka Bidang wajib dipilih
-            if ($overallStatus == 'DISETUJUI' && empty($id_bidang)) {
+        } elseif ($overallStatus === 'DISETUJUI') {
+            // Validasi: Bidang Tujuan wajib dipilih saat Disetujui
+            if (empty($id_bidang)) {
                 return $this->response->setJSON([
-                    'success' => false, 
+                    'success' => false,
                     'message' => 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.'
                 ]);
             }
+            $catatan = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai. Permohonan Anda disetujui dan akan diproses ke tahap selanjutnya.';
         }
 
         $data = [
@@ -233,13 +239,6 @@ class C_Verifikasi extends BaseController
         ];
 
         $result = $this->verifikasiModel->simpanVerifikasi($data);
-
-        // Simpan status verifikasi per-file ke t_file_permohonan_magang
-        foreach ($fileStatuses as $idFile => $status) {
-            $db->table('t_file_permohonan_magang')
-                ->where('id_file_permohonan_magang', $idFile)
-                ->update(['status_verifikasi' => $status]);
-        }
 
         // Jika disetujui dan id_bidang dikirim, langsung proses disposisi
         if ($overallStatus == 'DISETUJUI' && !empty($id_bidang)) {
