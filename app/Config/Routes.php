@@ -46,6 +46,14 @@ $routes->post('pegawai/login/process', 'AuthController::processLoginPegawai');
 $routes->get('logout', 'AuthController::logout');
 
 // =========================================================================
+// Lupa Password Routes (Fitur Reset Password via Email)
+// =========================================================================
+$routes->get('forgot-password', 'AuthController::forgotPassword');
+$routes->post('forgot-password/process', 'AuthController::processForgotPassword');
+$routes->get('reset-password/(:any)', 'AuthController::resetPassword/$1');
+$routes->post('reset-password/process', 'AuthController::processResetPassword');
+
+// =========================================================================
 // API Routes
 // =========================================================================
 $routes->group('api', ['namespace' => '\App\Controllers\Api'], static function ($routes) {

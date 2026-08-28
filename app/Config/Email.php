@@ -4,6 +4,10 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 
+/**
+ * Konfigurasi Email untuk fitur pengiriman email.
+ * Kredensial SMTP dibaca dari file .env untuk keamanan.
+ */
 class Email extends BaseConfig
 {
     public string $fromEmail  = '';
@@ -18,7 +22,7 @@ class Email extends BaseConfig
     /**
      * The mail sending protocol: mail, sendmail, smtp
      */
-    public string $protocol = 'mail';
+    public string $protocol = 'smtp';
 
     /**
      * The server path to Sendmail.
@@ -48,12 +52,12 @@ class Email extends BaseConfig
     /**
      * SMTP Port
      */
-    public int $SMTPPort = 25;
+    public int $SMTPPort = 587;
 
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 5;
+    public int $SMTPTimeout = 10;
 
     /**
      * Enable persistent SMTP connections
@@ -82,7 +86,7 @@ class Email extends BaseConfig
     /**
      * Type of mail, either 'text' or 'html'
      */
-    public string $mailType = 'text';
+    public string $mailType = 'html';
 
     /**
      * Character set (utf-8, iso-8859-1, etc.)
@@ -100,12 +104,12 @@ class Email extends BaseConfig
     public int $priority = 3;
 
     /**
-     * Newline character. (Use “\r\n” to comply with RFC 822)
+     * Newline character. (Use "\r\n" to comply with RFC 822)
      */
     public string $CRLF = "\r\n";
 
     /**
-     * Newline character. (Use “\r\n” to comply with RFC 822)
+     * Newline character. (Use "\r\n" to comply with RFC 822)
      */
     public string $newline = "\r\n";
 
@@ -123,4 +127,21 @@ class Email extends BaseConfig
      * Enable notify message from server
      */
     public bool $DSN = false;
+
+    /**
+     * Constructor: Membaca konfigurasi SMTP dari file .env
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Membaca kredensial SMTP dari .env
+        $this->fromEmail = env('SMTP_FROM_EMAIL', '');
+        $this->fromName  = env('SMTP_FROM_NAME', 'E-Layanan Akademik');
+        $this->SMTPHost  = env('SMTP_HOST', 'smtp.gmail.com');
+        $this->SMTPUser  = env('SMTP_USER', '');
+        $this->SMTPPass  = env('SMTP_PASS', '');
+        $this->SMTPPort  = (int) env('SMTP_PORT', 587);
+        $this->SMTPCrypto = env('SMTP_CRYPTO', 'tls');
+    }
 }

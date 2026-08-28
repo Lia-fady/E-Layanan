@@ -125,9 +125,14 @@ class C_Permohonan extends C_BaseMahasiswa
             ]
         ];
 
+        $action_type = $this->request->getPost('action_type');
+
+        // Jika simpan draft, tidak wajib mengunggah file
+        $is_draft = ($action_type === 'draft');
+
         if ($this->request->getPost('id_jenis_permohonan') !== '2') {
             $rules['cv'] = [
-                'rules'  => 'uploaded[cv]|max_size[cv,2048]|ext_in[cv,pdf]|mime_in[cv,application/pdf]',
+                'rules'  => ($is_draft ? '' : 'uploaded[cv]|') . 'max_size[cv,2048]|ext_in[cv,pdf]|mime_in[cv,application/pdf]',
                 'errors' => [
                     'uploaded' => 'Berkas CV / Proposal wajib diunggah.',
                     'max_size' => 'Ukuran CV / Proposal terlalu besar, maksimal 2MB.',
@@ -135,6 +140,20 @@ class C_Permohonan extends C_BaseMahasiswa
                     'mime_in'  => 'Berkas CV / Proposal terdeteksi bukan file PDF asli.'
                 ]
             ];
+        }
+
+        // Modifikasi rule untuk surat_pengantar dan ktm berdasarkan is_draft
+        if ($is_draft) {
+            $rules['surat_pengantar']['rules'] = 'max_size[surat_pengantar,2048]|ext_in[surat_pengantar,pdf]|mime_in[surat_pengantar,application/pdf]';
+            $rules['ktm']['rules'] = 'max_size[ktm,2048]|ext_in[ktm,pdf,jpg,jpeg,png]|mime_in[ktm,application/pdf,image/jpeg,image/png]';
+            
+            // Draft juga tidak mewajibkan tanggal dan teks jika belum diisi,
+            // tapi karena aturan ini di form bisa required, lebih aman dilepas requirement nya untuk draft.
+            $rules['id_jenis_permohonan']['rules'] = 'permit_empty';
+            $rules['deskripsi_keahlian']['rules'] = 'permit_empty';
+            $rules['deskripsi']['rules'] = 'permit_empty';
+            $rules['tgl_mulai']['rules'] = 'permit_empty';
+            $rules['tgl_selesai']['rules'] = 'permit_empty';
         }
 
         if (!$this->validate($rules)) {
