@@ -38,6 +38,7 @@ $routes->get('landing', 'Home::index');
 
 $routes->get('register', 'AuthController::register');
 $routes->post('register/process', 'AuthController::processRegister');
+$routes->post('api/check-unique', 'AuthController::checkUniqueField'); // Endpoint AJAX Validasi
 
 $routes->get('login', 'AuthController::login');
 $routes->post('login/process', 'AuthController::processLogin');

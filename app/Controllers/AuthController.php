@@ -758,6 +758,49 @@ class AuthController extends BaseController
     }
 
     /**
+     * Endpoint API untuk mengecek keunikan field via AJAX di form registrasi.
+     * Mengembalikan Response JSON: {"status": "available" | "taken"}
+     */
+    public function checkUniqueField()
+    {
+        $field = $this->request->getPost('field');
+        $value = $this->request->getPost('value');
+
+        if (empty($field) || empty($value)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid parameters']);
+        }
+
+        $isTaken = false;
+
+        switch ($field) {
+            case 'nik':
+                $cek = $this->mahasiswaModel->where('nik', $value)->first();
+                if ($cek) $isTaken = true;
+                break;
+            case 'nim':
+                $cek = $this->mahasiswaModel->where('nim', $value)->first();
+                if ($cek) $isTaken = true;
+                break;
+            case 'email':
+                $cek = $this->mahasiswaModel->where('email', $value)->first();
+                if ($cek) $isTaken = true;
+                break;
+            case 'username':
+                $cek = $this->userMahasiswaModel->where('username', $value)->first();
+                if ($cek) $isTaken = true;
+                break;
+            default:
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Unknown field']);
+        }
+
+        if ($isTaken) {
+            return $this->response->setJSON(['status' => 'taken']);
+        } else {
+            return $this->response->setJSON(['status' => 'available']);
+        }
+    }
+
+    /**
      * Mengirimkan email reset password menggunakan layanan email CI4.
      * Method private, hanya dipanggil dari processForgotPassword().
      *

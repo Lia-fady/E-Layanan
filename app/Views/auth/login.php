@@ -481,8 +481,8 @@
         <div class="panel-hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-bar"></div>
-            <h2 class="hero-title">Membangun Kompetensi<br>Untuk Negeri.</h2>
-            <p class="hero-subtitle">Jadilah bagian dari perjalanan kemajuan tata kelola teknologi informasi Indonesia melalui program magang yang berintegritas dan profesional di Dinas Kominfo Kota Tangerang.</p>
+            <h2 class="hero-title">Kembangkan Potensi, Raih Pengalaman.</h2>
+            <p class="hero-subtitle">Pusat layanan digital terintegrasi untuk segala kebutuhan akademik Anda. Nikmati kemudahan akses, ajukan permohonan dengan cepat, dan pantau seluruh prosesnya secara transparan dalam satu sistem.</p>
         </div>
     </div>
 

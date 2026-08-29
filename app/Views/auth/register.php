@@ -112,6 +112,7 @@
             margin-top: 4px;
         }
         .field textarea { resize: none; }
+        .field-row { display: flex; gap: 16px; align-items: flex-start; }
 
         /* Radio Buttons */
         .radio-group {
@@ -481,11 +482,12 @@
                     <input type="text" name="rw" id="rw" placeholder="Contoh: 002" value="<?= old('rw') ?>" required maxlength="3" oninput="this.value=this.value.replace(/\D/g,'')" class="<?= isset($ve['rw']) ? 'err' : '' ?>">
                     <?php if(isset($ve['rw'])): ?><div class="err-msg"><?= $ve['rw'] ?></div><?php endif; ?>
                 </div>
-                <div class="field" style="flex:3;">
-                    <label>Detail Alamat <span class="req">*</span></label>
-                    <input type="text" name="alamat" id="alamat" placeholder="Masukan Detail Alamat" value="<?= old('alamat') ?>" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>">
-                    <?php if(isset($ve['alamat'])): ?><div class="err-msg"><?= $ve['alamat'] ?></div><?php endif; ?>
-                </div>
+            </div>
+
+            <div class="field">
+                <label>Detail Alamat <span class="req">*</span></label>
+                <textarea name="alamat" id="alamat" rows="3" placeholder="Masukkan Detail Alamat (Nama Jalan, No. Rumah, dll)" required maxlength="255" class="<?= isset($ve['alamat']) ? 'err' : '' ?>"><?= old('alamat') ?></textarea>
+                <?php if(isset($ve['alamat'])): ?><div class="err-msg"><?= $ve['alamat'] ?></div><?php endif; ?>
             </div>
 
             <div class="btn-row">
@@ -534,7 +536,7 @@
             </div>
 
 
-            <button type="button" class="btn-register" id="btnDaftar" onclick="submitReg()">Daftar Akun</button>
+            <button type="button" class="btn-register" id="btnDaftar" onclick="submitReg()">Daftar </button>
 
             <div class="btn-row" style="border:none; margin-top:12px; padding-top:0;">
                 <button type="button" class="btn-back" onclick="go(3)">Kembali</button>
@@ -646,8 +648,54 @@ function triggerJenjang() {
 }
 
 // Stepper Flow
-function go(t) {
-    if (t > cur && !vStep(cur)) return;
+async function go(t) {
+    if (t > cur) {
+        if (!vStep(cur)) return;
+        
+        // AJAX Validation
+        var btn = document.querySelector('#step' + cur + ' .btn-next');
+        if (btn) btn.disabled = true; // Hanya disable tombol sementara agar tidak dobel klik
+
+        try {
+            if (cur === 1) {
+                var nik = document.getElementById('nik').value;
+                var email = document.getElementById('email').value;
+                
+                // Menjalankan pengecekan NIK dan Email secara bersamaan (paralel)
+                var [resNik, resEmail] = await Promise.all([
+                    checkUnique('nik', nik),
+                    checkUnique('email', email)
+                ]);
+
+                var hasError = false;
+                if (resNik.status === 'taken') { 
+                    mErr(document.getElementById('nik'), 'NIK ini sudah terdaftar di sistem.'); 
+                    hasError = true; 
+                }
+                if (resEmail.status === 'taken') { 
+                    mErr(document.getElementById('email'), 'Alamat email ini sudah terdaftar.'); 
+                    hasError = true; 
+                }
+                
+                if (hasError) throw new Error('taken');
+            } else if (cur === 2) {
+                // Check NIM
+                var nim = document.getElementById('nim').value;
+                if (nim) {
+                    var resNim = await checkUnique('nim', nim);
+                    if (resNim.status === 'taken') { mErr(document.getElementById('nim'), 'Nomor Induk (NIM/NISN) ini sudah terdaftar.'); throw new Error('taken'); }
+                }
+            }
+        } catch (e) {
+            if (btn) btn.disabled = false;
+            var fe = document.querySelector('#step' + cur + ' .err');
+            if(fe) fe.scrollIntoView({behavior:'smooth',block:'center'});
+            return;
+        }
+
+        if (btn) btn.disabled = false;
+    }
+
     document.querySelectorAll('.step-panel').forEach(function(p){ p.classList.remove('on'); });
     document.getElementById('step'+t).classList.add('on');
     // Update dots
@@ -663,6 +711,17 @@ function go(t) {
     cur = t;
     if (t===4) review_data();
     window.scrollTo({top:0, behavior:'smooth'});
+}
+
+async function checkUnique(field, value) {
+    const formData = new FormData();
+    formData.append('field', field);
+    formData.append('value', value);
+    const res = await fetch('<?= base_url("api/check-unique") ?>', {
+        method: 'POST',
+        body: formData
+    });
+    return await res.json();
 }
 
 // Validation per Step
@@ -800,7 +859,7 @@ function review_data() {
     document.getElementById('reviewContent').innerHTML = h;
 }
 // Final Submit
-function submitReg() {
+async function submitReg() {
     var panel=document.getElementById('step4'); var ok=true;
     panel.querySelectorAll('.fe-err').forEach(function(e){e.remove();});
     
@@ -826,6 +885,24 @@ function submitReg() {
     }
 
     if(!ok){var fe=panel.querySelector('.err');if(fe)fe.scrollIntoView({behavior:'smooth',block:'center'});return;}
+
+    // AJAX Username Check
+    var btn = document.getElementById('btnDaftar');
+    btn.disabled = true; // Hanya disable sementara
+
+    try {
+        var resUser = await checkUnique('username', user.value.trim());
+        if (resUser.status === 'taken') { 
+            mErr(user, 'Username ini sudah digunakan oleh orang lain.'); 
+            throw new Error('taken'); 
+        }
+    } catch (e) {
+        btn.disabled = false;
+        user.scrollIntoView({behavior:'smooth',block:'center'});
+        return;
+    }
+
+    btn.disabled = false;
 
     Swal.fire({
         title:'Konfirmasi Pendaftaran',

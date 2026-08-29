@@ -174,15 +174,27 @@ if(session()->getFlashdata('permohonan_sent')):
         </div>
 
         <?php if (!isset($permohonan_aktif) || $permohonan_aktif['status_persetujuan'] !== 'PERBAIKAN_BERKAS'): ?>
+        <?php
+            // Mapping deskripsi layanan berdasarkan nama jenis permohonan
+            $deskripsi_layanan = [
+                'Skripsi / Tugas Akhir' => 'Penelitian untuk tugas akhir mahasiswa tingkat akhir.',
+                'Observasi / Pengambilan Data' => 'Kunjungan lapangan untuk keperluan tugas mata kuliah.',
+                'Magang' => 'Magang kerja industri bagi Mahasiswa.',
+                'Praktik Kerja Lapangan (PKL)' => 'Praktik kerja bagi Siswa SMK.',
+                'Uji Coba Aplikasi Produk' => 'Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.'
+            ];
+        ?>
         <!-- FAQ / Panduan Jenis Permohonan -->
         <div class="mb-4" style="background-color: #fef9c3; border-radius: 4px; padding: 16px 20px;">
             <div class="fw-bold mb-2" style="font-size:0.9rem; color: #854d0e;">Informasi Layanan Akademik :</div>
             <ul class="mb-0 ps-3" style="font-size:0.85rem; line-height:1.8; color: #713f12;">
-                <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
-                <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
-                <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>
-                <li><strong>Praktik Kerja Lapangan (PKL):</strong> Praktik kerja bagi Siswa SMK.</li>
-                <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
+                <?php if(!empty($jenis_permohonan)): ?>
+                    <?php foreach($jenis_permohonan as $jp): ?>
+                        <li><strong><?= esc($jp['jenis_permohonan']) ?>:</strong> <?= isset($deskripsi_layanan[$jp['jenis_permohonan']]) ? $deskripsi_layanan[$jp['jenis_permohonan']] : 'Layanan akademik Dinas Kominfo.' ?></li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>Belum ada layanan yang tersedia untuk jenjang pendidikan Anda.</li>
+                <?php endif; ?>
             </ul>
         </div>
         <?php endif; ?>
@@ -281,6 +293,17 @@ if(session()->getFlashdata('permohonan_sent')):
             Unggah dokumen dalam format <strong>PDF</strong>, ukuran maksimal <strong>2 MB</strong> per file.
         </p>
 
+        <!-- Info Box -->
+        <div class="info-box mb-4">
+            <div class="fw-semibold text-dark mb-2" style="font-size:0.84rem;"><i class="bi bi-info-circle text-primary me-1"></i> Persyaratan Berkas</div>
+            <ul id="info-panduan-list" class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
+                <li>Surat pengantar menggunakan kop resmi kampus dan ditandatangani pejabat berwenang</li>
+                <li>CV mencantumkan data diri, program studi, semester, dan keahlian teknis</li>
+                <li>Khusus <strong>Penelitian / TA</strong> — wajib lampirkan Proposal / Sinopsis</li>
+                <li>Pastikan file tidak terproteksi kata sandi (password-protected)</li>
+            </ul>
+        </div>
+
         <!-- Upload: Surat Pengantar -->
         <div class="mb-4 position-relative">
             <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi <span class="text-danger">*</span></label>
@@ -327,17 +350,6 @@ if(session()->getFlashdata('permohonan_sent')):
                 </div>
             </div>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF, JPG, PNG | Maksimal ukuran: 2 MB</div>
-        </div>
-
-        <!-- Info Box -->
-        <div class="info-box mb-4">
-            <div class="fw-semibold text-dark mb-2" style="font-size:0.84rem;"><i class="bi bi-info-circle text-primary me-1"></i> Panduan Dokumen</div>
-            <ul id="info-panduan-list" class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
-                <li>Surat pengantar menggunakan kop resmi kampus dan ditandatangani pejabat berwenang</li>
-                <li>CV mencantumkan data diri, program studi, semester, dan keahlian teknis</li>
-                <li>Khusus <strong>Penelitian / TA</strong> — wajib lampirkan Proposal / Sinopsis</li>
-                <li>Pastikan file tidak terproteksi kata sandi (password-protected)</li>
-            </ul>
         </div>
 
         <!-- NAV -->
