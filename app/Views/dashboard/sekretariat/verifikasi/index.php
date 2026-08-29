@@ -101,29 +101,6 @@ $(document).ready(function() {
     table.draw();
     $('#tabelVerifikasi_filter').hide();
 
-    // Fungsi untuk mengecek apakah semua berkas Valid
-    function checkValidasiBerkas() {
-        var allValid = true;
-        // Cari semua input hidden yang menyimpan status file
-        $('input[name^="file_status"]').each(function() {
-            if ($(this).val() !== 'SESUAI') {
-                allValid = false;
-            }
-        });
-
-        var bidangDropdown = $('#id_bidang');
-        // Jangan enable jika dropdown sudah di-disabled dari server (isLocked)
-        if (!bidangDropdown.data('locked')) {
-            if (allValid && $('input[name^="file_status"]').length > 0) {
-                bidangDropdown.prop('disabled', false);
-            } else {
-                bidangDropdown.prop('disabled', true);
-                bidangDropdown.val(''); // Reset pilihan
-                $('#info_kuota_bidang').hide();
-            }
-        }
-    }
-
     // Transisi Buka Detail
     $(document).on('click', '.btn-verifikasi-detail', function() {
         var id = $(this).data('id');
@@ -141,13 +118,6 @@ $(document).ready(function() {
             },
             success: function(response) {
                 $('#detailContainer').html(response);
-                // Set flag locked di element select jika ada attribute disabled bawaan dari server
-                if ($('#id_bidang').is(':disabled')) {
-                    $('#id_bidang').data('locked', true);
-                } else {
-                    $('#id_bidang').data('locked', false);
-                }
-                checkValidasiBerkas(); // Cek saat pertama kali diload
             },
             error: function() {
                 $('#detailContainer').html('');
@@ -176,12 +146,6 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     $('#detailContainer').html(response);
-                    if ($('#id_bidang').is(':disabled')) {
-                        $('#id_bidang').data('locked', true);
-                    } else {
-                        $('#id_bidang').data('locked', false);
-                    }
-                    checkValidasiBerkas();
                 },
                 error: function() {
                     $('#detailContainer').html('');
@@ -200,28 +164,93 @@ $(document).ready(function() {
         $('#sectionList').show();
     });
 
-    // Submit form verifikasi via AJAX
-    $(document).on('submit', '#formVerifikasiDetail', function(e) {
+    // Handler tombol aksi keputusan
+    $(document).on('click', '#btnAksiKeputusan', function(e) {
         e.preventDefault();
-        
-        var form = $(this);
-        
-        // Reset action_type if submitting via default button
-        if ($('#action_type').val() !== 'TOLAK') {
-            $('#action_type').val('');
+
+        var keputusan = $('#keputusan_verifikasi').val();
+        var catatan = $('#catatan_manual').val() ? $('#catatan_manual').val().trim() : '';
+        var actionType = $('#action_type').val();
+
+        // Validasi: belum memilih keputusan
+        if (!keputusan) {
+            Swal.fire({
+                title: 'Belum Lengkap',
+                text: 'Silakan pilih keputusan verifikasi terlebih dahulu.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
         }
 
-        Swal.fire({
-            title: $('#action_type').val() === 'TOLAK' ? 'Tolak Permohonan?' : 'Simpan Hasil Verifikasi?',
-            text: $('#action_type').val() === 'TOLAK' ? "Permohonan ini akan ditolak secara permanen dan tindakan ini tidak dapat dibatalkan." : "Pastikan seluruh data verifikasi sudah sesuai sebelum disimpan.",
-            icon: $('#action_type').val() === 'TOLAK' ? 'warning' : 'question',
-            showCancelButton: true,
-            confirmButtonColor: $('#action_type').val() === 'TOLAK' ? '#d33' : '#3085d6',
-            cancelButtonColor: '#aaa',
-            confirmButtonText: $('#action_type').val() === 'TOLAK' ? 'Tolak Permohonan' : 'Simpan',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
+        // Validasi: Perbaikan Berkas tanpa catatan
+        if (keputusan === 'PERBAIKAN_BERKAS' && catatan === '') {
+            Swal.fire({
+                title: 'Catatan Wajib',
+                text: 'Catatan wajib diisi sebelum mengirim perbaikan berkas.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Validasi: Ditolak tanpa catatan
+        if (keputusan === 'DITOLAK' && catatan === '') {
+            Swal.fire({
+                title: 'Catatan Wajib',
+                text: 'Catatan wajib diisi sebelum menolak permohonan.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Validasi: Disetujui tanpa bidang tujuan
+        if (keputusan === 'DISETUJUI' && !$('#id_bidang').val()) {
+            Swal.fire({
+                title: 'Belum Lengkap',
+                text: 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+
+        // Konfigurasi konfirmasi berdasarkan keputusan
+        var swalConfig = {};
+        if (keputusan === 'DISETUJUI') {
+            swalConfig = {
+                title: 'Setujui Permohonan?',
+                text: 'Permohonan akan disetujui dan diteruskan ke bidang tujuan yang dipilih.',
+                icon: 'question',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Setujui'
+            };
+        } else if (keputusan === 'PERBAIKAN_BERKAS') {
+            swalConfig = {
+                title: 'Kirim Perbaikan?',
+                text: 'Catatan perbaikan akan dikirimkan kepada pemohon.',
+                icon: 'question',
+                confirmButtonColor: '#f59e0b',
+                confirmButtonText: 'Kirim Perbaikan'
+            };
+        } else if (keputusan === 'DITOLAK') {
+            swalConfig = {
+                title: 'Tolak Permohonan?',
+                text: 'Permohonan ini akan ditolak dan tindakan ini tidak dapat dibatalkan.',
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Tolak Permohonan'
+            };
+        }
+
+        swalConfig.showCancelButton = true;
+        swalConfig.cancelButtonColor = '#aaa';
+        swalConfig.cancelButtonText = 'Batal';
+
+        Swal.fire(swalConfig).then((result) => {
             if (result.isConfirmed) {
+                var form = $('#formVerifikasiDetail');
                 $.ajax({
                     url: form.attr('action'),
                     type: form.attr('method'),
@@ -234,64 +263,13 @@ $(document).ready(function() {
                         } else {
                             Swal.fire('Gagal!', response.message, 'error');
                         }
-                        $('#action_type').val(''); // Reset
                     },
                     error: function() {
                         Swal.fire('Error!', 'Terjadi kesalahan sistem saat menyimpan keputusan.', 'error');
-                        $('#action_type').val(''); // Reset
                     }
                 });
-            } else {
-                $('#action_type').val(''); // Reset if cancelled
             }
         });
-    });
-
-    // Handle button Tolak Permohonan
-    $(document).on('click', '#btnTolakMutlak', function() {
-        var catatan = $('#catatan_manual').val().trim();
-        if (catatan === '') {
-            Swal.fire('Perhatian!', 'Catatan Tambahan wajib diisi jika Anda ingin menolak permohonan secara permanen.', 'warning');
-            return;
-        }
-        $('#action_type').val('TOLAK');
-        $('#formVerifikasiDetail').submit();
-    });
-
-    // Set file validitas toggle checkbox classes in detail
-    $(document).on('change', '.cb-sesuai, .cb-tidak-sesuai', function() {
-        var checkbox = $(this);
-        var id = checkbox.data('id');
-        var isSesuai = checkbox.hasClass('cb-sesuai');
-        var isChecked = checkbox.is(':checked');
-        
-        var hiddenInput = $('input[name="file_status[' + id + ']"]');
-        var cbSesuai = $('#cb_sesuai_' + id);
-        var cbTidakSesuai = $('#cb_tdk_sesuai_' + id);
-        var labelSesuai = $('label[for="cb_sesuai_' + id + '"]');
-        var labelTidakSesuai = $('label[for="cb_tdk_sesuai_' + id + '"]');
-
-        if (!isChecked) {
-            // Prevent unchecking if the other is not checked (must pick one)
-            // Or allow unchecking to reset? Let's allow reset to empty string
-            hiddenInput.val('');
-            labelSesuai.css('color', '#6c757d');
-            labelTidakSesuai.css('color', '#6c757d');
-        } else {
-            if (isSesuai) {
-                hiddenInput.val('SESUAI');
-                cbTidakSesuai.prop('checked', false);
-                labelSesuai.css('color', '#28a745');
-                labelTidakSesuai.css('color', '#6c757d');
-            } else {
-                hiddenInput.val('TIDAK_SESUAI');
-                cbSesuai.prop('checked', false);
-                labelTidakSesuai.css('color', '#dc3545');
-                labelSesuai.css('color', '#6c757d');
-            }
-        }
-        
-        checkValidasiBerkas();
     });
 
     // Handle Tolak Cepat dari tabel
