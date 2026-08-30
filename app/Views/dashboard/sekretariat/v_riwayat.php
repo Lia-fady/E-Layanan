@@ -146,7 +146,7 @@
                     $status_penempatan = $row->status_penempatan ?? null;
 
                     if ($status == 'DISETUJUI') {
-                        if ($status_penempatan == 'BERJALAN') {
+                        if ($status_penempatan == 'BERJALAN' || $status_penempatan == 'DISETUJUI') {
                             $badgeClass = 'sudah-ditempatkan';
                             $statusText = 'Sudah Ditempatkan';
                             $filterValue = 'SUDAH_DITEMPATKAN';

@@ -78,12 +78,16 @@
                                 <td class="text-center">
                                     <?php if ($row['status_penempatan'] === null) : ?>
                                         <span>-</span>
+                                    <?php elseif ($row['status_penempatan'] === 'DISETUJUI') : ?>
+                                        <span class="badge badge-primary">DISETUJUI</span>
                                     <?php elseif ($row['status_penempatan'] === 'BERJALAN') : ?>
                                         <span class="badge badge-info">BERJALAN</span>
                                     <?php elseif ($row['status_penempatan'] === 'SELESAI') : ?>
                                         <span class="badge badge-success">SELESAI</span>
+                                    <?php elseif ($row['status_penempatan'] === 'DITOLAK') : ?>
+                                        <span class="badge badge-danger">DITOLAK</span>
                                     <?php elseif ($row['status_penempatan'] === 'DIBATALKAN') : ?>
-                                        <span class="badge badge-danger">DIBATALKAN</span>
+                                        <span class="badge badge-warning">DIBATALKAN</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>

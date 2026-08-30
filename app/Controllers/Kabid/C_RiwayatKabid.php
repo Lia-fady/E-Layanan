@@ -24,9 +24,12 @@ class C_RiwayatKabid extends BaseController
             ->getRow();
 
         $id_bidang = $user->id_bidang ?? null;
+
+        // Lazy check: Update status otomatis berdasarkan tanggal
+        $this->penempatanModel->updateStatusOtomatis($id_bidang);
         
-        // Ambil semua penempatan yang BUKAN menunggu
-        $penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang, ['BERJALAN', 'SELESAI', 'DITOLAK', 'DIBATALKAN']);
+        // Ambil semua penempatan yang BUKAN menunggu (termasuk DISETUJUI dan DITOLAK)
+        $penempatan = $this->penempatanModel->getSemuaPenempatan($id_bidang, ['DISETUJUI', 'BERJALAN', 'SELESAI', 'DITOLAK', 'DIBATALKAN']);
         
         // Ambil data file untuk masing-masing permohonan (jika dibutuhkan di list)
         foreach ($penempatan as $p) {
@@ -72,5 +75,37 @@ class C_RiwayatKabid extends BaseController
         ];
 
         return view('dashboard/kabid/riwayat/index', $data);
+    }
+
+    /**
+     * Proses batalkan penempatan (saat status DISETUJUI atau BERJALAN).
+     * Mahasiswa mengundurkan diri — status final DIBATALKAN.
+     */
+    public function batalkan()
+    {
+        $id_penempatan = $this->request->getPost('id_penempatan_magang');
+        $catatan = $this->request->getPost('catatan_batalkan')
+            ?? $this->request->getPost('catatan_keputusan')
+            ?? 'Dibatalkan oleh Kepala Bidang';
+
+        $result = $this->penempatanModel->batalkanPenempatan(
+            $id_penempatan,
+            $catatan,
+            session('id_user_pegawai')
+        );
+
+        if ($result) {
+            $db = \Config\Database::connect();
+            $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
+            $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
+            
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Kegiatan Dibatalkan', 'Kegiatan dibatalkan. Catatan: ' . $catatan);
+            
+            session()->setFlashdata('success', 'Kegiatan berhasil dibatalkan.');
+        } else {
+            session()->setFlashdata('error', 'Gagal membatalkan kegiatan. Pastikan status penempatan masih Disetujui atau Berjalan.');
+        }
+
+        return redirect()->back();
     }
 }

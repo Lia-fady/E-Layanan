@@ -192,7 +192,7 @@ class C_DisposisiMasuk extends BaseController
             
             catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Disetujui', "Permohonan telah disetujui oleh Kepala Bidang.");
             
-            session()->setFlashdata('success', 'Penempatan berhasil disetujui. Mahasiswa sekarang aktif kegiatan.');
+            session()->setFlashdata('success', 'Permohonan berhasil disetujui. Kegiatan akan dimulai sesuai tanggal yang diajukan.');
         } else {
             session()->setFlashdata('error', 'Gagal menyetujui penempatan.');
         }
@@ -223,9 +223,9 @@ class C_DisposisiMasuk extends BaseController
             $db = \Config\Database::connect();
             $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
             $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
-            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Ditolak', 'Permohonan tidak dapat disetujui oleh Kepala Bidang. Catatan: ' . $catatan);
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Ditolak Bidang', 'Permohonan tidak dapat diterima oleh Bidang. Catatan: ' . $catatan);
             
-            session()->setFlashdata('success', 'Penempatan dibatalkan.');
+            session()->setFlashdata('success', 'Penempatan ditolak. Permohonan dikembalikan ke Sekretariat untuk disposisi ulang.');
         } else {
             session()->setFlashdata('error', 'Gagal menolak penempatan.');
         }

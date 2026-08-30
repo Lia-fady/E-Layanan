@@ -184,6 +184,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('disposisi/selesaikan', '\App\Controllers\Kabid\C_DisposisiMasuk::selesaikan');
 
     $routes->match(['get', 'post'], 'riwayat', '\App\Controllers\Kabid\C_RiwayatKabid::index');
+    $routes->post('riwayat/batalkan', '\App\Controllers\Kabid\C_RiwayatKabid::batalkan');
 
     // 2. Logbook (Approval)
     // 2. Logbook (Approval)

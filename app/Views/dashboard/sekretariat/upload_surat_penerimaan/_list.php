@@ -74,14 +74,18 @@
                                     <?= $mulai ?> s/d <?= $selesai ?>
                                 </td>
                                 <td class="text-center">
-                                    <?php if (($p->status_penempatan ?? 'MENUNGGU') === 'BERJALAN') : ?>
+                                    <?php if (($p->status_penempatan ?? 'MENUNGGU') === 'DISETUJUI') : ?>
+                                        <span class="badge badge-primary">DISETUJUI</span>
+                                    <?php elseif (($p->status_penempatan ?? 'MENUNGGU') === 'BERJALAN') : ?>
                                         <span class="badge badge-success">BERJALAN</span>
                                     <?php elseif (($p->status_penempatan ?? 'MENUNGGU') === 'MENUNGGU') : ?>
                                         <span class="badge badge-warning">MENUNGGU</span>
                                     <?php elseif (($p->status_penempatan ?? 'MENUNGGU') === 'SELESAI') : ?>
                                         <span class="badge badge-info">SELESAI</span>
+                                    <?php elseif (($p->status_penempatan ?? 'MENUNGGU') === 'DITOLAK') : ?>
+                                        <span class="badge badge-danger">DITOLAK</span>
                                     <?php else : ?>
-                                        <span class="badge badge-danger"><?= esc($p->status_penempatan ?? 'DIBATALKAN') ?></span>
+                                        <span class="badge badge-secondary"><?= esc($p->status_penempatan ?? 'DIBATALKAN') ?></span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">

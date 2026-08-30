@@ -61,9 +61,9 @@ class C_Dashboard extends BaseController
             ->groupEnd()
             ->countAllResults();
 
-        // 5. Mahasiswa Aktif (dari t_penempatan_magang WHERE status_penempatan = 'BERJALAN')
+        // 5. Mahasiswa Aktif (dari t_penempatan_magang WHERE status_penempatan IN ('DISETUJUI', 'BERJALAN'))
         $total_mahasiswa_aktif = $db->table('t_penempatan_magang')
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->countAllResults();
 
         // ============================================================

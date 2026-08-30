@@ -74,7 +74,7 @@
                 <div class="stat-title mt-3">Pemohon Aktif</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $total_berjalan ?></div>
-                    <div class="stat-desc">Sedang berjalan</div>
+                    <div class="stat-desc">Disetujui / Berjalan</div>
                 </div>
             </div>
         </div>

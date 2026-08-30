@@ -140,6 +140,7 @@
     }
     .badge-solid.draft { background: #94a3b8; }
     .badge-solid.pending { background: #f59e0b; }
+    .badge-solid.revision { background: #8b5cf6; } /* Purple for Perbaikan */
     .badge-solid.approved { background: #3b82f6; }
     .badge-solid.success { background: #10b981; }
     .badge-solid.rejected { background: #ef4444; }
@@ -345,10 +346,12 @@
                             <option value="">Semua Status</option>
                             <option value="Draft">Draft</option>
                             <option value="Menunggu">Menunggu</option>
-                            <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                            <option value="Perbaikan">Perlu Perbaikan</option>
                             <option value="Disetujui">Disetujui</option>
+                            <option value="Berjalan">Berjalan</option>
                             <option value="Selesai">Selesai</option>
                             <option value="Ditolak">Ditolak</option>
+                            <option value="Dibatalkan">Dibatalkan</option>
                         </select>
                         <div class="d-flex align-items-center gap-2 ms-md-2 mt-2 mt-md-0">
                             <span class="small text-muted fw-medium">Cari:</span>
@@ -401,10 +404,16 @@
                                     } elseif ($p['status_persetujuan'] == 'DITOLAK') {
                                         $badgeClass = 'rejected'; $statusText = 'Ditolak';
                                     } elseif ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS') {
-                                        $badgeClass = 'pending'; $statusText = 'Perbaikan';
+                                        $badgeClass = 'revision'; $statusText = 'Perbaikan';
                                     } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'SELESAI') {
                                         $badgeClass = 'success'; $statusText = 'Selesai';
-                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU' && $p['status_penempatan'] != 'DIBATALKAN' && $p['status_penempatan'] != '0') {
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DIBATALKAN') {
+                                        $badgeClass = 'rejected'; $statusText = 'Dibatalkan';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DITOLAK') {
+                                        $badgeClass = 'pending'; $statusText = 'Menunggu'; // Ditolak bidang = menunggu disposisi ulang
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'BERJALAN') {
+                                        $badgeClass = 'approved'; $statusText = 'Berjalan';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DISETUJUI') {
                                         $badgeClass = 'approved'; $statusText = 'Disetujui';
                                     }
                             ?>

@@ -46,7 +46,7 @@ class C_DashboardKabid extends BaseController
 
         // Hitung penempatan berjalan
         $total_berjalan = $db->table('t_penempatan_magang')
-            ->where('status_penempatan', 'BERJALAN');
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN']);
         if ($id_bidang) {
             $total_berjalan->where('id_bidang', $id_bidang);
         }

@@ -28,6 +28,10 @@ class C_BaseMahasiswa extends BaseController
     {
         $db = \Config\Database::connect();
 
+        // Lazy check: Update status otomatis berdasarkan tanggal
+        $penempatanModel = new \App\Models\Kabid\M_Penempatan();
+        $penempatanModel->updateStatusOtomatis();
+
         $permohonan = $db->table('t_permohonan_magang')
             ->select('t_permohonan_magang.*, t_persetujuan_magang.id_persetujuan_magang, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.disposisi, t_persetujuan_magang.catatan as catatan_persetujuan, t_penempatan_magang.status_penempatan, t_penempatan_magang.is_log_book, t_penempatan_magang.catatan as catatan_penempatan')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
@@ -47,7 +51,7 @@ class C_BaseMahasiswa extends BaseController
                 $state = 1;
             } else {
                 if ($permohonan['status_persetujuan'] == 'DITOLAK') {
-                    $state = 1; 
+                    $state = 7; 
                     $catatan = $permohonan['catatan_persetujuan'];
                 } elseif ($permohonan['status_persetujuan'] == 'PERBAIKAN_BERKAS') {
                     $state = 6; 
@@ -60,7 +64,11 @@ class C_BaseMahasiswa extends BaseController
                         if ($permohonan['status_penempatan'] == 'SELESAI') {
                             $state = 5; 
                         } elseif ($permohonan['status_penempatan'] == 'DIBATALKAN') {
-                            $state = 2; 
+                            $state = 1; // Dibatalkan = final, mahasiswa bisa ajukan permohonan baru
+                        } elseif ($permohonan['status_penempatan'] == 'DITOLAK') {
+                            $state = 2; // Ditolak bidang = menunggu disposisi ulang oleh Sekretariat
+                        } elseif ($permohonan['status_penempatan'] == 'DISETUJUI') {
+                            $state = 3; // Disetujui, menunggu tanggal mulai kegiatan
                         } else {
                             $state = 4; // BERJALAN
                         }
