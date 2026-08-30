@@ -628,18 +628,18 @@
                 <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
                     <div class="alert-card alert-info mb-3">
                         <i class="bi bi-diagram-3-fill alert-icon"></i>
-                        <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
+                        <div>Berkas permohonan Anda telah diverifikasi dan saat ini sedang dalam <strong>tahap persetujuan dan penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php else: ?>
                     <div class="alert-card alert-warning mb-3">
                         <i class="bi bi-building alert-icon"></i>
-                        <div>Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat.</div>
+                        <div>Berkas permohonan Anda telah dinyatakan valid dan saat ini sedang dalam <strong>proses penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php endif; ?>
             <?php else: ?>
                 <div class="alert-card alert-warning mb-3">
                     <i class="bi bi-clock-history alert-icon"></i>
-                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong> oleh Sekretariat. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
+                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong>. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
                 </div>
             <?php endif; ?>
 
