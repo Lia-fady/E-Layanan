@@ -234,11 +234,60 @@ class C_DisposisiMasuk extends BaseController
     }
 
     /**
+     * Simpan tanggal penetapan magang (hanya Bidang Pengembangan E-Gov).
+     * Endpoint AJAX POST.
+     *
+     * @return \CodeIgniter\HTTP\Response
+     */
+    public function simpanTglPenetapan()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['error' => true, 'message' => 'Forbidden']);
+        }
+
+        $id_penempatan   = $this->request->getPost('id_penempatan_magang');
+        $tgl_penetapan   = $this->request->getPost('tgl_penetapan_magang');
+
+        if (empty($id_penempatan) || empty($tgl_penetapan)) {
+            return $this->response->setJSON(['error' => true, 'message' => 'Data tidak lengkap.']);
+        }
+
+        // Validasi format tanggal
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $tgl_penetapan)) {
+            return $this->response->setJSON(['error' => true, 'message' => 'Format tanggal tidak valid.']);
+        }
+
+        $db = \Config\Database::connect();
+        $result = $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->update([
+                'tgl_penetapan_magang' => $tgl_penetapan,
+                'updated_at'           => date('Y-m-d H:i:s'),
+            ]);
+
+        if ($result) {
+            // Format tanggal ke bahasa Indonesia
+            $bulan = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            $ts    = strtotime($tgl_penetapan);
+            $tglFormatted = (int)date('d', $ts) . ' ' . $bulan[(int)date('m', $ts)] . ' ' . date('Y', $ts);
+
+            return $this->response->setJSON([
+                'error'          => false,
+                'message'        => 'Tanggal penetapan berhasil disimpan.',
+                'tgl_formatted'  => $tglFormatted,
+            ]);
+        }
+
+        return $this->response->setJSON(['error' => true, 'message' => 'Gagal menyimpan tanggal penetapan.']);
+    }
+
+    /**
      * Proses selesaikan magang.
      * Mengubah status menjadi SELESAI.
      *
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
+
     public function selesaikan()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');

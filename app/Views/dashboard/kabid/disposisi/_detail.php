@@ -196,7 +196,86 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
         </table>
     </div>
 
-    <!-- Keputusan Disposisi -->
+    <!-- ============================================================ -->
+    <!-- Card: Tanggal Penetapan Magang                               -->
+    <!-- ============================================================ -->
+    <?php
+        // Deteksi apakah user yang login adalah dari Bidang Pengembangan E-Gov
+        // Kita gunakan nama bidang dari data permohonan ($p->bidang) milik penempatan ini
+        // atau query bidang user dari session id_bidang
+        $sessionIdBidang = session('id_bidang');
+        $isEGovBidang = false;
+        if ($sessionIdBidang) {
+            $_db = \Config\Database::connect();
+            $_bidangRow = $_db->table('m_bidang')->where('id_bidang', $sessionIdBidang)->get()->getRowArray();
+            $_namaBidang = $_bidangRow['bidang'] ?? '';
+            $isEGovBidang = (
+                stripos($_namaBidang, 'e-gov') !== false
+                || stripos($_namaBidang, 'egov') !== false
+                || stripos($_namaBidang, 'pengembangan') !== false
+            );
+        }
+        $tglPenetapanRaw = $p->tgl_penetapan_magang ?? null;
+        $tglPenetapanFormatted = !empty($tglPenetapanRaw) ? formatTanggalIndo($tglPenetapanRaw) : null;
+    ?>
+    <div class="dispo-card" id="cardTglPenetapan">
+        <div class="dispo-card-head">
+            <i class="fas fa-calendar-check" style="color:#3b82f6;"></i>
+            Tanggal Penetapan Magang
+        </div>
+        <div class="p-3 px-4">
+            <!-- Mode Tampil -->
+            <div id="tglPenetapanView" class="d-flex align-items-center" style="gap:12px; flex-wrap:wrap;">
+                <div style="flex:1; min-width:200px;">
+                    <div style="font-size:0.82rem; font-weight:600; color:#64748b; margin-bottom:4px;">Tanggal Penetapan</div>
+                    <div id="tglPenetapanText" style="font-size:0.95rem; font-weight:600; color:#1e293b;">
+                        <?php if ($tglPenetapanFormatted): ?>
+                            <span id="tglPenetapanDisplay"><?= esc($tglPenetapanFormatted) ?></span>
+                        <?php else: ?>
+                            <span id="tglPenetapanDisplay" class="text-muted" style="font-weight:400; font-size:0.88rem;">
+                                <em>Belum ditetapkan</em>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php if ($isEGovBidang): ?>
+                <button type="button" id="btnEditTglPenetapan"
+                    class="btn btn-sm btn-outline-primary"
+                    style="border-radius:6px; font-size:0.82rem; padding:6px 14px; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                </button>
+                <?php endif; ?>
+            </div>
+
+            <!-- Mode Edit (hanya muncul untuk E-Gov) -->
+            <?php if ($isEGovBidang): ?>
+            <div id="tglPenetapanEditForm" style="display:none; margin-top:12px;">
+                <div class="d-flex align-items-center" style="gap:10px; flex-wrap:wrap;">
+                    <div style="position:relative;">
+                        <input type="date" id="inputTglPenetapan"
+                            class="form-control"
+                            value="<?= esc($tglPenetapanRaw ?? '') ?>"
+                            style="border-radius:6px; font-size:0.88rem; height:38px; min-width:180px; padding-left:38px; border:1.5px solid #3b82f6;">
+                        <i class="fas fa-calendar-alt" style="position:absolute; left:11px; top:50%; transform:translateY(-50%); color:#3b82f6; pointer-events:none; font-size:0.85rem;"></i>
+                    </div>
+                    <button type="button" id="btnSimpanTglPenetapan"
+                        class="btn btn-sm btn-primary"
+                        style="border-radius:6px; font-size:0.82rem; padding:6px 18px; display:flex; align-items:center; gap:6px;">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" id="btnBatalTglPenetapan"
+                        class="btn btn-sm btn-light border"
+                        style="border-radius:6px; font-size:0.82rem; padding:6px 14px;">
+                        Batal
+                    </button>
+                </div>
+                <div id="tglPenetapanMsg" style="display:none; margin-top:8px; font-size:0.82rem; border-radius:5px; padding:6px 12px;"></div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+
     <form id="formDisposisiAksi" method="POST" action="<?= base_url('kabid/disposisi/setujui') ?>">
         <?= csrf_field() ?>
         <input type="hidden" name="id_penempatan_magang" value="<?= $p->id_penempatan_magang ?>">
@@ -297,5 +376,81 @@ $(document).ready(function() {
             }
         });
     });
+
+    // ============================================================
+    // Tanggal Penetapan Magang – Edit / Simpan / Batal
+    // ============================================================
+    $('#btnEditTglPenetapan').on('click', function() {
+        $('#tglPenetapanView').hide();
+        $('#tglPenetapanEditForm').slideDown(200);
+        $('#inputTglPenetapan').focus();
+    });
+
+    $('#btnBatalTglPenetapan').on('click', function() {
+        $('#tglPenetapanEditForm').slideUp(200, function() {
+            $('#tglPenetapanView').show();
+        });
+        $('#tglPenetapanMsg').hide();
+    });
+
+    $('#btnSimpanTglPenetapan').on('click', function() {
+        var tgl = $('#inputTglPenetapan').val();
+        if (!tgl) {
+            showTglMsg('Pilih tanggal penetapan terlebih dahulu.', 'warning');
+            return;
+        }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Menyimpan...');
+
+        $.ajax({
+            url: '<?= base_url('kabid/disposisi/simpan-tgl-penetapan') ?>',
+            method: 'POST',
+            data: {
+                id_penempatan_magang: <?= (int)($p->id_penempatan_magang ?? 0) ?>,
+                tgl_penetapan_magang: tgl,
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(res) {
+                if (!res.error) {
+                    // Update tampilan
+                    $('#tglPenetapanDisplay')
+                        .removeClass('text-muted')
+                        .css({ 'font-weight': '600', 'font-size': '0.95rem', 'color': '#1e293b' })
+                        .html(res.tgl_formatted);
+
+                    showTglMsg('✓ ' + res.message, 'success');
+                    setTimeout(function() {
+                        $('#tglPenetapanEditForm').slideUp(200, function() {
+                            $('#tglPenetapanView').show();
+                            $('#tglPenetapanMsg').hide();
+                        });
+                    }, 1200);
+                } else {
+                    showTglMsg(res.message || 'Gagal menyimpan.', 'danger');
+                }
+            },
+            error: function() {
+                showTglMsg('Terjadi kesalahan jaringan. Silakan coba lagi.', 'danger');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="fas fa-save"></i> Simpan');
+            }
+        });
+    });
+
+    function showTglMsg(text, type) {
+        var colors = {
+            'success': { bg: '#f0fdf4', border: '#bbf7d0', color: '#166534' },
+            'danger':  { bg: '#fef2f2', border: '#fecdd3', color: '#dc2626' },
+            'warning': { bg: '#fffbeb', border: '#fde68a', color: '#92400e' }
+        };
+        var c = colors[type] || colors['warning'];
+        $('#tglPenetapanMsg')
+            .css({ 'background': c.bg, 'border': '1px solid ' + c.border, 'color': c.color })
+            .text(text)
+            .show();
+    }
 });
 </script>

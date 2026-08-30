@@ -25,6 +25,7 @@ class M_Penempatan extends Model
         'id_mahasiswa',
         'catatan',
         'status_penempatan',
+        'tgl_penetapan_magang',
     ];
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
