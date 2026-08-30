@@ -153,11 +153,14 @@ Manajemen Kuota Bidang
                                 </td>
                                 <td class="text-center">
                                     <?php if ($k['id_kuota'] !== null): ?>
-                                        <a href="<?= base_url('kabid/kuota/' . $tahun . '/' . $k['bulan_angka']) ?>" class="btn-aksi btn-aksi-detail">
-                                            <i class="fas fa-eye"></i> Lihat Detail
+                                        <a href="<?= base_url('kabid/kuota/' . $tahun . '/' . $k['bulan_angka']) ?>?mode=lihat" class="btn-aksi btn-aksi-detail">
+                                            <i class="fas fa-eye"></i> Lihat
+                                        </a>
+                                        <a href="<?= base_url('kabid/kuota/' . $tahun . '/' . $k['bulan_angka']) ?>?mode=edit" class="btn-aksi btn-aksi-atur ml-1">
+                                            <i class="fas fa-edit"></i> Edit
                                         </a>
                                     <?php else: ?>
-                                        <a href="<?= base_url('kabid/kuota/' . $tahun . '/' . $k['bulan_angka']) ?>" class="btn-aksi btn-aksi-atur">
+                                        <a href="<?= base_url('kabid/kuota/' . $tahun . '/' . $k['bulan_angka']) ?>?mode=edit" class="btn-aksi btn-aksi-atur">
                                             <i class="fas fa-plus"></i> Atur Kuota
                                         </a>
                                     <?php endif; ?>

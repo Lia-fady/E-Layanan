@@ -468,8 +468,8 @@ var BULAN_PENUH = <?= json_encode($bulan_penuh ?? []) ?>;
 var JENIS_DATE_CFG = {
 <?php foreach ($jenis_permohonan as $jp): ?>
     '<?= $jp['id_jenis_permohonan'] ?>': {
-        maksHariPengajuan: <?= (int)($jp['maksimal_hari_pengajuan'] ?? 0) ?>,
-        durasiMinimal: <?= (int)($jp['durasi_minimal'] ?? 0) ?>,
+        maksHariPengajuan: <?= ((int)($jp['maksimal_hari_pengajuan'] ?? 0) > 0) ? (int)$jp['maksimal_hari_pengajuan'] : 30 ?>,
+        durasiMinimal: <?= ((int)($jp['durasi_minimal'] ?? 0) > 0) ? (int)$jp['durasi_minimal'] : 59 ?>,
         maksimalPermohonan: <?= (int)($jp['maksimal_permohonan'] ?? 0) ?>
     },
 <?php endforeach; ?>

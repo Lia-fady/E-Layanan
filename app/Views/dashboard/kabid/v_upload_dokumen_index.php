@@ -1,6 +1,6 @@
 <?php
 /**
- * View untuk Index Upload Surat Penerimaan Magang (Kabid)
+ * View untuk Index Upload Surat Penerimaan (Kabid)
  */
 ?>
 <?= $this->extend('layout/L_master_kabid') ?>

@@ -103,7 +103,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h5 class="m-0 font-weight-bold" style="color: #1B2559;">Detail Disposisi Masuk</h5>
+            <h5 class="m-0 font-weight-bold" style="color: #1B2559;">Detail Permohonan Masuk</h5>
             <p class="m-0 mt-1" style="color: #667085; font-size: 0.85rem;">Periksa data pemohon sebelum memberikan keputusan.</p>
         </div>
         <button type="button" class="btn btn-outline-secondary btn-sm bg-white" id="btnKembali">
@@ -152,13 +152,42 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             </tr>
             <tr><th>Bidang Tujuan</th><td class="font-weight-bold" style="color:#2563eb;"><?= esc($p->bidang ?? '-') ?></td></tr>
             <tr>
-                <th>Periode Pelaksanaan</th>
+                <th>Pengajuan <?= esc($p->jenis_permohonan ?? 'Magang') ?></th>
                 <td>
                     <?php
                         $mulai = formatTanggalIndo($p->tgl_mulai);
                         $selesai = formatTanggalIndo($p->tgl_selesai);
                     ?>
+                    <strong>Periode <?= esc($p->jenis_permohonan ?? 'Magang') ?> Pengajuan:</strong> <br>
                     <?= $mulai ?> <span class="text-muted mx-1">s/d</span> <?= $selesai ?>
+                    <br><br>
+
+                    <strong>Periode <?= esc($p->jenis_permohonan ?? 'Magang') ?> Persetujuan:</strong> <br>
+                    <?php if (!empty($p->tgl_mulai_disetujui)): ?>
+                        <?= formatTanggalIndo($p->tgl_mulai_disetujui) ?> <span class="text-muted mx-1">s/d</span> <?= formatTanggalIndo($p->tgl_selesai_disetujui) ?>
+                    <?php else: ?>
+                        <span class="text-muted"><em>Belum ditentukan</em></span>
+                    <?php endif; ?>
+                    <br>
+                    <strong>Status Persetujuan Periode:</strong> 
+                    <?php if (($p->status_persetujuan_mahasiswa ?? '') == 'DISETUJUI'): ?>
+                        <span class="badge badge-success">Disetujui</span>
+                    <?php elseif (($p->status_persetujuan_mahasiswa ?? '') == 'DITOLAK'): ?>
+                        <span class="badge badge-danger">Ditolak</span>
+                    <?php else: ?>
+                        <span class="badge badge-warning">Menunggu</span>
+                    <?php endif; ?>
+                    <br><br>
+
+                    <strong>Periode Pelaksanaan:</strong> <br>
+                    <?php if (($p->status_persetujuan_mahasiswa ?? '') == 'DISETUJUI'): ?>
+                        <span class="text-primary font-weight-bold"><?= formatTanggalIndo($p->tgl_mulai_disetujui) ?> - <?= formatTanggalIndo($p->tgl_selesai_disetujui) ?></span>
+                    <?php else: ?>
+                        <span class="text-muted"><em>Belum ditetapkan</em></span>
+                    <?php endif; ?>
+                    <br>
+                    <strong>Status Pelaksanaan:</strong>
+                    <span class="badge badge-info"><?= esc($p->status_penempatan ?? 'Menunggu') ?></span>
                 </td>
             </tr>
             <tr>
@@ -196,24 +225,39 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
         </table>
     </div>
 
-    <!-- Keputusan Disposisi -->
+    <!-- Keputusan Persetujuan -->
     <form id="formDisposisiAksi" method="POST" action="<?= base_url('kabid/disposisi/setujui') ?>">
         <?= csrf_field() ?>
         <input type="hidden" name="id_penempatan_magang" value="<?= $p->id_penempatan_magang ?>">
+        <input type="hidden" name="id_persetujuan_magang" value="<?= $p->id_persetujuan_magang ?>">
 
         <div class="dispo-card">
-            <div class="dispo-card-head"><i class="fas fa-gavel"></i> Keputusan Disposisi</div>
+            <div class="dispo-card-head"><i class="fas fa-gavel"></i> Keputusan Persetujuan</div>
             <div class="p-4">
                 <div class="form-group mb-4">
                     <label class="font-weight-bold" style="color:#475569; font-size:14px;">Tindakan Keputusan</label>
                     <select id="decision_status" name="decision_status" class="form-control" style="max-width:380px; border-radius:6px; font-size:14px; height:42px;">
                         <option value="" disabled selected>-- Pilih Keputusan --</option>
-                        <option value="setujui">Terima Permohonan</option>
+                        <option value="setujui">Terima Permohonan & Tetapkan Periode</option>
                         <option value="tolak">Tolak Permohonan</option>
                     </select>
                 </div>
 
                 <div id="acc_fields" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; padding:20px; border-radius:8px; margin-bottom:16px;">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="font-weight-bold" style="color:#166534; font-size:14px;">Tanggal Mulai (Periode <?= esc($p->jenis_permohonan ?? 'Magang') ?> Persetujuan)</label>
+                            <input type="date" name="tgl_mulai_disetujui" id="tgl_mulai_disetujui" class="form-control" value="<?= esc($p->tgl_mulai) ?>" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="font-weight-bold" style="color:#166534; font-size:14px;">Tanggal Selesai (Periode <?= esc($p->jenis_permohonan ?? 'Magang') ?> Persetujuan)</label>
+                            <input type="date" name="tgl_selesai_disetujui" id="tgl_selesai_disetujui" class="form-control" value="<?= esc($p->tgl_selesai) ?>" required>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <small class="text-danger">* Periode <?= strtolower(esc($p->jenis_permohonan ?? 'magang')) ?> minimal 2 bulan.</small>
+                        </div>
+                    </div>
+                    
                     <input type="hidden" name="is_log_book" value="Ya">
                     <div class="form-group mb-0">
                         <label class="font-weight-bold" style="color:#166534; font-size:14px;">Catatan Persetujuan (Opsional)</label>
@@ -266,6 +310,26 @@ $(document).ready(function() {
         if (decision === 'tolak' && $('#catatan_keputusan').val().trim() === '') {
             Swal.fire('Peringatan', 'Alasan penolakan wajib diisi untuk diinformasikan ke pemohon.', 'warning'); 
             return false;
+        }
+
+        if (decision === 'setujui') {
+            var tglMulai = new Date($('#tgl_mulai_disetujui').val());
+            var tglSelesai = new Date($('#tgl_selesai_disetujui').val());
+            
+            // Validasi durasi magang minimal 2 bulan (sekitar 60 hari)
+            var diffTime = Math.abs(tglSelesai - tglMulai);
+            var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            var jenisPermohonanText = '<?= strtolower(esc($p->jenis_permohonan ?? "magang")) ?>';
+            
+            if (diffDays < 59) {
+                Swal.fire('Peringatan', 'Periode ' + jenisPermohonanText + ' minimal harus 2 bulan.', 'warning');
+                return false;
+            }
+            if (tglSelesai <= tglMulai) {
+                Swal.fire('Peringatan', 'Tanggal selesai harus lebih besar dari tanggal mulai.', 'warning');
+                return false;
+            }
         }
 
         var titleText = decision === 'setujui' ? 'Terima Pemohon?' : 'Tolak Pemohon?';

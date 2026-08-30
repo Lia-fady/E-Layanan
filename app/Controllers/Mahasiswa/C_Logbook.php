@@ -49,6 +49,7 @@ class C_Logbook extends C_BaseMahasiswa
             'logbook'          => $riwayatLogbook,
             'state'            => $stateData['state'],
             'is_log_book'      => $penempatan ? ($penempatan['is_log_book'] ?? 'tidak') : $stateData['is_log_book'],
+            'is_approved'      => $penempatan ? ($penempatan['status_persetujuan_mahasiswa'] === 'DISETUJUI') : false,
             'jenis_permohonan' => $stateData['jenis_permohonan']
         ];
 
@@ -67,9 +68,26 @@ class C_Logbook extends C_BaseMahasiswa
              return redirect()->back()->with('error', 'Gagal menyimpan! ID Penempatan tidak valid.');
         }
 
-        $penempatanCheck = $this->logbookModel->db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan_post)->get()->getRowArray();
+        $penempatanCheck = $this->logbookModel->db->table('t_penempatan_magang')
+                                              ->select('t_penempatan_magang.*, t_persetujuan_magang.status_persetujuan_mahasiswa, t_persetujuan_magang.tgl_mulai_disetujui, t_persetujuan_magang.tgl_selesai_disetujui')
+                                              ->join('t_persetujuan_magang', 't_persetujuan_magang.id_persetujuan_magang = t_penempatan_magang.id_persetujuan_magang')
+                                              ->where('id_penempatan_magang', $id_penempatan_post)->get()->getRowArray();
+        
+        if ($penempatanCheck && $penempatanCheck['status_persetujuan_mahasiswa'] !== 'DISETUJUI') {
+            return redirect()->back()->with('error', 'Gagal menyimpan! Anda harus menyetujui periode magang terlebih dahulu melalui menu Status Permohonan.');
+        }
         if ($penempatanCheck && isset($penempatanCheck['is_log_book']) && strtolower($penempatanCheck['is_log_book']) == 'tidak') {
             return redirect()->back()->with('error', 'Gagal menyimpan! Kegiatan magang Anda tidak mewajibkan pengisian logbook.');
+        }
+
+        $tgl_logbook = $this->request->getPost('tgl_logbook');
+        $tgl_mulai = $penempatanCheck['tgl_mulai_disetujui'] ?? $penempatanCheck['tanggal_mulai'] ?? null;
+        $tgl_selesai = $penempatanCheck['tgl_selesai_disetujui'] ?? $penempatanCheck['tanggal_selesai'] ?? null;
+
+        if ($tgl_mulai && $tgl_selesai) {
+            if ($tgl_logbook < $tgl_mulai || $tgl_logbook > $tgl_selesai) {
+                return redirect()->back()->with('error', 'Gagal menyimpan! Tanggal kegiatan logbook harus berada dalam rentang Periode Pelaksanaan (' . tgl_indo($tgl_mulai) . ' s.d. ' . tgl_indo($tgl_selesai) . ').');
+            }
         }
 
         $dataLogbook = [

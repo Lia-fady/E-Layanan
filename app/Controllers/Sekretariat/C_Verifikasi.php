@@ -224,7 +224,7 @@ class C_Verifikasi extends BaseController
             if (empty($id_bidang)) {
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.'
+                    'message' => 'Silakan pilih Bidang Tujuan untuk meneruskan permohonan yang disetujui.'
                 ]);
             }
             $catatan = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai. Permohonan Anda disetujui dan akan diproses ke tahap selanjutnya.';

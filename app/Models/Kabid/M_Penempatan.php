@@ -176,25 +176,45 @@ class M_Penempatan extends Model
      * Setujui penempatan: update status ke DISETUJUI dan set is_log_book.
      * Status akan otomatis berubah ke BERJALAN saat tanggal mulai tiba (lazy check).
      *
-     * @param int $id_penempatan
+     * @param int $id_persetujuan_magang
+     * @param string $tgl_mulai_disetujui
+     * @param string $tgl_selesai_disetujui
      * @param string $is_log_book
      * @param string $catatan
      * @param int $updated_by
      * @return bool
      */
-    public function setujuiPenempatan($id_penempatan, $is_log_book, $catatan, $updated_by)
+    public function setujuiPenempatan($id_penempatan, $id_persetujuan_magang, $tgl_mulai_disetujui, $tgl_selesai_disetujui, $is_log_book, $catatan, $updated_by)
     {
         $db = \Config\Database::connect();
 
-        return $db->table('t_penempatan_magang')
+        $db->transStart();
+
+        $db->table('t_penempatan_magang')
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
+                // Penempatan tetap DISETUJUI sampai tanggal mulai tiba
                 'status_penempatan'  => 'DISETUJUI',
+                'tanggal_mulai'      => $tgl_mulai_disetujui,
+                'tanggal_selesai'    => $tgl_selesai_disetujui,
                 'is_log_book'        => $is_log_book,
                 'catatan'            => $catatan,
                 'tanggal_persetujuan'=> date('Y-m-d H:i:s'),
                 'updated_at'         => date('Y-m-d H:i:s'),
             ]);
+
+        $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan_magang)
+            ->update([
+                'tgl_mulai_disetujui' => $tgl_mulai_disetujui,
+                'tgl_selesai_disetujui' => $tgl_selesai_disetujui,
+                'status_persetujuan_mahasiswa' => 'MENUNGGU',
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        $db->transComplete();
+
+        return $db->transStatus();
     }
 
     /**

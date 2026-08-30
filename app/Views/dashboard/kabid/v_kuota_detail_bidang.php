@@ -75,32 +75,32 @@ Detail Kuota <?= esc($kuota_detail['bulan_nama']) ?> <?= esc($tahun) ?>
 
 <div class="row">
     <!-- Info Kuota -->
-    <div class="col-lg-4 mb-4">
+    <div class="<?= $mode === 'edit' ? 'col-lg-4' : 'col-lg-12' ?> mb-4">
         <div class="row">
-            <div class="col-12 mb-3">
-                <div class="info-card">
+            <div class="<?= $mode === 'edit' ? 'col-12' : 'col-lg-3 col-6' ?> mb-3">
+                <div class="info-card h-100">
                     <div class="label">Batas Kuota</div>
                     <div class="value" id="display-batas"><?= $kuota_detail['batas_kuota'] !== null ? esc($kuota_detail['batas_kuota']) : '-' ?></div>
                 </div>
             </div>
-            <div class="col-6 mb-3">
-                <div class="info-card">
+            <div class="<?= $mode === 'edit' ? 'col-6' : 'col-lg-3 col-6' ?> mb-3">
+                <div class="info-card h-100">
                     <div class="label">Terpakai</div>
                     <div class="value" style="color: #3B82F6;"><?= esc($kuota_detail['terpakai']) ?></div>
                 </div>
             </div>
-            <div class="col-6 mb-3">
-                <div class="info-card">
+            <div class="<?= $mode === 'edit' ? 'col-6' : 'col-lg-3 col-6' ?> mb-3">
+                <div class="info-card h-100">
                     <div class="label">Sisa Kuota</div>
                     <div class="value" id="display-sisa" style="color: <?= ($kuota_detail['sisa_kuota'] !== null && $kuota_detail['sisa_kuota'] > 0) ? '#16A34A' : '#DC2626' ?>;">
                         <?= $kuota_detail['sisa_kuota'] !== null ? esc($kuota_detail['sisa_kuota']) : '-' ?>
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="info-card">
+            <div class="<?= $mode === 'edit' ? 'col-12' : 'col-lg-3 col-6' ?> mb-3">
+                <div class="info-card h-100">
                     <div class="label">Status</div>
-                    <div class="mt-1">
+                    <div class="mt-1 d-flex align-items-center justify-content-center h-100" style="min-height: 2rem;">
                         <?php if ($kuota_detail['status'] === 'Tersedia'): ?>
                             <span class="badge badge-status badge-tersedia">Tersedia</span>
                         <?php elseif ($kuota_detail['status'] === 'Penuh'): ?>
@@ -115,6 +115,7 @@ Detail Kuota <?= esc($kuota_detail['bulan_nama']) ?> <?= esc($tahun) ?>
     </div>
 
     <!-- Form Edit / Atur Kuota -->
+    <?php if ($mode === 'edit'): ?>
     <div class="col-lg-8 mb-4">
         <div class="card shadow-sm quota-card bg-white h-100">
             <div class="card-body p-4">
@@ -148,7 +149,7 @@ Detail Kuota <?= esc($kuota_detail['bulan_nama']) ?> <?= esc($tahun) ?>
                             </div>
                         </div>
                         <small class="form-text text-muted mt-2" style="font-size: 0.75rem;">
-                            Jumlah mahasiswa magang maksimal yang diizinkan beraktivitas pada bulan ini.
+                            Jumlah mahasiswa/siswa maksimal yang diizinkan beraktivitas pada bulan ini.
                             <?php if ($kuota_detail['terpakai'] > 0): ?>
                                 <br><strong style="color: #DC2626;">Minimal: <?= $kuota_detail['terpakai'] ?> (sudah terpakai)</strong>
                             <?php endif; ?>
@@ -174,6 +175,62 @@ Detail Kuota <?= esc($kuota_detail['bulan_nama']) ?> <?= esc($tahun) ?>
                         <i class="fas fa-save mr-2"></i> Simpan Perubahan
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+
+<!-- Tabel Mahasiswa -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm quota-card bg-white">
+            <div class="card-body p-4">
+                <h6 class="panel-title mb-4">Daftar Mahasiswa/Siswa (<?= esc($kuota_detail['bulan_nama']) ?> <?= esc($tahun) ?>)</h6>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" style="font-size: 0.9rem;">
+                        <thead class="bg-light">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th>Nama Lengkap</th>
+                                <th>NIM/NISN</th>
+                                <th>Asal Instansi</th>
+                                <th>Jenis Permohonan</th>
+                                <th>Periode Pelaksanaan</th>
+                                <th width="10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($list_mahasiswa)): ?>
+                                <?php $no = 1; foreach ($list_mahasiswa as $mhs): ?>
+                                    <tr>
+                                        <td class="text-center"><?= $no++ ?></td>
+                                        <td class="font-weight-bold"><?= esc($mhs['nama_mahasiswa']) ?></td>
+                                        <td><?= esc($mhs['nim']) ?></td>
+                                        <td><?= esc($mhs['kampus'] ?? '-') ?></td>
+                                        <td><?= esc($mhs['jenis_permohonan'] ?? '-') ?></td>
+                                        <td>
+                                            <?= tgl_indo($mhs['tanggal_mulai']) ?> - <?= tgl_indo($mhs['tanggal_selesai']) ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($mhs['status_penempatan'] == 'BERJALAN'): ?>
+                                                <span class="badge badge-success px-2 py-1">Berjalan</span>
+                                            <?php elseif ($mhs['status_penempatan'] == 'DISETUJUI'): ?>
+                                                <span class="badge badge-primary px-2 py-1">Disetujui</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-secondary px-2 py-1"><?= esc($mhs['status_penempatan']) ?></span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted py-4">Belum ada mahasiswa yang menempati kuota pada bulan ini.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

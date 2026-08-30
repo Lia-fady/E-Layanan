@@ -38,7 +38,7 @@ class C_FileProsesMagangKabid extends BaseController
         }
 
         $data = [
-            'title'       => 'Upload Surat Penerimaan Magang',
+            'title'       => 'Upload Surat Penerimaan',
             'active_menu' => 'riwayat',
             'persetujuan' => $persetujuan,
             'jenis_file'  => $this->fileModel->getActiveFiles(),

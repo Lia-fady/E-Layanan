@@ -107,7 +107,7 @@
                         <i class="fas fa-check-circle fa-lg text-white"></i>
                     </div>
                 </div>
-                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Selesai Magang/Praktik</div>
+                <div class="stat-title mt-3 text-white" style="opacity: 0.9;">Kegiatan Selesai</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number text-white"><?= $total_selesai ?></div>
                 </div>

@@ -177,9 +177,15 @@
                             <?php endif; ?>
 
                             <?php if(!empty($penempatan) && $penempatan['status_penempatan'] == 'BERJALAN' && (!isset($is_log_book) || strtolower($is_log_book) != 'tidak')): ?>
-                                <button type="button" class="btn btn-sm btn-primary shadow-sm fw-medium d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.85rem; padding: 0 18px; height: 36px; background-color: #4f46e5 !important; border-color: #4f46e5 !important; border-radius: 6px;">
-                                    <i class="bi bi-plus-lg me-1"></i> Tambah Kegiatan
-                                </button>
+                                <?php if(isset($is_approved) && !$is_approved): ?>
+                                    <button type="button" class="btn btn-sm btn-secondary shadow-sm fw-medium d-flex align-items-center" disabled style="font-size: 0.85rem; padding: 0 18px; height: 36px; border-radius: 6px;">
+                                        <i class="bi bi-lock-fill me-1"></i> Tambah Kegiatan Terkunci
+                                    </button>
+                                <?php else: ?>
+                                    <button type="button" class="btn btn-sm btn-primary shadow-sm fw-medium d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalTambahLogbook" style="font-size: 0.85rem; padding: 0 18px; height: 36px; background-color: #4f46e5 !important; border-color: #4f46e5 !important; border-radius: 6px;">
+                                        <i class="bi bi-plus-lg me-1"></i> Tambah Kegiatan
+                                    </button>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -204,6 +210,18 @@
                                     <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
                                     <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
                                         Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php elseif (isset($is_approved) && !$is_approved): ?>
+                        <div class="alert alert-warning border-0 p-3 mb-4 shadow-sm" style="border-radius: 8px;">
+                            <div class="d-flex gap-2">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 mt-1 text-warning"></i>
+                                <div>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Persetujuan Periode Diperlukan</span>
+                                    <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
+                                        Anda belum menyetujui periode magang yang ditetapkan. Silakan ke menu <strong>Status Permohonan</strong> dan klik tombol Setujui Periode untuk dapat mengisi logbook harian.
                                     </p>
                                 </div>
                             </div>

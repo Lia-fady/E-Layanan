@@ -209,7 +209,7 @@ $(document).ready(function() {
         if (keputusan === 'DISETUJUI' && !$('#id_bidang').val()) {
             Swal.fire({
                 title: 'Belum Lengkap',
-                text: 'Silakan pilih Bidang Tujuan untuk mendisposisikan permohonan yang disetujui.',
+                text: 'Silakan pilih Bidang Tujuan untuk meneruskan permohonan yang disetujui.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6'
             });
