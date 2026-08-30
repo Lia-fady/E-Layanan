@@ -219,12 +219,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     $tglSelesai = !empty($p['tgl_selesai']) ? tgl_indo($p['tgl_selesai']) : '-';
                 ?>
                 <tr>
-                    <th>Tanggal Mulai</th>
-                    <td><?= $tglMulai ?></td>
-                </tr>
-                <tr>
-                    <th>Tanggal Selesai</th>
-                    <td><?= $tglSelesai ?></td>
+                    <th>Periode Pelaksanaan</th>
+                    <td><?= $tglMulai ?> s/d <?= $tglSelesai ?></td>
                 </tr>
                 <?php
                     $idJenis = (int)($p['id_jenis_permohonan'] ?? 0);
@@ -354,14 +350,18 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
             <!-- Status Validasi File (Jika ditolak/revisi, beri tau mana yang salah) -->
             <?php
-                $hasFileStatus = false;
+                $hasValidFileStatus = false;
                 if (!empty($p['files'])) {
                     foreach ($p['files'] as $f) {
-                        if (!empty($f['status_verifikasi'])) { $hasFileStatus = true; break; }
+                        $sv = strtoupper($f['status_verifikasi'] ?? '');
+                        if (in_array($sv, ['SESUAI', 'VALID', 'TIDAK_SESUAI', 'TIDAK_VALID'])) { 
+                            $hasValidFileStatus = true; 
+                            break; 
+                        }
                     }
                 }
             ?>
-            <?php if ($hasFileStatus && $p['status_persetujuan'] != 'DITOLAK'): ?>
+            <?php if ($hasValidFileStatus && $p['status_persetujuan'] != 'DITOLAK'): ?>
             <div style="border-top: 1px solid #e5e7eb;">
                 <table class="tw-table">
                     <?php foreach($p['files'] as $file): ?>
@@ -411,7 +411,10 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
        $jenisPermohonanKabid = strtolower(trim($p['jenis_permohonan'] ?? 'permohonan'));
        $jenisPermohonanKabid = preg_replace('/\s+/', ' ', $jenisPermohonanKabid);
 
-       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0' || $p['status_penempatan'] == 'DIBATALKAN');
+       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0');
+       $isKabidBatal = ($p['status_penempatan'] == 'DIBATALKAN');
+       $isKabidTolak = ($p['status_penempatan'] == 'DITOLAK');
+       $isKabidSetuju = ($p['status_penempatan'] == 'DISETUJUI');
        $isKabidJalan = ($p['status_penempatan'] == 'BERJALAN');
        $isKabidSelesai = ($p['status_penempatan'] == 'SELESAI');
        
@@ -419,9 +422,18 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
            $kBadge = 'disetujui'; $kText = 'selesai';
            $kHeader = 'Kegiatan ' . $jenisPermohonanKabid . ' telah dinyatakan selesai.';
        } elseif ($isKabidJalan) {
-           $kBadge = 'disetujui'; $kText = 'disetujui';
+           $kBadge = 'disetujui'; $kText = 'berjalan';
            $kHeader = 'Permohonan telah disetujui dan kegiatan sedang berjalan.';
-        } else {
+       } elseif ($isKabidSetuju) {
+           $kBadge = 'disetujui'; $kText = 'disetujui';
+           $kHeader = 'Permohonan telah disetujui. Menunggu periode pelaksanaan tiba.';
+       } elseif ($isKabidTolak) {
+           $kBadge = 'ditolak'; $kText = 'ditolak';
+           $kHeader = 'Permohonan ditolak pada tahap penempatan.';
+       } elseif ($isKabidBatal) {
+           $kBadge = 'ditolak'; $kText = 'dibatalkan';
+           $kHeader = 'Kegiatan telah dibatalkan.';
+       } else {
             $kBadge = 'menunggu'; $kText = 'menunggu';
             $kHeader = 'Permohonan sedang menunggu persetujuan penempatan.';
         }
@@ -446,7 +458,7 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
         <?php if(!$isKabidMenunggu): ?>
         <div class="tw-card">
-            <?php if($isKabidJalan || $isKabidSelesai): ?>
+            <?php if($isKabidJalan || $isKabidSelesai || $isKabidSetuju): ?>
             <div class="tw-message">
                 <?php if ($isKabidSelesai): ?>
                     <p>Kegiatan Anda pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong> telah dinyatakan selesai. Terima kasih atas partisipasi dan kontribusinya.</p>

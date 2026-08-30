@@ -31,7 +31,7 @@ $alamatLengkap = !empty($alamatParts) ? implode(', ', $alamatParts) : '-';
 
 $statusText = $p->status_penempatan ?? '-';
 $statusClass = 'alert-secondary'; $statusIcon = 'fa-info-circle';
-if ($p->status_penempatan == 'DISETUJUI') { $statusText = 'Disetujui — Menunggu Tanggal Mulai'; $statusClass = 'alert-info'; $statusIcon = 'fa-check-circle'; }
+if ($p->status_penempatan == 'DISETUJUI') { $statusText = 'Disetujui — Menunggu Periode Pelaksanaan'; $statusClass = 'alert-info'; $statusIcon = 'fa-check-circle'; }
 elseif ($p->status_penempatan == 'BERJALAN') { $statusText = 'Sedang Berjalan'; $statusClass = 'alert-primary'; $statusIcon = 'fa-spinner'; }
 elseif ($p->status_penempatan == 'SELESAI') { $statusText = 'Kegiatan Selesai'; $statusClass = 'alert-success'; $statusIcon = 'fa-check-circle'; }
 elseif ($p->status_penempatan == 'DITOLAK') { $statusText = 'Ditolak oleh Bidang'; $statusClass = 'alert-danger'; $statusIcon = 'fa-times-circle'; }

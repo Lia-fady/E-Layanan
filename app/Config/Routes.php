@@ -77,6 +77,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->get('dashboard', 'C_Dashboard::dashboard');
     $routes->get('profil', 'C_Profil::profil');
     $routes->post('profil/update', 'C_Profil::updateProfil');
+    $routes->post('profil/upload-foto', 'C_Profil::uploadFotoAjax');
 
     $routes->get('permohonan', 'C_Permohonan::permohonan');
     $routes->post('permohonan/simpan', 'C_Permohonan::simpanPermohonan');
