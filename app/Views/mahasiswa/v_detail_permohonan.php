@@ -491,7 +491,19 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
     </div>
     <?php endif; ?>
 
+    <!-- Tombol Mengundurkan Diri (Hanya jika DISETUJUI / BERJALAN) -->
+    <?php if (isset($isKabidSetuju) && isset($isKabidJalan) && ($isKabidSetuju || $isKabidJalan)): ?>
+    <div style="margin-top: 16px; margin-bottom: 8px; text-align: right;">
+        <button onclick="confirmUndurDiri('<?= $p['id_permohonan_magang'] ?>')" class="btn btn-outline-danger fw-bold px-4 py-2" style="border-radius: 8px;">
+            <i class="bi bi-x-circle me-2"></i> Mengundurkan Diri
+        </button>
+    </div>
+    <?php endif; ?>
 
+    <!-- Form tersembunyi untuk mengundurkan diri -->
+    <form id="formUndurDiri" method="POST" action="">
+        <?= csrf_field() ?>
+        <input type="hidden" name="alasan_batal" id="input_alasan_batal" value="">
+    </form>
 
 </div>
-

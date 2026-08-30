@@ -52,10 +52,10 @@ class KuotaBidangModel extends Model
             $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
-        // 2. Ambil semua penempatan yang relevan
+        // 2. Ambil semua penempatan yang relevan (DISETUJUI dan BERJALAN)
         $penempatan = $db->table('t_penempatan_magang')
             ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->get()->getResultArray();
 
         $hasil = [];
@@ -169,10 +169,10 @@ class KuotaBidangModel extends Model
             $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
-        // 2. Ambil penempatan KHUSUS BERJALAN
+        // 2. Ambil penempatan (DISETUJUI dan BERJALAN) agar kuota terhitung dengan benar
         $penempatan = $db->table('t_penempatan_magang')
             ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->get()->getResultArray();
 
         $nama_bulan = [

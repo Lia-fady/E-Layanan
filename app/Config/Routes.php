@@ -86,6 +86,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->get('status', 'C_Status::statusPermohonan');
     $routes->get('status/detail/(:num)', 'C_Status::detail/$1');
     $routes->get('batalkan-permohonan/(:num)', 'C_Status::batalkanPermohonan/$1');
+    $routes->post('undurkan-diri/(:num)', 'C_Status::undurkanDiri/$1');
     $routes->get('view-file/(:num)', 'C_Status::viewFile/$1');
     $routes->get('view-file/(:num)/(:any)', 'C_Status::viewFile/$1/$2');
     

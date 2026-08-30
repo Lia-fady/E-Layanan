@@ -684,5 +684,34 @@
             }
         });
     }
+
+    function confirmUndurDiri(idPermohonan) {
+        Swal.fire({
+            title: 'Mengundurkan Diri?',
+            html: `Anda akan membatalkan kegiatan yang sudah disetujui. Aksi ini <b>tidak dapat dibatalkan</b>.<br><br>
+                   <textarea id="swal-alasan" class="swal2-textarea" placeholder="Tuliskan alasan pengunduran diri Anda di sini... (Wajib)" style="margin-top:0; font-size:0.9rem;"></textarea>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Undurkan Diri',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true,
+            preConfirm: () => {
+                const alasan = document.getElementById('swal-alasan').value;
+                if (!alasan || alasan.trim() === '') {
+                    Swal.showValidationMessage('Alasan pengunduran diri wajib diisi!');
+                    return false;
+                }
+                return alasan;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('input_alasan_batal').value = result.value;
+                document.getElementById('formUndurDiri').action = '<?= base_url('mahasiswa/undurkan-diri/') ?>' + idPermohonan;
+                document.getElementById('formUndurDiri').submit();
+            }
+        });
+    }
 </script>
 <?= $this->endSection() ?>

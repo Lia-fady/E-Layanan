@@ -137,13 +137,13 @@
         font-weight: 700;
         letter-spacing: 0.3px;
     }
-    .status-badge.st-belum     { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
-    .status-badge.st-menunggu  { background: rgba(234,179,8,0.2); color: #fde047; }
-    .status-badge.st-info      { background: rgba(14,165,233,0.2); color: #7dd3fc; }
-    .status-badge.st-revision  { background: rgba(167,139,250,0.2); color: #c4b5fd; }
-    .status-badge.st-ditolak   { background: rgba(239,68,68,0.2); color: #fca5a5; }
-    .status-badge.st-aktif     { background: rgba(16,185,129,0.2); color: #6ee7b7; }
-    .status-badge.st-selesai   { background: rgba(14,165,233,0.2); color: #7dd3fc; }
+    .status-badge.st-belum     { background: #f1f5f9; color: #475569; }
+    .status-badge.st-menunggu  { background: #fef3c7; color: #b45309; }
+    .status-badge.st-info      { background: #e0f2fe; color: #0369a1; }
+    .status-badge.st-revision  { background: #ede9fe; color: #6d28d9; }
+    .status-badge.st-ditolak   { background: #fee2e2; color: #b91c1c; }
+    .status-badge.st-aktif     { background: #dcfce3; color: #15803d; }
+    .status-badge.st-selesai   { background: #ccfbf1; color: #0f766e; }
 
     /* --- CARD FLAT --- */
     .card-flat {
@@ -384,7 +384,17 @@
     }
 
     $is_selesai_banner = false;
-    if ($state == 5) {
+    $is_batal_banner = false;
+    
+    if (isset($permohonan_aktif['status_penempatan']) && $permohonan_aktif['status_penempatan'] == 'DIBATALKAN') {
+        $state = 1; 
+        $statusText  = 'Belum Mengajukan';
+        $statusClass = 'st-belum';
+        $statusIcon  = 'bi-dash-circle';
+        $jenisLabel  = 'Belum Dipilih';
+        $file_penerimaan = null; 
+        $permohonan_aktif = null; 
+    } elseif ($state == 5) {
         $is_selesai_banner = true;
         $state = 1; // Reset tampilan ke State 1
         $statusText  = 'Belum Mengajukan';
