@@ -456,7 +456,7 @@
 <?php elseif ($state == 3): ?>
     <div class="next-action-card success">
         <span class="next-action-icon"><i class="bi bi-check2-square"></i></span>
-        <div class="flex-grow-1"><div class="next-action-title">Permohonan Disetujui</div><div class="next-action-copy">Permohonan Anda telah disetujui. Silakan cek menu Status Permohonan atau Dokumen untuk mengunduh Surat Keterangan Diterima. Status akan berubah menjadi "Berjalan" saat tanggal mulai tiba.</div></div>
+        <div class="flex-grow-1"><div class="next-action-title">Permohonan Disetujui</div><div class="next-action-copy">Permohonan Anda telah disetujui. Silakan cek menu Status Permohonan atau Dokumen untuk mengunduh Surat Keterangan Diterima. Status akan berubah menjadi "Berjalan" saat periode pelaksanaan tiba.</div></div>
         <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action outline"><i class="bi bi-clock-history"></i> Lihat Detail</a>
     </div>
 <?php endif; ?>
@@ -587,12 +587,8 @@
                 </div>
 
                 <div class="info-row">
-                    <span class="info-label">Tanggal Mulai</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Tanggal Selesai</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
+                    <span class="info-label">Periode Pelaksanaan</span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> s/d <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Pengajuan</span>
@@ -632,18 +628,18 @@
                 <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
                     <div class="alert-card alert-info mb-3">
                         <i class="bi bi-diagram-3-fill alert-icon"></i>
-                        <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
+                        <div>Berkas permohonan Anda telah diverifikasi dan saat ini sedang dalam <strong>tahap persetujuan dan penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php else: ?>
                     <div class="alert-card alert-warning mb-3">
                         <i class="bi bi-building alert-icon"></i>
-                        <div>Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat.</div>
+                        <div>Berkas permohonan Anda telah dinyatakan valid dan saat ini sedang dalam <strong>proses penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php endif; ?>
             <?php else: ?>
                 <div class="alert-card alert-warning mb-3">
                     <i class="bi bi-clock-history alert-icon"></i>
-                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong> oleh Sekretariat. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
+                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong>. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
                 </div>
             <?php endif; ?>
 
@@ -745,8 +741,8 @@
     </div>
 </div>
 
-<?php elseif ($state == 4): ?>
-<!-- ===================== STATE 4: AKTIF BERJALAN ===================== -->
+<?php elseif ($state == 4 || $state == 3): ?>
+<!-- ===================== STATE 3 & 4: DISETUJUI / AKTIF BERJALAN ===================== -->
 <?php
     $total_logbook  = $total_logbook ?? 0;
     $target_logbook = $target_logbook ?? 0;

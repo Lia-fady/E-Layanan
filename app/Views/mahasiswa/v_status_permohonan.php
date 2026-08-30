@@ -346,12 +346,9 @@
                             <option value="">Semua Status</option>
                             <option value="Draft">Draft</option>
                             <option value="Menunggu">Menunggu</option>
-                            <option value="Perbaikan">Perlu Perbaikan</option>
                             <option value="Disetujui">Disetujui</option>
-                            <option value="Berjalan">Berjalan</option>
-                            <option value="Selesai">Selesai</option>
                             <option value="Ditolak">Ditolak</option>
-                            <option value="Dibatalkan">Dibatalkan</option>
+                            <option value="Selesai">Selesai</option>
                         </select>
                         <div class="d-flex align-items-center gap-2 ms-md-2 mt-2 mt-md-0">
                             <span class="small text-muted fw-medium">Cari:</span>
@@ -371,7 +368,7 @@
                             <th>JENIS PERMOHONAN</th>
                             <th>NAMA</th>
                             <th class="text-center">TANGGAL DIAJUKAN</th>
-                            <th class="text-center">PERIODE</th>
+                            <th class="text-center">PERIODE PELAKSANAAN</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">AKSI</th>
                         </tr>

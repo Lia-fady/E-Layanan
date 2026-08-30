@@ -20,6 +20,7 @@ const JENIS_CFG = {
         panduan: [
             'Siapkan <strong>surat izin penelitian</strong> resmi yang dikeluarkan oleh pihak kampus.',
             'Lampirkan <strong>Proposal atau Sinopsis Penelitian</strong> pada kolom yang disediakan.',
+            'Unggah <strong>Kartu Tanda Mahasiswa (KTM)</strong> sebagai bukti identitas pemohon.',
             'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
@@ -34,6 +35,7 @@ const JENIS_CFG = {
         showCv: false,
         panduan: [
             'Siapkan <strong>surat pengantar observasi atau pengambilan data</strong> resmi dari pihak kampus.',
+            'Unggah <strong>Kartu Tanda Mahasiswa (KTM)</strong> sebagai bukti identitas pemohon.',
             'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
@@ -49,6 +51,7 @@ const JENIS_CFG = {
         panduan: [
             'Siapkan <strong>surat pengantar magang</strong> resmi dari pihak kampus.',
             'Lampirkan <strong>Curriculum Vitae (CV)</strong> terbaru. Silakan gabungkan dengan portofolio karyamu jika ada.',
+            'Unggah <strong>Kartu Tanda Mahasiswa (KTM)</strong> sebagai bukti identitas pemohon.',
             'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
@@ -64,6 +67,7 @@ const JENIS_CFG = {
         panduan: [
             'Siapkan <strong>surat pengantar PKL</strong> resmi dari pihak sekolah.',
             'Lampirkan <strong>Curriculum Vitae (CV)</strong> terbaru. Silakan gabungkan dengan portofolio karyamu jika ada.',
+            'Unggah <strong>Kartu Pelajar</strong> sebagai bukti identitas pemohon.',
             'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     },
@@ -79,6 +83,7 @@ const JENIS_CFG = {
         panduan: [
             'Siapkan <strong>surat pengantar uji coba produk</strong> resmi dari pihak kampus.',
             'Lampirkan <strong>Dokumen Profil atau Panduan Singkat</strong> dari produk yang ingin diuji.',
+            'Unggah <strong>Kartu Tanda Mahasiswa (KTM)</strong> sebagai bukti identitas pemohon.',
             'Pastikan semua file dapat diakses dengan baik dan tidak terproteksi sandi <em>(password-protected)</em>.'
         ]
     }

@@ -360,15 +360,22 @@ document.querySelectorAll('.locked-menu').forEach(item => {
                     if(!empty($w)) $inisial .= mb_substr($w, 0, 1);
                 }
                 $inisial = strtoupper(mb_substr($inisial, 0, 2));
+                $foto_profil = session()->get('foto_profil');
             ?>
             <div class="text-end">
                 <div class="fw-bold text-dark mb-0" style="font-size: 0.88rem;"><?= esc($nama_user) ?></div>
                 <div class="text-muted" style="font-size: 0.75rem; letter-spacing: 0.3px; font-weight: 500;"><?= session()->get('kategori_pelajar') ?? 'Mahasiswa' ?></div>
             </div>
             <div class="dropdown">
-                <div class="avatar-circle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                    <?= esc($inisial) ?>
-                </div>
+                <?php if (!empty($foto_profil)): ?>
+                    <div type="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="<?= base_url('uploads/profil/' . esc($foto_profil)) ?>" alt="Avatar" class="shadow-sm" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #ffffff;">
+                    </div>
+                <?php else: ?>
+                    <div class="avatar-circle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <?= esc($inisial) ?>
+                    </div>
+                <?php endif; ?>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" style="min-width: 160px; font-size: 0.85rem; border: 1px solid #e2e8f0; border-radius: 8px;">
                     <li>
                         <a class="dropdown-item py-2 text-dark" href="<?= base_url('mahasiswa/profil') ?>">
