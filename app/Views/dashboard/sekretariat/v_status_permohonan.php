@@ -22,7 +22,7 @@
 <div class="mb-4">
     <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Status Permohonan</h5>
     <p style="color:#667085; font-size:0.9rem; margin:0;">
-        Pantau status verifikasi, disposisi, dan penempatan permohonan magang secara detail.
+        Pantau status verifikasi dan penempatan permohonan magang secara detail.
     </p>
 </div>
 
@@ -44,7 +44,7 @@
                         <th>Jenis Permohonan</th>
                         <th>Tgl Pengajuan</th>
                         <th class="text-center">Status Verifikasi</th>
-                        <th class="text-center">Disposisi Bidang</th>
+                        <th class="text-center">Tujuan Bidang</th>
                         <th class="text-center">Status Penempatan</th>
                     </tr>
                 </thead>

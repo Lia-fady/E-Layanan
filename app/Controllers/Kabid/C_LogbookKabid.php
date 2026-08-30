@@ -103,7 +103,7 @@ class C_LogbookKabid extends BaseController
                     'tgl_selesai'         => $detail->tgl_selesai,
                     'status_akhir'        => $detail->status_penempatan,
                     'surat_selesai'       => $suratSelesaiFile ? [
-                        'label'     => $suratSelesaiFile->nama_file_master ?? 'Surat Keterangan Selesai Magang',
+                        'label'     => $suratSelesaiFile->nama_file_master ?? 'Surat Keterangan Selesai Kegiatan',
                         'nama_file' => $suratSelesaiFile->nama_file,
                         'url'       => base_url('kabid/upload-dokumen/download/' . $suratSelesaiFile->id_file_selesai_magang)
                     ] : null,
@@ -125,7 +125,7 @@ class C_LogbookKabid extends BaseController
         $db = \Config\Database::connect();
 
         $data = [
-            'title'       => 'Riwayat Disposisi Magang',
+            'title'       => 'Riwayat Permohonan Selesai',
             'active_menu' => 'riwayat_selesai',
             'mahasiswa'   => $this->logbookModel->getActiveMahasiswa($id_bidang, null, null, 'SELESAI'),
             'list_jenis'  => $db->table('m_jenis_permohonan')->get()->getResultArray()

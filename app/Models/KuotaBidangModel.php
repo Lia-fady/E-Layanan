@@ -52,10 +52,10 @@ class KuotaBidangModel extends Model
             $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
-        // 2. Ambil semua penempatan yang relevan
+        // 2. Ambil semua penempatan yang relevan (termasuk DISETUJUI dan BERJALAN)
         $penempatan = $db->table('t_penempatan_magang')
             ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->get()->getResultArray();
 
         $hasil = [];
@@ -169,10 +169,10 @@ class KuotaBidangModel extends Model
             $kuotaBulan[$i] = $row; // null jika belum ada
         }
 
-        // 2. Ambil penempatan KHUSUS BERJALAN
+        // 2. Ambil penempatan KHUSUS DISETUJUI & BERJALAN
         $penempatan = $db->table('t_penempatan_magang')
             ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->get()->getResultArray();
 
         $nama_bulan = [
@@ -371,7 +371,7 @@ class KuotaBidangModel extends Model
 
         $penempatan = $db->table('t_penempatan_magang')
             ->where('id_bidang', $id_bidang)
-            ->where('status_penempatan', 'BERJALAN')
+            ->whereIn('status_penempatan', ['DISETUJUI', 'BERJALAN'])
             ->get()->getResultArray();
 
         $terpakai = 0;
@@ -432,5 +432,30 @@ class KuotaBidangModel extends Model
                 'status'     => 'AKTIF'
             ]);
         }
+    }
+
+    /**
+     * Mengambil daftar mahasiswa yang menempati kuota pada bulan tertentu
+     */
+    public function getMahasiswaByKuotaBulan($id_bidang, $tahun, $bulan)
+    {
+        $db = \Config\Database::connect();
+        
+        $awalBulan = sprintf('%04d-%02d-01', $tahun, $bulan);
+        $akhirBulan = date('Y-m-t', strtotime($awalBulan));
+        
+        return $db->table('t_penempatan_magang')
+            ->select('m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, t_penempatan_magang.tanggal_mulai, t_penempatan_magang.tanggal_selesai, t_penempatan_magang.status_penempatan, m_jenis_permohonan.jenis_permohonan')
+            ->join('t_persetujuan_magang', 't_persetujuan_magang.id_persetujuan_magang = t_penempatan_magang.id_persetujuan_magang')
+            ->join('t_permohonan_magang', 't_permohonan_magang.id_permohonan_magang = t_persetujuan_magang.id_permohonan_magang')
+            ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa')
+            ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
+            ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
+            ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan', 'left')
+            ->where('t_penempatan_magang.id_bidang', $id_bidang)
+            ->whereIn('t_penempatan_magang.status_penempatan', ['DISETUJUI', 'BERJALAN'])
+            ->where('t_penempatan_magang.tanggal_mulai <=', $akhirBulan)
+            ->where('t_penempatan_magang.tanggal_selesai >=', $awalBulan)
+            ->get()->getResultArray();
     }
 }

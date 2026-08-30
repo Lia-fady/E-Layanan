@@ -33,7 +33,7 @@ class C_KuotaBidang extends BaseController
         $available_years = $kuotaModel->getAvailableYears($id_bidang, $tahun);
 
         $data = [
-            'title'           => 'Kuota Magang Bidang',
+            'title'           => 'Kuota Kegiatan Bidang',
             'active_menu'     => 'kuota',
             'list_kuota'      => $list_kuota,
             'tahun'           => $tahun,
@@ -72,13 +72,20 @@ class C_KuotaBidang extends BaseController
             return redirect()->to(base_url('kabid/kuota'))->with('error', 'Data kuota tidak ditemukan.');
         }
 
+        // Ambil data mahasiswa yang mengisi kuota ini
+        $list_mahasiswa = $kuotaModel->getMahasiswaByKuotaBulan($id_bidang, $tahun, $bulan);
+
+        $mode = $this->request->getGet('mode') ?? 'lihat';
+
         $data = [
             'title'        => 'Detail Kuota ' . $kuota_detail['bulan_nama'] . ' ' . $tahun,
             'active_menu'  => 'kuota',
             'tahun'        => $tahun,
             'bulan'        => $bulan,
             'nama_bidang'  => $nama_bidang,
-            'kuota_detail' => $kuota_detail
+            'kuota_detail' => $kuota_detail,
+            'list_mahasiswa' => $list_mahasiswa,
+            'mode'         => $mode
         ];
 
         return view('dashboard/kabid/v_kuota_detail_bidang', $data);

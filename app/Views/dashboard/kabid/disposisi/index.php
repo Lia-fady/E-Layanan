@@ -27,9 +27,9 @@
     <!-- Page Description -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Disposisi Masuk</h5>
+            <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Permohonan Masuk</h5>
             <p style="color:#667085; font-size:0.85rem; margin:0;">
-                Pantau dan kelola seluruh permohonan mahasiswa/siswa yang didisposisikan ke bidang Anda.
+                Pantau dan kelola seluruh permohonan mahasiswa/siswa yang diteruskan ke bidang Anda.
             </p>
         </div>
     </div>
@@ -74,7 +74,7 @@ $(document).ready(function() {
         "autoWidth": false,
         "responsive": true,
         "language": {
-            "emptyTable": "Belum ada disposisi masuk.",
+            "emptyTable": "Belum ada permohonan masuk.",
             "zeroRecords": "Tidak ditemukan data yang sesuai",
             "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
             "infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
@@ -121,7 +121,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-detail', function() {
         var id = $(this).data('id');
         
-        $('#detailContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat detail disposisi...</div>');
+        $('#detailContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat detail permohonan...</div>');
         $('#sectionList').hide();
         $('#sectionDetail').show();
         
@@ -145,7 +145,7 @@ $(document).ready(function() {
                 $('#detailContainer').html('');
                 $('#sectionDetail').hide();
                 $('#sectionList').show();
-                Swal.fire('Error!', 'Gagal memuat detail disposisi.', 'error');
+                Swal.fire('Error!', 'Gagal memuat detail permohonan.', 'error');
             }
         });
     });

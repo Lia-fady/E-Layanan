@@ -222,7 +222,9 @@ class C_Permohonan extends C_BaseMahasiswa
                 ->get()->getRowArray();
 
             $maksHariPengajuan  = (int)($jenisConfig['maksimal_hari_pengajuan'] ?? 0);
+            if ($maksHariPengajuan == 0) $maksHariPengajuan = 30; // Fallback 1 bulan
             $durasiMinimal      = (int)($jenisConfig['durasi_minimal'] ?? 0);
+            if ($durasiMinimal == 0) $durasiMinimal = 59; // Fallback ~2 bulan
             $maksimalPermohonan = (int)($jenisConfig['maksimal_permohonan'] ?? 0);
 
             $today = new \DateTime();
@@ -575,7 +577,9 @@ class C_Permohonan extends C_BaseMahasiswa
                 ->get()->getRowArray();
 
             $maksHariPengajuan  = (int)($jenisConfig['maksimal_hari_pengajuan'] ?? 0);
+            if ($maksHariPengajuan == 0) $maksHariPengajuan = 30; // Fallback 1 bulan
             $durasiMinimal      = (int)($jenisConfig['durasi_minimal'] ?? 0);
+            if ($durasiMinimal == 0) $durasiMinimal = 59; // Fallback ~2 bulan
             $maksimalPermohonan = (int)($jenisConfig['maksimal_permohonan'] ?? 0);
 
             $today = new \DateTime();
