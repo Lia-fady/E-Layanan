@@ -72,7 +72,7 @@ Manajemen Kuota Bidang
 <div class="mb-4">
     <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Kuota Bidang</h5>
     <p style="color:#667085; font-size:0.9rem; margin:0;">
-        Atur dan kelola batas maksimal mahasiswa yang dapat diterima di bidang Anda.
+        Atur batas kuota penerimaan per bulan di bidang Anda.
     </p>
 </div>
 
@@ -169,7 +169,7 @@ Manajemen Kuota Bidang
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">Data kuota belum tersedia.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Belum ada data kuota.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -227,7 +227,7 @@ $(document).ready(function() {
             cancelButtonText: 'Batal',
             inputValidator: (value) => {
                 if (!value || value.length !== 4) {
-                    return 'Silakan masukkan tahun yang valid (4 digit angka)!';
+                    return 'Masukkan tahun yang valid (4 digit).';
                 }
             }
         }).then((result) => {
@@ -299,7 +299,7 @@ $(document).ready(function() {
                         }
                     },
                     error: function() {
-                        Swal.fire('Error!', 'Terjadi kesalahan pada server.', 'error');
+                        Swal.fire('Error!', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
                     }
                 });
             }

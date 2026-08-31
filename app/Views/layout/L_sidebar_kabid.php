@@ -39,14 +39,14 @@
 
     <!-- Heading: PENEMPATAN & PENGAWASAN -->
     <div class="sidebar-heading">
-        MANAJEMEN AKADEMIK
+        KELOLA KEGIATAN
     </div>
 
     <!-- Nav Item - Disposisi Masuk -->
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'disposisi') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('kabid/disposisi') ?>">
             <i class="fas fa-fw fa-inbox"></i>
-            <span>Disposisi Masuk</span>
+            <span>Permohonan Masuk</span>
         </a>
     </li>
 
@@ -54,7 +54,7 @@
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'riwayat') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('kabid/riwayat') ?>">
             <i class="fas fa-fw fa-history"></i>
-            <span>Riwayat </span>
+            <span>Riwayat</span>
         </a>
     </li>
 
@@ -86,7 +86,7 @@
     <li class="nav-item <?= (isset($active_menu) && $active_menu == 'upload_dokumen') ? 'active' : '' ?>">
         <a class="nav-link" href="<?= base_url('kabid/upload-dokumen') ?>">
             <i class="fas fa-fw fa-file-upload"></i>
-            <span>Upload Dokumen</span>
+            <span>Dokumen Kegiatan</span>
         </a>
     </li>
 

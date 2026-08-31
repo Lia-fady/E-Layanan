@@ -12,9 +12,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Detail & Approval Logbook</h5>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Detail Logbook</h5>
         <p style="color:#64748B; font-size:0.9rem; margin:0;">
-            Review aktivitas harian dan berikan persetujuan untuk pemohon.
+            Tinjau kegiatan harian dan berikan persetujuan.
         </p>
     </div>
     <button type="button" id="btnKembaliList" class="btn btn-light border shadow-sm" style="border-radius: 8px; font-weight: 600; color: #475569;">
@@ -260,7 +260,7 @@ $(document).ready(function() {
         });
 
         if (selectedIds.length === 0) {
-            Swal.fire('Perhatian!', 'Pilih minimal satu logbook sebelum melakukan persetujuan massal.', 'warning');
+            Swal.fire('Perhatian!', 'Pilih minimal satu logbook untuk disetujui.', 'warning');
             return;
         }
 
@@ -291,7 +291,7 @@ $(document).ready(function() {
                         }
                     },
                     error: function() {
-                        Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                        Swal.fire('Error!', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
                     }
                 });
             }
@@ -334,7 +334,7 @@ $(document).ready(function() {
                         }
                     },
                     error: function() {
-                        Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                        Swal.fire('Error!', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
                     }
                 });
             }
@@ -348,9 +348,9 @@ $(document).ready(function() {
 
         Swal.fire({
             title: 'Tolak Logbook',
-            text: 'Silakan masukkan alasan penolakan / catatan revisi untuk pemohon:',
+            text: 'Masukkan alasan penolakan:',
             input: 'textarea',
-            inputPlaceholder: 'Contoh: Bukti kegiatan kurang jelas atau tidak relevan...',
+            inputPlaceholder: 'Contoh: Bukti kegiatan kurang jelas...',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Tolak Logbook',
@@ -359,7 +359,7 @@ $(document).ready(function() {
             reverseButtons: true,
             inputValidator: (value) => {
                 if (!value || value.trim() === '') {
-                    return 'Catatan revisi wajib diisi!'
+                    return 'Alasan penolakan wajib diisi.'
                 }
             }
         }).then((result) => {
@@ -386,7 +386,7 @@ $(document).ready(function() {
                         }
                     },
                     error: function() {
-                        Swal.fire('Error!', 'Terjadi kesalahan sistem.', 'error');
+                        Swal.fire('Error!', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
                     }
                 });
             }

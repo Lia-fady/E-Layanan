@@ -55,7 +55,7 @@
                 <div class="stat-title mt-3">Menunggu Persetujuan</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $total_menunggu ?></div>
-                    <div class="stat-desc">Disposisi masuk</div>
+                    <div class="stat-desc">Permohonan masuk</div>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                 <div class="stat-title mt-3">Pemohon Aktif</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $total_berjalan ?></div>
-                    <div class="stat-desc">Disetujui / Berjalan</div>
+                    <div class="stat-desc">Disetujui & berjalan</div>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 <div class="stat-title mt-3">Sisa Kuota Bidang</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $sisa_kuota ?></div>
-                    <div class="stat-desc">Posisi tersisa</div>
+                    <div class="stat-desc">Slot tersedia</div>
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@
     <div class="col-xl-8 col-lg-7 mb-4">
         <div class="card shadow-sm border-0 h-100" style="border-radius: 12px;">
             <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between" style="border-bottom: 1px solid #F1F5F9; border-radius: 12px 12px 0 0;">
-                <h6 class="m-0 card-title-custom">Permohonan Terbaru Masuk</h6>
+                <h6 class="m-0 card-title-custom">Permohonan Terbaru</h6>
                 <a href="<?= base_url('kabid/disposisi') ?>" class="text-primary font-weight-bold" style="font-size: 0.85rem; text-decoration: none;">Lihat Semua</a>
             </div>
             <div class="card-body p-0">
@@ -187,13 +187,13 @@
         <!-- Logbook Menunggu Approval -->
         <div class="card shadow-sm border-0 h-100" style="border-radius: 12px;">
             <div class="card-header bg-white py-3" style="border-bottom: 1px solid #F1F5F9; border-radius: 12px 12px 0 0;">
-                <h6 class="m-0 card-title-custom">Persetujuan Logbook</h6>
+                <h6 class="m-0 card-title-custom">Logbook Menunggu Persetujuan</h6>
             </div>
             <div class="card-body p-0">
                 <?php if(empty($logbook_list)): ?>
                     <div class="text-center p-5">
                         <div class="text-muted mb-2"><i class="fas fa-check-circle fa-3x text-success" style="opacity: 0.2;"></i></div>
-                        <div style="color: #0F172A; font-weight: 600; margin-top: 15px;">Semua Bersih!</div>
+                        <div style="color: #0F172A; font-weight: 600; margin-top: 15px;">Semua Logbook Sudah Disetujui</div>
                         <span class="text-muted" style="font-size: 0.85rem;">Tidak ada logbook harian yang menunggu persetujuan Anda.</span>
                     </div>
                 <?php else: ?>
@@ -223,7 +223,7 @@
             </div>
             <?php if(!empty($logbook_list)): ?>
             <div class="card-footer bg-white text-center py-3" style="border-top: 1px solid #F1F5F9; border-radius: 0 0 12px 12px;">
-                <a href="<?= base_url('kabid/logbook') ?>" class="text-primary font-weight-bold" style="font-size: 0.85rem; text-decoration: none;">Kelola Semua Logbook</a>
+                <a href="<?= base_url('kabid/logbook') ?>" class="text-primary font-weight-bold" style="font-size: 0.85rem; text-decoration: none;">Lihat Semua Logbook</a>
             </div>
             <?php endif; ?>
         </div>

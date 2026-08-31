@@ -19,7 +19,7 @@
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Daftar Dokumen Kegiatan</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Kelola dokumen pendukung seperti surat keterangan diterima dan sertifikat selesai kegiatan.
+            Kelola surat penerimaan dan sertifikat kegiatan.
         </p>
     </div>
 </div>
@@ -191,7 +191,7 @@ $(document).ready(function() {
             },
             error: function() {
                 btn.prop('disabled', false).html(originalHtml);
-                Swal.fire('Error!', 'Gagal memuat form dokumen.', 'error');
+                Swal.fire('Error!', 'Gagal memuat halaman dokumen.', 'error');
             }
         });
     });
