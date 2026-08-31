@@ -92,7 +92,7 @@
                 <div class="stat-title mt-3">Sisa Kuota Bidang</div>
                 <div class="d-flex align-items-baseline" style="gap: 8px;">
                     <div class="stat-number"><?= $sisa_kuota ?></div>
-                    <div class="stat-desc">Slot tersedia</div>
+                    <div class="stat-desc">Kuota tersedia</div>
                 </div>
             </div>
         </div>
