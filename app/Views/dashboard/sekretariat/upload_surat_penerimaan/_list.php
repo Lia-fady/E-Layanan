@@ -96,9 +96,13 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary btn-upload-surat" data-id-persetujuan="<?= $p->id_persetujuan_magang ?>" title="Upload Surat">
-                                        <i class="fas fa-file-upload mr-1"></i> Upload Surat
-                                    </button>
+                                    <?php if (!in_array(($p->status_penempatan ?? ''), ['DIBATALKAN', 'DITOLAK'])) : ?>
+                                        <button type="button" class="btn btn-sm btn-primary btn-upload-surat" data-id-persetujuan="<?= $p->id_persetujuan_magang ?>" title="Upload Surat">
+                                            <i class="fas fa-file-upload mr-1"></i> Upload Surat
+                                        </button>
+                                    <?php else : ?>
+                                        <span class="text-muted" title="Tidak dapat diupload karena status <?= esc(strtolower($p->status_penempatan)) ?>"><i class="fas fa-ban"></i></span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

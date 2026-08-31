@@ -46,6 +46,10 @@ class C_UploadSuratPenerimaan extends BaseController
             ->join('m_jenis_permohonan jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left')
             ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.status_persetujuan', 'DISETUJUI')
+            ->groupStart()
+                ->whereNotIn('pn.status_penempatan', ['DIBATALKAN', 'DITOLAK'])
+                ->orWhere('pn.status_penempatan IS NULL', null, false)
+            ->groupEnd()
             ->orderBy('ps.tanggal_persetujuan', 'DESC')
             ->get()->getResult();
 
@@ -77,7 +81,8 @@ class C_UploadSuratPenerimaan extends BaseController
                 pr.nama_prodi,
                 fk.fakultas AS nama_fakultas,
                 mj.nama_jurusan,
-                im.jurusan AS jurusan_text
+                im.jurusan AS jurusan_text,
+                pn.status_penempatan
             ')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang', 'left')
             ->join('m_mahasiswa mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left')
@@ -86,6 +91,7 @@ class C_UploadSuratPenerimaan extends BaseController
             ->join('m_prodi pr', 'pr.id_prodi = im.id_prodi', 'left')
             ->join('m_fakultas fk', 'fk.id_fakultas = pr.id_fakultas', 'left')
             ->join('m_jurusan mj', 'mj.id_jurusan = im.id_jurusan', 'left')
+            ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
             ->where('ps.id_persetujuan_magang', $id_persetujuan)
             ->get()->getRow();
     }
@@ -112,12 +118,18 @@ class C_UploadSuratPenerimaan extends BaseController
         $id_persetujuan = $this->request->getPost('id_persetujuan_magang');
         
         $db = \Config\Database::connect();
-        $cekPersetujuan = $db->table('t_persetujuan_magang')
-                             ->where('id_persetujuan_magang', $id_persetujuan)
+        $cekPersetujuan = $db->table('t_persetujuan_magang ps')
+                             ->select('ps.*, pn.status_penempatan')
+                             ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+                             ->where('ps.id_persetujuan_magang', $id_persetujuan)
                              ->get()->getRow();
                              
         if (!$cekPersetujuan) {
             return $this->response->setJSON(['success' => false, 'message' => 'Data persetujuan magang tidak valid atau tidak ditemukan.']);
+        }
+
+        if (in_array($cekPersetujuan->status_penempatan, ['DIBATALKAN', 'DITOLAK'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Upload Surat Penerimaan tidak dapat dilakukan karena permohonan sudah ' . strtolower($cekPersetujuan->status_penempatan) . '.']);
         }
 
         $files = $this->request->getFileMultiple('file_surat');
@@ -209,6 +221,17 @@ class C_UploadSuratPenerimaan extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
         }
 
+        $db = \Config\Database::connect();
+        $cekPersetujuan = $db->table('t_persetujuan_magang ps')
+                             ->select('pn.status_penempatan')
+                             ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+                             ->where('ps.id_persetujuan_magang', $existing->id_persetujuan_magang)
+                             ->get()->getRow();
+
+        if ($cekPersetujuan && in_array($cekPersetujuan->status_penempatan, ['DIBATALKAN', 'DITOLAK'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Perubahan Surat Penerimaan tidak dapat dilakukan karena permohonan sudah ' . strtolower($cekPersetujuan->status_penempatan) . '.']);
+        }
+
         $file = $this->request->getFile('file_baru');
         if (!$file || !$file->isValid()) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak valid atau tidak dipilih.']);
@@ -253,6 +276,17 @@ class C_UploadSuratPenerimaan extends BaseController
         $existing = $this->fileProsesModel->find($id_file_proses);
         if (!$existing) {
             return $this->response->setJSON(['success' => false, 'message' => 'File tidak ditemukan.']);
+        }
+
+        $db = \Config\Database::connect();
+        $cekPersetujuan = $db->table('t_persetujuan_magang ps')
+                             ->select('pn.status_penempatan')
+                             ->join('t_penempatan_magang pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left')
+                             ->where('ps.id_persetujuan_magang', $existing->id_persetujuan_magang)
+                             ->get()->getRow();
+
+        if ($cekPersetujuan && in_array($cekPersetujuan->status_penempatan, ['DIBATALKAN', 'DITOLAK'])) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Penghapusan Surat Penerimaan tidak dapat dilakukan karena permohonan sudah ' . strtolower($cekPersetujuan->status_penempatan) . '.']);
         }
 
         $oldFilePath = WRITEPATH . $existing->path_file;

@@ -58,10 +58,10 @@
                 <div class="stat-card-icon yellow">
                     <i class="fas fa-clock"></i>
                 </div>
-                <div class="stat-card-title">Menunggu Verifikasi</div>
+                <div class="stat-card-title">Perlu Verifikasi</div>
             </div>
             <div class="stat-card-value"><?= esc($total_verifikasi) ?></div>
-            <div class="stat-card-desc">Pemohon perlu Diverifikasi</div>
+            <div class="stat-card-desc">Permohonan menunggu verifikasi</div>
             <a href="<?= site_url('sekretariat/verifikasi') ?>" class="stat-card-link yellow">
                 Lihat Detail <i class="fas fa-chevron-right fa-xs"></i>
             </a>
@@ -92,7 +92,7 @@
                 <div class="stat-card-icon green">
                     <i class="fas fa-spinner"></i>
                 </div>
-                <div class="stat-card-title">Sedang Diproses oleh Bidang</div>
+                <div class="stat-card-title">Diproses Bidang</div>
             </div>
             <div class="stat-card-value"><?= esc($total_sedang_diproses) ?></div>
             <div class="stat-card-desc">Dalam proses</div>
@@ -109,7 +109,7 @@
                 <div class="stat-card-icon purple">
                     <i class="fas fa-user-graduate"></i>
                 </div>
-                <div class="stat-card-title">Mahasiswa/Siswa Aktif</div>
+                <div class="stat-card-title">Peserta Aktif</div>
             </div>
             <div class="stat-card-value"><?= esc($total_mahasiswa_aktif) ?></div>
             <div class="stat-card-desc">Sedang Magang</div>

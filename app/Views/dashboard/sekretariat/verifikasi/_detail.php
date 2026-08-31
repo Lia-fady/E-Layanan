@@ -94,10 +94,10 @@ $badgeStyle = $statusBadgeClass[$statusPersetujuan] ?? 'background-color: #f1f5f
             </div>
         <?php endif; ?>
 
-        <!-- Card 1: Data Lengkap Pemohon - Layout Profile Kiri + Detail Kanan -->
+        <!-- Card 1: Detail Pemohon - Layout Profile Kiri + Detail Kanan -->
         <div class="card bg-white mb-4 border-0 shadow-sm" style="border-radius: 8px; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; overflow: hidden;">
             <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
-                <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Data Lengkap Pemohon</h6>
+                <h6 class="m-0 font-weight-bold" style="color: #0f172a; font-size: 16px;">Detail Pemohon</h6>
             </div>
             <div class="card-body p-0">
                 <hr class="m-0" style="border-top: 1px solid #f1f5f9;">
@@ -212,10 +212,10 @@ $badgeStyle = $statusBadgeClass[$statusPersetujuan] ?? 'background-color: #f1f5f
                             </div>
                         </div>
 
-                        <!-- Section 4: Informasi Pengajuan -->
+                        <!-- Section 4: Detail Permohonan -->
                         <div class="detail-pemohon__section">
                             <div class="detail-pemohon__section-title">
-                                <i class="fas fa-file-alt"></i> Informasi Pengajuan
+                                <i class="fas fa-file-alt"></i> Detail Permohonan
                             </div>
                             <div class="row">
                                 <div class="col-sm-4 detail-pemohon__field">
