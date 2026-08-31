@@ -18,7 +18,9 @@
             --navy-dark:  #0a2456;
             --gold:       #B58E4A;
             --gold-hover: #9a7a3e;
-            --gold-light: #d4aa6a;
+            --primary:    #10367D;
+            --primary-hover: #0a2456;
+            --primary-light: #A5CEE0;
             --accent:     #A5CEE0;
             --bg-form:    #F5F0EB;
             --text-dark:  #1A1A2E;
@@ -196,8 +198,8 @@
         .auth-input::placeholder { color: #b5afa6; }
 
         .auth-input:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(181, 142, 74, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 54, 125, 0.1);
         }
 
         /* Password wrap */
@@ -244,7 +246,7 @@
 
         .forgot-link {
             font-size: 0.75rem;
-            color: var(--gold);
+            color: var(--navy);
             font-weight: 700;
             text-decoration: none;
         }

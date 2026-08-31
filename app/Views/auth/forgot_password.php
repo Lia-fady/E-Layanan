@@ -17,13 +17,15 @@
             --navy-dark:  #0a2456;
             --gold:       #B58E4A;
             --gold-hover: #9a7a3e;
-            --gold-light: #d4aa6a;
+            --primary:    #10367D;
+            --primary-hover: #0a2456;
+            --primary-light: #A5CEE0;
             --accent:     #A5CEE0;
-            --bg-form:    #F5F0EB;
+            --bg-form:    #F8F9FA;
             --text-dark:  #1A1A2E;
             --text-muted: #6B7280;
             --white:      #FFFFFF;
-            --border:     #DDD6CC;
+            --border:     #E5E7EB;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,61 +33,35 @@
         html, body {
             height: 100%;
             font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-            overflow: hidden;
-        }
-
-        /* === CUSTOM SCROLLBAR === */
-        .panel-form::-webkit-scrollbar { width: 7px; }
-        .panel-form::-webkit-scrollbar-track { background: #DDD6CC; border-radius: 10px; }
-        .panel-form::-webkit-scrollbar-thumb { background: #888078; border-radius: 10px; }
-        .panel-form::-webkit-scrollbar-thumb:hover { background: #6b6360; }
-        .panel-form { scrollbar-width: thin; scrollbar-color: #888078 #DDD6CC; }
-
-        /* === SPLIT WRAPPER === */
-        .split-wrapper { display: flex; height: 100vh; }
-
-        /* === PANEL KIRI: FORM === */
-        .panel-form {
-            width: 100%;
             background: var(--bg-form);
+        }
+
+        /* === CENTERED WRAPPER === */
+        .auth-wrapper {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding: 1.5rem 2rem;
-            overflow-y: auto;
+            min-height: 100vh;
+            padding: 2rem 1rem;
         }
 
-        @media (min-width: 992px) {
-            .panel-form {
-                width: 40%;
-                min-width: 400px;
-                max-width: 480px;
-                padding: 1.5rem 2.5rem;
-                align-items: center;
-            }
+        .auth-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid rgba(0,0,0,0.04);
         }
 
-        .form-container { width: 100%; max-width: 340px; }
+        .form-container { width: 100%; }
 
-        /* Brand */
-        .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
-        .brand-logo { width: 36px; height: 36px; object-fit: contain; }
-        .brand-name { font-size: 0.92rem; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; line-height: 1.1; }
-        .brand-sub { font-size: 0.62rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
-
-        /* Badge */
-        .badge-portal {
-            display: inline-block;
-            background: var(--navy);
-            color: var(--white);
-            font-size: 0.58rem;
-            font-weight: 700;
-            padding: 3.5px 9px;
-            border-radius: 4px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 0.85rem;
-        }
+        /* Brand (Optional, bisa disembunyikan atau ditampilkan di atas) */
+        .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; justify-content: center; }
+        .brand-logo { width: 40px; height: 40px; object-fit: contain; }
+        .brand-name { font-size: 1rem; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; line-height: 1.1; }
+        .brand-sub { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
 
         /* Title */
         .form-title {
@@ -97,61 +73,50 @@
         }
 
         .form-desc {
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
-
-        /* Back Button */
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.72rem;
-            color: var(--navy);
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            transition: color 0.2s;
-        }
-        .btn-back:hover { color: var(--gold); }
 
         /* Label + Input */
         .auth-label {
             display: block;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-            letter-spacing: 0.3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.2px;
         }
 
         .auth-input {
             width: 100%;
-            padding: 10px 12px;
+            padding: 10px 14px;
             border: 1.5px solid var(--border);
             border-radius: 8px;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-family: inherit;
             background: var(--white);
             color: var(--text-dark);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
         }
 
-        .auth-input:focus { border-color: var(--navy); }
-        .auth-input::placeholder { color: #b0a89d; }
+        .auth-input:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(16, 54, 125, 0.15);
+        }
+        .auth-input::placeholder { color: #9ca3af; }
 
         /* Buttons */
         .btn-submit {
             width: 100%;
-            padding: 11px 0;
+            padding: 12px 0;
             background: var(--gold);
             color: var(--white);
             border: none;
             border-radius: 8px;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -166,14 +131,14 @@
         .btn-back-login {
             display: block;
             text-align: center;
-            margin-top: 1rem;
-            font-size: 0.78rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 500;
             text-decoration: none;
             transition: color 0.2s;
         }
-        .btn-back-login:hover { color: var(--navy); }
+        .btn-back-login:hover { color: var(--navy); text-decoration: underline; }
 
         /* Alerts */
         .auth-alert {
@@ -182,39 +147,37 @@
             gap: 8px;
             padding: 10px 12px;
             border-radius: 8px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             line-height: 1.5;
         }
 
-        .auth-alert.success { background: #f0fdf4; color: #15803d; }
-        .auth-alert.error { background: #fef2f2; color: #dc2626; }
-        .auth-alert.info { background: #eff6ff; color: #1d4ed8; }
+        .auth-alert.success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        .auth-alert.error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .auth-alert.info { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
 
-        .form-group { margin-bottom: 0.7rem; }
-
-        /* Ikon Email (Dihapus karena diganti dengan desain card) */
+        .form-group { margin-bottom: 1rem; }
 
         /* === METODE RESET CARD === */
         .method-label {
             display: block;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: var(--text-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
             margin-bottom: 8px;
-            margin-top: 1.25rem;
+            margin-top: 1.5rem;
         }
 
         .method-card {
-            border: 1.5px solid var(--gold);
-            background: #FCFAf5; /* Subtle gold tint */
+            border: 1.5px solid var(--primary);
+            background: #f4f7fc; /* Subtle navy tint */
             border-radius: 8px;
             padding: 14px 16px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .method-icon {
@@ -225,89 +188,54 @@
 
         .method-text .title {
             font-weight: 700;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: var(--text-dark);
             margin-bottom: 4px;
         }
 
         .method-text .desc {
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             line-height: 1.45;
         }
 
+        /* Aplikasi Authenticator Card (Inactive example) */
+        .method-card.inactive {
+            border: 1px solid var(--border);
+            background: var(--white);
+            margin-bottom: 1.25rem;
+            opacity: 0.7;
+        }
+        .method-card.inactive .method-icon {
+            color: var(--text-muted);
+        }
+
         /* reCAPTCHA */
-        .recaptcha-box { margin-bottom: 1rem; margin-top: 1.25rem; overflow: hidden; }
-        .recaptcha-box .g-recaptcha {
-            transform: scale(0.85);
-            transform-origin: left top;
-        }
-
-        /* === PANEL KANAN: HERO === */
-        .panel-hero {
-            display: none;
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @media (min-width: 992px) {
-            .panel-hero {
-                display: flex;
-                align-items: flex-end;
+        .recaptcha-box { margin-bottom: 1.5rem; display: flex; }
+        
+        @media (max-width: 480px) {
+            .auth-card { padding: 2rem 1.5rem; }
+            .recaptcha-box .g-recaptcha {
+                transform: scale(0.85);
+                transform-origin: left top;
             }
-        }
-
-        .panel-hero-bg {
-            position: absolute;
-            inset: 0;
-            background-image: url('<?= base_url("images/gedung puspem landing page.png") ?>');
-            background-size: cover;
-            background-position: center;
-            filter: grayscale(15%) brightness(0.75);
-        }
-
-        .panel-hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(170deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.5) 100%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 3.5rem 4rem;
-            max-width: 600px;
-        }
-
-        .hero-bar { width: 45px; height: 3.5px; background: var(--white); border-radius: 2px; margin-bottom: 1.5rem; }
-        .hero-title { font-size: clamp(1.8rem, 2.8vw, 2.5rem); font-weight: 800; color: var(--white); line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 1rem; }
-        .hero-subtitle { font-size: 0.88rem; color: rgba(255,255,255,0.68); line-height: 1.7; max-width: 480px; }
-
-        @media (max-width: 991px) {
-            .split-wrapper { background: var(--bg-form); }
         }
     </style>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
-<div class="split-wrapper">
-
-    <!-- KIRI: FORM -->
-    <div class="panel-form">
+<div class="auth-wrapper">
+    <div class="auth-card">
         <div class="form-container">
 
-            <!-- Brand -->
-            <div class="brand-row">
+            <!-- <div class="brand-row">
                 <img src="<?= base_url('images/kota tng_nobg.png') ?>" alt="Logo Kota Tangerang" class="brand-logo" onerror="this.style.display='none'">
                 <div>
                     <div class="brand-name">E-LAYANAN</div>
                     <div class="brand-sub">Dinkominfo Kota Tangerang</div>
                 </div>
-            </div>
-
-            <div class="badge-portal">PORTAL PESERTA</div>
+            </div> -->
 
             <h1 class="form-title">Lupa Password</h1>
             <p class="form-desc">Masukkan email yang terdaftar. Kami akan mengirimkan tautan untuk membuat password baru akun Anda.</p>
@@ -348,6 +276,7 @@
 
                 <!-- Metode Reset Card -->
                 <div class="method-label">Metode Atur Ulang Password</div>
+                
                 <div class="method-card">
                     <div class="method-icon"><i class="bi bi-envelope-check"></i></div>
                     <div class="method-text">
@@ -371,18 +300,6 @@
             </a>
         </div>
     </div>
-
-    <!-- KANAN: HERO -->
-    <div class="panel-hero">
-        <div class="panel-hero-bg"></div>
-        <div class="panel-hero-overlay"></div>
-        <div class="hero-content">
-            <div class="hero-bar"></div>
-            <h2 class="hero-title">Jangan Khawatir,<br>Kami Bantu Anda.</h2>
-            <p class="hero-subtitle">Lupa password adalah hal yang wajar. Cukup masukkan alamat email Anda dan kami akan mengirimkan panduan untuk membuat password baru dalam hitungan menit.</p>
-        </div>
-    </div>
-
 </div>
 
 </body>
