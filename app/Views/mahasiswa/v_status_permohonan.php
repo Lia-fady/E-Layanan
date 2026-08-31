@@ -713,5 +713,66 @@
             }
         });
     }
+    function confirmTerimaPeriode(idPermohonan) {
+        Swal.fire({
+            title: 'Terima Usulan Periode?',
+            html: 'Dengan menerima usulan ini, periode pelaksanaan magang Anda akan diperbarui sesuai usulan dari Bidang terkait.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3b82f6',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Terima Usulan',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Buat form dinamis untuk submit POST ke setujui-periode
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '<?= base_url('mahasiswa/status/setujui-periode/') ?>' + idPermohonan;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+
+    function confirmTolakPeriode(idPermohonan) {
+        Swal.fire({
+            title: 'Tolak Usulan Periode?',
+            html: `Anda akan menolak usulan periode dari Bidang. Permohonan Anda akan dikembalikan ke Sekretariat untuk ditindaklanjuti.<br><br>
+                   <textarea id="swal-alasan-tolak" class="swal2-textarea" placeholder="Tuliskan alasan Anda menolak usulan periode ini... (Wajib)" style="margin-top:0; font-size:0.9rem;"></textarea>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Tolak Usulan',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true,
+            preConfirm: () => {
+                const alasan = document.getElementById('swal-alasan-tolak').value;
+                if (!alasan || alasan.trim() === '') {
+                    Swal.showValidationMessage('Alasan penolakan wajib diisi!');
+                    return false;
+                }
+                return alasan;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Buat form dinamis untuk submit POST ke tolak-periode
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '<?= base_url('mahasiswa/status/tolak-periode/') ?>' + idPermohonan;
+                
+                const inputAlasan = document.createElement('input');
+                inputAlasan.type = 'hidden';
+                inputAlasan.name = 'alasan_tolak';
+                inputAlasan.value = result.value;
+                
+                form.appendChild(inputAlasan);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
 </script>
 <?= $this->endSection() ?>
