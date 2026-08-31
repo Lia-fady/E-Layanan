@@ -161,6 +161,7 @@ class M_Verifikasi extends Model
             m_provinsi.nama_provinsi as provinsi
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
+        $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('m_kelurahan as m_kelurahan', 'm_kelurahan.id_kelurahan = mhs.id_kelurahan', 'left');
         $builder->join('m_kecamatan as m_kecamatan', 'm_kecamatan.id_kecamatan = m_kelurahan.id_kecamatan', 'left');
         $builder->join('m_kabupaten as m_kabupaten', 'm_kabupaten.id_kabupaten = m_kecamatan.id_kabupaten', 'left');
