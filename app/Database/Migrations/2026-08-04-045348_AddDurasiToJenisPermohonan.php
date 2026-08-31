@@ -16,7 +16,11 @@ class AddDurasiToJenisPermohonan extends Migration
                 'after'      => 'jenis_permohonan'
             ],
         ];
-        $this->forge->addColumn('m_jenis_permohonan', $fields);
+        try {
+            $this->forge->addColumn('m_jenis_permohonan', $fields);
+        } catch (\Exception $e) {
+            // Abaikan jika kolom sudah ada
+        }
     }
 
     public function down()

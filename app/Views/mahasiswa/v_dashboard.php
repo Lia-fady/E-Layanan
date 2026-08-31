@@ -371,6 +371,10 @@
         $statusText  = 'Ditolak';
         $statusClass = 'st-ditolak';
         $statusIcon  = 'bi-x-circle-fill';
+    } elseif ($state == 8) {
+        $statusText  = 'Tinjau Periode';
+        $statusClass = 'st-menunggu';
+        $statusIcon  = 'bi-calendar-event';
     }
 
     // Jenis permohonan label
@@ -457,6 +461,12 @@
         <div class="flex-grow-1"><div class="next-action-title">Catat aktivitas hari ini</div><div class="next-action-copy">Logbook kegiatan Anda aktif. Pastikan aktivitas harian dicatat secara berkala.</div></div>
         <a href="<?= base_url('mahasiswa/logbook') ?>" class="btn-action primary"><i class="bi bi-pencil-square"></i> Isi Logbook</a>
     </div>
+<?php elseif ($state == 8): ?>
+    <div class="next-action-card warning">
+        <span class="next-action-icon"><i class="bi bi-calendar-event"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Usulan Perubahan Periode</div><div class="next-action-copy">Bidang mengusulkan penyesuaian periode kegiatan magang/penelitian Anda. Silakan tinjau dan berikan persetujuan.</div></div>
+        <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action primary"><i class="bi bi-eye"></i> Tinjau Usulan</a>
+    </div>
 <?php elseif ($state == 2): ?>
     <div class="next-action-card">
         <span class="next-action-icon"><i class="bi bi-hourglass-split"></i></span>
@@ -504,9 +514,9 @@
         <!-- Step 3: Persetujuan Kabid -->
         <?php
             $step3_class = ''; $step3_icon = '3';
-            if ($state >= 3 && $state != 6) {
+            if ($state >= 3 && $state != 6 && $state != 8) {
                 $step3_class = 'completed'; $step3_icon = '<i class="bi bi-check-lg"></i>';
-            } elseif ($state == 2 && isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
+            } elseif (($state == 2 || $state == 8) && isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
                 $step3_class = 'current'; $step3_icon = '<i class="bi bi-diagram-3-fill"></i>';
             }
         ?>

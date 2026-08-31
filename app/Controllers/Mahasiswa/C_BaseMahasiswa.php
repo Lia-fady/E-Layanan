@@ -33,7 +33,7 @@ class C_BaseMahasiswa extends BaseController
         $penempatanModel->updateStatusOtomatis();
 
         $permohonan = $db->table('t_permohonan_magang')
-            ->select('t_permohonan_magang.*, t_persetujuan_magang.id_persetujuan_magang, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.disposisi, t_persetujuan_magang.catatan as catatan_persetujuan, t_penempatan_magang.status_penempatan, t_penempatan_magang.is_log_book, t_penempatan_magang.catatan as catatan_penempatan')
+            ->select('t_permohonan_magang.*, t_persetujuan_magang.id_persetujuan_magang, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.disposisi, t_persetujuan_magang.catatan as catatan_persetujuan, t_persetujuan_magang.status_persetujuan_mahasiswa, t_penempatan_magang.status_penempatan, t_penempatan_magang.is_log_book, t_penempatan_magang.catatan as catatan_penempatan')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
             ->where('t_permohonan_magang.id_mahasiswa', $id_mahasiswa)
@@ -68,7 +68,11 @@ class C_BaseMahasiswa extends BaseController
                         } elseif ($permohonan['status_penempatan'] == 'DITOLAK') {
                             $state = 2; // Ditolak bidang = menunggu disposisi ulang oleh Sekretariat
                         } elseif ($permohonan['status_penempatan'] == 'DISETUJUI') {
-                            $state = 3; // Disetujui, menunggu tanggal mulai kegiatan
+                            if (isset($permohonan['status_persetujuan_mahasiswa']) && $permohonan['status_persetujuan_mahasiswa'] == 'MENUNGGU') {
+                                $state = 8; // Menunggu persetujuan perubahan periode oleh pemohon
+                            } else {
+                                $state = 3; // Disetujui penuh, menunggu tanggal mulai kegiatan
+                            }
                         } else {
                             $state = 4; // BERJALAN
                         }
