@@ -62,12 +62,12 @@ $routes->group('api', ['namespace' => '\App\Controllers\Api'], static function (
 });
 
 // --- API ROUTES FOR DROPDOWNS (from AuthController/ApiController) ---
-$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
-$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
-$routes->get('api/kabupaten/(:num)', 'ApiController::getKabupatenByProvinsi/$1');
-$routes->get('api/kecamatan/(:num)', 'ApiController::getKecamatanByKabupaten/$1');
-$routes->get('api/kelurahan/(:num)', 'ApiController::getKelurahanByKecamatan/$1');
-$routes->get('api/log/riwayat/(:num)', 'ApiController::getLogRiwayat/$1');
+$routes->get('api/fakultas/(:num)', 'Api\ApiController::getFakultasByKampus/$1');
+$routes->get('api/prodi/(:num)', 'Api\ApiController::getProdiByFakultas/$1');
+$routes->get('api/kabupaten/(:num)', 'Api\ApiController::getKabupatenByProvinsi/$1');
+$routes->get('api/kecamatan/(:num)', 'Api\ApiController::getKecamatanByKabupaten/$1');
+$routes->get('api/kelurahan/(:num)', 'Api\ApiController::getKelurahanByKecamatan/$1');
+$routes->get('api/log/riwayat/(:num)', 'Api\ApiController::getLogRiwayat/$1');
 
 // =========================================================================
 // MAHASISWA Route Group 
@@ -359,8 +359,8 @@ $routes->group('superadmin', ['filter' => 'authSuperAdmin', 'namespace' => 'App\
 });
 
 // --- API ROUTES FOR DROPDOWNS ---
-$routes->get('api/fakultas/(:num)', 'ApiController::getFakultasByKampus/$1');
-$routes->get('api/prodi/(:num)', 'ApiController::getProdiByFakultas/$1');
-$routes->get('api/kabupaten/(:any)', 'ApiController::getKabupatenByProvinsi/$1');
-$routes->get('api/kecamatan/(:any)', 'ApiController::getKecamatanByKabupaten/$1');
-$routes->get('api/kelurahan/(:any)', 'ApiController::getKelurahanByKecamatan/$1');
+$routes->get('api/fakultas/(:num)', 'Api\ApiController::getFakultasByKampus/$1');
+$routes->get('api/prodi/(:num)', 'Api\ApiController::getProdiByFakultas/$1');
+$routes->get('api/kabupaten/(:any)', 'Api\ApiController::getKabupatenByProvinsi/$1');
+$routes->get('api/kecamatan/(:any)', 'Api\ApiController::getKecamatanByKabupaten/$1');
+$routes->get('api/kelurahan/(:any)', 'Api\ApiController::getKelurahanByKecamatan/$1');

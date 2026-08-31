@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Common;
 
 use CodeIgniter\Model;
 
-class ProdiModel extends Model
+class FakultasModel extends Model
 {
-    protected $table            = 'm_prodi';
-    protected $primaryKey       = 'id_prodi';
+    protected $table            = 'm_fakultas';
+    protected $primaryKey       = 'id_fakultas';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_fakultas', 'nama_prodi', 'jenjang', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['fakultas', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     // Dates
     protected $useTimestamps = true;

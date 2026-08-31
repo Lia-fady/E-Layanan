@@ -11,7 +11,7 @@ if (!function_exists('catat_log')) {
      */
     function catat_log($id_permohonan, $aktor, $aksi, $catatan = null)
     {
-        $logModel = new \App\Models\LogPermohonanModel();
+        $logModel = new \App\Models\Common\LogPermohonanModel();
         
         $data = [
             'id_permohonan_magang' => $id_permohonan,

@@ -148,7 +148,11 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             <tr>
                 <th>Periode Pelaksanaan</th>
                 <td>
-                    <?php $mulai = formatTanggalIndo($p->tgl_mulai); $selesai = formatTanggalIndo($p->tgl_selesai); ?>
+                    <?php 
+                        $realMulai = $p->tgl_mulai_pelaksanaan ?? $p->tgl_mulai;
+                        $realSelesai = $p->tgl_selesai_pelaksanaan ?? $p->tgl_selesai;
+                        $mulai = formatTanggalIndo($realMulai); $selesai = formatTanggalIndo($realSelesai); 
+                    ?>
                     <?= $mulai ?> <span class="text-muted mx-1">s/d</span> <?= $selesai ?>
                 </td>
             </tr>

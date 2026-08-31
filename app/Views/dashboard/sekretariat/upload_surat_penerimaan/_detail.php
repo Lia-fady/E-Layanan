@@ -72,9 +72,13 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <td class="text-muted">Periode Magang</td>
                         <td>:</td>
                         <td>
-                            <?= !empty($persetujuan->tgl_mulai) ? date('d M Y', strtotime($persetujuan->tgl_mulai)) : '-' ?> 
+                            <?php 
+                                $realMulai = $persetujuan->tgl_mulai_pelaksanaan ?? $persetujuan->tgl_mulai;
+                                $realSelesai = $persetujuan->tgl_selesai_pelaksanaan ?? $persetujuan->tgl_selesai;
+                            ?>
+                            <?= !empty($realMulai) ? date('d M Y', strtotime($realMulai)) : '-' ?> 
                             s/d 
-                            <?= !empty($persetujuan->tgl_selesai) ? date('d M Y', strtotime($persetujuan->tgl_selesai)) : '-' ?>
+                            <?= !empty($realSelesai) ? date('d M Y', strtotime($realSelesai)) : '-' ?>
                         </td>
                     </tr>
                 </table>

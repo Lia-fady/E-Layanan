@@ -353,8 +353,8 @@
                         <label class="form-label">Tanggal Kegiatan <span class="text-danger">*</span></label>
                         <?php
                             $today = date('Y-m-d');
-                            $minDate = $penempatan['tgl_mulai'] ?? $today;
-                            $maxDate = $penempatan['tgl_selesai'] ?? $today;
+                            $minDate = $penempatan['tgl_mulai_pelaksanaan'] ?? $penempatan['tgl_mulai'] ?? $today;
+                            $maxDate = $penempatan['tgl_selesai_pelaksanaan'] ?? $penempatan['tgl_selesai'] ?? $today;
                             
                             if ($today < $minDate) {
                                 $defaultDate = $minDate;

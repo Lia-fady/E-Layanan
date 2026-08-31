@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Mahasiswa;
 
 use CodeIgniter\Model;
 
@@ -33,6 +33,8 @@ class PermohonanMagangModel extends Model
                 t_permohonan_magang.id_instansi_mahasiswa,
                 t_permohonan_magang.deskripsi_keahlian,
                 t_permohonan_magang.rencana_kegiatan as deskripsi,
+                t_permohonan_magang.tgl_mulai as tgl_mulai_pengajuan,
+                t_permohonan_magang.tgl_selesai as tgl_selesai_pengajuan,
                 t_permohonan_magang.tgl_mulai,
                 t_permohonan_magang.tgl_selesai,
                 t_permohonan_magang.posting_data,
@@ -55,6 +57,8 @@ class PermohonanMagangModel extends Model
                 t_penempatan_magang.updated_at as waktu_kabid_fallback,
                 t_penempatan_magang.created_at as waktu_kabid,
                 t_penempatan_magang.is_log_book,
+                t_penempatan_magang.tanggal_mulai as tgl_mulai_pelaksanaan,
+                t_penempatan_magang.tanggal_selesai as tgl_selesai_pelaksanaan,
                 m_mahasiswa.nim,
                 m_mahasiswa.nama_mahasiswa,
                 m_mahasiswa.nik,
@@ -110,7 +114,7 @@ class PermohonanMagangModel extends Model
      */
     public function getAntreanSekretariat()
     {
-        return $this->select('t_permohonan_magang.*, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, m_mahasiswa.nama_mahasiswa, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi')
+        return $this->select('t_permohonan_magang.*, t_permohonan_magang.tgl_mulai as tgl_mulai_pengajuan, t_permohonan_magang.tgl_selesai as tgl_selesai_pengajuan, t_persetujuan_magang.status_persetujuan, t_persetujuan_magang.catatan, m_mahasiswa.nama_mahasiswa, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
@@ -126,8 +130,10 @@ class PermohonanMagangModel extends Model
      */
     public function getDetailPermohonan($id_permohonan)
     {
-        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_mahasiswa.foto_profil, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
+        return $this->select('t_permohonan_magang.*, t_permohonan_magang.tgl_mulai as tgl_mulai_pengajuan, t_permohonan_magang.tgl_selesai as tgl_selesai_pengajuan, t_penempatan_magang.tanggal_mulai as tgl_mulai_pelaksanaan, t_penempatan_magang.tanggal_selesai as tgl_selesai_pelaksanaan, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_mahasiswa.foto_profil, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
+            ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang', 'left')
+            ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')
             ->join('m_fakultas', 'm_fakultas.id_fakultas = t_instansi_mahasiswa.id_fakultas', 'left')
@@ -147,15 +153,20 @@ class PermohonanMagangModel extends Model
                 t_permohonan_magang.id_jenis_permohonan,
                 t_permohonan_magang.created_at,
                 t_permohonan_magang.id_mahasiswa,
+                t_permohonan_magang.tgl_mulai as tgl_mulai_pengajuan,
+                t_permohonan_magang.tgl_selesai as tgl_selesai_pengajuan,
                 t_persetujuan_magang.status_persetujuan,
                 t_persetujuan_magang.catatan,
                 t_persetujuan_magang.tgl_persetujuan,
                 t_persetujuan_magang.disposisi,
+                t_penempatan_magang.tanggal_mulai as tgl_mulai_pelaksanaan,
+                t_penempatan_magang.tanggal_selesai as tgl_selesai_pelaksanaan,
                 m_mahasiswa.nama_mahasiswa,
                 m_prodi.prodi,
                 m_instansi_pendidikan.instansi_pendidikan as universitas
             ')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_permohonan_magang = t_permohonan_magang.id_permohonan_magang')
+            ->join('t_penempatan_magang', 't_penempatan_magang.id_persetujuan_magang = t_persetujuan_magang.id_persetujuan_magang', 'left')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_prodi', 'm_prodi.id_prodi = t_instansi_mahasiswa.id_prodi', 'left')

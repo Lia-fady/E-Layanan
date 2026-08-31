@@ -618,7 +618,7 @@
 
                 <div class="info-row">
                     <span class="info-label">Periode Pelaksanaan</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> s/d <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai_pelaksanaan'] ?? $permohonan_aktif['tgl_mulai']) ?> s/d <?= tgl_indo($permohonan_aktif['tgl_selesai_pelaksanaan'] ?? $permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Pengajuan</span>
@@ -791,7 +791,7 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">Periode Kegiatan</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai_pelaksanaan'] ?? $permohonan_aktif['tgl_mulai']) ?> — <?= tgl_indo($permohonan_aktif['tgl_selesai_pelaksanaan'] ?? $permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="mt-3">
                     <?php

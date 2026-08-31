@@ -81,9 +81,13 @@
                                 </td>
                                 <td style="display:none;"><?= esc($mhs->jenis_permohonan ?? '') ?></td>
                                 <td class="align-middle">
-                                    <?= isset($mhs->tgl_mulai) ? date('j M Y', strtotime($mhs->tgl_mulai)) : '-' ?>
+                                    <?php
+                                        $realMulai = $mhs->tgl_mulai_pelaksanaan ?? $mhs->tgl_mulai;
+                                        $realSelesai = $mhs->tgl_selesai_pelaksanaan ?? $mhs->tgl_selesai;
+                                    ?>
+                                    <?= !empty($realMulai) ? date('j M Y', strtotime($realMulai)) : '-' ?>
                                     <br>
-                                    <?= isset($mhs->tgl_selesai) ? date('j M Y', strtotime($mhs->tgl_selesai)) : '-' ?>
+                                    <?= !empty($realSelesai) ? date('j M Y', strtotime($realSelesai)) : '-' ?>
                                 </td>
                                 <td class="align-middle text-center">
                                     <span class="badge badge-success">Selesai</span>
@@ -249,7 +253,7 @@ $(document).ready(function() {
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="text-muted" style="font-size:0.82rem;">Periode Kegiatan</div>
-                                <div class="fw-semibold text-dark">${d.tgl_mulai ? new Date(d.tgl_mulai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'} &ndash; ${d.tgl_selesai ? new Date(d.tgl_selesai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'}</div>
+                                <div class="fw-semibold text-dark">${d.tgl_mulai_pelaksanaan || d.tgl_mulai ? new Date(d.tgl_mulai_pelaksanaan || d.tgl_mulai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'} &ndash; ${d.tgl_selesai_pelaksanaan || d.tgl_selesai ? new Date(d.tgl_selesai_pelaksanaan || d.tgl_selesai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'}</div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="text-muted" style="font-size:0.82rem;">Status Akhir</div>

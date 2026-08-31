@@ -58,7 +58,7 @@ class C_Permohonan extends C_BaseMahasiswa
         $data['permohonan_aktif'] = $stateData['permohonan_aktif'];
 
         // Dapatkan data bulan yang kuotanya sudah penuh
-        $kuotaModel = new \App\Models\KuotaBidangModel();
+        $kuotaModel = new \App\Models\Common\KuotaBidangModel();
         $data['bulan_penuh'] = $kuotaModel->getBulanPenuhGlobal(date('Y'));
 
         return view('mahasiswa/v_form_permohonan', $data);
@@ -191,7 +191,7 @@ class C_Permohonan extends C_BaseMahasiswa
             $bulanMulai = (int)date('n', strtotime($tgl_mulai));
             $tahunMulai = (int)date('Y', strtotime($tgl_mulai));
             
-            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $kuotaModel = new \App\Models\Common\KuotaBidangModel();
             $bulanPenuh = $kuotaModel->getBulanPenuhGlobal($tahunMulai);
             
             if (in_array($bulanMulai, $bulanPenuh)) {
@@ -548,7 +548,7 @@ class C_Permohonan extends C_BaseMahasiswa
             $bulanMulaiBaru = (int)date('n', strtotime($tgl_mulai_baru));
             $tahunMulaiBaru = (int)date('Y', strtotime($tgl_mulai_baru));
             
-            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $kuotaModel = new \App\Models\Common\KuotaBidangModel();
             $bulanPenuh = $kuotaModel->getBulanPenuhGlobal($tahunMulaiBaru);
             
             if (in_array($bulanMulaiBaru, $bulanPenuh)) {

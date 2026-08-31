@@ -215,8 +215,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     <td><?= esc($p['jenis_permohonan'] ?? '-') ?></td>
                 </tr>
                 <?php
-                    $tglMulai = !empty($p['tgl_mulai']) ? tgl_indo($p['tgl_mulai']) : '-';
-                    $tglSelesai = !empty($p['tgl_selesai']) ? tgl_indo($p['tgl_selesai']) : '-';
+                    $tglMulai = !empty($p['tgl_mulai_pelaksanaan']) ? tgl_indo($p['tgl_mulai_pelaksanaan']) : (!empty($p['tgl_mulai']) ? tgl_indo($p['tgl_mulai']) : '-');
+                    $tglSelesai = !empty($p['tgl_selesai_pelaksanaan']) ? tgl_indo($p['tgl_selesai_pelaksanaan']) : (!empty($p['tgl_selesai']) ? tgl_indo($p['tgl_selesai']) : '-');
                 ?>
                 <tr>
                     <th>Periode Pelaksanaan</th>
@@ -507,9 +507,9 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 16px; margin-top: 12px; margin-bottom: 12px;">
                             <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 4px;">Periode Pelaksanaan Magang:</div>
                             <div style="font-weight: 600; color: #1e293b;">
-                                <?= tgl_indo($p['tgl_mulai_disetujui'] ?? $p['tgl_mulai']) ?> 
+                                <?= tgl_indo($p['tgl_mulai_pelaksanaan'] ?? $p['tgl_mulai_disetujui'] ?? $p['tgl_mulai']) ?> 
                                 <span class="text-muted mx-1">s.d.</span> 
-                                <?= tgl_indo($p['tgl_selesai_disetujui'] ?? $p['tgl_selesai']) ?>
+                                <?= tgl_indo($p['tgl_selesai_pelaksanaan'] ?? $p['tgl_selesai_disetujui'] ?? $p['tgl_selesai']) ?>
                             </div>
                         </div>
                     <?php endif; ?>

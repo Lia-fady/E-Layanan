@@ -43,6 +43,10 @@ class M_Verifikasi extends Model
             pm.rencana_kegiatan,
             pm.tgl_mulai,
             pm.tgl_selesai,
+            pm.tgl_mulai as tgl_mulai_pengajuan,
+            pm.tgl_selesai as tgl_selesai_pengajuan,
+            pn.tanggal_mulai as tgl_mulai_pelaksanaan,
+            pn.tanggal_selesai as tgl_selesai_pelaksanaan,
             pm.posting_data,
             pm.created_at as tgl_pengajuan,
             mhs.nim,
@@ -124,6 +128,10 @@ class M_Verifikasi extends Model
         $builder = $db->table('t_permohonan_magang as pm');
         $builder->select('
             pm.*,
+            pm.tgl_mulai as tgl_mulai_pengajuan,
+            pm.tgl_selesai as tgl_selesai_pengajuan,
+            pn.tanggal_mulai as tgl_mulai_pelaksanaan,
+            pn.tanggal_selesai as tgl_selesai_pelaksanaan,
             mhs.nik,
             mhs.nim,
             mhs.nama_mahasiswa,
@@ -153,11 +161,10 @@ class M_Verifikasi extends Model
             m_provinsi.nama_provinsi as provinsi
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
-        $builder->join('m_kelurahan', 'm_kelurahan.id_kelurahan = mhs.id_kelurahan', 'left');
-        $builder->join('m_kecamatan', 'm_kecamatan.id_kecamatan = m_kelurahan.id_kecamatan', 'left');
-        $builder->join('m_kabupaten', 'm_kabupaten.id_kabupaten = m_kecamatan.id_kabupaten', 'left');
-        $builder->join('m_provinsi', 'm_provinsi.id_provinsi = m_kabupaten.id_provinsi', 'left');
-        $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
+        $builder->join('m_kelurahan as m_kelurahan', 'm_kelurahan.id_kelurahan = mhs.id_kelurahan', 'left');
+        $builder->join('m_kecamatan as m_kecamatan', 'm_kecamatan.id_kecamatan = m_kelurahan.id_kecamatan', 'left');
+        $builder->join('m_kabupaten as m_kabupaten', 'm_kabupaten.id_kabupaten = m_kecamatan.id_kabupaten', 'left');
+        $builder->join('m_provinsi as m_provinsi', 'm_provinsi.id_provinsi = m_kabupaten.id_provinsi', 'left');
         $builder->join('t_instansi_mahasiswa as im', 'im.id_instansi_mahasiswa = pm.id_instansi_mahasiswa', 'left');
         $builder->join('m_instansi_pendidikan as ip', 'ip.id_instansi_pendidikan = im.id_instansi_pendidikan', 'left');
         $builder->join('m_prodi as pr', 'pr.id_prodi = im.id_prodi', 'left');
@@ -165,6 +172,7 @@ class M_Verifikasi extends Model
         $builder->join('m_kelas as kls', 'kls.id_kelas = im.id_kelas', 'left');
         $builder->join('m_jenjang_pendidikan as jn', 'jn.id_jenjang_pendidikan = im.id_jenjang_pendidikan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
+        $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.id_permohonan_magang', $id);
 
         return $builder->get()->getRow();

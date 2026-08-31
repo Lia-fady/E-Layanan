@@ -3,13 +3,13 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\MahasiswaModel;
-use App\Models\UserMahasiswaModel;
-use App\Models\InstansiMahasiswaModel; 
-use App\Models\InstansiPendidikanModel; 
-use App\Models\MasterKelasModel;
+use App\Models\Common\MahasiswaModel;
+use App\Models\Common\UserMahasiswaModel;
+use App\Models\Common\InstansiMahasiswaModel; 
+use App\Models\Common\InstansiPendidikanModel; 
+use App\Models\Common\MasterKelasModel;
 
-use App\Models\PasswordResetModel;
+use App\Models\Common\PasswordResetModel;
 
 class AuthController extends BaseController
 {

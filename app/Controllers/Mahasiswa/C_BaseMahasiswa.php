@@ -3,9 +3,9 @@
 namespace App\Controllers\Mahasiswa;
 
 use App\Controllers\BaseController;
-use App\Models\PermohonanMagangModel;
-use App\Models\LogbookMagangModel;
-use App\Models\PenempatanMagangModel;
+use App\Models\Mahasiswa\PermohonanMagangModel;
+use App\Models\Mahasiswa\LogbookMagangModel;
+use App\Models\Mahasiswa\PenempatanMagangModel;
 
 class C_BaseMahasiswa extends BaseController
 {

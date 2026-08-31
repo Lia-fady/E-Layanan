@@ -13,7 +13,7 @@ class Log extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Unauthorized']);
         }
 
-        $logModel = new \App\Models\LogPermohonanModel();
+        $logModel = new \App\Models\Common\LogPermohonanModel();
         
         $logs = $logModel->where('id_permohonan_magang', $id_permohonan)
                          ->orderBy('created_at', 'ASC') // Urutkan dari yang terlama ke terbaru

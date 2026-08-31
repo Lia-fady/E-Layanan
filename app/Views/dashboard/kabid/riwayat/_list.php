@@ -62,8 +62,10 @@
                                 <small class="text-muted">
                                     <?php 
                                         $bln = [1=>'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-                                        $tglM = date('j', strtotime($row->tgl_mulai)) . ' ' . $bln[(int)date('m', strtotime($row->tgl_mulai))] . ' ' . date('y', strtotime($row->tgl_mulai));
-                                        $tglS = date('j', strtotime($row->tgl_selesai)) . ' ' . $bln[(int)date('m', strtotime($row->tgl_selesai))] . ' ' . date('y', strtotime($row->tgl_selesai));
+                                        $realMulai = $row->tgl_mulai_pelaksanaan ?? $row->tgl_mulai;
+                                        $realSelesai = $row->tgl_selesai_pelaksanaan ?? $row->tgl_selesai;
+                                        $tglM = !empty($realMulai) ? date('j', strtotime($realMulai)) . ' ' . $bln[(int)date('m', strtotime($realMulai))] . ' ' . date('y', strtotime($realMulai)) : '-';
+                                        $tglS = !empty($realSelesai) ? date('j', strtotime($realSelesai)) . ' ' . $bln[(int)date('m', strtotime($realSelesai))] . ' ' . date('y', strtotime($realSelesai)) : '-';
                                         echo $tglM . ' -<br>' . $tglS;
                                     ?>
                                 </small>

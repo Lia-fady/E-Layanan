@@ -68,8 +68,10 @@
                                 </td>
                                 <td>
                                     <?php
-                                        $mulai = !empty($p->tgl_mulai) ? date('d M Y', strtotime($p->tgl_mulai)) : '-';
-                                        $selesai = !empty($p->tgl_selesai) ? date('d M Y', strtotime($p->tgl_selesai)) : '-';
+                                        $realMulai = $p->tgl_mulai_pelaksanaan ?? $p->tgl_mulai;
+                                        $realSelesai = $p->tgl_selesai_pelaksanaan ?? $p->tgl_selesai;
+                                        $mulai = !empty($realMulai) ? date('d M Y', strtotime($realMulai)) : '-';
+                                        $selesai = !empty($realSelesai) ? date('d M Y', strtotime($realSelesai)) : '-';
                                     ?>
                                     <?= $mulai ?> s/d <?= $selesai ?>
                                 </td>

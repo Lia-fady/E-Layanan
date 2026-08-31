@@ -2,7 +2,7 @@
 namespace App\Controllers\Sekretariat;
 
 use App\Controllers\BaseController;
-use App\Models\KuotaBidangModel;
+use App\Models\Common\KuotaBidangModel;
 
 class C_KuotaBidang extends BaseController
 {

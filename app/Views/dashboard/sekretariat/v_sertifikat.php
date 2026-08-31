@@ -76,8 +76,12 @@
                                 <td><?= esc($row['nama_mahasiswa']) ?></td>
                                 <td><?= esc($row['bidang']) ?></td>
                                 <td>
-                                    <?php if (!empty($row['tgl_mulai']) && !empty($row['tgl_selesai'])) : ?>
-                                        <?= date('d-m-Y', strtotime($row['tgl_mulai'])) ?> s/d <?= date('d-m-Y', strtotime($row['tgl_selesai'])) ?>
+                                    <?php 
+                                        $realMulai = $row['tgl_mulai_pelaksanaan'] ?? $row['tgl_mulai'];
+                                        $realSelesai = $row['tgl_selesai_pelaksanaan'] ?? $row['tgl_selesai'];
+                                        if (!empty($realMulai) && !empty($realSelesai)) : 
+                                    ?>
+                                        <?= date('d-m-Y', strtotime($realMulai)) ?> s/d <?= date('d-m-Y', strtotime($realSelesai)) ?>
                                     <?php else : ?>
                                         -
                                     <?php endif; ?>

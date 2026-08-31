@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Common;
 
 use CodeIgniter\Model;
 
-class FileProsesMagangModel extends Model
+class FilePermohonanMagangModel extends Model
 {
-    protected $table            = 't_file_proses_magang';
-    protected $primaryKey       = 'id_file_proses_magang';
+    protected $table            = 't_file_permohonan_magang';
+    protected $primaryKey       = 'id_file_permohonan_magang';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_persetujuan_magang', 'id_file', 'nama_file', 'path_file', 'proses_magang', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $allowedFields    = ['id_permohonan_magang', 'id_file_permohonan', 'nama_file', 'path_file', 'status_verifikasi', 'catatan_verifikasi', 'created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use CodeIgniter\Controller;
-use App\Models\FakultasModel;
-use App\Models\ProdiModel;
+use App\Models\Common\FakultasModel;
+use App\Models\Common\ProdiModel;
 
 class ApiController extends Controller
 {

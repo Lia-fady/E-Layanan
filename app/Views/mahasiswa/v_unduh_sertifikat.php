@@ -169,7 +169,11 @@
                                 <span class="fw-semibold text-dark d-block"><?= esc($group['jenis_permohonan']) ?></span>
                             </td>
                             <td class="text-center text-muted fw-medium" style="white-space: nowrap;">
-                                <?= !empty($group['tgl_mulai']) ? tgl_indo($group['tgl_mulai']) : '-' ?> s.d <?= !empty($group['tgl_selesai']) ? tgl_indo($group['tgl_selesai']) : '-' ?>
+                                <?php 
+                                    $realMulai = $group['tgl_mulai_pelaksanaan'] ?? $group['tgl_mulai'];
+                                    $realSelesai = $group['tgl_selesai_pelaksanaan'] ?? $group['tgl_selesai'];
+                                ?>
+                                <?= !empty($realMulai) ? tgl_indo($realMulai) : '-' ?> s.d <?= !empty($realSelesai) ? tgl_indo($realSelesai) : '-' ?>
                             </td>
                             <td class="text-center text-muted fw-medium" style="white-space: nowrap;"><?= esc($group['bidang'] ?? '-') ?></td>
                             <td class="text-center">

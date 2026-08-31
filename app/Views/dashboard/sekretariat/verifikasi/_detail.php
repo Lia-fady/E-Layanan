@@ -228,9 +228,11 @@ $badgeStyle = $statusBadgeClass[$statusPersetujuan] ?? 'background-color: #f1f5f
                                 </div>
                                 <div class="col-sm-4 detail-pemohon__field">
                                     <span class="detail-pemohon__label">Periode Kegiatan</span>
-                                    <span class="detail-pemohon__value">
-                                        <?= tgl_indo($permohonan->tgl_mulai) ?> <span class="text-muted">s/d</span> <?= tgl_indo($permohonan->tgl_selesai) ?>
-                                    </span>
+                                        <?php 
+                                            $realMulai = $permohonan->tgl_mulai_pelaksanaan ?? $permohonan->tgl_mulai;
+                                            $realSelesai = $permohonan->tgl_selesai_pelaksanaan ?? $permohonan->tgl_selesai;
+                                        ?>
+                                        <?= tgl_indo($realMulai) ?> <span class="text-muted">s/d</span> <?= tgl_indo($realSelesai) ?>
                                 </div>
                             </div>
                             <div class="row mt-2">

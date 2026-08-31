@@ -25,8 +25,10 @@
         <div class="detail-header-box-label">Periode Kegiatan</div>
         <div class="detail-header-box-value">
             <?php
-                $mulai = !empty($persetujuan->tgl_mulai) ? date('d F Y', strtotime($persetujuan->tgl_mulai)) : '-';
-                $selesai = !empty($persetujuan->tgl_selesai) ? date('d F Y', strtotime($persetujuan->tgl_selesai)) : '-';
+                $realMulai = $persetujuan->tgl_mulai_pelaksanaan ?? $persetujuan->tgl_mulai;
+                $realSelesai = $persetujuan->tgl_selesai_pelaksanaan ?? $persetujuan->tgl_selesai;
+                $mulai = !empty($realMulai) ? date('d F Y', strtotime($realMulai)) : '-';
+                $selesai = !empty($realSelesai) ? date('d F Y', strtotime($realSelesai)) : '-';
             ?>
             <?= $mulai ?> s/d <?= $selesai ?>
         </div>

@@ -72,8 +72,10 @@
                             <td class="text-center">
                                 <?php 
                                     $bln = [1=>'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-                                    $tglM = date('j', strtotime($mhs->tgl_mulai)) . ' ' . $bln[(int)date('m', strtotime($mhs->tgl_mulai))] . ' ' . date('y', strtotime($mhs->tgl_mulai));
-                                    $tglS = date('j', strtotime($mhs->tgl_selesai)) . ' ' . $bln[(int)date('m', strtotime($mhs->tgl_selesai))] . ' ' . date('y', strtotime($mhs->tgl_selesai));
+                                    $realMulai = $mhs->tgl_mulai_pelaksanaan ?? $mhs->tgl_mulai;
+                                    $realSelesai = $mhs->tgl_selesai_pelaksanaan ?? $mhs->tgl_selesai;
+                                    $tglM = !empty($realMulai) ? date('j', strtotime($realMulai)) . ' ' . $bln[(int)date('m', strtotime($realMulai))] . ' ' . date('y', strtotime($realMulai)) : '-';
+                                    $tglS = !empty($realSelesai) ? date('j', strtotime($realSelesai)) . ' ' . $bln[(int)date('m', strtotime($realSelesai))] . ' ' . date('y', strtotime($realSelesai)) : '-';
                                     echo $tglM . ' -<br>' . $tglS;
                                 ?>
                             </td>

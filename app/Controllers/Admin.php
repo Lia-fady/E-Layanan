@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\PermohonanMagangModel; // Memanggil model secara global di atas
+use App\Models\Mahasiswa\PermohonanMagangModel; // Memanggil model secara global di atas
 
 class Admin extends BaseController
 {

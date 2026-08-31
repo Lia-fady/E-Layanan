@@ -405,7 +405,7 @@ $(document).ready(function() {
             var d = new Date(dateStr);
             return d.toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'});
         }
-        $('#det_waktu').text(formatDate(mhs.tgl_mulai) + ' – ' + formatDate(mhs.tgl_selesai));
+        $('#det_waktu').text(formatDate(mhs.tgl_mulai_pelaksanaan || mhs.tgl_mulai) + ' – ' + formatDate(mhs.tgl_selesai_pelaksanaan || mhs.tgl_selesai));
         
         $('#det_keahlian').text(mhs.deskripsi_keahlian || 'Tidak ada deskripsi keahlian.');
         $('#det_catatan').text(mhs.catatan_sekretariat || 'Tidak ada catatan khusus dari Sekretariat.');

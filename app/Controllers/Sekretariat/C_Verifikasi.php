@@ -48,7 +48,7 @@ class C_Verifikasi extends BaseController
                 ->where('m_bidang.status_aktif', '1')
                 ->get()->getResult();
 
-            $kuotaModel = new \App\Models\KuotaBidangModel();
+            $kuotaModel = new \App\Models\Common\KuotaBidangModel();
             
             // Get permohonan to check dates
             $permohonanData = $this->verifikasiModel->getPermohonanById($id);

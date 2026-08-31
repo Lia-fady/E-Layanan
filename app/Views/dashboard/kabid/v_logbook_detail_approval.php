@@ -86,7 +86,11 @@
                     <div class="col-sm-12">
                         <div class="info-label"><i class="fas fa-calendar-alt mr-1"></i> Periode Kegiatan</div>
                         <div class="info-value text-primary">
-                            <?= date('d M Y', strtotime($mahasiswa->tgl_mulai)) ?> <span class="text-muted mx-1">s/d</span> <?= date('d M Y', strtotime($mahasiswa->tgl_selesai)) ?>
+                            <?php
+                                $realMulai = $mahasiswa->tgl_mulai_pelaksanaan ?? $mahasiswa->tgl_mulai;
+                                $realSelesai = $mahasiswa->tgl_selesai_pelaksanaan ?? $mahasiswa->tgl_selesai;
+                            ?>
+                            <?= !empty($realMulai) ? date('d M Y', strtotime($realMulai)) : '-' ?> <span class="text-muted mx-1">s/d</span> <?= !empty($realSelesai) ? date('d M Y', strtotime($realSelesai)) : '-' ?>
                         </div>
                     </div>
                 </div>

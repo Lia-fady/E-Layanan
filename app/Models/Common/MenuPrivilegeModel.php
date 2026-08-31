@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Common;
 
 use CodeIgniter\Model;
 
-class MenuModel extends Model
+class MenuPrivilegeModel extends Model
 {
-    protected $table            = 'c_menus';
+    protected $table            = 'c_menus_privileges';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_parent', 'name', 'url', 'position', 'icon', 'status', 'target_blank', 'created_by', 'updated_by'];
+    protected $allowedFields    = ['id_user_group', 'id_menu'];
 
     protected bool $allowEmptyInserts = false;
 

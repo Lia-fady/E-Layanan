@@ -122,7 +122,7 @@ class C_DisposisiMasuk extends BaseController
         $id_bidang = $penempatan->id_bidang ?? null;
         
         // Cek kuota bulanan
-        $kuotaModel = new \App\Models\KuotaBidangModel();
+        $kuotaModel = new \App\Models\Common\KuotaBidangModel();
         
         // Ambil tanggal dari permohonan yang berhubungan dengan penempatan ini
         $persetujuanData = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();

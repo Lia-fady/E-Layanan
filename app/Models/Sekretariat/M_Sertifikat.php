@@ -45,6 +45,10 @@ class M_Sertifikat extends Model
             'b.bidang',
             'pm.tgl_mulai',
             'pm.tgl_selesai',
+            'pm.tgl_mulai AS tgl_mulai_pengajuan',
+            'pm.tgl_selesai AS tgl_selesai_pengajuan',
+            'pn.tanggal_mulai AS tgl_mulai_pelaksanaan',
+            'pn.tanggal_selesai AS tgl_selesai_pelaksanaan',
         ]);
 
         $builder->join('m_mahasiswa AS m', 'm.id_mahasiswa = pn.id_mahasiswa', 'left');
@@ -85,6 +89,10 @@ class M_Sertifikat extends Model
             'pm.id_permohonan_magang',
             'pm.tgl_mulai',
             'pm.tgl_selesai',
+            'pm.tgl_mulai AS tgl_mulai_pengajuan',
+            'pm.tgl_selesai AS tgl_selesai_pengajuan',
+            'pn.tanggal_mulai AS tgl_mulai_pelaksanaan',
+            'pn.tanggal_selesai AS tgl_selesai_pelaksanaan',
             'pm.deskripsi_keahlian',
             'pm.rencana_kegiatan',
             'ip.instansi_pendidikan',

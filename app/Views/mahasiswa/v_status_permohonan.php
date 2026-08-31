@@ -380,8 +380,10 @@
                                 $no = 1; 
                                 foreach($permohonan as $p): 
                                     $tglAju = date('j', strtotime($p['created_at'])) . ' ' . $bln[(int)date('m', strtotime($p['created_at']))] . ' ' . date('Y', strtotime($p['created_at']));
-                                    $tglMulai = date('j', strtotime($p['tgl_mulai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_mulai']))] . ' ' . date('Y', strtotime($p['tgl_mulai']));
-                                    $tglSelesai = date('j', strtotime($p['tgl_selesai'])) . ' ' . $bln[(int)date('m', strtotime($p['tgl_selesai']))] . ' ' . date('Y', strtotime($p['tgl_selesai']));
+                                    $realMulai = $p['tgl_mulai_pelaksanaan'] ?? $p['tgl_mulai'];
+                                    $realSelesai = $p['tgl_selesai_pelaksanaan'] ?? $p['tgl_selesai'];
+                                    $tglMulai = date('j', strtotime($realMulai)) . ' ' . $bln[(int)date('m', strtotime($realMulai))] . ' ' . date('Y', strtotime($realMulai));
+                                    $tglSelesai = date('j', strtotime($realSelesai)) . ' ' . $bln[(int)date('m', strtotime($realSelesai))] . ' ' . date('Y', strtotime($realSelesai));
                                     
                                     $layanan = '-';
                                     if($p['id_jenis_permohonan'] == 1)      $layanan = 'Penelitian Skripsi / Tugas Akhir';

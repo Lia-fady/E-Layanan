@@ -13,7 +13,7 @@ class M_LogbookKabid extends Model
     public function getActiveMahasiswa($id_bidang, $search = null, $jenis_permohonan = null, $status_filter = null)
     {
         $builder = $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai, jp.jenis_permohonan')
+            ->select('p.id_penempatan_magang, p.status_penempatan, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai, pm.tgl_mulai as tgl_mulai_pengajuan, pm.tgl_selesai as tgl_selesai_pengajuan, p.tanggal_mulai as tgl_mulai_pelaksanaan, p.tanggal_selesai as tgl_selesai_pelaksanaan, jp.jenis_permohonan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
@@ -59,7 +59,7 @@ class M_LogbookKabid extends Model
     public function getMahasiswaInfo($id_penempatan)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, m.nama_mahasiswa, m.nim, m.jenis_kelamin, m.no_telp, m.email, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, pm.tgl_mulai, pm.tgl_selesai, pm.tgl_mulai as tgl_mulai_pengajuan, pm.tgl_selesai as tgl_selesai_pengajuan, p.tanggal_mulai as tgl_mulai_pelaksanaan, p.tanggal_selesai as tgl_selesai_pelaksanaan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
@@ -74,7 +74,7 @@ class M_LogbookKabid extends Model
     public function getDetailPenempatan($id_penempatan)
     {
         return $this->db->table('t_penempatan_magang p')
-            ->select('p.id_penempatan_magang, p.status_penempatan, ps.id_persetujuan_magang, pm.id_permohonan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, jp.jenis_permohonan, pm.tgl_mulai, pm.tgl_selesai')
+            ->select('p.id_penempatan_magang, p.status_penempatan, ps.id_persetujuan_magang, pm.id_permohonan_magang, m.nama_mahasiswa, m.nim, ip.instansi_pendidikan, pr.nama_prodi as prodi, mj.nama_jurusan, im.jurusan as jurusan_text, jp.jenis_permohonan, pm.tgl_mulai, pm.tgl_selesai, pm.tgl_mulai as tgl_mulai_pengajuan, pm.tgl_selesai as tgl_selesai_pengajuan, p.tanggal_mulai as tgl_mulai_pelaksanaan, p.tanggal_selesai as tgl_selesai_pelaksanaan')
             ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang')
             ->join('t_permohonan_magang pm', 'pm.id_permohonan_magang = ps.id_permohonan_magang')
             ->join('m_mahasiswa m', 'm.id_mahasiswa = pm.id_mahasiswa')
