@@ -207,9 +207,9 @@
                             <div class="d-flex gap-2">
                                 <i class="bi bi-lock-fill fs-5 mt-1"></i>
                                 <div>
-                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Terkunci</span>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Akses Logbook Belum Tersedia</span>
                                     <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                                        Anda belum dialokasikan ke unit bidang kerja. Formulir pelaporan harian baru akan aktif setelah penempatan bidang disahkan.
+                                        Anda belum dapat mengisi logbook harian. Fitur pelaporan akan otomatis aktif setelah permohonan Anda disetujui dan Anda telah ditempatkan pada bidang kerja terkait.
                                     </p>
                                 </div>
                             </div>
@@ -219,9 +219,9 @@
                             <div class="d-flex gap-2">
                                 <i class="bi bi-exclamation-triangle-fill fs-5 mt-1 text-warning"></i>
                                 <div>
-                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Persetujuan Periode Diperlukan</span>
+                                    <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Menunggu Konfirmasi Periode</span>
                                     <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                                        Anda belum menyetujui periode magang yang ditetapkan. Silakan ke menu <strong>Status Permohonan</strong> dan klik tombol Setujui Periode untuk dapat mengisi logbook harian.
+                                        Terdapat usulan perubahan periode kegiatan dari bidang. Silakan periksa detail permohonan Anda melalui menu <strong>Riwayat Permohonan</strong> dan berikan konfirmasi untuk dapat mulai mengisi logbook.
                                     </p>
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
                                 <div>
                                     <span class="fw-bold d-block mb-1" style="font-size: 0.85rem;">Logbook Tidak Diwajibkan</span>
                                     <p class="small m-0" style="line-height: 1.5; font-size: 0.8rem;">
-                                        Berdasarkan pengaturan dari Bidang, kegiatan magang Anda tidak mewajibkan pengisian logbook harian.
+                                        Berdasarkan kebijakan pada bidang penempatan Anda, kegiatan ini tidak mewajibkan pengisian pelaporan (logbook) harian.
                                     </p>
                                 </div>
                             </div>
@@ -243,7 +243,7 @@
                     <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
                         <select id="filter-status-lb" class="form-select form-select-sm shadow-none" style="width: 250px; font-size: 0.85rem; color: #475569; border-radius: 6px; height: 38px; border: 1px solid #e2e8f0;">
                             <option value="">Semua Status</option>
-                            <option value="Pending">Pending</option>
+                            <option value="Menunggu">Menunggu</option>
                             <option value="Disetujui">Disetujui</option>
                             <option value="Dikembalikan">Dikembalikan</option>
                         </select>
@@ -307,7 +307,7 @@
                                                 </span>
                                             <?php else: ?>
                                                 <span class="badge-status-pending mb-2 d-inline-block">
-                                                    <i class="bi bi-hourglass-split me-1"></i> Pending
+                                                    <i class="bi bi-hourglass-split me-1"></i> Menunggu
                                                 </span>
                                             <?php endif; ?>
 

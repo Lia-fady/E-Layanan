@@ -4,6 +4,8 @@
     .status-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 6px 12px; font-size: 0.76rem; font-weight: 700; }
     .status-badge.running { background: #e0f2fe; color: #0369a1; }
     .status-badge.done { background: #dcfce7; color: #15803d; }
+    .status-badge.approved { background: #dbeafe; color: #1d4ed8; }
+    .status-badge.pending { background: #fef3c7; color: #b45309; }
     .activity-text { white-space: pre-line; line-height: 1.6; font-size: 0.9rem; }
     .doc-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0; }
     .custom-control-label::before, .custom-control-label::after { top: 0.15rem; width: 1.25rem; height: 1.25rem; }
@@ -26,11 +28,23 @@
 <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
     <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center" style="border-radius: 12px 12px 0 0;">
         <h6 class="m-0 font-weight-bold text-dark">Profil Pemohon</h6>
-        <?php if (($mahasiswa->status_penempatan ?? '') == 'SELESAI') : ?>
-            <span class="status-badge done"><i class="fas fa-check-circle"></i> Selesai</span>
-        <?php else : ?>
-            <span class="status-badge running"><i class="fas fa-play-circle"></i> Berjalan</span>
-        <?php endif; ?>
+        <?php 
+            $statusPenempatan = $mahasiswa->status_penempatan ?? '';
+            $statusMhs = $mahasiswa->status_persetujuan_mahasiswa ?? '';
+            if ($statusPenempatan == 'SELESAI') {
+                echo '<span class="status-badge done"><i class="fas fa-check-circle"></i> Selesai</span>';
+            } elseif ($statusPenempatan == 'BERJALAN') {
+                echo '<span class="status-badge running"><i class="fas fa-play-circle"></i> Berjalan</span>';
+            } elseif ($statusPenempatan == 'DISETUJUI') {
+                if ($statusMhs == 'MENUNGGU') {
+                    echo '<span class="status-badge pending"><i class="fas fa-clock"></i> Menunggu Konfirmasi</span>';
+                } else {
+                    echo '<span class="status-badge approved"><i class="fas fa-check"></i> Disetujui</span>';
+                }
+            } else {
+                echo '<span class="status-badge pending"><i class="fas fa-circle"></i> ' . esc(ucfirst(strtolower($statusPenempatan))) . '</span>';
+            }
+        ?>
     </div>
     <div class="card-body p-4">
         <div class="row align-items-center">
