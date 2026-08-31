@@ -41,7 +41,7 @@
                 } else {
                     echo '<span class="status-badge approved"><i class="fas fa-check"></i> Disetujui</span>';
                 }
-            } else {
+            } elseif (!empty($statusPenempatan)) {
                 echo '<span class="status-badge pending"><i class="fas fa-circle"></i> ' . esc(ucfirst(strtolower($statusPenempatan))) . '</span>';
             }
         ?>
