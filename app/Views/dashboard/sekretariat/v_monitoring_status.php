@@ -49,7 +49,7 @@
 
 <!-- Info Banner -->
 <?php if (!empty($info_count)) : ?>
-<div class="disposisi-info-banner mb-3">
+<div class="penerusan-info-banner mb-3">
     <i class="fas fa-info-circle"></i>
     <p><strong><?= $info_count ?> berkas</strong> sedang dalam proses monitoring.</p>
 </div>
@@ -76,7 +76,7 @@
                     <?php foreach ($permohonan as $row) : ?>
                         <tr>
                             <td>
-                                <span class="disposisi-id">PMH-<?= date('Y', strtotime($row['created_at'] ?? 'now')) ?>-<?= str_pad($row['id_persetujuan_magang'] ?? $row['id_permohonan_magang'], 3, '0', STR_PAD_LEFT) ?></span>
+                                <span class="penerusan-id">PMH-<?= date('Y', strtotime($row['created_at'] ?? 'now')) ?>-<?= str_pad($row['id_persetujuan_magang'] ?? $row['id_permohonan_magang'], 3, '0', STR_PAD_LEFT) ?></span>
                             </td>
                             <td><strong><?= esc($row['nama_mahasiswa']) ?></strong></td>
                             <td><?= esc($row['nim']) ?></td>

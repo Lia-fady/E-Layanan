@@ -39,7 +39,7 @@ class LogbookMagangModel extends Model
     public function getSemuaPenempatan($id_mahasiswa)
     {
         return $this->db->table('t_penempatan_magang')
-            ->select('t_penempatan_magang.*, m_jenis_permohonan.jenis_permohonan as nama_jenis, t_permohonan_magang.tgl_mulai, t_permohonan_magang.tgl_selesai')
+            ->select('t_penempatan_magang.*, m_jenis_permohonan.jenis_permohonan as nama_jenis, t_permohonan_magang.tgl_mulai, t_permohonan_magang.tgl_selesai, t_persetujuan_magang.status_persetujuan_mahasiswa, t_persetujuan_magang.tgl_mulai_disetujui, t_persetujuan_magang.tgl_selesai_disetujui')
             ->join('t_persetujuan_magang', 't_persetujuan_magang.id_persetujuan_magang = t_penempatan_magang.id_persetujuan_magang')
             ->join('t_permohonan_magang', 't_permohonan_magang.id_permohonan_magang = t_persetujuan_magang.id_permohonan_magang')
             ->join('m_jenis_permohonan', 'm_jenis_permohonan.id_jenis_permohonan = t_permohonan_magang.id_jenis_permohonan')

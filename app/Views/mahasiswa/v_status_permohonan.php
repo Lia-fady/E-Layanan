@@ -140,6 +140,7 @@
     }
     .badge-solid.draft { background: #94a3b8; }
     .badge-solid.pending { background: #f59e0b; }
+    .badge-solid.revision { background: #8b5cf6; } /* Purple for Perbaikan */
     .badge-solid.approved { background: #3b82f6; }
     .badge-solid.success { background: #10b981; }
     .badge-solid.rejected { background: #ef4444; }
@@ -345,10 +346,9 @@
                             <option value="">Semua Status</option>
                             <option value="Draft">Draft</option>
                             <option value="Menunggu">Menunggu</option>
-                            <option value="Perlu Perbaikan">Perlu Perbaikan</option>
                             <option value="Disetujui">Disetujui</option>
-                            <option value="Selesai">Selesai</option>
                             <option value="Ditolak">Ditolak</option>
+                            <option value="Selesai">Selesai</option>
                         </select>
                         <div class="d-flex align-items-center gap-2 ms-md-2 mt-2 mt-md-0">
                             <span class="small text-muted fw-medium">Cari:</span>
@@ -368,7 +368,7 @@
                             <th>JENIS PERMOHONAN</th>
                             <th>NAMA</th>
                             <th class="text-center">TANGGAL DIAJUKAN</th>
-                            <th class="text-center">PERIODE</th>
+                            <th class="text-center">PERIODE PELAKSANAAN</th>
                             <th class="text-center">STATUS</th>
                             <th class="text-center">AKSI</th>
                         </tr>
@@ -401,10 +401,16 @@
                                     } elseif ($p['status_persetujuan'] == 'DITOLAK') {
                                         $badgeClass = 'rejected'; $statusText = 'Ditolak';
                                     } elseif ($p['status_persetujuan'] == 'PERBAIKAN_BERKAS') {
-                                        $badgeClass = 'pending'; $statusText = 'Perbaikan';
+                                        $badgeClass = 'revision'; $statusText = 'Perbaikan';
                                     } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'SELESAI') {
                                         $badgeClass = 'success'; $statusText = 'Selesai';
-                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] != 'MENUNGGU' && $p['status_penempatan'] != 'DIBATALKAN' && $p['status_penempatan'] != '0') {
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DIBATALKAN') {
+                                        $badgeClass = 'rejected'; $statusText = 'Dibatalkan';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DITOLAK') {
+                                        $badgeClass = 'pending'; $statusText = 'Menunggu'; // Ditolak bidang = menunggu disposisi ulang
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'BERJALAN') {
+                                        $badgeClass = 'approved'; $statusText = 'Berjalan';
+                                    } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DISETUJUI') {
                                         $badgeClass = 'approved'; $statusText = 'Disetujui';
                                     }
                             ?>
@@ -675,6 +681,35 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = `<?= base_url('mahasiswa/batalkan-permohonan/') ?>${id_permohonan}`;
+            }
+        });
+    }
+
+    function confirmUndurDiri(idPermohonan) {
+        Swal.fire({
+            title: 'Mengundurkan Diri?',
+            html: `Anda akan membatalkan kegiatan yang sudah disetujui. Aksi ini <b>tidak dapat dibatalkan</b>.<br><br>
+                   <textarea id="swal-alasan" class="swal2-textarea" placeholder="Tuliskan alasan pengunduran diri Anda di sini... (Wajib)" style="margin-top:0; font-size:0.9rem;"></textarea>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Undurkan Diri',
+            cancelButtonText: 'Kembali',
+            reverseButtons: true,
+            preConfirm: () => {
+                const alasan = document.getElementById('swal-alasan').value;
+                if (!alasan || alasan.trim() === '') {
+                    Swal.showValidationMessage('Alasan pengunduran diri wajib diisi!');
+                    return false;
+                }
+                return alasan;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('input_alasan_batal').value = result.value;
+                document.getElementById('formUndurDiri').action = '<?= base_url('mahasiswa/undurkan-diri/') ?>' + idPermohonan;
+                document.getElementById('formUndurDiri').submit();
             }
         });
     }

@@ -305,7 +305,7 @@
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-lock-fill"></i> Masuk Sistem
+                    <i class="bi bi-lock-fill"></i> Masuk
                 </button>
             </form>
 

@@ -174,30 +174,53 @@ class M_Penempatan extends Model
     }
 
     /**
-     * Setujui penempatan: update status ke BERJALAN dan set is_log_book.
+     * Setujui penempatan: update status ke DISETUJUI dan set is_log_book.
+     * Status akan otomatis berubah ke BERJALAN saat tanggal mulai tiba (lazy check).
      *
-     * @param int $id_penempatan
+     * @param int $id_persetujuan_magang
+     * @param string $tgl_mulai_disetujui
+     * @param string $tgl_selesai_disetujui
      * @param string $is_log_book
+     * @param string $catatan
      * @param int $updated_by
      * @return bool
      */
-    public function setujuiPenempatan($id_penempatan, $is_log_book, $catatan, $updated_by)
+    public function setujuiPenempatan($id_penempatan, $id_persetujuan_magang, $tgl_mulai_disetujui, $tgl_selesai_disetujui, $is_log_book, $catatan, $updated_by)
     {
         $db = \Config\Database::connect();
 
-        return $db->table('t_penempatan_magang')
+        $db->transStart();
+
+        $db->table('t_penempatan_magang')
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
-                'status_penempatan' => 'BERJALAN',
-                'is_log_book'       => $is_log_book,
-                'catatan'           => $catatan,
-                'updated_at'        => date('Y-m-d H:i:s'),
+                // Penempatan tetap DISETUJUI sampai tanggal mulai tiba
+                'status_penempatan'  => 'DISETUJUI',
+                'tanggal_mulai'      => $tgl_mulai_disetujui,
+                'tanggal_selesai'    => $tgl_selesai_disetujui,
+                'is_log_book'        => $is_log_book,
+                'catatan'            => $catatan,
+                'tanggal_persetujuan'=> date('Y-m-d H:i:s'),
+                'updated_at'         => date('Y-m-d H:i:s'),
             ]);
+
+        $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $id_persetujuan_magang)
+            ->update([
+                'tgl_mulai_disetujui' => $tgl_mulai_disetujui,
+                'tgl_selesai_disetujui' => $tgl_selesai_disetujui,
+                'status_persetujuan_mahasiswa' => 'MENUNGGU',
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+
+        $db->transComplete();
+
+        return $db->transStatus();
     }
 
     /**
-     * Tolak penempatan:
-     * Ubah status menjadi DIBATALKAN (tidak dihapus).
+     * Tolak penempatan oleh Kabid (saat status MENUNGGU).
+     * Ubah status menjadi DITOLAK dan kembalikan ke Sekretariat untuk disposisi ulang.
      *
      * @param int    $id_penempatan
      * @param string $catatan
@@ -208,20 +231,105 @@ class M_Penempatan extends Model
     {
         $db = \Config\Database::connect();
 
-        // Update status di t_penempatan_magang menjadi DIBATALKAN
+        // Ambil data penempatan untuk mendapatkan id_persetujuan_magang
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->get()->getRow();
+
+        if (!$penempatan) {
+            return false;
+        }
+
+        // Update status di t_penempatan_magang menjadi DITOLAK
         $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->update([
+                'status_penempatan' => 'DITOLAK',
+                'catatan'           => $catatan,
+                'updated_at'        => date('Y-m-d H:i:s'),
+            ]);
+
+        // Kembalikan status persetujuan ke MENUNGGU agar bisa didisposisi ulang ke bidang lain
+        $db->table('t_persetujuan_magang')
+            ->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)
+            ->update([
+                'status_persetujuan' => 'MENUNGGU',
+                'updated_at'         => date('Y-m-d H:i:s'),
+            ]);
+
+        return true;
+    }
+
+    /**
+     * Batalkan penempatan (saat status DISETUJUI atau BERJALAN).
+     * Ini adalah status final — mahasiswa mengundurkan diri.
+     * TIDAK mengembalikan ke Sekretariat untuk disposisi ulang.
+     *
+     * @param int    $id_penempatan
+     * @param string $catatan
+     * @param int    $updated_by
+     * @return bool
+     */
+    public function batalkanPenempatan($id_penempatan, $catatan, $updated_by)
+    {
+        $db = \Config\Database::connect();
+
+        $penempatan = $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $id_penempatan)
+            ->get()->getRow();
+
+        if (!$penempatan) {
+            return false;
+        }
+
+        // Hanya bisa dibatalkan jika status DISETUJUI atau BERJALAN
+        if (!in_array($penempatan->status_penempatan, ['DISETUJUI', 'BERJALAN'])) {
+            return false;
+        }
+
+        return $db->table('t_penempatan_magang')
             ->where('id_penempatan_magang', $id_penempatan)
             ->update([
                 'status_penempatan' => 'DIBATALKAN',
                 'catatan'           => $catatan,
                 'updated_at'        => date('Y-m-d H:i:s'),
             ]);
+    }
 
-        // (Opsional) Jika perlu mengembalikan ke Sekretariat, uncomment baris bawah.
-        // Sesuai permintaan "Data tetap berada pada halaman ini, hanya statusnya yang berubah menjadi Dibatalkan",
-        // kita tidak perlu me-reset disposisi di t_persetujuan_magang agar tidak terduplikasi.
+    /**
+     * Lazy check: Update status otomatis berdasarkan tanggal.
+     * - DISETUJUI → BERJALAN jika tanggal_mulai <= hari ini
+     * - BERJALAN → SELESAI jika tanggal_selesai < hari ini
+     *
+     * Dipanggil setiap kali halaman riwayat/dashboard di-load.
+     *
+     * @param int|null $id_bidang Filter per bidang (opsional)
+     * @return void
+     */
+    public function updateStatusOtomatis($id_bidang = null)
+    {
+        $db = \Config\Database::connect();
+        $today = date('Y-m-d');
 
-        return true;
+        // DISETUJUI → BERJALAN (tanggal mulai sudah tiba)
+        $builder1 = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'DISETUJUI')
+            ->where('tanggal_mulai <=', $today);
+        if ($id_bidang !== null) $builder1->where('id_bidang', $id_bidang);
+        $builder1->update([
+            'status_penempatan' => 'BERJALAN',
+            'updated_at'        => date('Y-m-d H:i:s'),
+        ]);
+
+        // BERJALAN → SELESAI (tanggal selesai sudah lewat)
+        $builder2 = $db->table('t_penempatan_magang')
+            ->where('status_penempatan', 'BERJALAN')
+            ->where('tanggal_selesai <', $today);
+        if ($id_bidang !== null) $builder2->where('id_bidang', $id_bidang);
+        $builder2->update([
+            'status_penempatan' => 'SELESAI',
+            'updated_at'        => date('Y-m-d H:i:s'),
+        ]);
     }
 
     /**

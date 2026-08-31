@@ -31,9 +31,11 @@ $alamatLengkap = !empty($alamatParts) ? implode(', ', $alamatParts) : '-';
 
 $statusText = $p->status_penempatan ?? '-';
 $statusClass = 'alert-secondary'; $statusIcon = 'fa-info-circle';
-if ($p->status_penempatan == 'BERJALAN') { $statusText = 'Sedang Berjalan'; $statusClass = 'alert-info'; $statusIcon = 'fa-spinner'; }
-elseif ($p->status_penempatan == 'SELESAI') { $statusText = 'Magang Selesai'; $statusClass = 'alert-success'; $statusIcon = 'fa-check-circle'; }
-elseif ($p->status_penempatan == 'DITOLAK' || $p->status_penempatan == 'DIBATALKAN') { $statusText = ($p->status_penempatan == 'DITOLAK') ? 'Ditolak' : 'Dibatalkan'; $statusClass = 'alert-danger'; $statusIcon = 'fa-times-circle'; }
+if ($p->status_penempatan == 'DISETUJUI') { $statusText = 'Disetujui — Menunggu Periode Pelaksanaan'; $statusClass = 'alert-info'; $statusIcon = 'fa-check-circle'; }
+elseif ($p->status_penempatan == 'BERJALAN') { $statusText = 'Sedang Berjalan'; $statusClass = 'alert-primary'; $statusIcon = 'fa-spinner'; }
+elseif ($p->status_penempatan == 'SELESAI') { $statusText = 'Kegiatan Selesai'; $statusClass = 'alert-success'; $statusIcon = 'fa-check-circle'; }
+elseif ($p->status_penempatan == 'DITOLAK') { $statusText = 'Ditolak oleh Bidang'; $statusClass = 'alert-danger'; $statusIcon = 'fa-times-circle'; }
+elseif ($p->status_penempatan == 'DIBATALKAN') { $statusText = 'Dibatalkan'; $statusClass = 'alert-warning'; $statusIcon = 'fa-ban'; }
 
 // Helper Format Tanggal Indonesia
 function formatTanggalIndo($tanggal, $tampil_jam = false) {
@@ -203,6 +205,17 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             <input type="hidden" name="id_penempatan_magang" value="<?= esc($p->id_penempatan_magang) ?>">
             <button type="submit" class="btn btn-success px-4" style="border-radius:6px; font-weight:500; background-color: #16a34a; border-color: #16a34a;">
                 <i class="fas fa-check-circle mr-1"></i> Selesaikan Kegiatan
+            </button>
+        </form>
+        <?php endif; ?>
+
+        <?php if (in_array($p->status_penempatan, ['DISETUJUI', 'BERJALAN'])): ?>
+        <form method="POST" action="<?= base_url('kabid/riwayat/batalkan') ?>" style="display:inline;" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Batalkan Kegiatan?', html: 'Mahasiswa akan dinyatakan <b>mengundurkan diri</b>. Aksi ini tidak dapat dibatalkan.<br><br><textarea id=\'swal-catatan\' class=\'swal2-textarea\' placeholder=\'Alasan pembatalan (opsional)...\'></textarea>', icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc3545', cancelButtonColor: '#64748b', confirmButtonText: 'Ya, Batalkan', cancelButtonText: 'Kembali', reverseButtons: true, preConfirm: () => { form.querySelector('[name=catatan_batalkan]').value = document.getElementById('swal-catatan').value || 'Dibatalkan oleh Kepala Bidang'; }}).then((result) => { if (result.isConfirmed) form.submit(); });">
+            <?= csrf_field() ?>
+            <input type="hidden" name="id_penempatan_magang" value="<?= esc($p->id_penempatan_magang) ?>">
+            <input type="hidden" name="catatan_batalkan" value="">
+            <button type="submit" class="btn btn-danger px-4" style="border-radius:6px; font-weight:500;">
+                <i class="fas fa-ban mr-1"></i> Batalkan Kegiatan
             </button>
         </form>
         <?php endif; ?>

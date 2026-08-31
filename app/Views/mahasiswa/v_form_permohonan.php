@@ -33,7 +33,7 @@
 
 <?php
 // Tentukan apakah form sudah di tahap akhir (Step 4) atau belum
-$isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $state == 4);
+$isFinished = (session()->getFlashdata('permohonan_sent') || $state == 2 || $state == 3 || $state == 4);
 ?>
 
 <!-- ============ STEPPER BAR SELALU TAMPIL ============ -->
@@ -107,15 +107,26 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
 
-<?php elseif($state == 4): ?>
-<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF (STATE 4) ============ -->
-<div class="wizard-card text-center py-5">
-    <div style="width: 80px; height: 80px; border-radius: 50%; background: #dcfce7; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
-        <i class="bi bi-check-circle-fill"></i>
+<?php elseif($state == 4 || $state == 3): ?>
+<!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF ============ -->
+<div class="wizard-card text-center py-5" style="border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.03); background: linear-gradient(to bottom, #ffffff, #f8fafc); border-radius: 16px;">
+    <div style="position: relative; width: 80px; height: 80px; margin: 0 auto 32px;">
+        <!-- Glowing background -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #dbeafe; border-radius: 50%; transform: scale(1.15); filter: blur(10px); opacity: 0.8;"></div>
+        <!-- Circle container -->
+        <div style="position: relative; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); border: 4px solid #ffffff;">
+            <i class="bi bi-mortarboard-fill" style="color: #ffffff; font-size: 2.5rem; text-shadow: 0 3px 6px rgba(0,0,0,0.15); margin-bottom: 3px;"></i>
+        </div>
+        <!-- Decorative sparks -->
+        <i class="bi bi-stars" style="position: absolute; top: -10px; right: -20px; color: #f59e0b; font-size: 1.6rem; text-shadow: 0 2px 8px rgba(245, 158, 11, 0.4); z-index: 1;"></i>
+        <i class="bi bi-star-fill" style="position: absolute; bottom: 0px; left: -15px; color: #fbbf24; font-size: 1rem; transform: rotate(-20deg); text-shadow: 0 2px 6px rgba(251, 191, 36, 0.4); z-index: 1;"></i>
+        <i class="bi bi-balloon-fill" style="position: absolute; top: 5px; left: -25px; color: #3b82f6; font-size: 1.2rem; transform: rotate(-15deg); text-shadow: 0 2px 6px rgba(59, 130, 246, 0.3); z-index: 1;"></i>
     </div>
-    <h5 class="fw-bold text-dark mb-2">Permohonan Disetujui</h5>
-    <p class="text-muted mx-auto mb-4" style="max-width:400px;">Kegiatan dapat dilaksanakan sesuai periode yang telah ditentukan.</p>
-    <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary"><i class="bi bi-house-door"></i> Ke Dashboard</a>
+    <h4 class="fw-bold text-dark mb-2" style="font-size: 1.85rem; letter-spacing: -0.5px;">Permohonan Disetujui!</h4>
+    <p class="text-muted mx-auto mb-5" style="max-width: 480px; font-size: 1rem; line-height: 1.6;">
+        <?= $state == 3 ? 'Selamat! Permohonan Anda telah disetujui. Silakan tunggu periode pelaksanaan kegiatan tiba untuk mulai.' : 'Selamat! Kegiatan Anda dapat dilaksanakan sesuai periode yang telah ditentukan.' ?>
+    </p>
+    <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary" style="padding: 12px 36px; font-size: 1.05rem; border-radius: 50px; box-shadow: 0 8px 20px rgba(13, 110, 253, 0.25);"><i class="bi bi-house-door me-2"></i> Kembali ke Dashboard</a>
 </div>
 
 
@@ -174,15 +185,27 @@ if(session()->getFlashdata('permohonan_sent')):
         </div>
 
         <?php if (!isset($permohonan_aktif) || $permohonan_aktif['status_persetujuan'] !== 'PERBAIKAN_BERKAS'): ?>
+        <?php
+            // Mapping deskripsi layanan berdasarkan nama jenis permohonan
+            $deskripsi_layanan = [
+                'Skripsi / Tugas Akhir' => 'Penelitian untuk tugas akhir mahasiswa tingkat akhir.',
+                'Observasi / Pengambilan Data' => 'Kunjungan lapangan untuk keperluan tugas mata kuliah.',
+                'Magang' => 'Magang kerja industri bagi Mahasiswa.',
+                'Praktik Kerja Lapangan (PKL)' => 'Praktik kerja bagi Siswa SMK.',
+                'Uji Coba Aplikasi Produk' => 'Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.'
+            ];
+        ?>
         <!-- FAQ / Panduan Jenis Permohonan -->
         <div class="mb-4" style="background-color: #fef9c3; border-radius: 4px; padding: 16px 20px;">
             <div class="fw-bold mb-2" style="font-size:0.9rem; color: #854d0e;">Informasi Layanan Akademik :</div>
             <ul class="mb-0 ps-3" style="font-size:0.85rem; line-height:1.8; color: #713f12;">
-                <li><strong>Skripsi / Tugas Akhir:</strong> Penelitian untuk tugas akhir mahasiswa tingkat akhir.</li>
-                <li><strong>Observasi / Pengambilan Data:</strong> Kunjungan lapangan untuk keperluan tugas mata kuliah.</li>
-                <li><strong>Magang:</strong> Magang kerja industri bagi Mahasiswa.</li>
-                <li><strong>Praktik Kerja Lapangan (PKL):</strong> Praktik kerja bagi Siswa SMK.</li>
-                <li><strong>Uji Coba Aplikasi Produk:</strong> Pengujian sistem/aplikasi buatan akademisi di lingkup Dinas Kominfo.</li>
+                <?php if(!empty($jenis_permohonan)): ?>
+                    <?php foreach($jenis_permohonan as $jp): ?>
+                        <li><strong><?= esc($jp['jenis_permohonan']) ?>:</strong> <?= isset($deskripsi_layanan[$jp['jenis_permohonan']]) ? $deskripsi_layanan[$jp['jenis_permohonan']] : 'Layanan akademik Dinas Kominfo.' ?></li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>Belum ada layanan yang tersedia untuk jenjang pendidikan Anda.</li>
+                <?php endif; ?>
             </ul>
         </div>
         <?php endif; ?>
@@ -281,6 +304,17 @@ if(session()->getFlashdata('permohonan_sent')):
             Unggah dokumen dalam format <strong>PDF</strong>, ukuran maksimal <strong>2 MB</strong> per file.
         </p>
 
+        <!-- Info Box -->
+        <div class="info-box mb-4">
+            <div class="fw-semibold text-dark mb-2" style="font-size:0.84rem;"><i class="bi bi-info-circle text-primary me-1"></i> Persyaratan Berkas</div>
+            <ul id="info-panduan-list" class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
+                <li>Surat pengantar menggunakan kop resmi kampus dan ditandatangani pejabat berwenang</li>
+                <li>CV mencantumkan data diri, program studi, semester, dan keahlian teknis</li>
+                <li>Khusus <strong>Penelitian / TA</strong> — wajib lampirkan Proposal / Sinopsis</li>
+                <li>Pastikan file tidak terproteksi kata sandi (password-protected)</li>
+            </ul>
+        </div>
+
         <!-- Upload: Surat Pengantar -->
         <div class="mb-4 position-relative">
             <label class="wz-form-label" id="lbl-surat">Surat Pengantar Resmi <span class="text-danger">*</span></label>
@@ -327,17 +361,6 @@ if(session()->getFlashdata('permohonan_sent')):
                 </div>
             </div>
             <div class="form-text mt-1" style="font-size:0.75rem;"><i class="bi bi-info-circle me-1"></i>Format: PDF, JPG, PNG | Maksimal ukuran: 2 MB</div>
-        </div>
-
-        <!-- Info Box -->
-        <div class="info-box mb-4">
-            <div class="fw-semibold text-dark mb-2" style="font-size:0.84rem;"><i class="bi bi-info-circle text-primary me-1"></i> Panduan Dokumen</div>
-            <ul id="info-panduan-list" class="mb-0 ps-3 text-muted" style="font-size:0.8rem;line-height:1.9;">
-                <li>Surat pengantar menggunakan kop resmi kampus dan ditandatangani pejabat berwenang</li>
-                <li>CV mencantumkan data diri, program studi, semester, dan keahlian teknis</li>
-                <li>Khusus <strong>Penelitian / TA</strong> — wajib lampirkan Proposal / Sinopsis</li>
-                <li>Pastikan file tidak terproteksi kata sandi (password-protected)</li>
-            </ul>
         </div>
 
         <!-- NAV -->
@@ -392,7 +415,7 @@ if(session()->getFlashdata('permohonan_sent')):
                     <div class="rv-title">Data Permohonan</div>
                     <table class="rv-table">
                         <tr><td style="width:140px;">Jenis Permohonan</td><td class="rv-sep">:</td><td id="rv-jenis" class="text-dark">—</td></tr>
-                        <tr><td>Tanggal Pelaksanaan</td><td class="rv-sep">:</td><td><span id="rv-tgl-mulai" class="text-dark">—</span> <span class="text-muted mx-1">s.d.</span> <span id="rv-tgl-selesai" class="text-dark">—</span></td></tr>
+                        <tr><td>Periode Pelaksanaan</td><td class="rv-sep">:</td><td><span id="rv-tgl-mulai" class="text-dark">—</span> <span class="text-muted mx-1">s.d.</span> <span id="rv-tgl-selesai" class="text-dark">—</span></td></tr>
                         <tr><td>Lokasi Kegiatan</td><td class="rv-sep">:</td><td class="text-dark">Dinas Kominfo Kota Tangerang</td></tr>
                         <tr><td id="rv-keahlian-label" style="vertical-align:top; padding-top:10px;">Keahlian Utama</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-keahlian" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
                         <tr><td id="rv-magang-label" style="vertical-align:top; padding-top:10px;">Apa yang ingin Anda kerjakan?</td><td class="rv-sep" style="vertical-align:top; padding-top:10px;">:</td><td id="rv-magang" class="text-dark" style="white-space:pre-wrap; padding-top:10px;">—</td></tr>
@@ -445,8 +468,8 @@ var BULAN_PENUH = <?= json_encode($bulan_penuh ?? []) ?>;
 var JENIS_DATE_CFG = {
 <?php foreach ($jenis_permohonan as $jp): ?>
     '<?= $jp['id_jenis_permohonan'] ?>': {
-        maksHariPengajuan: <?= (int)($jp['maksimal_hari_pengajuan'] ?? 0) ?>,
-        durasiMinimal: <?= (int)($jp['durasi_minimal'] ?? 0) ?>,
+        maksHariPengajuan: <?= ((int)($jp['maksimal_hari_pengajuan'] ?? 0) > 0) ? (int)$jp['maksimal_hari_pengajuan'] : 30 ?>,
+        durasiMinimal: <?= ((int)($jp['durasi_minimal'] ?? 0) > 0) ? (int)$jp['durasi_minimal'] : 59 ?>,
         maksimalPermohonan: <?= (int)($jp['maksimal_permohonan'] ?? 0) ?>
     },
 <?php endforeach; ?>

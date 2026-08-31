@@ -101,10 +101,14 @@ class C_DisposisiMasuk extends BaseController
     public function setujui()
     {
         $id_penempatan = $this->request->getPost('id_penempatan_magang');
+        $id_persetujuan_magang = $this->request->getPost('id_persetujuan_magang');
+        $tgl_mulai_disetujui = $this->request->getPost('tgl_mulai_disetujui');
+        $tgl_selesai_disetujui = $this->request->getPost('tgl_selesai_disetujui');
+        
         $is_log_book   = $this->request->getPost('is_log_book') ?? 'Ya'; // 'Ya' atau 'Tidak'
         $catatan       = $this->request->getPost('catatan_keputusan')
             ?? $this->request->getPost('catatan_setuju')
-            ?? 'Permohonan magang disetujui';
+            ?? 'Permohonan kegiatan disetujui';
 
         $penempatan = $this->penempatanModel->getDetailPenempatan($id_penempatan);
 
@@ -124,8 +128,8 @@ class C_DisposisiMasuk extends BaseController
         $persetujuanData = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
         $permohonanData = $db->table('t_permohonan_magang')->where('id_permohonan_magang', $persetujuanData->id_permohonan_magang)->get()->getRow();
         
-        $tgl_mulai = $permohonanData->tgl_mulai ?? date('Y-m-d');
-        $tgl_selesai = $permohonanData->tgl_selesai ?? date('Y-m-d');
+        $tgl_mulai = $tgl_mulai_disetujui; // Gunakan tanggal disetujui untuk kuota
+        $tgl_selesai = $tgl_selesai_disetujui;
         
         $tahun_mulai = (int)date('Y', strtotime($tgl_mulai));
         $bulan_mulai = (int)date('m', strtotime($tgl_mulai));
@@ -173,6 +177,9 @@ class C_DisposisiMasuk extends BaseController
 
         $result = $this->penempatanModel->setujuiPenempatan(
             $id_penempatan,
+            $id_persetujuan_magang,
+            $tgl_mulai_disetujui,
+            $tgl_selesai_disetujui,
             $is_log_book,
             $catatan,
             session('id_user_pegawai')
@@ -190,9 +197,9 @@ class C_DisposisiMasuk extends BaseController
                              ->get()->getRow();
             $jenisText = $permohonan ? strtoupper($permohonan->jenis_permohonan) : 'MAGANG';
             
-            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Disetujui', "Permohonan telah disetujui oleh Kepala Bidang.");
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Disetujui', "Permohonan telah disetujui oleh Kepala Bidang. Menunggu konfirmasi persetujuan dari mahasiswa.");
             
-            session()->setFlashdata('success', 'Penempatan berhasil disetujui. Mahasiswa sekarang aktif kegiatan.');
+            session()->setFlashdata('success', 'Permohonan berhasil disetujui. Silakan tunggu mahasiswa menyetujui periode kegiatan.');
         } else {
             session()->setFlashdata('error', 'Gagal menyetujui penempatan.');
         }
@@ -223,9 +230,9 @@ class C_DisposisiMasuk extends BaseController
             $db = \Config\Database::connect();
             $penempatan = $db->table('t_penempatan_magang')->where('id_penempatan_magang', $id_penempatan)->get()->getRow();
             $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $penempatan->id_persetujuan_magang)->get()->getRow();
-            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Ditolak', 'Permohonan tidak dapat disetujui oleh Kepala Bidang. Catatan: ' . $catatan);
+            catat_log($persetujuan->id_permohonan_magang, 'Kepala Bidang', 'Permohonan Ditolak Bidang', 'Permohonan tidak dapat diterima oleh Bidang. Catatan: ' . $catatan);
             
-            session()->setFlashdata('success', 'Penempatan dibatalkan.');
+            session()->setFlashdata('success', 'Penempatan ditolak. Permohonan dikembalikan ke Sekretariat untuk disposisi ulang.');
         } else {
             session()->setFlashdata('error', 'Gagal menolak penempatan.');
         }
@@ -313,7 +320,7 @@ class C_DisposisiMasuk extends BaseController
             
             session()->setFlashdata('success', 'Masa kegiatan mahasiswa berhasil diselesaikan.');
         } else {
-            session()->setFlashdata('error', 'Gagal menyelesaikan magang mahasiswa.');
+            session()->setFlashdata('error', 'Gagal menyelesaikan kegiatan mahasiswa.');
         }
 
         return redirect()->back();

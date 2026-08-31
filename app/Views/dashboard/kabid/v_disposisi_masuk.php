@@ -140,7 +140,7 @@
                                         </div>
                                         <div>
                                             <h6 class="mb-1 font-weight-bold" style="color: #0f172a;">Informasi Pemohon</h6>
-                                            <p class="mb-0 text-muted" style="font-size: 0.85rem;">Data identitas serta latar belakang pemohon magang.</p>
+                                            <p class="mb-0 text-muted" style="font-size: 0.85rem;">Data identitas serta latar belakang pemohon.</p>
                                         </div>
                                     </div>
                                 </div>

@@ -26,17 +26,22 @@
         </div>
     </a>
 
-    <div class="lp-nav-links">
-        <a href="#tentang">Tentang</a>
-        <a href="#program">Program</a>
-        <a href="#alur">Alur Pendaftaran</a>
-        <a href="#faq">FAQ</a>
-        <a href="#kontak">Kontak</a>
-    </div>
+    <button class="lp-mobile-toggle" id="lp-mobile-toggle" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+    </button>
 
-    <div class="lp-nav-actions">
-        <a href="<?= base_url('register') ?>" class="btn-lp-outline">Daftar Akun</a>
-        <a href="<?= base_url('login') ?>" class="btn-lp-solid"><i class="bi bi-box-arrow-in-right me-1"></i> Masuk</a>
+    <div class="lp-nav-menu" id="lp-nav-menu">
+        <div class="lp-nav-links">
+            <a href="#beranda">Beranda</a>
+            <a href="#program">Program Kami</a>
+            <a href="#alur">Panduan</a>
+            <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="lp-nav-actions">
+            <a href="<?= base_url('register') ?>" class="btn-lp-outline">Daftar Akun</a>
+            <a href="<?= base_url('login') ?>" class="btn-lp-solid"><i class="bi bi-box-arrow-in-right me-1"></i> Masuk</a>
+        </div>
     </div>
 </nav>
 
@@ -48,44 +53,18 @@
                 <i class="bi bi-stars"></i> Platform E-Layanan Resmi
             </div>
             <h1>
-                Gerbang Akademik<br>
+                Akses Akademik<br>
                 <span>Kota Tangerang</span>
             </h1>
             <p>
-                Platform digital terintegrasi untuk pengajuan dan pengelolaan permohonan
-                <strong style="color:rgba(255,255,255,0.9);">Magang, PKL, Penelitian, dan Observasi</strong>
-                di Dinas Komunikasi dan Informatika Kota Tangerang.
+                Wujudkan pengalaman belajar dan riset terbaikmu bersama kami. Ajukan permohonan 
+                <strong style="color: white; font-weight: 700;">Magang, PKL, Penelitian, Observasi, dan Uji Coba Produk</strong> 
+                secara mudah, cepat, dan terintegrasi di Dinas Komunikasi dan Informatika Kota Tangerang.
             </p>
             <div class="lp-hero-cta">
                 <a href="<?= base_url('register') ?>" class="btn-hero-primary">
                     <i class="bi bi-pencil-square me-2"></i>Daftar Sekarang
                 </a>
-                <a href="#program" class="btn-hero-secondary">
-                    <i class="bi bi-play-circle me-2"></i>Pelajari Program
-                </a>
-            </div>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="lp-hero-stats">
-            <div class="stat-item">
-                <div class="stat-number">4<span>+</span></div>
-                <div class="stat-label">Jenis Program</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">100<span>%</span></div>
-                <div class="stat-label">Proses Digital</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">24<span>/7</span></div>
-                <div class="stat-label">Pantau Status</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-number">0<span> biaya</span></div>
-                <div class="stat-label">Pendaftaran Gratis</div>
             </div>
         </div>
     </div>
@@ -96,56 +75,45 @@
     <div class="lp-container">
         <div class="about-grid">
             <div class="about-text">
-                <div class="section-badge">TENTANG PLATFORM</div>
-                <p style="font-size: 1.05rem; line-height: 1.7; color: #4b5563;">
+                <div class="section-badge" style="margin-bottom: 12px;"><i class="bi bi-info-circle-fill"></i> TENTANG PLATFORM</div>
+                <h2 class="section-title" style="margin-bottom: 24px; font-size: 2.6rem; line-height: 1.25; letter-spacing: -1px;">
+                    <span style="background: linear-gradient(135deg, var(--navy), #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Transformasi Digital</span><br>Layanan Akademik
+                </h2>
+                <p style="font-size: 1.1rem; line-height: 1.7; color: #4b5563; margin-bottom: 36px; padding-right: 20px;">
                     <strong>E-Layanan Akademik</strong> adalah ekosistem digital resmi dari <strong>Dinas Komunikasi dan Informatika Kota Tangerang</strong>. Kami hadir untuk memfasilitasi mahasiswa dan pelajar dalam mengembangkan kompetensi, mengelola administrasi magang secara transparan, serta berkolaborasi langsung dalam lingkungan kerja pemerintahan.
                 </p>
-                <div class="about-features">
-                    <div class="feature-pill">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Pendaftaran &amp; Pengajuan Dokumen Online
+                <div class="about-features-grid">
+                    <div class="feature-item">
+                        <div class="fi-icon"><i class="bi bi-file-earmark-check-fill"></i></div>
+                        <span>Pendaftaran Online</span>
                     </div>
-                    <div class="feature-pill">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Pemantauan Status Real-Time
+                    <div class="feature-item">
+                        <div class="fi-icon"><i class="bi bi-activity"></i></div>
+                        <span>Pantau Real-Time</span>
                     </div>
-                    <div class="feature-pill">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Logbook &amp; Penilaian Digital
+                    <div class="feature-item">
+                        <div class="fi-icon"><i class="bi bi-journal-text"></i></div>
+                        <span>Logbook Digital</span>
                     </div>
-                    <div class="feature-pill">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Sertifikat Unduh Otomatis
+                    <div class="feature-item">
+                        <div class="fi-icon"><i class="bi bi-award-fill"></i></div>
+                        <span>E-Sertifikat Otomatis</span>
                     </div>
                 </div>
+                
+                <a href="#alur" class="about-cta-link mt-4 d-inline-block" style="margin-top: 1.5rem;">
+                    Lihat panduan langkah demi langkah <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
-            <div class="about-visual">
-                <div class="visual-card">
-                    <div class="vc-icon blue"><i class="bi bi-file-earmark-check-fill"></i></div>
-                    <div class="vc-text">
-                        <strong>Ajukan Permohonan</strong>
-                        <span>Isi formulir &amp; unggah dokumen secara online</span>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="vc-icon gold"><i class="bi bi-search"></i></div>
-                    <div class="vc-text">
-                        <strong>Proses Verifikasi</strong>
-                        <span>Sekretariat &amp; Kepala Bidang meninjau berkas</span>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="vc-icon accent"><i class="bi bi-journal-richtext"></i></div>
-                    <div class="vc-text">
-                        <strong>Isi Logbook Harian</strong>
-                        <span>Catat aktivitas magang setiap hari secara digital</span>
-                    </div>
-                </div>
-                <div class="visual-card">
-                    <div class="vc-icon blue"><i class="bi bi-patch-check-fill"></i></div>
-                    <div class="vc-text">
-                        <strong>Unduh Sertifikat</strong>
-                        <span>Sertifikat tersedia otomatis setelah selesai</span>
+            <div class="about-visual-image">
+                <div class="img-wrapper">
+                    <img src="<?= base_url('images/gedung puspem landing page.png') ?>" alt="Gedung Puspem" class="about-img">
+                    <div class="img-overlay-card">
+                        <div class="overlay-icon"><i class="bi bi-shield-check"></i></div>
+                        <div class="overlay-text">
+                            <strong>Resmi & Terintegrasi</strong>
+                            <span>Dinas Kominfo Tangerang</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,17 +121,60 @@
     </div>
 </section>
 
+<!-- ===== KEUNTUNGAN MAGANG ===== -->
+<section class="lp-benefit" id="keuntungan">
+    <div class="lp-container">
+        
+        <div class="benefit-header-center">
+            <div class="section-badge"><i class="bi bi-stars"></i> KEUNTUNGAN BERGABUNG</div>
+            <h2 class="section-title text-navy" style="margin-top: 16px;">
+                Apa yang Akan Kamu Dapatkan?
+            </h2>
+            <p class="section-sub text-muted" style="margin: 16px auto 40px; color: var(--text-muted);">
+                Lebih dari sekadar magang — ini adalah <strong style="color:var(--navy);">pengalaman nyata</strong> yang membentuk karier dan karakter kamu di dunia profesional.
+            </p>
+        </div>
+
+        <div class="benefit-grid-4">
+            <div class="benefit-item-flat">
+                <div class="benefit-icon-flat"><i class="bi bi-building-fill"></i></div>
+                <h3>Pengalaman Kerja Pemerintahan</h3>
+                <p>Rasakan langsung dinamika kerja instansi pemerintah dari koordinasi hingga pengelolaan sistem.</p>
+            </div>
+            <div class="benefit-item-flat">
+                <div class="benefit-icon-flat"><i class="bi bi-laptop-fill"></i></div>
+                <h3>Kompetensi Teknologi Informasi</h3>
+                <p>Terlibat dalam proyek digitalisasi layanan publik Kota Tangerang di bidang infrastruktur digital.</p>
+            </div>
+            <div class="benefit-item-flat">
+                <div class="benefit-icon-flat"><i class="bi bi-patch-check-fill"></i></div>
+                <h3>Sertifikat Resmi Pemerintah</h3>
+                <p>Sertifikat magang dari Dinas Kominfo yang diakui dan bernilai tinggi di dunia profesional.</p>
+            </div>
+            <div class="benefit-item-flat">
+                <div class="benefit-icon-flat"><i class="bi bi-people-fill"></i></div>
+                <h3>Jaringan & Relasi Profesional</h3>
+                <p>Bangun koneksi berharga dengan ASN, mitra instansi, dan sesama peserta magang.</p>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+
 <!-- ===== PROGRAM PILIHAN ===== -->
 <section class="lp-program" id="program">
     <div class="lp-container">
         <div class="program-header">
-            <div class="section-badge">PROGRAM KAMI</div>
+            <div class="section-badge"><i class="bi bi-grid-fill"></i> PROGRAM KAMI</div>
             <h2 class="section-title">Program Pilihan</h2>
             <p class="section-sub" style="margin: 10px auto 0;">Pilih kategori yang sesuai dengan kebutuhan akademik dan kualifikasi Anda</p>
         </div>
 
         <div class="program-tabs">
-            <button class="prog-tab active" onclick="switchTab(this, 'magang')">Magang / PKL</button>
+            <button class="prog-tab active" onclick="switchTab(this, 'magang')">Magang</button>
+            <button class="prog-tab" onclick="switchTab(this, 'pkl')">PKL</button>
             <button class="prog-tab" onclick="switchTab(this, 'penelitian')">Penelitian</button>
             <button class="prog-tab" onclick="switchTab(this, 'observasi')">Observasi</button>
             <button class="prog-tab" onclick="switchTab(this, 'uji')">Uji Coba Produk</button>
@@ -173,18 +184,36 @@
         <div class="program-cards" id="tab-magang">
             <div class="prog-card">
                 <div class="prog-card-icon"><i class="bi bi-pencil-square"></i></div>
-                <h3>Pendaftaran</h3>
+                <h3>Pendaftaran Magang</h3>
                 <p>Isi formulir permohonan magang secara online dan unggah dokumen persyaratan seperti surat pengantar, proposal, dan KTP.</p>
             </div>
             <div class="prog-card">
                 <div class="prog-card-icon"><i class="bi bi-briefcase-fill"></i></div>
-                <h3>Pelaksanaan</h3>
+                <h3>Pelaksanaan Magang</h3>
                 <p>Informasi detail penempatan unit kerja, jadwal masuk, tata tertib selama bertugas, dan pembimbing lapangan yang ditunjuk.</p>
             </div>
             <div class="prog-card">
                 <div class="prog-card-icon"><i class="bi bi-mortarboard-fill"></i></div>
-                <h3>Penyelesaian</h3>
+                <h3>Penyelesaian Magang</h3>
                 <p>Prosedur penilaian, pengisian logbook, pengumpulan laporan akhir, dan pengunduhan sertifikat magang secara digital.</p>
+            </div>
+        </div>
+        <!-- Tab PKL -->
+        <div class="program-cards d-none" id="tab-pkl">
+            <div class="prog-card">
+                <div class="prog-card-icon"><i class="bi bi-pencil-square"></i></div>
+                <h3>Pendaftaran PKL</h3>
+                <p>Isi formulir permohonan PKL (Praktik Kerja Lapangan) secara online dan unggah dokumen persyaratan dari sekolah/kampus.</p>
+            </div>
+            <div class="prog-card">
+                <div class="prog-card-icon"><i class="bi bi-briefcase-fill"></i></div>
+                <h3>Pelaksanaan PKL</h3>
+                <p>Penempatan unit kerja sesuai penjurusan, dengan bimbingan langsung dari praktisi di lingkungan Dinas Kominfo.</p>
+            </div>
+            <div class="prog-card">
+                <div class="prog-card-icon"><i class="bi bi-mortarboard-fill"></i></div>
+                <h3>Penyelesaian PKL</h3>
+                <p>Evaluasi kinerja, penyerahan laporan akhir PKL, dan penerbitan sertifikat resmi untuk kebutuhan akademik.</p>
             </div>
         </div>
         <!-- Tab Penelitian -->
@@ -248,7 +277,7 @@
 <section class="lp-alur" id="alur">
     <div class="lp-container">
         <div class="alur-header">
-            <div class="section-badge">ALUR PENDAFTARAN</div>
+            <div class="section-badge"><i class="bi bi-signpost-split-fill"></i> ALUR PENDAFTARAN</div>
             <h2 class="section-title">Tahapan Pelaksanaan Program</h2>
             <p class="section-sub" style="margin: 10px auto 0;">Proses yang transparan dan dapat dipantau di setiap tahap</p>
         </div>
@@ -290,142 +319,91 @@
     </div>
 </section>
 
-<!-- ===== KEUNGGULAN ===== -->
-<section class="lp-keunggulan">
-    <div class="lp-container">
-        <div class="keung-header">
-            <div class="section-badge">KEUNGGULAN</div>
-            <h2 class="section-title">Mengapa Menggunakan Platform Ini?</h2>
-            <p class="section-sub">Solusi digital yang dirancang untuk mempermudah setiap proses administrasi akademik Anda</p>
-        </div>
-        <div class="keung-grid">
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-lightning-charge-fill"></i></div>
-                <h3>Proses Cepat &amp; Efisien</h3>
-                <p>Pengajuan dilakukan secara online tanpa perlu datang langsung. Hemat waktu dan tenaga.</p>
-            </div>
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-eye-fill"></i></div>
-                <h3>Transparansi Status</h3>
-                <p>Pantau posisi permohonan Anda secara real-time dari mana saja dan kapan saja.</p>
-            </div>
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-shield-lock-fill"></i></div>
-                <h3>Data Aman &amp; Terenkripsi</h3>
-                <p>Seluruh data dan dokumen Anda disimpan dengan sistem keamanan berlapis.</p>
-            </div>
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-journal-text"></i></div>
-                <h3>Logbook Digital</h3>
-                <p>Catat kegiatan harian magang Anda secara digital dan terstruktur tanpa dokumen fisik.</p>
-            </div>
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-chat-square-text-fill"></i></div>
-                <h3>Notifikasi &amp; Catatan</h3>
-                <p>Terima catatan dan umpan balik langsung dari Sekretariat dan Kepala Bidang melalui sistem.</p>
-            </div>
-            <div class="keung-card">
-                <div class="keung-icon"><i class="bi bi-award-fill"></i></div>
-                <h3>Sertifikat Digital</h3>
-                <p>Unduh sertifikat penyelesaian program kapan saja langsung dari dashboard Anda.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- ===== FAQ ===== -->
 <section class="lp-faq" id="faq">
     <div class="lp-container">
-        <div class="faq-header">
-            <div class="section-badge">FAQ</div>
-            <h2 class="section-title">Pertanyaan yang Sering Diajukan</h2>
-            <div class="faq-separator"></div>
-            <p class="section-sub" style="margin: 16px auto 0;">Jawaban atas pertanyaan umum seputar program di Dinas Kominfo Kota Tangerang</p>
+
+        <!-- Header tengah -->
+        <div class="faq-top-header">
+            <div class="faq-top-badge">
+                <i class="bi bi-patch-question-fill"></i>
+                <span>FAQ</span>
+            </div>
+            <h2 class="faq-top-title">Pertanyaan yang <span>Sering Ditanyakan</span></h2>
+            <p class="faq-top-sub">Temukan jawaban atas pertanyaan umum seputar program magang di Dinas Kominfo Kota Tangerang</p>
         </div>
-        <div class="faq-list" id="faqList">
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Apa itu E-Layanan Akademik Dinas Kominfo Tangerang?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>E-Layanan Akademik adalah platform digital resmi Dinas Komunikasi dan Informatika Kota Tangerang yang memfasilitasi proses pengajuan dan pengelolaan permohonan akademik seperti Magang, PKL, Penelitian, Observasi, dan Uji Coba Produk secara online dan terintegrasi.</p>
+
+        <div class="faq-split">
+
+            <!-- Kiri: Gambar Ilustrasi Besar -->
+            <div class="faq-split-left">
+                <img src="<?= base_url('images/faq_illustration.png') ?>" alt="FAQ Illustration" class="faq-split-img">
+            </div>
+
+            <!-- Kanan: Judul + Accordion -->
+            <div class="faq-split-right">
+                <div class="faq-accordion" id="faqList">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>Bagaimana cara mendaftar dan mengajukan permohonan?</span>
+                            <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Buat akun di halaman Daftar dengan mengisi data diri. Setelah akun aktif, login dan masuk ke menu "Permohonan". Isi formulir dan unggah dokumen persyaratan. Permohonan Anda akan diproses oleh tim Sekretariat.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>Program apa saja yang tersedia di platform ini?</span>
+                            <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tersedia 4 program: <strong>Magang/PKL</strong> (mahasiswa &amp; siswa), <strong>Penelitian</strong> (skripsi/TA), <strong>Observasi</strong> (kunjungan lapangan), dan <strong>Uji Coba Produk</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>Dokumen apa saja yang diperlukan saat mendaftar?</span>
+                            <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Dokumen utama meliputi Surat Pengantar dari Institusi, KTP/KTM, dan CV. Untuk penelitian diwajibkan menyertakan Proposal Kegiatan. Syarat spesifik akan muncul di form pengajuan.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>Berapa lama proses verifikasi permohonan berlangsung?</span>
+                            <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Proses verifikasi oleh Sekretariat umumnya berlangsung 3-5 hari kerja. Status dapat dipantau <em>real-time</em> melalui dashboard akun Anda.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>Bagaimana jika dokumen permohonan saya terdapat kesalahan?</span>
+                            <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Tim Sekretariat akan memberikan status <strong>Revisi</strong> beserta catatan perbaikan. Anda dapat memperbaiki dokumen langsung pada permohonan yang sama tanpa membuat permohonan baru.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Bagaimana cara mendaftar dan mengajukan permohonan?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>Pertama, buat akun di halaman Daftar dengan mengisi data diri dan akademik Anda. Setelah akun aktif, login ke sistem dan navigasi ke menu "Permohonan". Isi formulir yang tersedia, pilih jenis program, dan unggah dokumen persyaratan yang diminta. Setelah dikirim, permohonan akan diproses oleh tim Sekretariat.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Program apa saja yang tersedia di platform ini?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>Saat ini tersedia 4 jenis program: <strong>Magang/PKL</strong> (untuk mahasiswa dan siswa SMK), <strong>Penelitian</strong> (untuk skripsi, tesis, atau karya ilmiah), <strong>Observasi</strong> (kunjungan lapangan), dan <strong>Uji Coba Produk</strong> (pengujian teknologi atau perangkat lunak).</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Dokumen apa saja yang diperlukan saat mendaftar?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>Dokumen yang umumnya dibutuhkan meliputi: Surat Pengantar dari Institusi, Proposal Kegiatan (untuk penelitian), KTP/Kartu Pelajar/KTM, dan CV. Persyaratan detail dapat berbeda tergantung jenis program yang dipilih dan akan ditampilkan secara lengkap di formulir pengajuan.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Berapa lama proses verifikasi permohonan berlangsung?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>Proses verifikasi berkas oleh Sekretariat umumnya berlangsung dalam 3-5 hari kerja. Anda dapat memantau status permohonan secara real-time melalui menu "Status Permohonan" di dashboard akun Anda. Notifikasi perubahan status juga akan ditampilkan di sistem.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Bagaimana cara mendapatkan sertifikat setelah selesai?</span>
-                    <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
-                </div>
-                <div class="faq-answer">
-                    <p>Setelah program selesai dan penilaian telah dilakukan oleh Kepala Bidang, sertifikat akan otomatis tersedia di dashboard Anda. Anda cukup mengakses menu "Sertifikat" dan mengklik tombol unduh. Tidak perlu datang ke kantor secara langsung.</p>
-                </div>
-            </div>
+
         </div>
     </div>
 </section>
 
-<!-- ===== CTA ===== -->
-<section class="lp-cta" id="kontak">
-    <div class="lp-container">
-        <div class="cta-box">
-            <h2>Siap Memulai Program Anda?</h2>
-            <p>Daftarkan diri Anda sekarang dan mulai perjalanan akademik bersama Dinas Kominfo Kota Tangerang. Gratis, mudah, dan 100% online.</p>
-            <div class="cta-btns">
-                <a href="<?= base_url('register') ?>" class="btn-hero-primary" style="font-size: 1rem; padding: 14px 36px;">
-                    <i class="bi bi-person-plus-fill me-2"></i>Buat Akun Gratis
-                </a>
-                <a href="<?= base_url('login') ?>" class="btn-hero-secondary" style="font-size: 1rem; padding: 14px 36px;">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Masuk ke Sistem
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- ===== FOOTER ===== -->
-<footer class="lp-footer">
+<footer class="lp-footer" id="kontak">
     <div class="lp-container">
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="lp-brand" style="text-decoration:none; display:flex; align-items:center; gap:10px; margin-bottom:16px;">
-                    <div class="lp-brand-icon"><i class="bi bi-building-fill-gear"></i></div>
+                    <img src="<?= base_url('images/kota tng_nobg.png') ?>" alt="Logo Kota Tangerang" style="height: 45px; width: auto;" onerror="this.style.display='none'">
                     <div>
                         <div class="lp-brand-name">E-Layanan Akademik</div>
                         <div class="lp-brand-sub">Dinas Kominfo Kota Tangerang</div>
@@ -443,23 +421,33 @@
             </div>
 
             <div class="footer-col">
-                <h4>Navigasi</h4>
+                <h4>Tautan Cepat</h4>
                 <ul>
-                    <li><a href="#tentang">Tentang Platform</a></li>
-                    <li><a href="#program">Program Pilihan</a></li>
-                    <li><a href="#alur">Alur Pendaftaran</a></li>
+                    <li><a href="#tentang">Profil Layanan</a></li>
+                    <li><a href="#program">Program Kami</a></li>
+                    <li><a href="#alur">Panduan</a></li>
                     <li><a href="#faq">FAQ</a></li>
                 </ul>
             </div>
 
-
-
             <div class="footer-col footer-contact">
                 <h4>Kontak</h4>
-                <p><i class="bi bi-geo-alt-fill"></i> Jl. Satria Sudirman No.1, Kota Tangerang, Banten 15111</p>
-                <p><i class="bi bi-envelope-fill"></i> kominfo@tangerangkota.go.id</p>
-                <p><i class="bi bi-telephone-fill"></i> (021) 5588 - 3555</p>
-                <p><i class="bi bi-clock-fill"></i> Senin – Jumat, 08.00 – 16.00 WIB</p>
+                <div class="fc-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <div>Jl. Satria Sudirman No.1, Kota Tangerang, Banten 15111</div>
+                </div>
+                <div class="fc-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <div>kominfo@tangerangkota.go.id</div>
+                </div>
+                <div class="fc-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <div>(021) 5588 - 3555</div>
+                </div>
+                <div class="fc-item">
+                    <i class="bi bi-clock-fill"></i>
+                    <div>Senin – Jumat, 08.00 – 16.00 WIB</div>
+                </div>
             </div>
         </div>
 
@@ -470,18 +458,41 @@
     </div>
 </footer>
 
+<!-- Scroll to Top -->
+<a href="#" class="scroll-top d-flex align-items-center justify-content-center" id="scrollTop">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ===== Navbar Scroll Effect =====
-window.addEventListener('scroll', function() {
-    const navbar = document.getElementById('lp-navbar');
-    if (window.scrollY > 30) {
-        navbar.classList.add('scrolled');
+// ===== Mobile Navbar Toggle =====
+const mobileToggle = document.getElementById('lp-mobile-toggle');
+const navMenu = document.getElementById('lp-nav-menu');
+
+mobileToggle.addEventListener('click', function() {
+    navMenu.classList.toggle('active');
+    const icon = this.querySelector('i');
+    if (navMenu.classList.contains('active')) {
+        icon.classList.remove('bi-list');
+        icon.classList.add('bi-x-lg');
     } else {
-        navbar.classList.remove('scrolled');
+        icon.classList.remove('bi-x-lg');
+        icon.classList.add('bi-list');
     }
 });
+
+// Close menu when link is clicked
+document.querySelectorAll('.lp-nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        const icon = mobileToggle.querySelector('i');
+        icon.classList.remove('bi-x-lg');
+        icon.classList.add('bi-list');
+    });
+});
+
+// (Navbar scroll effect is handled below in the unified handler)
 
 // ===== Smooth Anchor Scrolling =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -497,21 +508,65 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ===== Program Tabs =====
+let isTabAnimating = false;
+
 function switchTab(btn, tabId) {
+    if (isTabAnimating || btn.classList.contains('active')) return;
+    isTabAnimating = true;
+
     // deactivate all tabs & buttons
     document.querySelectorAll('.prog-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.program-cards').forEach(c => c.classList.add('d-none'));
-    // activate selected
     btn.classList.add('active');
     
+    const activeTab = document.querySelector('.program-cards:not(.d-none)');
     const targetTab = document.getElementById('tab-' + tabId);
-    targetTab.classList.remove('d-none');
     
-    // Fix untuk animasi scroll reveal agar elemen yang baru muncul langsung terlihat
-    targetTab.querySelectorAll('.prog-card').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+    // 1. Animasi menghilang (fade out) untuk tab yang sedang aktif
+    if (activeTab) {
+        const activeCards = activeTab.querySelectorAll('.prog-card');
+        activeCards.forEach((el, index) => {
+            el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(-15px)'; 
+        });
+
+        // Tunggu animasi fade out selesai, lalu sembunyikan dan munculkan tab target
+        setTimeout(() => {
+            activeTab.classList.add('d-none');
+            showNewTab(targetTab);
+        }, 300);
+    } else {
+        showNewTab(targetTab);
+    }
+}
+
+function showNewTab(targetTab) {
+    targetTab.classList.remove('d-none');
+    const newCards = targetTab.querySelectorAll('.prog-card');
+    
+    // Reset state posisi elemen tab baru agar siap dianimasikan
+    newCards.forEach(el => {
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(25px)';
     });
+    
+    // Paksa browser membaca DOM ulang (reflow) 
+    void targetTab.offsetWidth;
+    
+    // 2. Animasi muncul berurutan (stagger) untuk tab target
+    newCards.forEach((el, index) => {
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, index * 120); // Jeda 120ms untuk tiap kartu
+    });
+
+    // Buka kunci animasi setelah semua animasi selesai
+    setTimeout(() => {
+        isTabAnimating = false;
+    }, (newCards.length * 120) + 500);
 }
 
 // ===== FAQ Accordion =====
@@ -526,24 +581,186 @@ function toggleFaq(questionEl) {
     }
 }
 
-// ===== Scroll Reveal Animation =====
-const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+// Navbar scroll + active link handled by onPageScroll (see below)
+
+// ===== SCROLL REVEAL ANIMATION SYSTEM =====
+
+const observerOptions = {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+};
+
+// Helper: apply initial hidden state
+function prepareEl(el, translateY = 32, scale = 1, delay = 0) {
+    el.style.opacity = '0';
+    el.style.transform = `translateY(${translateY}px) scale(${scale})`;
+    el.style.transition = `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) ${delay}ms`;
+}
+function revealEl(el) {
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0) scale(1)';
+}
+
 const revealObserver = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            revealEl(entry.target);
+            revealObserver.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-// Apply to cards and alur items
-document.querySelectorAll('.prog-card, .keung-card, .alur-item, .visual-card, .faq-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+// 1. Section badges — scale-in from slightly smaller
+document.querySelectorAll('.section-badge, .faq-top-badge').forEach(el => {
+    prepareEl(el, 10, 0.9, 0);
     revealObserver.observe(el);
 });
+
+// 2. Section titles — fade up
+document.querySelectorAll('.section-title, .faq-top-title, .alur-header h2').forEach(el => {
+    prepareEl(el, 24, 1, 80);
+    revealObserver.observe(el);
+});
+
+// 3. Section subtitles — fade up slightly later
+document.querySelectorAll('.section-sub, .faq-top-sub').forEach(el => {
+    prepareEl(el, 20, 1, 160);
+    revealObserver.observe(el);
+});
+
+// 4. Benefit cards — staggered fade-up
+document.querySelectorAll('.benefit-item-flat').forEach((el, i) => {
+    prepareEl(el, 40, 1, i * 100);
+    revealObserver.observe(el);
+});
+
+// 5. Program cards — staggered fade-up
+document.querySelectorAll('.prog-card').forEach((el, i) => {
+    prepareEl(el, 40, 1, i * 120);
+    revealObserver.observe(el);
+});
+
+// 6. Alur timeline items — staggered fade-up
+document.querySelectorAll('.alur-item').forEach((el, i) => {
+    prepareEl(el, 50, 1, i * 120);
+    revealObserver.observe(el);
+});
+
+// 7. FAQ items — staggered fade-up
+document.querySelectorAll('.faq-item').forEach((el, i) => {
+    prepareEl(el, 30, 1, i * 80);
+    revealObserver.observe(el);
+});
+
+// 8. Feature items in "Tentang" — staggered
+document.querySelectorAll('.feature-item').forEach((el, i) => {
+    prepareEl(el, 20, 1, i * 80);
+    revealObserver.observe(el);
+});
+
+// 9. About section text block — slide from left
+const aboutText = document.querySelector('.about-text');
+if (aboutText) {
+    aboutText.style.opacity = '0';
+    aboutText.style.transform = 'translateX(-30px)';
+    aboutText.style.transition = 'opacity 0.7s ease 0ms, transform 0.7s ease 0ms';
+    revealObserver.observe(aboutText);
+}
+
+// 10. About image — slide from right
+const aboutImg = document.querySelector('.about-visual-image');
+if (aboutImg) {
+    aboutImg.style.opacity = '0';
+    aboutImg.style.transform = 'translateX(30px)';
+    aboutImg.style.transition = 'opacity 0.7s ease 150ms, transform 0.7s ease 150ms';
+    revealObserver.observe(aboutImg);
+}
+
+// 11. FAQ illustration — animate the full split row to avoid breaking mix-blend-mode on image
+const faqSplit = document.querySelector('.faq-split');
+if (faqSplit) {
+    faqSplit.style.opacity = '0';
+    faqSplit.style.transform = 'translateY(24px)';
+    faqSplit.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    revealObserver.observe(faqSplit);
+}
+
+// 12. Footer columns — staggered fade-up
+document.querySelectorAll('.footer-brand, .footer-col').forEach((el, i) => {
+    prepareEl(el, 30, 1, i * 100);
+    revealObserver.observe(el);
+});
+
+// 13. Footer contact items — staggered fade-up
+document.querySelectorAll('.fc-item').forEach((el, i) => {
+    prepareEl(el, 20, 1, i * 80);
+    revealObserver.observe(el);
+});
+
+// 14. Footer social buttons — staggered scale-in
+document.querySelectorAll('.social-btn').forEach((el, i) => {
+    prepareEl(el, 10, 0.8, i * 60);
+    revealObserver.observe(el);
+});
+
+
+const scrollTop = document.getElementById('scrollTop');
+if (scrollTop) {
+    const toggleScrollTop = function() {
+        window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+    }
+    window.addEventListener('load', toggleScrollTop);
+    document.addEventListener('scroll', toggleScrollTop);
+    scrollTop.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// ===== Unified Scroll Handler: Navbar state + Active link =====
+const navlinksAll = document.querySelectorAll('.lp-nav-links a');
+const navbarEl = document.getElementById('lp-navbar');
+
+function onPageScroll() {
+    const scrollY = window.scrollY;
+
+    // 1. Toggle scrolled class
+    if (scrollY > 50) {
+        navbarEl.classList.add('scrolled');
+    } else {
+        navbarEl.classList.remove('scrolled');
+    }
+
+    // 2. Active nav link — scan sections from bottom to top
+    const navHeight = navbarEl.offsetHeight + 10;
+    let activeSectionId = null;
+
+    navlinksAll.forEach(link => {
+        if (!link.hash) return;
+        const section = document.querySelector(link.hash);
+        if (!section) return;
+        if (scrollY + navHeight >= section.offsetTop) {
+            activeSectionId = link.hash;
+        }
+    });
+
+    // Default to first link if at very top
+    if (scrollY < 80) {
+        activeSectionId = navlinksAll[0]?.hash || null;
+    }
+
+    navlinksAll.forEach(link => {
+        link.classList.toggle('active', link.hash === activeSectionId);
+    });
+}
+
+window.addEventListener('scroll', onPageScroll, { passive: true });
+window.addEventListener('load', onPageScroll);
+onPageScroll();
+
 </script>
 </body>
 </html>

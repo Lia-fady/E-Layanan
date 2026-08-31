@@ -38,12 +38,21 @@ $routes->get('landing', 'Home::index');
 
 $routes->get('register', 'AuthController::register');
 $routes->post('register/process', 'AuthController::processRegister');
+$routes->post('api/check-unique', 'AuthController::checkUniqueField'); // Endpoint AJAX Validasi
 
 $routes->get('login', 'AuthController::login');
 $routes->post('login/process', 'AuthController::processLogin');
 $routes->get('pegawai/login', 'AuthController::loginPegawai');
 $routes->post('pegawai/login/process', 'AuthController::processLoginPegawai');
 $routes->get('logout', 'AuthController::logout');
+
+// =========================================================================
+// Lupa Password Routes (Fitur Reset Password via Email)
+// =========================================================================
+$routes->get('forgot-password', 'AuthController::forgotPassword');
+$routes->post('forgot-password/process', 'AuthController::processForgotPassword');
+$routes->get('reset-password/(:any)', 'AuthController::resetPassword/$1');
+$routes->post('reset-password/process', 'AuthController::processResetPassword');
 
 // =========================================================================
 // API Routes
@@ -68,6 +77,7 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->get('dashboard', 'C_Dashboard::dashboard');
     $routes->get('profil', 'C_Profil::profil');
     $routes->post('profil/update', 'C_Profil::updateProfil');
+    $routes->post('profil/upload-foto', 'C_Profil::uploadFotoAjax');
 
     $routes->get('permohonan', 'C_Permohonan::permohonan');
     $routes->post('permohonan/simpan', 'C_Permohonan::simpanPermohonan');
@@ -76,6 +86,8 @@ $routes->group('mahasiswa', ['namespace' => '\App\Controllers\Mahasiswa'], stati
     $routes->get('status', 'C_Status::statusPermohonan');
     $routes->get('status/detail/(:num)', 'C_Status::detail/$1');
     $routes->get('batalkan-permohonan/(:num)', 'C_Status::batalkanPermohonan/$1');
+    $routes->post('undurkan-diri/(:num)', 'C_Status::undurkanDiri/$1');
+    $routes->post('status/setujui-periode/(:num)', 'C_Status::setujuiPeriode/$1');
     $routes->get('view-file/(:num)', 'C_Status::viewFile/$1');
     $routes->get('view-file/(:num)/(:any)', 'C_Status::viewFile/$1/$2');
     
@@ -176,6 +188,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('disposisi/simpan-tgl-penetapan', '\App\Controllers\Kabid\C_DisposisiMasuk::simpanTglPenetapan');
 
     $routes->match(['get', 'post'], 'riwayat', '\App\Controllers\Kabid\C_RiwayatKabid::index');
+    $routes->post('riwayat/batalkan', '\App\Controllers\Kabid\C_RiwayatKabid::batalkan');
 
     // 2. Logbook (Approval)
     // 2. Logbook (Approval)

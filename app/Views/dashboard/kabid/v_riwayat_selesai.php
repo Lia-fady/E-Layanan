@@ -8,9 +8,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Riwayat Disposisi Magang</h5>
+        <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Riwayat Permohonan Selesai</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Daftar arsip permohonan magang yang telah selesai diproses.
+            Daftar arsip permohonan yang telah selesai diproses.
         </p>
     </div>
 </div>
@@ -89,7 +89,7 @@
                                     <span class="badge badge-success">Selesai</span>
                                 </td>
                                 <td class="align-middle text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-primary p-0" style="width:34px; height:34px; border-radius:12px;" onclick="showDetailRiwayat(<?= $mhs->id_penempatan_magang ?>)" title="Detail Riwayat Magang">
+                                    <button type="button" class="btn btn-sm btn-outline-primary p-0" style="width:34px; height:34px; border-radius:12px;" onclick="showDetailRiwayat(<?= $mhs->id_penempatan_magang ?>)" title="Detail Riwayat Permohonan">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </td>
@@ -102,12 +102,12 @@
     </div>
 </div>
 
-<!-- MODAL DETAIL RIWAYAT MAGANG -->
+<!-- MODAL DETAIL RIWAYAT PERMOHONAN -->
 <div class="modal fade" id="modalDetailRiwayat" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
         <div class="modal-content border-0 shadow" style="border-radius: 12px;">
             <div class="modal-header bg-white border-bottom py-3">
-                <h5 class="modal-title fw-bold text-dark m-0">Detail Riwayat Magang</h5>
+                <h5 class="modal-title fw-bold text-dark m-0">Detail Riwayat Permohonan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4 bg-white" id="detailRiwayatBody"></div>
@@ -183,7 +183,7 @@ $(document).ready(function() {
                     </div>` : `
                     <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
                         <div>
-                            <div class="fw-semibold text-dark">Surat Keterangan Selesai Magang</div>
+                            <div class="fw-semibold text-dark">Surat Keterangan Selesai Kegiatan</div>
                             <small class="text-muted">Tidak tersedia</small>
                         </div>
                     </div>`;
@@ -241,14 +241,14 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <div class="mb-4">
-                        <div class="text-uppercase fw-bold text-primary" style="font-size:0.72rem; letter-spacing:0.12em;">Detail Magang</div>
+                        <div class="text-uppercase fw-bold text-primary" style="font-size:0.72rem; letter-spacing:0.12em;">Detail Kegiatan</div>
                         <div class="row mt-3 g-3">
                             <div class="col-12 col-md-6">
                                 <div class="text-muted" style="font-size:0.82rem;">Jenis Permohonan</div>
                                 <div class="fw-semibold text-dark">${d.jenis_permohonan}</div>
                             </div>
                             <div class="col-12 col-md-6">
-                                <div class="text-muted" style="font-size:0.82rem;">Periode Magang</div>
+                                <div class="text-muted" style="font-size:0.82rem;">Periode Kegiatan</div>
                                 <div class="fw-semibold text-dark">${d.tgl_mulai ? new Date(d.tgl_mulai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'} &ndash; ${d.tgl_selesai ? new Date(d.tgl_selesai).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' }) : '-'}</div>
                             </div>
                             <div class="col-12 col-md-6">

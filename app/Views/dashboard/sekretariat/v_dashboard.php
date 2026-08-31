@@ -168,7 +168,7 @@
                 <span class="summary-value green"><?= $ringkasan['verifikasi'] ?></span>
             </div>
             <div class="summary-item">
-                <span class="summary-label">Didisposisi ke bidang</span>
+                <span class="summary-label">Diteruskan ke bidang</span>
                 <span class="summary-value teal"><?= $ringkasan['disposisi'] ?></span>
             </div>
             <div class="summary-item">

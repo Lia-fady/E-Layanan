@@ -219,12 +219,8 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                     $tglSelesai = !empty($p['tgl_selesai']) ? tgl_indo($p['tgl_selesai']) : '-';
                 ?>
                 <tr>
-                    <th>Tanggal Mulai</th>
-                    <td><?= $tglMulai ?></td>
-                </tr>
-                <tr>
-                    <th>Tanggal Selesai</th>
-                    <td><?= $tglSelesai ?></td>
+                    <th>Periode Pelaksanaan</th>
+                    <td><?= $tglMulai ?> s/d <?= $tglSelesai ?></td>
                 </tr>
                 <?php
                     $idJenis = (int)($p['id_jenis_permohonan'] ?? 0);
@@ -354,14 +350,18 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
             <!-- Status Validasi File (Jika ditolak/revisi, beri tau mana yang salah) -->
             <?php
-                $hasFileStatus = false;
+                $hasValidFileStatus = false;
                 if (!empty($p['files'])) {
                     foreach ($p['files'] as $f) {
-                        if (!empty($f['status_verifikasi'])) { $hasFileStatus = true; break; }
+                        $sv = strtoupper($f['status_verifikasi'] ?? '');
+                        if (in_array($sv, ['SESUAI', 'VALID', 'TIDAK_SESUAI', 'TIDAK_VALID'])) { 
+                            $hasValidFileStatus = true; 
+                            break; 
+                        }
                     }
                 }
             ?>
-            <?php if ($hasFileStatus && $p['status_persetujuan'] != 'DITOLAK'): ?>
+            <?php if ($hasValidFileStatus && $p['status_persetujuan'] != 'DITOLAK'): ?>
             <div style="border-top: 1px solid #e5e7eb;">
                 <table class="tw-table">
                     <?php foreach($p['files'] as $file): ?>
@@ -411,20 +411,43 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
        $jenisPermohonanKabid = strtolower(trim($p['jenis_permohonan'] ?? 'permohonan'));
        $jenisPermohonanKabid = preg_replace('/\s+/', ' ', $jenisPermohonanKabid);
 
-       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0' || $p['status_penempatan'] == 'DIBATALKAN');
+       $isKabidMenunggu = ($p['status_penempatan'] == 'MENUNGGU' || $p['status_penempatan'] == '0');
+       $isKabidBatal = ($p['status_penempatan'] == 'DIBATALKAN');
+       $isKabidTolak = ($p['status_penempatan'] == 'DITOLAK');
+       $isKabidSetuju = ($p['status_penempatan'] == 'DISETUJUI');
        $isKabidJalan = ($p['status_penempatan'] == 'BERJALAN');
        $isKabidSelesai = ($p['status_penempatan'] == 'SELESAI');
+       $isKabidDisetujui = ($p['status_penempatan'] == 'DISETUJUI');
+       
+       $mahasiswaMenungguSetuju = ($p['status_persetujuan_mahasiswa'] === 'MENUNGGU' && ($isKabidJalan || $isKabidSelesai || $isKabidDisetujui));
        
        if ($isKabidSelesai) {
            $kBadge = 'disetujui'; $kText = 'selesai';
            $kHeader = 'Kegiatan ' . $jenisPermohonanKabid . ' telah dinyatakan selesai.';
        } elseif ($isKabidJalan) {
-           $kBadge = 'disetujui'; $kText = 'disetujui';
+           $kBadge = 'disetujui'; $kText = 'berjalan';
+           $kBadge = 'disetujui'; $kText = 'berjalan';
            $kHeader = 'Permohonan telah disetujui dan kegiatan sedang berjalan.';
-        } else {
+       } elseif ($isKabidSetuju) {
+           $kBadge = 'disetujui'; $kText = 'disetujui';
+           $kHeader = 'Permohonan telah disetujui. Menunggu periode pelaksanaan tiba.';
+       } elseif ($isKabidTolak) {
+           $kBadge = 'ditolak'; $kText = 'ditolak';
+           $kHeader = 'Permohonan ditolak pada tahap penempatan.';
+       } elseif ($isKabidBatal) {
+           $kBadge = 'ditolak'; $kText = 'dibatalkan';
+           $kHeader = 'Kegiatan telah dibatalkan.';
+       } else {
             $kBadge = 'menunggu'; $kText = 'menunggu';
             $kHeader = 'Permohonan sedang menunggu persetujuan penempatan.';
         }
+       } elseif ($isKabidDisetujui) {
+           $kBadge = 'disetujui'; $kText = 'disetujui';
+           $kHeader = 'Permohonan Anda telah disetujui. ' . ($mahasiswaMenungguSetuju ? 'Menunggu konfirmasi periode dari Anda.' : 'Menunggu waktu pelaksanaan magang.');
+       } else {
+           $kBadge = 'menunggu'; $kText = 'menunggu';
+           $kHeader = 'Permohonan sedang menunggu persetujuan penempatan.';
+       }
     ?>
     <div class="tw-item">
         
@@ -446,12 +469,34 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
         <?php if(!$isKabidMenunggu): ?>
         <div class="tw-card">
-            <?php if($isKabidJalan || $isKabidSelesai): ?>
+            <?php if($isKabidJalan || $isKabidSelesai || $isKabidSetuju): ?>
             <div class="tw-message">
                 <?php if ($isKabidSelesai): ?>
                     <p>Kegiatan Anda pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong> telah dinyatakan selesai. Terima kasih atas partisipasi dan kontribusinya.</p>
                 <?php else: ?>
                     <p>Permohonan Anda telah disetujui. Anda ditempatkan pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong>.</p>
+                    
+                    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 16px; margin-top: 12px; margin-bottom: 12px;">
+                        <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 4px;">Periode Pelaksanaan yang Ditetapkan Bidang:</div>
+                        <div style="font-weight: 600; color: #1e293b;">
+                            <?= tgl_indo($p['tgl_mulai_disetujui'] ?? $p['tgl_mulai']) ?> 
+                            <span class="text-muted mx-1">s.d.</span> 
+                            <?= tgl_indo($p['tgl_selesai_disetujui'] ?? $p['tgl_selesai']) ?>
+                        </div>
+                    </div>
+                    
+                    <?php if ($mahasiswaMenungguSetuju): ?>
+                        <div style="background-color: #fff7ed; border-left: 4px solid #f97316; padding: 12px 16px; margin-top: 12px; border-radius: 0 4px 4px 0;">
+                            <div style="font-weight: 600; color: #9a3412; margin-bottom: 4px; font-size: 0.85rem;"><i class="bi bi-exclamation-circle-fill me-1"></i> Konfirmasi Periode Pelaksanaan</div>
+                            <p style="font-size: 0.8rem; color: #9a3412; margin-bottom: 10px;">Anda harus menyetujui periode yang ditetapkan oleh bidang di atas untuk dapat mengunduh surat persetujuan dan mengisi logbook.</p>
+                            <form action="<?= base_url('mahasiswa/status/setujui-periode/' . $p['id_permohonan_magang']) ?>" method="post">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm text-white shadow-sm" style="background-color: #f97316; border: none; font-size: 0.8rem; font-weight: 600; border-radius: 6px; padding: 6px 14px;" onclick="return confirm('Apakah Anda yakin menyetujui periode magang ini?');">
+                                    <i class="bi bi-check-lg me-1"></i> Ya, Saya Setuju
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
 
@@ -462,10 +507,13 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
                         <i class="bi bi-paperclip" style="color: #9ca3af; font-size: 1.2rem; margin-right: 12px;"></i>
                         <span style="color: #374151; font-size: 0.85rem; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= esc($surat['nama_file']) ?></span>
                     </div>
-                    <a href="<?= base_url('mahasiswa/download-surat-penerimaan/' . $surat['id_file_proses_magang']) ?>" target="_blank" style="color: #6366f1; font-weight: 600; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Download</a>
+                    <?php if ($mahasiswaMenungguSetuju): ?>
+                        <span style="color: #9ca3af; font-weight: 500; font-size: 0.8rem; font-style: italic;">Setujui periode untuk download</span>
+                    <?php else: ?>
+                        <a href="<?= base_url('mahasiswa/download-surat-penerimaan/' . $surat['id_file_proses_magang']) ?>" target="_blank" style="color: #6366f1; font-weight: 600; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Download</a>
+                    <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
             <?php endif; ?>
 
             <?php if(!empty($p['catatan']) && $p['catatan'] != 'Disposisi dari Verifikasi'): ?>
@@ -479,7 +527,19 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
     </div>
     <?php endif; ?>
 
+    <!-- Tombol Mengundurkan Diri (Hanya jika DISETUJUI / BERJALAN) -->
+    <?php if (isset($isKabidSetuju) && isset($isKabidJalan) && ($isKabidSetuju || $isKabidJalan)): ?>
+    <div style="margin-top: 16px; margin-bottom: 8px; text-align: right;">
+        <button onclick="confirmUndurDiri('<?= $p['id_permohonan_magang'] ?>')" class="btn btn-outline-danger fw-bold px-4 py-2" style="border-radius: 8px;">
+            <i class="bi bi-x-circle me-2"></i> Mengundurkan Diri
+        </button>
+    </div>
+    <?php endif; ?>
 
+    <!-- Form tersembunyi untuk mengundurkan diri -->
+    <form id="formUndurDiri" method="POST" action="">
+        <?= csrf_field() ?>
+        <input type="hidden" name="alasan_batal" id="input_alasan_batal" value="">
+    </form>
 
 </div>
-

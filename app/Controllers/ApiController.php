@@ -155,33 +155,65 @@ class ApiController extends Controller
             $waktuKabid = strtotime($waktuKabidRaw);
             $fmtWaktuKabid = date('d', $waktuKabid) . ' ' . $bln[(int)date('m', $waktuKabid)] . ' ' . date('Y, H:i', $waktuKabid) . ' WIB';
             
-            if ($p['status_penempatan'] == 'DISETUJUI' || $p['status_penempatan'] == 'BERJALAN' || $p['status_penempatan'] == 'SELESAI') {
+            // Entry: Disetujui oleh Kepala Bidang
+            if (in_array($p['status_penempatan'], ['DISETUJUI', 'BERJALAN', 'SELESAI', 'DIBATALKAN'])) {
                 $dataLog[] = [
                     'color_class' => 'bg-success',
                     'icon' => 'bi-building-check',
                     'tanggal_format' => $fmtWaktuKabid,
                     'aktor' => 'Kepala Bidang',
-                    'aksi' => 'Menyetujui disposisi penempatan magang',
+                    'aksi' => 'Menyetujui permohonan',
                     'catatan' => ''
                 ];
             }
+
+            // Entry: Kegiatan Berjalan (otomatis oleh sistem)
+            if (in_array($p['status_penempatan'], ['BERJALAN', 'SELESAI'])) {
+                $tglMulai = strtotime($p['tgl_mulai'] ?? $waktuKabidRaw);
+                $fmtTglMulai = date('d', $tglMulai) . ' ' . $bln[(int)date('m', $tglMulai)] . ' ' . date('Y, H:i', $tglMulai) . ' WIB';
+                $dataLog[] = [
+                    'color_class' => 'bg-primary',
+                    'icon' => 'bi-play-circle-fill',
+                    'tanggal_format' => $fmtTglMulai,
+                    'aktor' => 'Sistem',
+                    'aksi' => 'Kegiatan dimulai',
+                    'catatan' => 'Status otomatis berubah karena tanggal mulai kegiatan telah tiba.'
+                ];
+            }
+
+            // Entry: Selesai
             if ($p['status_penempatan'] == 'SELESAI') {
                 $dataLog[] = [
                     'color_class' => 'bg-info',
                     'icon' => 'bi-flag-fill',
-                    'tanggal_format' => $fmtWaktuKabid, // Waktu selesai akan sama dengan update terakhir
+                    'tanggal_format' => $fmtWaktuKabid,
                     'aktor' => 'Sistem / Kepala Bidang',
-                    'aksi' => 'Kegiatan Magang / PKL Selesai',
+                    'aksi' => 'Kegiatan Selesai',
                     'catatan' => 'Masa kegiatan telah diselesaikan.'
                 ];
-            } elseif ($p['status_penempatan'] == 'DITOLAK') {
+            }
+            
+            // Entry: Ditolak oleh Kabid (dikembalikan ke Sekretariat)
+            if ($p['status_penempatan'] == 'DITOLAK') {
                 $dataLog[] = [
                     'color_class' => 'bg-danger',
                     'icon' => 'bi-x-circle',
                     'tanggal_format' => $fmtWaktuKabid,
                     'aktor' => 'Kepala Bidang',
-                    'aksi' => 'Menolak penempatan magang',
-                    'catatan' => ''
+                    'aksi' => 'Menolak penempatan',
+                    'catatan' => 'Permohonan dikembalikan ke Sekretariat untuk disposisi ulang.'
+                ];
+            }
+
+            // Entry: Dibatalkan (mahasiswa mundur)
+            if ($p['status_penempatan'] == 'DIBATALKAN') {
+                $dataLog[] = [
+                    'color_class' => 'bg-warning text-dark',
+                    'icon' => 'bi-dash-circle',
+                    'tanggal_format' => $fmtWaktuKabid,
+                    'aktor' => 'Kepala Bidang',
+                    'aksi' => 'Kegiatan dibatalkan',
+                    'catatan' => 'Mahasiswa mengundurkan diri dari kegiatan.'
                 ];
             }
         }

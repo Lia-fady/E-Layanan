@@ -152,6 +152,110 @@ class C_Status extends C_BaseMahasiswa
         return redirect()->to(base_url('mahasiswa/status'));
     }
 
+    public function undurkanDiri($id_permohonan)
+    {
+        $id_mahasiswa = session()->get('id_mahasiswa');
+        if (!$id_mahasiswa) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $alasan = $this->request->getPost('alasan_batal');
+        if (empty(trim($alasan))) {
+            session()->setFlashdata('error', 'Alasan pengunduran diri wajib diisi.');
+            return redirect()->back();
+        }
+
+        $db = \Config\Database::connect();
+        
+        $penempatan = $db->table('t_penempatan_magang')
+            ->select('t_penempatan_magang.*, t_persetujuan_magang.id_permohonan_magang')
+            ->join('t_persetujuan_magang', 't_persetujuan_magang.id_persetujuan_magang = t_penempatan_magang.id_persetujuan_magang')
+            ->where('t_persetujuan_magang.id_permohonan_magang', $id_permohonan)
+            ->get()->getRowArray();
+
+        if (!$penempatan) {
+            session()->setFlashdata('error', 'Data penempatan tidak ditemukan.');
+            return redirect()->back();
+        }
+
+        if (!in_array($penempatan['status_penempatan'], ['DISETUJUI', 'BERJALAN'])) {
+            session()->setFlashdata('error', 'Pengunduran diri hanya dapat dilakukan jika permohonan sudah disetujui atau sedang berjalan.');
+            return redirect()->back();
+        }
+
+        $catatan_baru = "[Pengunduran Diri oleh Pemohon]\nAlasan: " . $alasan;
+        if (!empty($penempatan['catatan'])) {
+            $catatan_baru = $penempatan['catatan'] . "\n\n" . $catatan_baru;
+        }
+
+        $db->transStart();
+
+        $db->table('t_penempatan_magang')
+            ->where('id_penempatan_magang', $penempatan['id_penempatan_magang'])
+            ->update([
+                'status_penempatan' => 'DIBATALKAN',
+                'catatan'           => $catatan_baru,
+                'updated_at'        => date('Y-m-d H:i:s')
+            ]);
+
+        // Catat log
+        catat_log($id_permohonan, 'Pemohon', 'Kegiatan Dibatalkan / Mengundurkan Diri', 'Pemohon mengundurkan diri. Alasan: ' . $alasan);
+
+        $db->transComplete();
+
+        if ($db->transStatus() === FALSE) {
+            session()->setFlashdata('error', 'Terjadi kesalahan sistem saat memproses pengunduran diri.');
+        } else {
+            session()->setFlashdata('success', 'Anda telah berhasil mengundurkan diri. Status permohonan diubah menjadi Dibatalkan.');
+        }
+
+        return redirect()->back();
+    }
+
+    public function setujuiPeriode($id_permohonan)
+    {
+        $id_mahasiswa = session()->get('id_mahasiswa');
+        if (!$id_mahasiswa) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $db = \Config\Database::connect();
+        $persetujuan = $db->table('t_persetujuan_magang')
+                          ->where('id_permohonan_magang', $id_permohonan)
+                          ->get()->getRowArray();
+
+        if (!$persetujuan) {
+            session()->setFlashdata('error', 'Data persetujuan tidak ditemukan.');
+            return redirect()->to(base_url('mahasiswa/status'));
+        }
+
+        // Validate that Mahasiswa owns this permohonan
+        $permohonan = $this->permohonanModel->where('id_permohonan_magang', $id_permohonan)
+                                            ->where('id_mahasiswa', $id_mahasiswa)
+                                            ->first();
+        if (!$permohonan) {
+            session()->setFlashdata('error', 'Permohonan tidak ditemukan.');
+            return redirect()->to(base_url('mahasiswa/status'));
+        }
+
+        $db->table('t_persetujuan_magang')
+           ->where('id_permohonan_magang', $id_permohonan)
+           ->update(['status_persetujuan_mahasiswa' => 'DISETUJUI']);
+           
+        // Also update penempatan status to BERJALAN if today >= tgl_mulai_disetujui, else DISETUJUI
+        $today = date('Y-m-d');
+        $tgl_mulai = $persetujuan['tgl_mulai_disetujui'] ?? $permohonan['tgl_mulai'];
+        
+        $statusPenempatan = ($tgl_mulai <= $today) ? 'BERJALAN' : 'DISETUJUI';
+        
+        $db->table('t_penempatan_magang')
+           ->where('id_persetujuan_magang', $persetujuan['id_persetujuan_magang'])
+           ->update(['status_penempatan' => $statusPenempatan]);
+
+        session()->setFlashdata('success', 'Periode magang berhasil disetujui. Silakan cek menu Logbook.');
+        return redirect()->to(base_url('mahasiswa/status'));
+    }
+
     public function viewFile($param1, $param2 = null)
     {
         $id_mahasiswa = session()->get('id_mahasiswa');

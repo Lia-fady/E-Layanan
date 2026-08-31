@@ -347,7 +347,7 @@
             background-image: url('<?= base_url("images/gedung puspem landing page.png") ?>');
             background-size: cover;
             background-position: center;
-            filter: grayscale(30%) brightness(0.4);
+            filter: grayscale(15%) brightness(0.75);
         }
 
         /* Dark shadow overlay (tanpa biru) */
@@ -356,9 +356,9 @@
             inset: 0;
             background: linear-gradient(
                 170deg,
-                rgba(0, 0, 0, 0.55) 0%,
-                rgba(0, 0, 0, 0.4) 50%,
-                rgba(0, 0, 0, 0.65) 100%
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.25) 50%,
+                rgba(0, 0, 0, 0.5) 100%
             );
         }
 
@@ -459,7 +459,7 @@
                     <label class="check-label">
                         <input type="checkbox" id="rememberMe"> Ingat Saya
                     </label>
-                    <a href="#" class="forgot-link">Lupa password?</a>
+                    <a href="<?= base_url('forgot-password') ?>" class="forgot-link">Lupa password?</a>
                 </div>
 
                 <div class="recaptcha-box">
@@ -481,8 +481,8 @@
         <div class="panel-hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-bar"></div>
-            <h2 class="hero-title">Dari Ide, Menjadi Inovasi</h2>
-            <p class="hero-subtitle">Kembangkan potensi, hadirkan inovasi, dan bersama mendukung transformasi digital untuk pelayanan publik yang lebih baik di Kota Tangerang.</p>
+            <h2 class="hero-title">Kembangkan Potensi, Raih Pengalaman.</h2>
+            <p class="hero-subtitle">Pusat layanan digital terintegrasi untuk segala kebutuhan akademik Anda. Nikmati kemudahan akses, ajukan permohonan dengan cepat, dan pantau seluruh prosesnya secara transparan dalam satu sistem.</p>
         </div>
     </div>
 

@@ -15,9 +15,10 @@
             <div class="d-flex align-items-center" style="gap: 10px;">
                 <select id="filterStatusCustom" class="form-control form-control-sm custom-select custom-select-sm" style="width: 160px;">
                     <option value="">Semua Status</option>
-                    <option value="Menunggu">Menunggu</option>
+                    <option value="Disetujui">Disetujui</option>
                     <option value="Berjalan">Berjalan</option>
                     <option value="Selesai">Selesai</option>
+                    <option value="Ditolak">Ditolak</option>
                     <option value="Dibatalkan">Dibatalkan</option>
                 </select>
                 
@@ -70,12 +71,16 @@
                             <td>
                                 <?php if ($row->status_penempatan == 'MENUNGGU'): ?>
                                     <span class="badge badge-warning">Menunggu</span>
+                                <?php elseif ($row->status_penempatan == 'DISETUJUI'): ?>
+                                    <span class="badge badge-info">Disetujui</span>
                                 <?php elseif ($row->status_penempatan == 'BERJALAN'): ?>
                                     <span class="badge badge-primary">Berjalan</span>
                                 <?php elseif ($row->status_penempatan == 'SELESAI'): ?>
                                     <span class="badge badge-success">Selesai</span>
+                                <?php elseif ($row->status_penempatan == 'DITOLAK'): ?>
+                                    <span class="badge badge-danger">Ditolak</span>
                                 <?php elseif ($row->status_penempatan == 'DIBATALKAN'): ?>
-                                    <span class="badge badge-danger">Dibatalkan</span>
+                                    <span class="badge" style="background-color: #f97316; color: #fff;">Dibatalkan</span>
                                 <?php else: ?>
                                     <span class="badge badge-secondary"><?= esc($row->status_penempatan) ?></span>
                                 <?php endif; ?>

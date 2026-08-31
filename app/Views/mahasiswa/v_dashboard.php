@@ -137,12 +137,13 @@
         font-weight: 700;
         letter-spacing: 0.3px;
     }
-    .status-badge.st-belum     { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
-    .status-badge.st-menunggu  { background: rgba(234,179,8,0.2); color: #fde047; }
-    .status-badge.st-info      { background: rgba(14,165,233,0.2); color: #7dd3fc; }
-    .status-badge.st-ditolak   { background: rgba(239,68,68,0.2); color: #fca5a5; }
-    .status-badge.st-aktif     { background: rgba(16,185,129,0.2); color: #6ee7b7; }
-    .status-badge.st-selesai   { background: rgba(14,165,233,0.2); color: #7dd3fc; }
+    .status-badge.st-belum     { background: #f1f5f9; color: #475569; }
+    .status-badge.st-menunggu  { background: #fef3c7; color: #b45309; }
+    .status-badge.st-info      { background: #e0f2fe; color: #0369a1; }
+    .status-badge.st-revision  { background: #ede9fe; color: #6d28d9; }
+    .status-badge.st-ditolak   { background: #fee2e2; color: #b91c1c; }
+    .status-badge.st-aktif     { background: #dcfce3; color: #15803d; }
+    .status-badge.st-selesai   { background: #ccfbf1; color: #0f766e; }
 
     /* --- CARD FLAT --- */
     .card-flat {
@@ -351,9 +352,9 @@
         $statusClass = 'st-menunggu';
         $statusIcon  = 'bi-hourglass-split';
     } elseif ($state == 3) {
-        $statusText  = 'Ditolak';
-        $statusClass = 'st-ditolak';
-        $statusIcon  = 'bi-x-circle-fill';
+        $statusText  = 'Disetujui';
+        $statusClass = 'st-info';
+        $statusIcon  = 'bi-check2-square';
     } elseif ($state == 4) {
         $statusText  = 'Aktif Berjalan';
         $statusClass = 'st-aktif';
@@ -364,8 +365,12 @@
         $statusIcon  = 'bi-check-circle-fill';
     } elseif ($state == 6) {
         $statusText  = 'Perbaikan Berkas';
-        $statusClass = 'st-ditolak';
+        $statusClass = 'st-revision';
         $statusIcon  = 'bi-pencil-square';
+    } elseif ($state == 7) {
+        $statusText  = 'Ditolak';
+        $statusClass = 'st-ditolak';
+        $statusIcon  = 'bi-x-circle-fill';
     }
 
     // Jenis permohonan label
@@ -379,7 +384,17 @@
     }
 
     $is_selesai_banner = false;
-    if ($state == 5) {
+    $is_batal_banner = false;
+    
+    if (isset($permohonan_aktif['status_penempatan']) && $permohonan_aktif['status_penempatan'] == 'DIBATALKAN') {
+        $state = 1; 
+        $statusText  = 'Belum Mengajukan';
+        $statusClass = 'st-belum';
+        $statusIcon  = 'bi-dash-circle';
+        $jenisLabel  = 'Belum Dipilih';
+        $file_penerimaan = null; 
+        $permohonan_aktif = null; 
+    } elseif ($state == 5) {
         $is_selesai_banner = true;
         $state = 1; // Reset tampilan ke State 1
         $statusText  = 'Belum Mengajukan';
@@ -410,7 +425,7 @@
     <div class="summary-tile">
         <span class="summary-icon"><i class="bi bi-activity"></i></span>
         <div class="summary-label">Status</div>
-        <div class="summary-value"><?= esc($statusText) ?></div>
+        <div class="summary-value"><span class="status-badge <?= $statusClass ?>"><i class="<?= $statusIcon ?>"></i> <?= esc($statusText) ?></span></div>
     </div>
     <div class="summary-tile">
         <span class="summary-icon"><i class="bi bi-file-earmark-text"></i></span>
@@ -448,6 +463,12 @@
         <div class="flex-grow-1"><div class="next-action-title">Tidak ada tindakan yang diperlukan</div><div class="next-action-copy">Permohonan Anda sedang diproses. Pantau pembaruan melalui halaman status permohonan.</div></div>
         <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action outline"><i class="bi bi-clock-history"></i> Pantau Status</a>
     </div>
+<?php elseif ($state == 3): ?>
+    <div class="next-action-card success">
+        <span class="next-action-icon"><i class="bi bi-check2-square"></i></span>
+        <div class="flex-grow-1"><div class="next-action-title">Permohonan Disetujui</div><div class="next-action-copy">Permohonan Anda telah disetujui. Silakan cek menu Status Permohonan atau Dokumen untuk mengunduh Surat Keterangan Diterima. Status akan berubah menjadi "Berjalan" saat periode pelaksanaan tiba.</div></div>
+        <a href="<?= base_url('mahasiswa/status') ?>" class="btn-action outline"><i class="bi bi-clock-history"></i> Lihat Detail</a>
+    </div>
 <?php endif; ?>
 
 <!-- ============================================
@@ -483,12 +504,10 @@
         <!-- Step 3: Persetujuan Kabid -->
         <?php
             $step3_class = ''; $step3_icon = '3';
-            if ($state >= 4 && $state != 6) {
+            if ($state >= 3 && $state != 6) {
                 $step3_class = 'completed'; $step3_icon = '<i class="bi bi-check-lg"></i>';
             } elseif ($state == 2 && isset($permohonan_aktif['status_persetujuan']) && $permohonan_aktif['status_persetujuan'] == 'DISETUJUI') {
                 $step3_class = 'current'; $step3_icon = '<i class="bi bi-diagram-3-fill"></i>';
-            } elseif ($state == 3 && isset($permohonan_aktif['status_penempatan']) && $permohonan_aktif['status_penempatan'] == 'DIBATALKAN') {
-                $step3_class = 'rejected'; $step3_icon = '<i class="bi bi-x-lg"></i>';
             }
         ?>
         <li class="step-item <?= $step3_class ?>">
@@ -578,12 +597,8 @@
                 </div>
 
                 <div class="info-row">
-                    <span class="info-label">Tanggal Mulai</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Tanggal Selesai</span>
-                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
+                    <span class="info-label">Periode Pelaksanaan</span>
+                    <span class="info-value"><?= tgl_indo($permohonan_aktif['tgl_mulai']) ?> s/d <?= tgl_indo($permohonan_aktif['tgl_selesai']) ?></span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Tanggal Pengajuan</span>
@@ -623,18 +638,18 @@
                 <?php if (isset($permohonan_aktif['disposisi']) && $permohonan_aktif['disposisi'] == '1'): ?>
                     <div class="alert-card alert-info mb-3">
                         <i class="bi bi-diagram-3-fill alert-icon"></i>
-                        <div>Berkas permohonan Anda telah diverifikasi oleh Sekretariat dan saat ini sedang <strong>menunggu persetujuan dan penempatan</strong> oleh Bidang.</div>
+                        <div>Berkas permohonan Anda telah diverifikasi dan saat ini sedang dalam <strong>tahap persetujuan dan penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php else: ?>
                     <div class="alert-card alert-warning mb-3">
                         <i class="bi bi-building alert-icon"></i>
-                        <div>Berkas permohonan Anda telah dinyatakan VALID. Saat ini sedang <strong>menunggu plotting penempatan bidang</strong> oleh Sekretariat.</div>
+                        <div>Berkas permohonan Anda telah dinyatakan valid dan saat ini sedang dalam <strong>proses penentuan bidang penempatan</strong>.</div>
                     </div>
                 <?php endif; ?>
             <?php else: ?>
                 <div class="alert-card alert-warning mb-3">
                     <i class="bi bi-clock-history alert-icon"></i>
-                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong> oleh Sekretariat. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
+                    <div>Berkas permohonan Anda sedang dalam <strong>proses verifikasi</strong>. Estimasi waktu peninjauan: <strong>1–3 hari kerja</strong>.</div>
                 </div>
             <?php endif; ?>
 
@@ -648,8 +663,8 @@
 </div>
 
 
-<?php elseif ($state == 3): ?>
-<!-- ===================== STATE 3: DITOLAK / DIKEMBALIKAN ===================== -->
+<?php elseif ($state == 7): ?>
+<!-- ===================== STATE 7: DITOLAK / DIKEMBALIKAN ===================== -->
 <div class="row g-4">
     <div class="col-12">
         <div class="alert-card alert-danger">
@@ -736,8 +751,8 @@
     </div>
 </div>
 
-<?php elseif ($state == 4): ?>
-<!-- ===================== STATE 4: AKTIF BERJALAN ===================== -->
+<?php elseif ($state == 4 || $state == 3): ?>
+<!-- ===================== STATE 3 & 4: DISETUJUI / AKTIF BERJALAN ===================== -->
 <?php
     $total_logbook  = $total_logbook ?? 0;
     $target_logbook = $target_logbook ?? 0;

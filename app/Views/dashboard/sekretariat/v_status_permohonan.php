@@ -22,7 +22,7 @@
 <div class="mb-4">
     <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Status Permohonan</h5>
     <p style="color:#667085; font-size:0.9rem; margin:0;">
-        Pantau status verifikasi, disposisi, dan penempatan permohonan magang secara detail.
+        Pantau status verifikasi dan penempatan permohonan magang secara detail.
     </p>
 </div>
 
@@ -44,7 +44,7 @@
                         <th>Jenis Permohonan</th>
                         <th>Tgl Pengajuan</th>
                         <th class="text-center">Status Verifikasi</th>
-                        <th class="text-center">Disposisi Bidang</th>
+                        <th class="text-center">Tujuan Bidang</th>
                         <th class="text-center">Status Penempatan</th>
                     </tr>
                 </thead>
@@ -78,12 +78,16 @@
                                 <td class="text-center">
                                     <?php if ($row['status_penempatan'] === null) : ?>
                                         <span>-</span>
+                                    <?php elseif ($row['status_penempatan'] === 'DISETUJUI') : ?>
+                                        <span class="badge badge-primary">DISETUJUI</span>
                                     <?php elseif ($row['status_penempatan'] === 'BERJALAN') : ?>
                                         <span class="badge badge-info">BERJALAN</span>
                                     <?php elseif ($row['status_penempatan'] === 'SELESAI') : ?>
                                         <span class="badge badge-success">SELESAI</span>
+                                    <?php elseif ($row['status_penempatan'] === 'DITOLAK') : ?>
+                                        <span class="badge badge-danger">DITOLAK</span>
                                     <?php elseif ($row['status_penempatan'] === 'DIBATALKAN') : ?>
-                                        <span class="badge badge-danger">DIBATALKAN</span>
+                                        <span class="badge badge-warning">DIBATALKAN</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>

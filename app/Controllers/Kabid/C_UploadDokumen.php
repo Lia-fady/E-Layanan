@@ -26,8 +26,8 @@ class C_UploadDokumen extends BaseController
                 return "Data persetujuan tidak ditemukan.";
             }
 
-            if (!in_array($persetujuan->status_penempatan, ['BERJALAN', 'SELESAI'])) {
-                return "Mahasiswa belum disetujui atau status belum aktif.";
+            if (!in_array($persetujuan->status_penempatan, ['DISETUJUI', 'BERJALAN', 'SELESAI'])) {
+                return "Mahasiswa belum disetujui atau status dibatalkan/ditolak.";
             }
 
             $data = [
@@ -54,10 +54,10 @@ class C_UploadDokumen extends BaseController
             ->orderBy('ps.tanggal_persetujuan', 'DESC');
             
         $builder->groupStart()
-            ->where('pnm.status_penempatan', 'BERJALAN')
+            ->where('pnm.status_penempatan', 'DISETUJUI')
+            ->orWhere('pnm.status_penempatan', 'BERJALAN')
             ->orWhere('pnm.status_penempatan', 'SELESAI')
         ->groupEnd();
-            
         if (session()->has('id_bidang')) {
              $builder->where('ps.id_bidang', session('id_bidang'));
         }

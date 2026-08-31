@@ -1,6 +1,6 @@
 <?php
 /**
- * View untuk Index Upload Surat Penerimaan Magang (Kabid)
+ * View untuk Index Upload Surat Penerimaan (Kabid)
  */
 ?>
 <?= $this->extend('layout/L_master_kabid') ?>
@@ -52,6 +52,7 @@
 
                 <select id="filterStatus" class="form-control form-control-sm custom-select custom-select-sm" style="width: 140px;">
                     <option value="">Semua Status</option>
+                    <option value="Disetujui">Disetujui</option>
                     <option value="Berjalan">Berjalan</option>
                     <option value="Selesai">Selesai</option>
                 </select>
@@ -103,8 +104,12 @@
                             <td>
                                 <?php if($p->status_penempatan == 'SELESAI'): ?>
                                     <span class="badge badge-success">Selesai</span>
+                                <?php elseif($p->status_penempatan == 'DISETUJUI'): ?>
+                                    <span class="badge badge-info">Disetujui</span>
+                                <?php elseif($p->status_penempatan == 'BERJALAN'): ?>
+                                    <span class="badge badge-primary">Berjalan</span>
                                 <?php else: ?>
-                                    <span class="badge badge-primary">Aktif</span>
+                                    <span class="badge badge-secondary"><?= esc($p->status_penempatan) ?></span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
