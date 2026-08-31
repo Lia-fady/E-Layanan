@@ -361,5 +361,81 @@ $(document).ready(function() {
             }
         });
     });
+
+    // ============================================================
+    // Tanggal Penetapan Magang – Edit / Simpan / Batal
+    // ============================================================
+    $('#btnEditTglPenetapan').on('click', function() {
+        $('#tglPenetapanView').hide();
+        $('#tglPenetapanEditForm').slideDown(200);
+        $('#inputTglPenetapan').focus();
+    });
+
+    $('#btnBatalTglPenetapan').on('click', function() {
+        $('#tglPenetapanEditForm').slideUp(200, function() {
+            $('#tglPenetapanView').show();
+        });
+        $('#tglPenetapanMsg').hide();
+    });
+
+    $('#btnSimpanTglPenetapan').on('click', function() {
+        var tgl = $('#inputTglPenetapan').val();
+        if (!tgl) {
+            showTglMsg('Pilih tanggal penetapan terlebih dahulu.', 'warning');
+            return;
+        }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Menyimpan...');
+
+        $.ajax({
+            url: '<?= base_url('kabid/disposisi/simpan-tgl-penetapan') ?>',
+            method: 'POST',
+            data: {
+                id_penempatan_magang: <?= (int)($p->id_penempatan_magang ?? 0) ?>,
+                tgl_penetapan_magang: tgl,
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(res) {
+                if (!res.error) {
+                    // Update tampilan
+                    $('#tglPenetapanDisplay')
+                        .removeClass('text-muted')
+                        .css({ 'font-weight': '600', 'font-size': '0.95rem', 'color': '#1e293b' })
+                        .html(res.tgl_formatted);
+
+                    showTglMsg('✓ ' + res.message, 'success');
+                    setTimeout(function() {
+                        $('#tglPenetapanEditForm').slideUp(200, function() {
+                            $('#tglPenetapanView').show();
+                            $('#tglPenetapanMsg').hide();
+                        });
+                    }, 1200);
+                } else {
+                    showTglMsg(res.message || 'Gagal menyimpan.', 'danger');
+                }
+            },
+            error: function() {
+                showTglMsg('Terjadi kesalahan jaringan. Silakan coba lagi.', 'danger');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="fas fa-save"></i> Simpan');
+            }
+        });
+    });
+
+    function showTglMsg(text, type) {
+        var colors = {
+            'success': { bg: '#f0fdf4', border: '#bbf7d0', color: '#166534' },
+            'danger':  { bg: '#fef2f2', border: '#fecdd3', color: '#dc2626' },
+            'warning': { bg: '#fffbeb', border: '#fde68a', color: '#92400e' }
+        };
+        var c = colors[type] || colors['warning'];
+        $('#tglPenetapanMsg')
+            .css({ 'background': c.bg, 'border': '1px solid ' + c.border, 'color': c.color })
+            .text(text)
+            .show();
+    }
 });
 </script>

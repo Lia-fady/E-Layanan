@@ -186,6 +186,7 @@ $routes->group('kabid', ['filter' => 'authKabid'], static function ($routes) {
     $routes->post('disposisi/setujui', '\App\Controllers\Kabid\C_DisposisiMasuk::setujui');
     $routes->post('disposisi/tolak', '\App\Controllers\Kabid\C_DisposisiMasuk::tolak');
     $routes->post('disposisi/selesaikan', '\App\Controllers\Kabid\C_DisposisiMasuk::selesaikan');
+    $routes->post('disposisi/simpan-tgl-penetapan', '\App\Controllers\Kabid\C_DisposisiMasuk::simpanTglPenetapan');
 
     $routes->match(['get', 'post'], 'riwayat', '\App\Controllers\Kabid\C_RiwayatKabid::index');
     $routes->post('riwayat/batalkan', '\App\Controllers\Kabid\C_RiwayatKabid::batalkan');
