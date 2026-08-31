@@ -158,6 +158,10 @@
                             $badgeClass = 'menunggu-penempatan';
                             $statusText = 'Menunggu Bidang';
                             $filterValue = 'MENUNGGU_BIDANG';
+                        } elseif ($status_penempatan == 'DIBATALKAN') {
+                            $badgeClass = 'ditolak';
+                            $statusText = 'Dibatalkan';
+                            $filterValue = 'DIBATALKAN';
                         } else {
                             $badgeClass = 'menunggu-penempatan';
                             $statusText = 'Menunggu Penempatan';

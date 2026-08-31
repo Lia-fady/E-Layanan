@@ -96,8 +96,12 @@
                                 <?php
                                     $status = $row['status_persetujuan'] ?? 'MENUNGGU';
                                     $disposisi = $row['disposisi'] ?? '0';
+                                    $statusPenempatan = $row['status_penempatan'] ?? null;
 
-                                    if ($status === 'DISETUJUI' && $disposisi == '1') {
+                                    if ($statusPenempatan === 'DIBATALKAN') {
+                                        $badgeClass = 'ditolak';
+                                        $badgeText = 'Dibatalkan';
+                                    } elseif ($status === 'DISETUJUI' && $disposisi == '1') {
                                         $badgeClass = 'sudah-ditempatkan';
                                         $badgeText = 'Sudah Ditempatkan';
                                     } elseif ($status === 'DISETUJUI' && $disposisi != '1') {

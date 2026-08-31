@@ -36,11 +36,13 @@ class C_MonitoringStatus extends BaseController
             ps.id_persetujuan_magang,
             ps.status_persetujuan,
             ps.disposisi,
+            pn.status_penempatan,
             (SELECT COUNT(*) FROM t_file_permohonan_magang fp WHERE fp.id_permohonan_magang = pm.id_permohonan_magang) as total_berkas
         ');
         $builder->join('m_mahasiswa as mhs', 'mhs.id_mahasiswa = pm.id_mahasiswa', 'left');
         $builder->join('m_jenis_permohonan as jp', 'jp.id_jenis_permohonan = pm.id_jenis_permohonan', 'left');
         $builder->join('t_persetujuan_magang as ps', 'ps.id_permohonan_magang = pm.id_permohonan_magang', 'left');
+        $builder->join('t_penempatan_magang as pn', 'pn.id_persetujuan_magang = ps.id_persetujuan_magang', 'left');
         $builder->where('pm.posting_data', 'kirim');
         $builder->orderBy('pm.created_at', 'DESC');
 
