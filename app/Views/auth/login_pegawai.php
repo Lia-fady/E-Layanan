@@ -3,72 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Portal Kedinasan | E-Layanan' ?></title>
+    <title><?= $title ?? 'Login Pegawai | E-Layanan' ?></title>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
+        :root {
+            --navy:       #10367D;
+            --navy-dark:  #0a2456;
+            --gold:       #B58E4A;
+            --gold-hover: #9a7a3e;
+            --primary:    #10367D;
+            --primary-hover: #0a2456;
+            --primary-light: #A5CEE0;
+            --bg-form:    #F8F9FA;
+            --text-dark:  #1A1A2E;
+            --text-muted: #6B7280;
+            --white:      #FFFFFF;
+            --border:     #E5E7EB;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: #f8fbff;
-            /* Simple grid background pattern */
-            background-image: 
-                linear-gradient(rgba(0, 74, 173, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 74, 173, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-color: var(--bg-form);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* Dekorasi Lingkaran Latar Belakang Blur */
-        .blob-1 {
-            position: absolute;
-            top: -150px;
-            left: -150px;
-            width: 400px;
-            height: 400px;
-            background: rgba(0, 74, 173, 0.1);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-        }
-        .blob-2 {
-            position: absolute;
-            bottom: -150px;
-            right: -150px;
-            width: 500px;
-            height: 500px;
-            background: rgba(13, 110, 253, 0.08);
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: 0;
-        }
-
-        .login-wrapper {
-            position: relative;
-            z-index: 10;
+        .auth-wrapper {
             width: 100%;
-            max-width: 420px;
-            padding: 20px;
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .auth-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid rgba(0,0,0,0.04);
+            margin-bottom: 1.5rem;
         }
 
         /* Brand / Logo */
@@ -77,11 +70,11 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 35px;
+            margin-bottom: 2rem;
         }
         .brand-logo {
-            width: 45px;
-            height: 45px;
+            width: 38px;
+            height: 38px;
             object-fit: contain;
         }
         .brand-text {
@@ -89,187 +82,165 @@
             flex-direction: column;
         }
         .brand-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #004aad;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--navy);
             line-height: 1.1;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
         .brand-subtitle {
-            font-size: 11px;
-            color: #6c757d;
-            font-weight: 500;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.2px;
         }
 
-        /* Form Area */
-        .form-container {
-            width: 100%;
-            padding: 10px;
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.4rem;
+            text-align: center;
+        }
+
+        .form-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         /* Alerts */
         .auth-alert {
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 13px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
             font-weight: 500;
-            margin-bottom: 25px;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 10px;
-            animation: slideDown 0.3s ease;
         }
         .auth-alert.error {
-            background: #fff2f2;
-            color: #dc3545;
-            border: 1px solid #ffcdd2;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
         }
         .auth-alert.success {
             background: #f0fdf4;
-            color: #198754;
+            color: #15803d;
             border: 1px solid #bbf7d0;
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Input Groups */
         .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
             width: 100%;
         }
         .input-icon {
             position: absolute;
-            left: 20px;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #a0aec0;
-            font-size: 18px;
-            transition: 0.3s ease;
+            color: #9ca3af;
+            font-size: 1.05rem;
             pointer-events: none;
+            transition: color 0.2s;
         }
         .form-control {
             width: 100%;
-            padding: 15px 45px 15px 50px;
-            border: 2px solid #e2e8f0;
-            border-radius: 50px;
-            font-size: 14px;
-            color: #2d3748;
-            background: #ffffff;
-            transition: all 0.3s ease;
+            padding: 10px 36px 10px 38px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            color: var(--text-dark);
+            background: var(--white);
+            transition: all 0.2s;
             outline: none;
         }
         .form-control:focus {
-            border-color: #004aad;
-            box-shadow: 0 0 0 4px rgba(0, 74, 173, 0.1);
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(16, 54, 125, 0.1);
         }
         .form-control:focus + .input-icon {
-            color: #004aad;
+            color: var(--navy);
         }
         .form-control::placeholder {
-            color: #a0aec0;
-            font-weight: 400;
+            color: #9ca3af;
         }
 
         .toggle-pw {
             position: absolute;
-            right: 20px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #a0aec0;
+            color: #9ca3af;
             cursor: pointer;
-            font-size: 18px;
-            transition: 0.2s ease;
+            font-size: 1.05rem;
             background: none;
             border: none;
+            transition: color 0.2s;
         }
-        .toggle-pw:hover {
-            color: #4a5568;
-        }
+        .toggle-pw:hover { color: var(--navy); }
 
         /* Button */
         .btn-submit {
-            position: relative;
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #002868 0%, #004aad 100%);
-            color: white;
+            padding: 10px 0;
+            background: var(--gold);
+            color: var(--white);
             border: none;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 74, 173, 0.2);
-        }
-        .btn-submit i {
-            position: absolute;
-            left: 20px;
-            font-size: 16px;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 12px rgba(181, 142, 74, 0.3);
         }
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 74, 173, 0.3);
+            background: var(--gold-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(181, 142, 74, 0.4);
         }
 
-        /* Footer Links */
-        .auth-footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 13px;
-            color: #718096;
-        }
-        .auth-footer a {
-            color: #004aad;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
+        /* reCAPTCHA */
+        .recaptcha-box { margin-bottom: 1.25rem; display: flex; justify-content: center; }
+        .recaptcha-box .g-recaptcha { transform: scale(0.95); transform-origin: center center; }
 
         .copyright {
-            margin-top: 40px;
             text-align: center;
-            font-size: 12px;
-            color: #a0aec0;
+            font-size: 0.8rem;
+            color: #9ca3af;
             font-weight: 500;
+            padding-bottom: 2rem;
         }
         
-        /* reCAPTCHA */
-        .recaptcha-box { margin-bottom: 1.2rem; overflow: hidden; display: flex; justify-content: center; }
-        .recaptcha-box .g-recaptcha {
-            transform: scale(0.95);
-            transform-origin: center center;
+        @media (max-width: 480px) {
+            .auth-card { padding: 2rem 1.5rem; }
+            .recaptcha-box .g-recaptcha { transform: scale(0.85); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Elements -->
-    <div class="blob-1"></div>
-    <div class="blob-2"></div>
-
-    <div class="login-wrapper">
-        
-        <!-- Brand / Logo -->
-        <div class="brand-container">
-            <img src="<?= base_url('images/kota tng_nobg.png') ?>" alt="Logo Kota Tangerang" class="brand-logo" onerror="this.style.display='none'">
-            <div class="brand-text">
-                <span class="brand-title">E-LAYANAN</span>
-                <span class="brand-subtitle">Dinkominfo Kota Tangerang</span>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            
+            <!-- Brand / Logo -->
+            <div class="brand-container">
+                <img src="<?= base_url('images/kota tng_nobg.png') ?>" alt="Logo Kota Tangerang" class="brand-logo" onerror="this.style.display='none'">
+                <div class="brand-text">
+                    <span class="brand-title">E-LAYANAN</span>
+                    <span class="brand-subtitle">Dinkominfo Kota Tangerang</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Form Card -->
-        <div class="form-container">
+            <h1 class="form-title">Login Pegawai</h1>
+            <p class="form-desc">Silakan masukkan NIP dan Password Anda.</p>
+
             <?php if(session()->getFlashdata('success')): ?>
                 <div class="auth-alert success">
                     <i class="bi bi-check-circle-fill"></i>
@@ -305,19 +276,17 @@
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    <i class="bi bi-lock-fill"></i> Masuk
+                    Masuk
                 </button>
             </form>
 
         </div>
-
-        <div class="copyright">
-            2024 - <?= date('Y') ?> &copy; Pemerintah Kota Tangerang.
-        </div>
-
+    </div>
+    
+    <div class="copyright">
+        2024 - <?= date('Y') ?> &copy; Pemerintah Kota Tangerang.
     </div>
 
-    <!-- Scripts -->
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById("password");
