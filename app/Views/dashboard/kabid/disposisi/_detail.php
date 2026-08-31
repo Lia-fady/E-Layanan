@@ -18,7 +18,7 @@ if ($idJenis === 1) {
     $labelDeskripsi = 'Skenario Pengujian / Target Pengguna';
 } else {
     $labelKeahlian = 'Keahlian Utama';
-    $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
+    $labelDeskripsi = 'Rencana Kegiatan';
 }
 
 // Format alamat lengkap
@@ -104,7 +104,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h5 class="m-0 font-weight-bold" style="color: #1B2559;">Detail Permohonan Masuk</h5>
-            <p class="m-0 mt-1" style="color: #667085; font-size: 0.85rem;">Periksa data pemohon sebelum memberikan keputusan.</p>
+            <p class="m-0 mt-1" style="color: #667085; font-size: 0.85rem;">Periksa data pemohon sebelum memberi keputusan.</p>
         </div>
         <button type="button" class="btn btn-outline-secondary btn-sm bg-white" id="btnKembali">
             <i class="fas fa-arrow-left mr-1"></i> Kembali
@@ -196,7 +196,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             </tr>
             <tr>
                 <th><?= esc($labelKeahlian) ?></th>
-                <td style="white-space:pre-wrap; line-height:1.6; color:#475569;"><?= esc($p->deskripsi_keahlian ?? 'Tidak ada deskripsi.') ?></td>
+                <td style="white-space:pre-wrap; line-height:1.6; color:#475569;"><?= esc($p->deskripsi_keahlian ?? 'Belum diisi') ?></td>
             </tr>
             <tr>
                 <th><?= esc($labelDeskripsi) ?></th>
@@ -218,7 +218,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
-                        <span class="text-muted"><em>Tidak ada lampiran dokumen</em></span>
+                        <span class="text-muted"><em>Belum ada lampiran</em></span>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -235,7 +235,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             <div class="dispo-card-head"><i class="fas fa-gavel"></i> Keputusan Persetujuan</div>
             <div class="p-4">
                 <div class="form-group mb-4">
-                    <label class="font-weight-bold" style="color:#475569; font-size:14px;">Tindakan Keputusan</label>
+                    <label class="font-weight-bold" style="color:#475569; font-size:14px;">Keputusan</label>
                     <select id="decision_status" name="decision_status" class="form-control" style="max-width:380px; border-radius:6px; font-size:14px; height:42px;">
                         <option value="" disabled selected>-- Pilih Keputusan --</option>
                         <option value="setujui">Terima Permohonan & Tetapkan Periode</option>
@@ -254,7 +254,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                             <input type="date" name="tgl_selesai_disetujui" id="tgl_selesai_disetujui" class="form-control" value="<?= esc($p->tgl_selesai) ?>" required>
                         </div>
                         <div class="col-12 mt-2">
-                            <small class="text-danger">* Periode <?= strtolower(esc($p->jenis_permohonan ?? 'magang')) ?> minimal <?= esc($p->durasi_minimal ?? 60) ?> Hari.</small>
+                            <small class="text-danger">* Periode <?= strtolower(esc($p->jenis_permohonan ?? 'magang')) ?> minimal <?= esc($p->durasi_minimal ?? 60) ?> hari.</small>
                         </div>
                     </div>
                     
@@ -268,7 +268,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                 <div id="rej_fields" style="display:none; background:#fef2f2; border:1px solid #fecdd3; padding:20px; border-radius:8px; margin-bottom:16px;">
                     <div class="form-group mb-0">
                         <label class="font-weight-bold text-danger" style="font-size:14px;">Alasan Penolakan (Wajib Diisi)</label>
-                        <textarea name="catatan_keputusan" id="catatan_keputusan" class="form-control" rows="4" placeholder="Sebutkan alasan spesifik mengapa permohonan ini ditolak..." style="border-radius:6px; font-size:14px;"></textarea>
+                        <textarea name="catatan_keputusan" id="catatan_keputusan" class="form-control" rows="4" placeholder="Tuliskan alasan penolakan..." style="border-radius:6px; font-size:14px;"></textarea>
                     </div>
                 </div>
 
@@ -308,7 +308,7 @@ $(document).ready(function() {
         
         var decision = $('#decision_status').val();
         if (decision === 'tolak' && $('#catatan_keputusan').val().trim() === '') {
-            Swal.fire('Peringatan', 'Alasan penolakan wajib diisi untuk diinformasikan ke pemohon.', 'warning'); 
+            Swal.fire('Peringatan', 'Alasan penolakan wajib diisi.', 'warning'); 
             return false;
         }
 
@@ -324,7 +324,7 @@ $(document).ready(function() {
             var durasiMinimalHari = <?= esc($p->durasi_minimal ?? 60) ?>;
             
             if (diffDays < durasiMinimalHari) {
-                Swal.fire('Peringatan', 'Periode ' + jenisPermohonanText + ' minimal harus ' + durasiMinimalHari + ' Hari.', 'warning');
+                Swal.fire('Peringatan', 'Periode ' + jenisPermohonanText + ' minimal harus ' + durasiMinimalHari + ' hari.', 'warning');
                 return false;
             }
             if (tglSelesai <= tglMulai) {
@@ -335,7 +335,7 @@ $(document).ready(function() {
 
         var titleText = decision === 'setujui' ? 'Terima Pemohon?' : 'Tolak Pemohon?';
         var descText = decision === 'setujui' 
-            ? 'Permohonan akan disetujui. Pemohon baru akan memulai kegiatannya pada tanggal mulai yang telah ditetapkan. Pastikan keputusan Anda sudah tepat.' 
+            ? 'Permohonan akan disetujui dan pemohon akan memulai kegiatan pada tanggal yang ditetapkan.'
             : 'Permohonan akan ditolak dan dikembalikan ke Sekretariat. Keputusan ini tidak dapat dibatalkan.';
         var confirmBtnText = decision === 'setujui' ? 'Ya, Terima' : 'Ya, Tolak';
         var confirmBtnColor = decision === 'setujui' ? '#16a34a' : '#dc2626';
@@ -382,7 +382,7 @@ $(document).ready(function() {
     $('#btnSimpanTglPenetapan').on('click', function() {
         var tgl = $('#inputTglPenetapan').val();
         if (!tgl) {
-            showTglMsg('Pilih tanggal penetapan terlebih dahulu.', 'warning');
+            showTglMsg('Pilih tanggal terlebih dahulu.', 'warning');
             return;
         }
 
@@ -418,7 +418,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                showTglMsg('Terjadi kesalahan jaringan. Silakan coba lagi.', 'danger');
+                showTglMsg('Gagal menyimpan. Silakan coba lagi.', 'danger');
             },
             complete: function() {
                 $btn.prop('disabled', false).html('<i class="fas fa-save"></i> Simpan');

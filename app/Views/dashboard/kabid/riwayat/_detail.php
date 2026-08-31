@@ -18,7 +18,7 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
     $labelDeskripsi = 'Skenario Pengujian / Target Pengguna';
 } else {
     $labelKeahlian = 'Keahlian Utama';
-    $labelDeskripsi = 'Apa yang ingin Anda kerjakan?';
+    $labelDeskripsi = 'Rencana Kegiatan';
 }
 
 $alamatParts = [];
@@ -31,10 +31,10 @@ $alamatLengkap = !empty($alamatParts) ? implode(', ', $alamatParts) : '-';
 
 $statusText = $p->status_penempatan ?? '-';
 $statusClass = 'alert-secondary'; $statusIcon = 'fa-info-circle';
-if ($p->status_penempatan == 'DISETUJUI') { $statusText = 'Disetujui — Menunggu Periode Pelaksanaan'; $statusClass = 'alert-info'; $statusIcon = 'fa-check-circle'; }
+if ($p->status_penempatan == 'DISETUJUI') { $statusText = 'Disetujui'; $statusClass = 'alert-info'; $statusIcon = 'fa-check-circle'; }
 elseif ($p->status_penempatan == 'BERJALAN') { $statusText = 'Sedang Berjalan'; $statusClass = 'alert-primary'; $statusIcon = 'fa-spinner'; }
 elseif ($p->status_penempatan == 'SELESAI') { $statusText = 'Kegiatan Selesai'; $statusClass = 'alert-success'; $statusIcon = 'fa-check-circle'; }
-elseif ($p->status_penempatan == 'DITOLAK') { $statusText = 'Ditolak oleh Bidang'; $statusClass = 'alert-danger'; $statusIcon = 'fa-times-circle'; }
+elseif ($p->status_penempatan == 'DITOLAK') { $statusText = 'Ditolak'; $statusClass = 'alert-danger'; $statusIcon = 'fa-times-circle'; }
 elseif ($p->status_penempatan == 'DIBATALKAN') { $statusText = 'Dibatalkan'; $statusClass = 'alert-warning'; $statusIcon = 'fa-ban'; }
 
 // Helper Format Tanggal Indonesia
@@ -99,7 +99,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h5 class="m-0 font-weight-bold" style="color: #1B2559;">Detail Riwayat Penempatan</h5>
-            <p class="m-0 mt-1" style="color: #667085; font-size: 0.85rem;">Informasi permohonan yang telah diproses.</p>
+            <p class="m-0 mt-1" style="color: #667085; font-size: 0.85rem;">Detail permohonan yang telah diproses.</p>
         </div>
         <button type="button" class="btn btn-outline-secondary btn-sm bg-white" id="btnKembali">
             <i class="fas fa-arrow-left mr-1"></i> Kembali
@@ -158,7 +158,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
             </tr>
             <tr>
                 <th><?= esc($labelKeahlian) ?></th>
-                <td style="white-space:pre-wrap; line-height:1.6; color:#475569;"><?= esc($p->deskripsi_keahlian ?? 'Tidak ada deskripsi.') ?></td>
+                <td style="white-space:pre-wrap; line-height:1.6; color:#475569;"><?= esc($p->deskripsi_keahlian ?? 'Belum diisi') ?></td>
             </tr>
             <tr>
                 <th><?= esc($labelDeskripsi) ?></th>
@@ -180,7 +180,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                             <?php endforeach; ?>
                         </div>
                     <?php else: ?>
-                        <span class="text-muted"><em>Tidak ada lampiran dokumen</em></span>
+                        <span class="text-muted"><em>Belum ada lampiran</em></span>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -200,7 +200,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
         </button>
         
         <?php if ($p->status_penempatan == 'BERJALAN'): ?>
-        <form method="POST" action="<?= base_url('kabid/disposisi/selesaikan') ?>" style="display:inline;" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Selesaikan Kegiatan?', text: 'Apakah Anda yakin ingin menyatakan kegiatan pemohon ini telah selesai?', icon: 'question', showCancelButton: true, confirmButtonColor: '#16a34a', cancelButtonColor: '#64748b', confirmButtonText: 'Ya, Selesai', cancelButtonText: 'Batal', reverseButtons: true}).then((result) => { if (result.isConfirmed) form.submit(); });">
+        <form method="POST" action="<?= base_url('kabid/disposisi/selesaikan') ?>" style="display:inline;" onsubmit="event.preventDefault(); var form = this; Swal.fire({title: 'Selesaikan Kegiatan?', text: 'Kegiatan pemohon ini akan dinyatakan selesai. Lanjutkan?', icon: 'question', showCancelButton: true, confirmButtonColor: '#16a34a', cancelButtonColor: '#64748b', confirmButtonText: 'Ya, Selesai', cancelButtonText: 'Batal', reverseButtons: true}).then((result) => { if (result.isConfirmed) form.submit(); });">
             <?= csrf_field() ?>
             <input type="hidden" name="id_penempatan_magang" value="<?= esc($p->id_penempatan_magang) ?>">
             <button type="submit" class="btn btn-success px-4" style="border-radius:6px; font-weight:500; background-color: #16a34a; border-color: #16a34a;">

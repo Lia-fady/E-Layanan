@@ -8,7 +8,7 @@
     <div>
         <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Logbook Kegiatan</h5>
         <p style="color:#667085; font-size:0.85rem; margin:0;">
-            Tinjau dan setujui kegiatan yang telah dicatat.
+            Tinjau dan setujui logbook kegiatan harian.
         </p>
     </div>
 </div>
@@ -33,7 +33,7 @@
                 <!-- Filter Jenis Permohonan dihapus -->                <select id="filterStatus" class="form-control form-control-sm custom-select custom-select-sm" style="width: 140px;">
                     <option value="">Semua Status</option>
                     <option value="Disetujui">Disetujui</option>
-                    <option value="Sedang Berjalan">Sedang Berjalan</option>
+                    <option value="Berjalan">Berjalan</option>
                     <option value="Dibatalkan">Dibatalkan</option>
                 </select>
                 
@@ -81,15 +81,15 @@
                                 <?php if (($mhs->status_penempatan ?? '') == 'DIBATALKAN'): ?>
                                     <span class="badge badge-danger">Dibatalkan</span>
                                 <?php elseif (($mhs->status_penempatan ?? '') == 'SELESAI'): ?>
-                                    <span class="badge badge-success">Disetujui</span>
+                                    <span class="badge badge-success">Selesai</span>
                                 <?php elseif (($mhs->status_penempatan ?? '') == 'BERJALAN'): ?>
-                                    <span class="badge badge-primary">Sedang Berjalan</span>
+                                    <span class="badge badge-primary">Berjalan</span>
                                 <?php else: ?>
-                                    <span class="badge badge-secondary"><?= esc($mhs->status_penempatan ?? 'Tidak Diketahui') ?></span>
+                                    <span class="badge badge-secondary"><?= esc($mhs->status_penempatan ?? '-') ?></span>
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-info btn-detail-logbook" data-id="<?= $mhs->id_penempatan_magang ?>" title="Lihat & Approve Logbook">
+                                <button type="button" class="btn btn-sm btn-info btn-detail-logbook" data-id="<?= $mhs->id_penempatan_magang ?>" title="Lihat Logbook">
                                     <i class="fas fa-book-open"></i> Lihat Logbook
                                 </button>
                             </td>
@@ -161,7 +161,7 @@ $(document).ready(function() {
             },
             error: function() {
                 btn.prop('disabled', false).html(originalHtml);
-                Swal.fire('Error!', 'Gagal memuat detail logbook.', 'error');
+                Swal.fire('Error!', 'Gagal memuat logbook.', 'error');
             }
         });
     });

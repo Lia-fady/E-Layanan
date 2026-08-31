@@ -46,7 +46,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
             <div class="modal-header bg-light border-bottom-0" style="border-radius: 12px 12px 0 0;">
-                <h5 class="modal-title font-weight-bold" style="color: #1e293b;"><i class="fas fa-history mr-2 text-primary"></i> Lacak Jejak Permohonan</h5>
+                <h5 class="modal-title font-weight-bold" style="color: #1e293b;"><i class="fas fa-history mr-2 text-primary"></i> Riwayat Log Permohonan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -116,7 +116,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-detail', function() {
         var id = $(this).data('id');
         
-        $('#detailContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat detail riwayat...</div>');
+        $('#detailContainer').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin fa-2x"></i> Memuat detail...</div>');
         $('#sectionList').hide();
         $('#sectionDetail').show();
         
@@ -140,7 +140,7 @@ $(document).ready(function() {
                 $('#detailContainer').html('');
                 $('#sectionDetail').hide();
                 $('#sectionList').show();
-                Swal.fire('Error!', 'Gagal memuat detail riwayat.', 'error');
+                Swal.fire('Error!', 'Gagal memuat detail.', 'error');
             }
         });
     });
