@@ -254,7 +254,7 @@ function formatTanggalIndo($tanggal, $tampil_jam = false) {
                             <input type="date" name="tgl_selesai_disetujui" id="tgl_selesai_disetujui" class="form-control" value="<?= esc($p->tgl_selesai) ?>" required>
                         </div>
                         <div class="col-12 mt-2">
-                            <small class="text-danger">* Periode <?= strtolower(esc($p->jenis_permohonan ?? 'magang')) ?> minimal 2 bulan.</small>
+                            <small class="text-danger">* Periode <?= strtolower(esc($p->jenis_permohonan ?? 'magang')) ?> minimal <?= esc($p->durasi_minimal ?? 60) ?> Hari.</small>
                         </div>
                     </div>
                     
@@ -316,14 +316,15 @@ $(document).ready(function() {
             var tglMulai = new Date($('#tgl_mulai_disetujui').val());
             var tglSelesai = new Date($('#tgl_selesai_disetujui').val());
             
-            // Validasi durasi magang minimal 2 bulan (sekitar 60 hari)
+            // Validasi durasi magang minimal berdasarkan durasi_minimal dari database
             var diffTime = Math.abs(tglSelesai - tglMulai);
             var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
             
             var jenisPermohonanText = '<?= strtolower(esc($p->jenis_permohonan ?? "magang")) ?>';
+            var durasiMinimalHari = <?= esc($p->durasi_minimal ?? 60) ?>;
             
-            if (diffDays < 59) {
-                Swal.fire('Peringatan', 'Periode ' + jenisPermohonanText + ' minimal harus 2 bulan.', 'warning');
+            if (diffDays < durasiMinimalHari) {
+                Swal.fire('Peringatan', 'Periode ' + jenisPermohonanText + ' minimal harus ' + durasiMinimalHari + ' Hari.', 'warning');
                 return false;
             }
             if (tglSelesai <= tglMulai) {
@@ -334,7 +335,7 @@ $(document).ready(function() {
 
         var titleText = decision === 'setujui' ? 'Terima Pemohon?' : 'Tolak Pemohon?';
         var descText = decision === 'setujui' 
-            ? 'Pemohon akan resmi diterima dan memulai kegiatannya di bidang Anda. Pastikan keputusan Anda sudah tepat.' 
+            ? 'Permohonan akan disetujui. Pemohon baru akan memulai kegiatannya pada tanggal mulai yang telah ditetapkan. Pastikan keputusan Anda sudah tepat.' 
             : 'Permohonan akan ditolak dan dikembalikan ke Sekretariat. Keputusan ini tidak dapat dibatalkan.';
         var confirmBtnText = decision === 'setujui' ? 'Ya, Terima' : 'Ya, Tolak';
         var confirmBtnColor = decision === 'setujui' ? '#16a34a' : '#dc2626';
