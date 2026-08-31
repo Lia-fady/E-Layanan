@@ -127,6 +127,7 @@ class M_Verifikasi extends Model
             mhs.nik,
             mhs.nim,
             mhs.nama_mahasiswa,
+            mhs.foto_profil,
             mhs.jenis_kelamin,
             mhs.tgl_lahir,
             mhs.alamat,

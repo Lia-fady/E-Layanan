@@ -313,11 +313,7 @@
                         <!-- TAB PRIBADI -->
                         <div class="tab-pane fade show active" id="pribadi" role="tabpanel">
                             <div class="row g-4">
-                                <div class="col-md-12">
-                                    <label class="form-label small fw-bold text-muted mb-2">FOTO PROFIL</label>
-                                    <input type="file" name="foto_profil" class="form-control form-control-lg" accept="image/png, image/jpeg, image/jpg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;">
-                                    <small class="text-secondary">Maksimal 5MB. Format: JPG, JPEG, PNG. Kosongkan jika tidak ingin mengubah foto.</small>
-                                </div>
+
                                 <div class="col-md-12">
                                     <label class="form-label small fw-bold text-muted mb-2">NAMA LENGKAP</label>
                                     <input type="text" name="nama_mahasiswa" class="form-control form-control-lg" style="font-size:0.95rem; border-radius:10px; border-color:#e2e8f0;" value="<?= esc($m['nama_mahasiswa'] ?? '') ?>" placeholder="Nama Lengkap Sesuai KTP">

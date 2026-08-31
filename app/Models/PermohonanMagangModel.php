@@ -126,7 +126,7 @@ class PermohonanMagangModel extends Model
      */
     public function getDetailPermohonan($id_permohonan)
     {
-        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
+        return $this->select('t_permohonan_magang.*, m_mahasiswa.nama_mahasiswa, m_mahasiswa.nim, m_mahasiswa.foto_profil, m_instansi_pendidikan.instansi_pendidikan as kampus, m_fakultas.fakultas, COALESCE(m_prodi.nama_prodi, t_instansi_mahasiswa.jurusan) as prodi, t_instansi_mahasiswa.jenjang_pendidikan, t_instansi_mahasiswa.semester')
             ->join('m_mahasiswa', 'm_mahasiswa.id_mahasiswa = t_permohonan_magang.id_mahasiswa', 'left')
             ->join('t_instansi_mahasiswa', 't_instansi_mahasiswa.id_mahasiswa = m_mahasiswa.id_mahasiswa', 'left')
             ->join('m_instansi_pendidikan', 'm_instansi_pendidikan.id_instansi_pendidikan = t_instansi_mahasiswa.id_instansi_pendidikan', 'left')

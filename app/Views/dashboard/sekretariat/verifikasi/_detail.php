@@ -106,7 +106,11 @@ $badgeStyle = $statusBadgeClass[$statusPersetujuan] ?? 'background-color: #f1f5f
                     <!-- Panel Kiri - Profile Pemohon -->
                     <div class="detail-pemohon__profile" style="width: 25%; min-width: 200px; max-width: 280px;">
                         <div class="detail-pemohon__avatar">
-                            <i class="fas fa-user-circle"></i>
+                            <?php if (!empty($permohonan->foto_profil)): ?>
+                                <img src="<?= base_url('uploads/profil/' . esc($permohonan->foto_profil)) ?>" alt="Foto Profil" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #e2e8f0;">
+                            <?php else: ?>
+                                <i class="fas fa-user-circle"></i>
+                            <?php endif; ?>
                         </div>
                         <div class="detail-pemohon__name"><?= esc($permohonan->nama_mahasiswa ?? '-') ?></div>
                         <span class="detail-pemohon__badge">

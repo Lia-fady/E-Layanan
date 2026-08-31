@@ -57,9 +57,9 @@
                 <span>Kota Tangerang</span>
             </h1>
             <p>
-                Wujudkan pengalaman belajar dan riset terbaikmu bersama kami. Ajukan permohonan 
+                Portal terpadu untuk pengajuan permohonan 
                 <strong style="color: white; font-weight: 700;">Magang, PKL, Penelitian, Observasi, dan Uji Coba Produk</strong> 
-                secara mudah, cepat, dan terintegrasi di Dinas Komunikasi dan Informatika Kota Tangerang.
+                di lingkungan Dinas Kominfo Kota Tangerang. Nikmati kemudahan pendaftaran yang cepat, transparan, dan sepenuhnya digital.
             </p>
             <div class="lp-hero-cta">
                 <a href="<?= base_url('register') ?>" class="btn-hero-primary">
@@ -304,7 +304,7 @@
                 <div class="alur-content">
                     <div class="alur-num">Langkah 03</div>
                     <h3>Verifikasi &amp; Seleksi</h3>
-                    <p>Sekretariat dan Kepala Bidang melakukan pemeriksaan kelengkapan dan verifikasi berkas.</p>
+                    <p>Tim verifikator kami akan melakukan pemeriksaan kelengkapan berkas dan kelayakan permohonan Anda.</p>
                 </div>
             </div>
             <div class="alur-item">
@@ -349,7 +349,7 @@
                             <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
                         </div>
                         <div class="faq-answer">
-                            <p>Buat akun di halaman Daftar dengan mengisi data diri. Setelah akun aktif, login dan masuk ke menu "Permohonan". Isi formulir dan unggah dokumen persyaratan. Permohonan Anda akan diproses oleh tim Sekretariat.</p>
+                            <p>Buat akun di menu Pendaftaran dengan mengisi data diri. Setelah akun aktif, masuk ke menu "Permohonan", isi formulir, lalu unggah dokumen persyaratan pendukung. Permohonan Anda akan segera diproses oleh tim kami.</p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -358,7 +358,7 @@
                             <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
                         </div>
                         <div class="faq-answer">
-                            <p>Tersedia 4 program: <strong>Magang/PKL</strong> (mahasiswa &amp; siswa), <strong>Penelitian</strong> (skripsi/TA), <strong>Observasi</strong> (kunjungan lapangan), dan <strong>Uji Coba Produk</strong>.</p>
+                            <p>Tersedia 5 program: <strong>Magang</strong>, <strong>PKL</strong>, <strong>Penelitian</strong>, <strong>Observasi</strong>, dan <strong>Uji Coba Produk</strong>.</p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -367,7 +367,7 @@
                             <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
                         </div>
                         <div class="faq-answer">
-                            <p>Dokumen utama meliputi Surat Pengantar dari Institusi, KTP/KTM, dan CV. Untuk penelitian diwajibkan menyertakan Proposal Kegiatan. Syarat spesifik akan muncul di form pengajuan.</p>
+                            <p>Dokumen utama yang diperlukan adalah Surat Pengantar Resmi dari Sekolah atau Perguruan Tinggi Anda. Khusus untuk permohonan Penelitian, Anda juga diwajibkan untuk menyertakan Proposal Penelitian.</p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -376,7 +376,7 @@
                             <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
                         </div>
                         <div class="faq-answer">
-                            <p>Proses verifikasi oleh Sekretariat umumnya berlangsung 3-5 hari kerja. Status dapat dipantau <em>real-time</em> melalui dashboard akun Anda.</p>
+                            <p>Proses verifikasi berkas umumnya membutuhkan waktu 3-5 hari kerja. Anda dapat memantau status perkembangan permohonan secara <em>real-time</em> melalui dashboard akun Anda.</p>
                         </div>
                     </div>
                     <div class="faq-item">
@@ -385,7 +385,7 @@
                             <div class="faq-arrow"><i class="bi bi-chevron-down"></i></div>
                         </div>
                         <div class="faq-answer">
-                            <p>Tim Sekretariat akan memberikan status <strong>Revisi</strong> beserta catatan perbaikan. Anda dapat memperbaiki dokumen langsung pada permohonan yang sama tanpa membuat permohonan baru.</p>
+                            <p>Sistem akan memperbarui status Anda menjadi <strong>Revisi</strong> dan tim kami akan memberikan catatan perbaikan. Anda dapat memperbaiki dokumen secara langsung pada permohonan tersebut tanpa perlu mendaftar ulang.</p>
                         </div>
                     </div>
                 </div>
