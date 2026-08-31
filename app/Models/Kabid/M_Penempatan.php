@@ -149,6 +149,7 @@ class M_Penempatan extends Model
             pm.tgl_selesai,
             pm.created_at as tgl_pengajuan,
             jp.jenis_permohonan,
+            jp.durasi_minimal,
             ip.instansi_pendidikan,
             ps.catatan as catatan_sekretariat,
             ps.tanggal_persetujuan
@@ -311,15 +312,25 @@ class M_Penempatan extends Model
         $db = \Config\Database::connect();
         $today = date('Y-m-d');
 
-        // DISETUJUI → BERJALAN (tanggal mulai sudah tiba)
-        $builder1 = $db->table('t_penempatan_magang')
-            ->where('status_penempatan', 'DISETUJUI')
-            ->where('tanggal_mulai <=', $today);
-        if ($id_bidang !== null) $builder1->where('id_bidang', $id_bidang);
-        $builder1->update([
-            'status_penempatan' => 'BERJALAN',
-            'updated_at'        => date('Y-m-d H:i:s'),
-        ]);
+        // DISETUJUI → BERJALAN (tanggal mulai sudah tiba DAN mahasiswa sudah setuju)
+        $builder1 = $db->table('t_penempatan_magang p')
+            ->select('p.id_penempatan_magang')
+            ->join('t_persetujuan_magang ps', 'ps.id_persetujuan_magang = p.id_persetujuan_magang', 'left')
+            ->where('p.status_penempatan', 'DISETUJUI')
+            ->where('ps.status_persetujuan_mahasiswa', 'DISETUJUI')
+            ->where('p.tanggal_mulai <=', $today);
+        if ($id_bidang !== null) $builder1->where('p.id_bidang', $id_bidang);
+        
+        $toBerjalan = $builder1->get()->getResultArray();
+        if (!empty($toBerjalan)) {
+            $idsToBerjalan = array_column($toBerjalan, 'id_penempatan_magang');
+            $db->table('t_penempatan_magang')
+                ->whereIn('id_penempatan_magang', $idsToBerjalan)
+                ->update([
+                    'status_penempatan' => 'BERJALAN',
+                    'updated_at'        => date('Y-m-d H:i:s'),
+                ]);
+        }
 
         // BERJALAN → SELESAI (tanggal selesai sudah lewat)
         $builder2 = $db->table('t_penempatan_magang')
