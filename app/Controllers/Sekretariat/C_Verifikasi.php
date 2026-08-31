@@ -184,7 +184,7 @@ class C_Verifikasi extends BaseController
         if ($existing && $existing->status_persetujuan !== 'MENUNGGU') {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Keputusan verifikasi sudah tersimpan dan tidak dapat diubah. Status saat ini: ' . $existing->status_persetujuan
+                'message' => 'Verifikasi tidak dapat diubah karena keputusan sudah tersimpan. Status saat ini: ' . $existing->status_persetujuan
             ]);
         }
 
@@ -196,7 +196,7 @@ class C_Verifikasi extends BaseController
         if (empty($keputusan) || !in_array($keputusan, ['DISETUJUI', 'PERBAIKAN_BERKAS', 'DITOLAK'])) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Silakan pilih keputusan verifikasi terlebih dahulu.'
+                'message' => 'Silakan pilih keputusan verifikasi.'
             ]);
         }
 
@@ -208,7 +208,7 @@ class C_Verifikasi extends BaseController
             if (empty($catatan)) {
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Catatan wajib diisi sebelum menolak permohonan.'
+                    'message' => 'Catatan penolakan wajib diisi.'
                 ]);
             }
         } elseif ($overallStatus === 'PERBAIKAN_BERKAS') {
@@ -216,7 +216,7 @@ class C_Verifikasi extends BaseController
             if (empty($catatan)) {
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Catatan wajib diisi sebelum mengirim perbaikan berkas.'
+                    'message' => 'Catatan perbaikan berkas wajib diisi.'
                 ]);
             }
         } elseif ($overallStatus === 'DISETUJUI') {
@@ -224,7 +224,7 @@ class C_Verifikasi extends BaseController
             if (empty($id_bidang)) {
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Silakan pilih Bidang Tujuan untuk meneruskan permohonan yang disetujui.'
+                    'message' => 'Pilih Bidang Tujuan untuk meneruskan permohonan.'
                 ]);
             }
             $catatan = 'Seluruh berkas persyaratan telah diperiksa dan dinyatakan sesuai. Permohonan Anda disetujui dan akan diproses ke tahap selanjutnya.';
@@ -259,12 +259,12 @@ class C_Verifikasi extends BaseController
                 $bidangRow = $db->table('m_bidang')->where('id_bidang', $id_bidang)->get()->getRow();
                 $namaBidang = $bidangRow ? $bidangRow->bidang : 'Bidang Tujuan';
                 
-                catat_log($id_permohonan, 'Sekretariat', 'Verifikasi Berhasil', 'Berkas telah dinyatakan lengkap dan permohonan diteruskan ke ' . $namaBidang . '.');
+                catat_log($id_permohonan, 'Sekretariat', 'Verifikasi Berhasil', 'Berkas lengkap. Permohonan diteruskan ke ' . $namaBidang . '.');
             }
         } elseif ($overallStatus == 'DITOLAK') {
-            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan tidak dapat diproses lebih lanjut. Catatan Sekretariat: ' . $catatan);
+            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan ditolak. Catatan Sekretariat: ' . $catatan);
         } else {
-            catat_log($id_permohonan, 'Sekretariat', 'Perlu Diperbaiki', 'Terdapat berkas yang harus diperbaiki. Catatan Sekretariat: ' . $catatan);
+            catat_log($id_permohonan, 'Sekretariat', 'Perlu Diperbaiki', 'Berkas dikembalikan untuk diperbaiki. Catatan Sekretariat: ' . $catatan);
         }
 
         if ($result) {
@@ -322,7 +322,7 @@ class C_Verifikasi extends BaseController
         $result = $this->verifikasiModel->simpanVerifikasi($data);
 
         if ($result) {
-            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan tidak dapat diproses lebih lanjut. Catatan Sekretariat: ' . $catatan);
+            catat_log($id_permohonan, 'Sekretariat', 'Permohonan Ditolak', 'Permohonan ditolak. Catatan Sekretariat: ' . $catatan);
             return $this->response->setJSON(['success' => true, 'message' => 'Permohonan berhasil ditolak.']);
         }
 

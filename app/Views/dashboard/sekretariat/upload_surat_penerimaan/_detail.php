@@ -107,6 +107,11 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
         <div class="row">
             <div class="col-md-5">
                 <h6 class="mb-3 font-weight-bold" style="color: #1B2559;">Upload Dokumen Baru</h6>
+                <?php if (in_array(($persetujuan->status_penempatan ?? ''), ['DIBATALKAN', 'DITOLAK'])) : ?>
+                    <div class="alert alert-warning py-2 px-3" style="font-size: 0.9rem; border-radius: 8px;">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> Surat Penerimaan tidak dapat diunggah karena permohonan sudah <strong><?= strtolower($persetujuan->status_penempatan) ?></strong>.
+                    </div>
+                <?php else : ?>
                 <form id="formUploadSuratPenerimaan" action="<?= base_url('sekretariat/upload-surat-penerimaan/store') ?>" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id_persetujuan_magang" value="<?= $persetujuan->id_persetujuan_magang ?>">
@@ -141,6 +146,7 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                         <i class="fas fa-upload mr-1"></i> Upload Surat
                     </button>
                 </form>
+                <?php endif; ?>
             </div>
             
             <div class="col-md-7">
@@ -175,12 +181,16 @@ if (strpos($jenisPermohonanText, 'penelitian') !== false || strpos($jenisPermoho
                                             <small><?= !empty($f->created_at) ? date('d M Y H:i', strtotime($f->created_at)) : '-' ?></small>
                                         </td>
                                         <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-sm btn-warning btn-ganti-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Ganti File">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Hapus File">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            <?php if (!in_array(($persetujuan->status_penempatan ?? ''), ['DIBATALKAN', 'DITOLAK'])) : ?>
+                                                <button type="button" class="btn btn-sm btn-warning btn-ganti-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Ganti File">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-delete-surat mb-1" data-id="<?= $f->id_file_proses_magang ?>" title="Hapus File">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            <?php else : ?>
+                                                <span class="text-muted" title="Tidak dapat diubah karena status <?= esc(strtolower($persetujuan->status_penempatan)) ?>"><i class="fas fa-ban"></i></span>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

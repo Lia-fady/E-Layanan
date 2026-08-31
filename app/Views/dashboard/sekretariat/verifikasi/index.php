@@ -29,7 +29,7 @@
 <div class="mb-4">
     <h5 style="font-weight:700; color:#1B2559; margin-bottom:4px;">Verifikasi Permohonan</h5>
     <p style="color:#667085; font-size:0.9rem; margin:0;">
-        Periksa dan verifikasi kelengkapan serta status permohonan magang yang diajukan mahasiswa.
+        Periksa dan verifikasi permohonan magang yang masuk.
     </p>
 </div>
 
@@ -176,7 +176,7 @@ $(document).ready(function() {
         if (!keputusan) {
             Swal.fire({
                 title: 'Belum Lengkap',
-                text: 'Silakan pilih keputusan verifikasi terlebih dahulu.',
+                text: 'Silakan pilih keputusan verifikasi.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6'
             });
@@ -187,7 +187,7 @@ $(document).ready(function() {
         if (keputusan === 'PERBAIKAN_BERKAS' && catatan === '') {
             Swal.fire({
                 title: 'Catatan Wajib',
-                text: 'Catatan wajib diisi sebelum mengirim perbaikan berkas.',
+                text: 'Catatan perbaikan berkas wajib diisi.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6'
             });
@@ -198,7 +198,7 @@ $(document).ready(function() {
         if (keputusan === 'DITOLAK' && catatan === '') {
             Swal.fire({
                 title: 'Catatan Wajib',
-                text: 'Catatan wajib diisi sebelum menolak permohonan.',
+                text: 'Catatan penolakan wajib diisi.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6'
             });
@@ -209,7 +209,7 @@ $(document).ready(function() {
         if (keputusan === 'DISETUJUI' && !$('#id_bidang').val()) {
             Swal.fire({
                 title: 'Belum Lengkap',
-                text: 'Silakan pilih Bidang Tujuan untuk meneruskan permohonan yang disetujui.',
+                text: 'Pilih Bidang Tujuan untuk meneruskan permohonan.',
                 icon: 'warning',
                 confirmButtonColor: '#3085d6'
             });
