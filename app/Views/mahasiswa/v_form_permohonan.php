@@ -107,7 +107,7 @@ if(session()->getFlashdata('permohonan_sent')):
     <a href="<?= base_url('mahasiswa/status') ?>" class="wz-btn-secondary"><i class="bi bi-clock-history"></i> Cek Status</a>
 </div>
 
-<?php elseif($state == 4 || $state == 3): ?>
+<?php elseif($state == 4 || $state == 3 || $state == 8): ?>
 <!-- ============ TAMPILAN JIKA PERMOHONAN SUDAH DITERIMA/AKTIF ============ -->
 <div class="wizard-card text-center py-5" style="border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.03); background: linear-gradient(to bottom, #ffffff, #f8fafc); border-radius: 16px;">
     <div style="position: relative; width: 80px; height: 80px; margin: 0 auto 32px;">
@@ -124,7 +124,13 @@ if(session()->getFlashdata('permohonan_sent')):
     </div>
     <h4 class="fw-bold text-dark mb-2" style="font-size: 1.85rem; letter-spacing: -0.5px;">Permohonan Disetujui!</h4>
     <p class="text-muted mx-auto mb-5" style="max-width: 480px; font-size: 1rem; line-height: 1.6;">
-        <?= $state == 3 ? 'Selamat! Permohonan Anda telah disetujui. Silakan tunggu periode pelaksanaan kegiatan tiba untuk mulai.' : 'Selamat! Kegiatan Anda dapat dilaksanakan sesuai periode yang telah ditentukan.' ?>
+        <?php if ($state == 8): ?>
+            Selamat! Permohonan Anda telah disetujui. Terdapat usulan perubahan periode dari bidang, silakan periksa dan konfirmasi usulan tersebut di menu <strong>Riwayat Permohonan</strong>.
+        <?php elseif ($state == 3): ?>
+            Selamat! Permohonan Anda telah disetujui. Silakan tunggu periode pelaksanaan kegiatan tiba untuk mulai.
+        <?php else: ?>
+            Selamat! Kegiatan Anda dapat dilaksanakan sesuai periode yang telah ditentukan.
+        <?php endif; ?>
     </p>
     <a href="<?= base_url('mahasiswa/dashboard') ?>" class="wz-btn-primary" style="padding: 12px 36px; font-size: 1.05rem; border-radius: 50px; box-shadow: 0 8px 20px rgba(13, 110, 253, 0.25);"><i class="bi bi-house-door me-2"></i> Kembali ke Dashboard</a>
 </div>

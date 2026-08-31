@@ -418,6 +418,16 @@
     <p class="text-muted mb-0">Selamat datang di Portal Peserta Akademik. Pantau tahapan layanan Anda dari sini.</p>
 </div>
 
+<?php if (session()->getFlashdata('error')) : ?>
+    <div class="alert alert-danger p-3 mb-4 d-flex align-items-center" style="font-size: 0.85rem; border-radius: 10px; border: 1px solid #fca5a5; background: #fef2f2; color: #b91c1c;">
+        <i class="bi bi-exclamation-triangle-fill fs-5 me-3"></i>
+        <div>
+            <strong>Peringatan Sistem:</strong><br>
+            <?= esc(session()->getFlashdata('error')) ?>
+        </div>
+    </div>
+<?php endif; ?>
+
 <?php
     $documentCount = (!empty($file_penerimaan) ? 1 : 0) + (!empty($file_sertifikat) ? 1 : 0) + (!empty($file_piagam) ? 1 : 0);
     // Jika reset state, dokumen anggap 0 (atau hide sertifikat)
@@ -761,8 +771,8 @@
     </div>
 </div>
 
-<?php elseif ($state == 4 || $state == 3): ?>
-<!-- ===================== STATE 3 & 4: DISETUJUI / AKTIF BERJALAN ===================== -->
+<?php elseif ($state == 4 || $state == 3 || $state == 8): ?>
+<!-- ===================== STATE 3, 4 & 8: DISETUJUI / AKTIF BERJALAN / USULAN PERIODE ===================== -->
 <?php
     $total_logbook  = $total_logbook ?? 0;
     $target_logbook = $target_logbook ?? 0;
@@ -828,10 +838,17 @@
         <div class="card-flat h-100 d-flex flex-column">
             <div class="card-label"><i class="bi bi-lightning me-1"></i> Aksi Cepat</div>
 
-            <div class="alert-card alert-success mb-3">
-                <i class="bi bi-check-circle alert-icon"></i>
-                <div>Permohonan Anda telah <strong>disetujui</strong>. Silakan laksanakan kegiatan sesuai ketentuan yang berlaku.</div>
-            </div>
+            <?php if ($state == 8): ?>
+                <div class="alert-card alert-warning mb-3">
+                    <i class="bi bi-calendar-event alert-icon"></i>
+                    <div>Bidang mengusulkan <strong>perubahan periode</strong> kegiatan Anda. Silakan klik "Lihat Riwayat Status" dan periksa Detail permohonan.</div>
+                </div>
+            <?php else: ?>
+                <div class="alert-card alert-success mb-3">
+                    <i class="bi bi-check-circle alert-icon"></i>
+                    <div>Permohonan Anda telah <strong>disetujui</strong>. Silakan laksanakan kegiatan sesuai ketentuan yang berlaku.</div>
+                </div>
+            <?php endif; ?>
 
             <div class="mt-auto d-flex flex-column gap-2">
                 <?php if (in_array($jenis_permohonan, [3, 5]) && $is_log_book == 'ya'): ?>

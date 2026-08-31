@@ -205,12 +205,20 @@ class M_Penempatan extends Model
                 'updated_at'         => date('Y-m-d H:i:s'),
             ]);
 
+        $persetujuan = $db->table('t_persetujuan_magang')->where('id_persetujuan_magang', $id_persetujuan_magang)->get()->getRow();
+        $permohonan = $db->table('t_permohonan_magang')->where('id_permohonan_magang', $persetujuan->id_permohonan_magang)->get()->getRow();
+        
+        $status_mahasiswa = 'MENUNGGU';
+        if ($tgl_mulai_disetujui == $permohonan->tgl_mulai && $tgl_selesai_disetujui == $permohonan->tgl_selesai) {
+            $status_mahasiswa = 'DISETUJUI';
+        }
+
         $db->table('t_persetujuan_magang')
             ->where('id_persetujuan_magang', $id_persetujuan_magang)
             ->update([
                 'tgl_mulai_disetujui' => $tgl_mulai_disetujui,
                 'tgl_selesai_disetujui' => $tgl_selesai_disetujui,
-                'status_persetujuan_mahasiswa' => 'MENUNGGU',
+                'status_persetujuan_mahasiswa' => $status_mahasiswa,
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);
 

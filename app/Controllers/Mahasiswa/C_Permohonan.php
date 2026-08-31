@@ -41,7 +41,6 @@ class C_Permohonan extends C_BaseMahasiswa
 
         $data['mhs'] = $mhs;
         $data['instansi'] = $instansi;
-
         $stateData = $this->_getMahasiswaState($id_mahasiswa);
 
         // Jika ada draf atau revisi berkas yang sedang berjalan, load data draft

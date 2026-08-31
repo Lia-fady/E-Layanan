@@ -411,7 +411,11 @@
                                     } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'BERJALAN') {
                                         $badgeClass = 'approved'; $statusText = 'Berjalan';
                                     } elseif (!empty($p['status_penempatan']) && $p['status_penempatan'] == 'DISETUJUI') {
-                                        $badgeClass = 'approved'; $statusText = 'Disetujui';
+                                        if (isset($p['status_persetujuan_mahasiswa']) && $p['status_persetujuan_mahasiswa'] == 'MENUNGGU') {
+                                            $badgeClass = 'pending'; $statusText = 'Tinjau Periode';
+                                        } else {
+                                            $badgeClass = 'approved'; $statusText = 'Disetujui';
+                                        }
                                     }
                             ?>
                             <tr>
@@ -687,20 +691,24 @@
 
     function confirmUndurDiri(idPermohonan) {
         Swal.fire({
-            title: 'Mengundurkan Diri?',
-            html: `Anda akan membatalkan kegiatan yang sudah disetujui. Aksi ini <b>tidak dapat dibatalkan</b>.<br><br>
-                   <textarea id="swal-alasan" class="swal2-textarea" placeholder="Tuliskan alasan pengunduran diri Anda di sini... (Wajib)" style="margin-top:0; font-size:0.9rem;"></textarea>`,
+            title: 'Batalkan Kegiatan?',
+            text: 'Apakah Anda yakin ingin membatalkan kegiatan ini? Aksi ini bersifat permanen dan tidak dapat dibatalkan.',
             icon: 'warning',
+            input: 'textarea',
+            inputPlaceholder: 'Tuliskan alasan pembatalan kegiatan Anda di sini (wajib diisi)...',
+            inputAttributes: {
+                'aria-label': 'Alasan pembatalan',
+                'style': 'min-height: 120px; font-size: 0.95rem;'
+            },
             showCancelButton: true,
             confirmButtonColor: '#dc3545',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Ya, Undurkan Diri',
+            confirmButtonText: 'Ya, Batalkan Kegiatan',
             cancelButtonText: 'Kembali',
             reverseButtons: true,
-            preConfirm: () => {
-                const alasan = document.getElementById('swal-alasan').value;
+            preConfirm: (alasan) => {
                 if (!alasan || alasan.trim() === '') {
-                    Swal.showValidationMessage('Alasan pengunduran diri wajib diisi!');
+                    Swal.showValidationMessage('Alasan pembatalan wajib diisi!');
                     return false;
                 }
                 return alasan;

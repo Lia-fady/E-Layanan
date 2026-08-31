@@ -162,7 +162,7 @@ class C_Status extends C_BaseMahasiswa
         $alasan = $this->request->getPost('alasan_batal');
         if (empty(trim($alasan))) {
             session()->setFlashdata('error', 'Alasan pengunduran diri wajib diisi.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         $db = \Config\Database::connect();
@@ -175,12 +175,12 @@ class C_Status extends C_BaseMahasiswa
 
         if (!$penempatan) {
             session()->setFlashdata('error', 'Data penempatan tidak ditemukan.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         if (!in_array($penempatan['status_penempatan'], ['DISETUJUI', 'BERJALAN'])) {
             session()->setFlashdata('error', 'Pengunduran diri hanya dapat dilakukan jika permohonan sudah disetujui atau sedang berjalan.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         $catatan_baru = "[Pengunduran Diri oleh Pemohon]\nAlasan: " . $alasan;
@@ -209,7 +209,7 @@ class C_Status extends C_BaseMahasiswa
             session()->setFlashdata('success', 'Anda telah berhasil mengundurkan diri. Status permohonan diubah menjadi Dibatalkan.');
         }
 
-        return redirect()->back();
+        return redirect()->to(base_url('mahasiswa/status'));
     }
 
     public function setujuiPeriode($id_permohonan)
@@ -264,7 +264,7 @@ class C_Status extends C_BaseMahasiswa
         $alasan = $this->request->getPost('alasan_tolak');
         if (empty(trim($alasan))) {
             session()->setFlashdata('error', 'Alasan penolakan usulan periode wajib diisi.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         $db = \Config\Database::connect();
@@ -275,7 +275,7 @@ class C_Status extends C_BaseMahasiswa
 
         if (!$persetujuan) {
             session()->setFlashdata('error', 'Data persetujuan tidak ditemukan.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         $permohonan = $this->permohonanModel->where('id_permohonan_magang', $id_permohonan)
@@ -283,7 +283,7 @@ class C_Status extends C_BaseMahasiswa
                                             ->first();
         if (!$permohonan) {
             session()->setFlashdata('error', 'Permohonan tidak ditemukan.');
-            return redirect()->back();
+            return redirect()->to(base_url('mahasiswa/status'));
         }
 
         $penempatan = $db->table('t_penempatan_magang')

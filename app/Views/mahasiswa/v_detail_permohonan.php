@@ -97,7 +97,6 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
         </button>
         <h5 class="fw-bold text-dark m-0" style="font-size: 1.15rem;">Detail Permohonan</h5>
     </div>
-    </div>
     
     <?php if (empty($p['status_persetujuan']) || !in_array($p['status_persetujuan'], ['DISETUJUI', 'DITOLAK'])): ?>
         <button type="button" class="btn btn-sm btn-outline-danger fw-semibold shadow-sm d-flex align-items-center" style="border-radius: 8px; padding: 6px 16px;" onclick="confirmBatalkan(<?= $p['id_permohonan_magang'] ?>, 'kirim')">
@@ -463,10 +462,12 @@ if (count($namaParts) > 1) $initials .= strtoupper(substr(end($namaParts), 0, 1)
 
         <?php if(!$isKabidMenunggu): ?>
         <div class="tw-card">
-            <?php if($isKabidJalan || $isKabidSelesai || $isKabidSetuju): ?>
+            <?php if($isKabidJalan || $isKabidSelesai || $isKabidSetuju || $isKabidBatal): ?>
             <div class="tw-message">
                 <?php if ($isKabidSelesai): ?>
                     <p>Kegiatan Anda pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong> telah dinyatakan selesai. Terima kasih atas partisipasi dan kontribusinya.</p>
+                <?php elseif ($isKabidBatal): ?>
+                    <p>Kegiatan Anda pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong> telah dibatalkan.</p>
                 <?php else: ?>
                     <p>Permohonan Anda telah disetujui. Anda ditempatkan pada <strong><?= esc($p['bidang'] ?? 'Bidang Terkait') ?></strong>.</p>
                     
